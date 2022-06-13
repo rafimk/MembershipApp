@@ -4,6 +4,6 @@ namespace Membership.Application.Commands.Nationalities.States;
 
 public record UpdateState() : ICommand
 {
-    public Guid Id { get; set;}
+    public Guid StateId { get; set;}
     public string Name{ get; set; }
 }

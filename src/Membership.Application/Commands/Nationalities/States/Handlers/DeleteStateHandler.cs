@@ -13,11 +13,11 @@ internal sealed class DeleteStateHandler : ICommandHandler<DeleteState>
 
     public async Task HandleAsync(DeleteState command)
     {
-        var state = await _repository.GetByIdAsync(command.Id);
+        var state = await _repository.GetByIdAsync(command.StateId);
 
         if (state is null)
         {
-            throw new StateNotFoundException(command.Id);
+            throw new StateNotFoundException(command.StateId);
         }
         state.Delete();
         await _repository.UpdateAsync(state);

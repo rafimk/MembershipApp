@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Nationalities.States;
-using Membership.Application.DTO;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.Queries.Nationalities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -15,17 +13,23 @@ namespace Membership.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class StateController : ControllerBase
+public class StatesController : ControllerBase
 {
     private readonly ICommandHandler<CreateState> _createStateHandler;
+    private readonly ICommandHandler<UpdateState> _updateStateHaneHandler;
+    private readonly ICommandHandler<DeleteState> _deleteStateHaneHandler;
     private readonly IQueryHandler<GetStateById, StateDto> _getStateByIdHandler;
     private readonly IQueryHandler<GetStates, IEnumerable<StateDto>> _getStatesdHandler;
 
-    public StateController(ICommandHandler<CreateState> createStateHandler,
+    public StatesController(ICommandHandler<CreateState> createStateHandler,
+        ICommandHandler<UpdateState> updateStateHaneHandler,
+        ICommandHandler<DeleteState> deleteStateHaneHandler,
         IQueryHandler<GetStateById, StateDto> getStateByIdHandler,
         IQueryHandler<GetStates, IEnumerable<StateDto>> getStatesdHandler)
     {
         _createStateHandler = createStateHandler;
+        _updateStateHaneHandler = updateStateHaneHandler;
+        _deleteStateHaneHandler = deleteStateHaneHandler;
         _getStateByIdHandler = getStateByIdHandler;
         _getStatesdHandler = getStatesdHandler;
     }
@@ -71,5 +75,17 @@ public class StateController : ControllerBase
         return CreatedAtAction(route, new {command.Id}, null);
     }
     
-  
+    [HttpPut("{stateId:guid}")]
+    public async Task<ActionResult> Put(Guid stateId, UpdateState command)
+    {
+        await _updateStateHaneHandler.HandleAsync(command with {StateId = stateId});
+        return NoContent();
+    }
+    
+    [HttpDelete("{stateId:guid}")]
+    public async Task<ActionResult> Delete(Guid stateId)
+    {
+        await _deleteStateHaneHandler.HandleAsync( new DeleteState {StateId = stateId});
+        return NoContent();
+    }
 }

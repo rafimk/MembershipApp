@@ -4,5 +4,5 @@ namespace Membership.Application.Commands.Nationalities.States;
 
 public record DeleteState() : ICommand
 {
-    public Guid Id { get; set;}
+    public Guid StateId { get; set;}
 }
