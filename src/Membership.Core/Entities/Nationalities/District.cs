@@ -1,4 +1,6 @@
-namespace MMS.Domain.Entities.Nationalities;
+using Membership.Core.ValueObjects;
+
+namespace Membership.Core.Entities.Nationalities;
 
 public class District
 {
@@ -19,7 +21,7 @@ public class District
     {
     }
 
-    public static State Create(GenericId id, DistrictName name, DateTime createdAt)
+    public static District Create(GenericId id, DistrictName name, DateTime createdAt)
         => new(id, name, false, createdAt);
 
     public void Update(DistrictName name)

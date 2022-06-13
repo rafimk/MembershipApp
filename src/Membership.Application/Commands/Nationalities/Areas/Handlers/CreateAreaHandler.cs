@@ -1,4 +1,6 @@
 using Membership.Application.Abstractions;
+using Membership.Core.Entities.Nationalities;
+using Membership.Core.Repositories.Nationalities;
 
 namespace Membership.Application.Commands.Nationalities.Areas.Handlers;
 
@@ -11,8 +13,7 @@ internal sealed class CreateAreaHandler : ICommandHandler<CreateArea>
 
     public async Task HandleAsync(CreateArea command)
     {
-        var area = new Area();
-        area.Create(Guid.NewGuid(), command.Name, command.StateId, command.Prefix, DateTime.UtcNow);
+        var area = Area.Create(Guid.NewGuid(), command.Name, command.StateId, command.Prefix, DateTime.UtcNow);
         await _repository.AddAsync(area);
     }
 }

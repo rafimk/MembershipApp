@@ -1,4 +1,6 @@
-namespace MMS.Domain.Policies.Users;
+using Membership.Core.ValueObjects;
+
+namespace Membership.Core.Policies.Users;
 
 public interface IUserCreatePolicy
 {

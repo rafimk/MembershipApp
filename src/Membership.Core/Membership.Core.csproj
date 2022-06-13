@@ -10,11 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Entities\Memberships\MembershipPeriod" />
-      <Folder Include="Entities\Memberships\Professions" />
-      <Folder Include="Entities\Memberships\Qualifications" />
       <Folder Include="Policies" />
-      <Folder Include="Repositories\Memberships" />
     </ItemGroup>
 
 </Project>

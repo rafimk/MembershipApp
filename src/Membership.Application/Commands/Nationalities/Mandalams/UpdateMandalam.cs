@@ -4,7 +4,7 @@ namespace Membership.Application.Commands.Nationalities.Mandalams;
 
 public record UpdateMandalam() : ICommand
 {
-    public Guid MandalamId { get; set;}
+    public Guid? MandalamId { get; set;}
     public string Name{ get; set; }
     public Guid DistrictId { get; set; }
 }

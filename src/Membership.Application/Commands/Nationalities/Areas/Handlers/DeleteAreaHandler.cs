@@ -1,4 +1,6 @@
 using Membership.Application.Abstractions;
+using Membership.Application.Exceptions.Nationalities;
+using Membership.Core.Repositories.Nationalities;
 
 namespace Membership.Application.Commands.Nationalities.Areas.Handlers;
 
@@ -11,11 +13,11 @@ internal sealed class DeleteAreaHandler : ICommandHandler<DeleteArea>
 
     public async Task HandleAsync(DeleteArea command)
     {
-        var area = await _repository.GetByIdAsync(command.Id);
+        var area = await _repository.GetByIdAsync(command.AreaId);
 
         if (area is null)
         {
-            throw new AreaNotFoundException(command.Id);
+            throw new AreaNotFoundException(command.AreaId);
         }
         
         area.Delete();

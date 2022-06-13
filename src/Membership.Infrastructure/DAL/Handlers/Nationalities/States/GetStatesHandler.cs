@@ -1,9 +1,10 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.Queries.Nationalities;
+using Membership.Application.Queries.Nationalities.States;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Nationalities;
+namespace Membership.Infrastructure.DAL.Handlers.Nationalities.States;
 
 internal sealed class GetStatesHandler : IQueryHandler<GetStates, IEnumerable<StateDto>>
 {

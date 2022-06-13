@@ -1,3 +1,5 @@
+using Membership.Core.ValueObjects;
+
 namespace Membership.Application.DTO.Nationalities;
 
 public class AreaDto

@@ -1,10 +1,12 @@
-﻿namespace Membership.Application.Exceptions.Nationalities;
+﻿using Membership.Core.Exceptions;
 
-public class StateNotFoundException : Exception
+namespace Membership.Application.Exceptions.Nationalities;
+
+public class StateNotFoundException : CustomException
 {
-    public Guid Id { get; }
+    public Guid? Id { get; }
     
-    public StateNotFoundException(Guid id) : base($"State Id {id} not found.")
+    public StateNotFoundException(Guid? id) : base($"State Id {id} not found.")
     {
         Id = id;
     }

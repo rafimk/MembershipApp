@@ -1,4 +1,6 @@
-namespace MMS.Domain.Entities.Nationalities;
+using Membership.Core.ValueObjects;
+
+namespace Membership.Core.Entities.Nationalities;
 
 public class Area
 {
@@ -24,7 +26,7 @@ public class Area
     {
     }
 
-    public static State Create(GenericId id, AreaName name, GenericId stateId, string prefix, DateTime createdAt)
+    public static Area Create(GenericId id, AreaName name, GenericId stateId, string prefix, DateTime createdAt)
         => new(id, name, stateId, prefix, false, createdAt);
 
     

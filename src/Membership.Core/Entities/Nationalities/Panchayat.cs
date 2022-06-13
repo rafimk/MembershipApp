@@ -1,4 +1,7 @@
-namespace MMS.Domain.Entities.Nationalities;
+using Membership.Core.Consts;
+using Membership.Core.ValueObjects;
+
+namespace Membership.Core.Entities.Nationalities;
 
 public class Panchayat
 {
@@ -25,7 +28,7 @@ public class Panchayat
     {
     }
 
-    public static State Create(GenericId id, PanchayatName name, GenericId mandalamId, PanchayatType type, DateTime createdAt)
+    public static Panchayat Create(GenericId id, PanchayatName name, GenericId mandalamId, PanchayatType type, DateTime createdAt)
         => new(id, name, mandalamId, type, false, createdAt);
     
     public void Update(PanchayatName name, GenericId mandalamId, PanchayatType type)

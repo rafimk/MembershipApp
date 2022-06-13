@@ -1,4 +1,6 @@
-namespace MMS.Domain.Entities.Nationalities;
+using Membership.Core.ValueObjects;
+
+namespace Membership.Core.Entities.Nationalities;
 
 public class Mandalam
 {
@@ -22,7 +24,7 @@ public class Mandalam
     {
     }
 
-    public static State Create(GenericId id, MandalamName name, GenericId districtId, DateTime createdAt)
+    public static Mandalam Create(GenericId id, MandalamName name, GenericId districtId, DateTime createdAt)
         => new(id, name, districtId, false, createdAt);
 
     public void Update(MandalamName name, GenericId districtId)

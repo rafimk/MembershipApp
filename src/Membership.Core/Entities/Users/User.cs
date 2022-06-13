@@ -1,4 +1,8 @@
-namespace MMS.Domain.Entities.Users;
+using Membership.Core.Contracts.Users;
+using Membership.Core.Exceptions.Users;
+using Membership.Core.ValueObjects;
+
+namespace Membership.Core.Entities.Users;
 
 public class User
 {
@@ -26,7 +30,7 @@ public class User
         Email = contract.Email;
         MobileNumber = contract.MobileNumber;
         AlternativeContactNumber = contract.AlternativeContactNumber;
-        Designation = contract.Designation
+        Designation = contract.Designation;
         PasswordHash = contract.PasswordHash;
         Role = contract.Role;
         CascadeId = contract.CascadeId;
@@ -35,7 +39,20 @@ public class User
     }
 
      public static User Create(UserCreateContract contract)
-        => new(contract with { IsActive = true});
+        => new(new UserContract
+        {
+            Id = contract.Id,
+            FullName = contract.FullName,
+            Email = contract.Email,
+            MobileNumber = contract.MobileNumber,
+            AlternativeContactNumber = contract.AlternativeContactNumber,
+            Designation = contract.Designation,
+            PasswordHash = contract.PasswordHash,
+            Role = contract.Role,
+            CascadeId = contract.CascadeId,
+            CreatedAt = contract.CreatedAt,
+            IsActive = true
+        });
 
     public void Update(UpdateCreateContract contract)
     {

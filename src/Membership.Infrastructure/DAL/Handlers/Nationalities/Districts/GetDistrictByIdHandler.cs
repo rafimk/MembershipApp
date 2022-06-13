@@ -1,6 +1,7 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.Queries.Nationalities;
+using Membership.Application.Queries.Nationalities.Districts;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,8 +16,8 @@ internal sealed class GetDistrictByIdHandler : IQueryHandler<GetDistrictById, Di
     
     public async Task<DistrictDto> HandleAsync(GetDistrictById query)
     {
-        var stateId = new GenericId(query.StateId);
-        var state = await _dbContext.Districts
+        var districtId = new GenericId(query.DistrictId);
+        var state = await _dbContext
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == stateId);
 

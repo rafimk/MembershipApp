@@ -1,3 +1,6 @@
+using Membership.Core.Entities.Users;
+using Membership.Core.ValueObjects;
+
 namespace Membership.Core.Repositories.Users;
 
 public interface IUserRepository

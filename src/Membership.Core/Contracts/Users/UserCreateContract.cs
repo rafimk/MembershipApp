@@ -1,4 +1,6 @@
-namespace MMS.Domain.Entities.Contracts;
+using Membership.Core.ValueObjects;
+
+namespace Membership.Core.Contracts.Users;
 
 public record UserCreateContract()
 {

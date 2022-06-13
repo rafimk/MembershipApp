@@ -5,6 +5,7 @@ using Membership.Application.Abstractions;
 using Membership.Application.Commands.Nationalities.States;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.Queries.Nationalities;
+using Membership.Application.Queries.Nationalities.States;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

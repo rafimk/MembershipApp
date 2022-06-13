@@ -1,6 +1,8 @@
 using Membership.Application.Abstractions;
+using Membership.Core.Entities.Nationalities;
+using Membership.Core.Repositories.Nationalities;
 
-namespace Membership.Application.Commands.Nationalities.Mandalams.Hanlers;
+namespace Membership.Application.Commands.Nationalities.Mandalams.Handlers;
 
 internal sealed class CreateMandalamHandler : ICommandHandler<CreateMandalam>
 {
@@ -11,8 +13,7 @@ internal sealed class CreateMandalamHandler : ICommandHandler<CreateMandalam>
 
     public async Task HandleAsync(CreateMandalam command)
     {
-        var mandalam = new Mandalam();
-        mandalam.Create(Guid.NewGuid(), command.Name, command.DistrictId, DateTime.UtcNow);
+        var mandalam = Mandalam.Create(Guid.NewGuid(), command.Name, command.DistrictId, DateTime.UtcNow);
         await _repository.AddAsync(mandalam);
     }
 }

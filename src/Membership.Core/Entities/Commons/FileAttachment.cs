@@ -1,9 +1,11 @@
-namespace MMS.Domain.Entities.Commons;
+using Membership.Core.Consts;
+
+namespace Membership.Core.Entities.Commons;
 
 public class FileAttachment
 {
-    public Guid { get; set; }
-    public RelatedId { get; set; }
+    public Guid Id { get; set; }
+    public Guid RelatedId { get; set; }
     public FileAttachmentType Type { get; set; }
     public string ActualFileName { get; set; }
     public string SavedFileName { get; set; }
