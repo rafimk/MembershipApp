@@ -2,19 +2,35 @@
 
 public sealed record UserRole
 {
+
+    public static IEnumerable<string> AvailableRoles { get; } = new[] {"centralcommittee-admin", 
+        "state-admin", "district-admin", "mandalam-agent"};
+
     public string Value { get; }
 
-    public const string CentralCommitteeAdmin = nameof(CentralCommitteeAdmin);
-    public const string StateAdmin = nameof(StateAdmin);
-    public const string DistrictAdmin = nameof(DistrictAdmin);
-    public const string MandalamAgent = nameof(MandalamAgent);
-
     public UserRole(string value)
-        => Value = value;
+    {
+        if (string.IsNullOrWhiteSpace(value) || value.Length > 30)
+        {
+            throw new InvalidRoleException(value);
+        }
 
-    public static implicit operator string(UserRole jobTitle)
-        => jobTitle.Value;
+        if (!AvailableRoles.Contains(value))
+        {
+            throw new InvalidRoleException(value);
+        }
 
-    public static implicit operator UserRole(string value)
-        => new(value);
+        Value = value;
+    }
+
+    public static UserRole CentralCommitteeAdmin() => new("centralcommittee-admin");
+    public static UserRole StateAdmin() => new("state-admin");
+    public static UserRole DistrictAdmin() => new("district-admin");
+    public static UserRole MandalamAgent() => new("mandalam-agent");
+
+    public static implicit operator Role(string value) => new Role(value);
+
+    public static implicit operator string(Role value) => value?.Value;
+
+    public override string ToString() => Value;
 }

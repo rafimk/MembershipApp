@@ -11,8 +11,4 @@ public interface IUserRepository
     Task<IEnumerable<User>> GetAsync();
     Task AddAsync(User user);
     Task UpdateAsync(User user);
-    Task ChangePassword(GenericId id, string newPasswordHash);
-    Task Activate(GenericId id);
-    Task Deactivate(GenericId id);
-    Task Verify(GenericId id, DateTime verifiedAt);
 }

@@ -38,7 +38,7 @@ public class User
         IsActive = contract.IsActive;
     }
 
-     public static User Create(UserCreateContract contract)
+    public static User Create(UserCreateContract contract)
         => new(new UserContract
         {
             Id = contract.Id,

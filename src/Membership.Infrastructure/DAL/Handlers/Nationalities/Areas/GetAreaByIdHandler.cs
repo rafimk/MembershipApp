@@ -18,7 +18,7 @@ internal sealed class GetAreaByIdHandler : IQueryHandler<GetAreaById, AreaDto>
         var areaId = new GenericId(query.AreaId);
         var area = await _dbContext.Areas
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Id == stateId);
+            .SingleOrDefaultAsync(x => x.Id == areaId);
 
         return area?.AsDto();
     }

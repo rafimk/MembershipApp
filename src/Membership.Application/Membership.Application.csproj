@@ -7,6 +7,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Membership.Core\Membership.Core.csproj" />
+        <ProjectReference Include="..\Membership.Application\Membership.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>

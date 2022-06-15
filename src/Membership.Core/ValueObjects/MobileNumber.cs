@@ -13,6 +13,11 @@ public record MobileNumber
         {
             throw new EmptyMobileNumberException();
         }
+        
+        if (string.IsNullOrWhiteSpace(value) || value.Length is > 20 or < 9)
+        {
+            throw new InvalidMobileNumberException();
+        }
 
         if (!ValidateMobileNumber(value))
         {
