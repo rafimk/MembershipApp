@@ -1,5 +1,5 @@
 using Membership.Application.Abstractions;
-using Membership.Application.DTO.Nationalities;
+using Membership.Application.DTO.Users;
 
 namespace Membership.Application.Queries.Users;
 

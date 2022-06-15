@@ -1,6 +1,7 @@
+using Membership.Shared.Abstractions.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Membership.Application.Messaging;;
+namespace Membership.Application.Messaging;
 
 public static class Extensions
 {

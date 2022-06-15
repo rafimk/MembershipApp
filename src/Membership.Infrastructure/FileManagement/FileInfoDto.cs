@@ -1,6 +1,6 @@
-using namespace Membership.Core.Consts;
+﻿using Membership.Core.Consts;
 
-namespace Membership.Application.DTO.Commons;
+namespace Membership.Infrastructure.FileManagement;
 
 public record FileInfoDto
 {

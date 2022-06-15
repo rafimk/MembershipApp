@@ -1,4 +1,4 @@
-namespace Membership.Shared.Messaging;
+namespace Membership.Shared.Abstractions.Messaging;
 
 public interface IMessageSubscriber
 {

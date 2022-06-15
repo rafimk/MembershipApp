@@ -1,6 +1,6 @@
 using Membership.Application.Abstractions;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.DTO.Users;
+using Membership.Application.Queries.Users;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 

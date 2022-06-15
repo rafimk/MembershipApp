@@ -1,3 +1,8 @@
+using Membership.Application.Security;
+using Membership.Core.Entities.Users;
+using Microsoft.AspNetCore.Identity;
+using PasswordGenerator;
+
 namespace Membership.Infrastructure.Security;
 
 internal sealed class PasswordManager : IPasswordManager

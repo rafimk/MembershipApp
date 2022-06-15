@@ -2,7 +2,7 @@ using Membership.Application.Abstractions;
 using Membership.Application.Exceptions.Users;
 using Membership.Core.Repositories.Users;
 
-namespace Membership.Application.Commands.Nationalities.Areas.Handlers;
+namespace Membership.Application.Commands.Users.Handlers;
 
 internal sealed class ActivateUserHandler : ICommandHandler<ActivateUser>
 {

@@ -1,4 +1,4 @@
-using Membership.Core.Entities.Memberships;
+using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

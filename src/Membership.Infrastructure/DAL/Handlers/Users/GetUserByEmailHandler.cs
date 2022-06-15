@@ -1,6 +1,6 @@
 using Membership.Application.Abstractions;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.DTO.Users;
+using Membership.Application.Queries.Users;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +15,9 @@ internal sealed class GetUserByEmailHandler : IQueryHandler<GetUserByEmail, User
     
     public async Task<UserDto> HandleAsync(GetUserByEmail query)
     {
-        var userEmail = new GenericId(query.UserEmail);
         var user = await _dbContext.Users
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Email == userEmail);
+            .SingleOrDefaultAsync(x => x.Email == query.UserEmail);
 
         return user?.AsDto();
     }

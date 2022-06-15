@@ -1,34 +1,38 @@
 using Membership.Application.Abstractions;
-using Membership.Core.Entities.Nationalities;
+using Membership.Application.Events;
+using Membership.Application.Exceptions.Users;
+using Membership.Application.Security;
+using Membership.Core.Abstractions;
+using Membership.Core.Contracts.Users;
+using Membership.Core.Entities.Users;
 using Membership.Core.Repositories.Users;
+using Membership.Shared.Abstractions.Messaging;
 
 namespace Membership.Application.Commands.Users.Handlers;
 
 internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
 {
     private readonly IUserRepository _repository;
-    private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly IPasswordManager _passwordManager;
     private readonly IMessagePublisher _messagePublisher;
     private readonly IClock _clock;
 
-    public CreateUserHandler(IUserRepository repository, 
-        IPasswordHasher<User> passwordHasher,
-        IMessagePublisher messagePublisher,
-        IClock clock)
+    public CreateUserHandler(IUserRepository repository, IPasswordManager passwordManager,
+        IMessagePublisher messagePublisher, IClock clock)
     {
         _repository = repository;
-        _passwordHasher = passwordHasher;
+        _passwordManager = passwordManager;
         _messagePublisher = messagePublisher;
         _clock = clock;
     }
 
     public async Task HandleAsync(CreateUser command)
     {
-        var role = string.IsNullOrWhiteSpace(command.Role) ? Role.User() : new Role(command.Role);
+       // var role = string.IsNullOrWhiteSpace(command.Role) ? User.User() : new Role(command.Role);
         
-        if (await _userRepository.GetByEmailAsync(email) is not null)
+        if (await _repository.GetByEmailAsync(command.Email) is not null)
         {
-            throw new EmailAlreadyInUseException(email);
+            throw new EmailAlreadyInUseException(command.Email);
         }
 
         var firstTimePassord = _passwordManager.Generate(); 
@@ -43,14 +47,13 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             AlternativeContactNumber = command.AlternativeContactNumber,
             Designation = command.Designation,
             PasswordHash = securedPassword,
-            Role = role,
-            CascadeId = contract.CascadeId,
-            CreatedAt = _clock.Now(),
-            IsActive = true
+            // Role = role,
+            // CascadeId = command.CascadeId,
+            CreatedAt = _clock.Current(),
         };
         var user = User.Create(contract);
         await _repository.AddAsync(user);
         var integrationEvent = new UserCreated(user.Email, user.FullName, user.PasswordHash);
-        await _messagePublisher.PublishAsync("user-created", integrationEvent);
+        await _messagePublisher.PublishAsync<UserCreated>("user-created", integrationEvent);
     }
 }

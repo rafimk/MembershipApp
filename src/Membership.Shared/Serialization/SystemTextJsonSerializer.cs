@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Membership.Shared.Abstractions.Serialization;
 
 namespace Membership.Shared.Serialization;
 

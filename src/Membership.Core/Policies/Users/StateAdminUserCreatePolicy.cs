@@ -6,10 +6,13 @@ internal sealed class StateAdminUserCreatePolicy : IUserCreatePolicy
 {
    
     public bool CanBeApplied(UserRole currentUserRole)
-        => currentUserRole == UserRole.StateAdmin;
+        => currentUserRole == UserRole.StateAdmin();
 
-    public UserRole PermittedUserRole(UserRole currentUserRole)
+    public IEnumerable<UserRole> PermittedUserRole(UserRole currentUserRole)
     {
-        return UserRole.DistrictAdmin;
+        return new List<UserRole>
+        {
+            UserRole.DistrictAdmin()
+        };
     }
 }

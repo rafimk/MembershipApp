@@ -1,5 +1,5 @@
-using Membership.Core.Entities.Nationalities;
-using Membership.Core.Repositories.Nationalities;
+using Membership.Core.Entities.Memberships.Professions;
+using Membership.Core.Repositories.Memberships;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +7,9 @@ namespace Membership.Infrastructure.DAL.Repositories.Memberships;
 
 internal sealed class PostgresProfessionRepository : IProfessionRepository
 {
-    private readonly MMSDbContext _dbContext;
+    private readonly MembershipDbContext _dbContext;
 
-    public PostgresProfessionRepository(MMSDbContext dbContext)
+    public PostgresProfessionRepository(MembershipDbContext dbContext)
     {
         _dbContext = dbContext;
     }

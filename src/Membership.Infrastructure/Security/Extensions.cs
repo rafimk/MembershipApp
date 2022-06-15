@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Membership.Application.Security;
-using Membership.Core.Entities;
+using Membership.Core.Entities.Users;
 
 namespace Membership.Infrastructure.Security;
 

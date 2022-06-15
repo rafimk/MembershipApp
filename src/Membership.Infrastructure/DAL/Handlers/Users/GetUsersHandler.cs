@@ -1,7 +1,6 @@
 using Membership.Application.Abstractions;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
-using Membership.Core.ValueObjects;
+using Membership.Application.DTO.Users;
+using Membership.Application.Queries.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Users;

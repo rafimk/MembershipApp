@@ -1,25 +1,24 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.Queries.Nationalities.Mandalams;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Nationalities.Areas;
+namespace Membership.Infrastructure.DAL.Handlers.Nationalities.Mandalams;
 
-internal sealed class GetMandalamByDistrictIdHandler : IQueryHandler<GetMandalamByDistrictId, MandalamDto>
+internal sealed class GetMandalamByDistrictIdHandler : IQueryHandler<GetMandalamByDistrictId, IEnumerable<MandalamDto>>
 {
-    private readonly GetMandalamByDistrictIdHandler _dbContext;
+    private readonly MembershipDbContext _dbContext;
     
-    public GetAreaByStateIdHandler(MembershipDbContext dbContext)
+    public GetMandalamByDistrictIdHandler(MembershipDbContext dbContext)
         => _dbContext = dbContext;
     
-    public async Task<MandalamDto> HandleAsync(GetMandalamByDistrictId query)
+    public async Task<IEnumerable<MandalamDto>> HandleAsync(GetMandalamByDistrictId query)
     {
         var districtId = new GenericId(query.DistrictId);
-        var mandalam = await _dbContext.Mandalams
+        return await _dbContext.Mandalams
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.DistrictId == districtId);
-
-        return mandalam?.AsDto();
+            .Where(x => x.DistrictId == districtId).Select(x => x.AsDto())
+            .ToListAsync();;
     }
 }

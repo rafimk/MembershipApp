@@ -7,9 +7,9 @@ namespace Membership.Infrastructure.DAL.Repositories.Nationalities;
 
 internal sealed class PostgresDistrictRepository : IDistrictRepository
 {
-    private readonly MMSDbContext _dbContext;
+    private readonly MembershipDbContext _dbContext;
 
-    public PostgresDistrictRepository(MMSDbContext dbContext)
+    public PostgresDistrictRepository(MembershipDbContext dbContext)
     {
         _dbContext = dbContext;
     }

@@ -1,10 +1,10 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.Queries.Nationalities.Mandalams;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Nationalities.Areas;
+namespace Membership.Infrastructure.DAL.Handlers.Nationalities.Mandalams;
 
 internal sealed class GetMandalamByIdHandler : IQueryHandler<GetMandalamById, MandalamDto>
 {
@@ -16,7 +16,7 @@ internal sealed class GetMandalamByIdHandler : IQueryHandler<GetMandalamById, Ma
     public async Task<MandalamDto> HandleAsync(GetMandalamById query)
     {
         var mandalamId = new GenericId(query.MandalamId);
-        var mandalam = await _dbContext.Areas
+        var mandalam = await _dbContext.Mandalams
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == mandalamId);
 

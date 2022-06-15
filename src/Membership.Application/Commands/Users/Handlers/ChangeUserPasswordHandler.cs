@@ -1,21 +1,23 @@
 using Membership.Application.Abstractions;
+using Membership.Application.Exceptions;
 using Membership.Application.Exceptions.Users;
+using Membership.Application.Security;
+using Membership.Core.Abstractions;
 using Membership.Core.Repositories.Users;
 
-namespace Membership.Application.Commands.Nationalities.Areas.Handlers;
+namespace Membership.Application.Commands.Users.Handlers;
 
 internal sealed class ChangeUserPasswordHandler : ICommandHandler<ChangeUserPassword>
 {
     private readonly IUserRepository _repository;
-    private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly IPasswordManager _passwordManager;
     private readonly IClock _clock;
 
     public ChangeUserPasswordHandler(IUserRepository repository, 
-        IPasswordHasher<User> passwordHasher
-        IClock clock)
+        IPasswordManager passwordManager, IClock clock)
     {
         _repository = repository;
-        _passwordHasher = passwordHasher;
+        _passwordManager = passwordManager;
         _clock = clock;
     }
 
@@ -28,12 +30,12 @@ internal sealed class ChangeUserPasswordHandler : ICommandHandler<ChangeUserPass
             throw new UserNotFoundException(command.UserId);
         }
 
-        if (!_passwordManager.Validate(command.OldPassword, user.Password))
+        if (!_passwordManager.Validate(command.OldPassword, user.PasswordHash))
         {
             throw new InvalidCredentialsException();
         }
 
-        var securedPassword = _passwordManager.Secure(firstTimePassord);
+        var securedPassword = _passwordManager.Secure(command.NewPassword);
 
         user.ChangePassword(securedPassword);
         await _repository.UpdateAsync(user);

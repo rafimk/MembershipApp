@@ -1,5 +1,4 @@
-using Membership.Core.Entities.Memberships;
-using Membership.Core.ValueObjects;
+using Membership.Core.Entities.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

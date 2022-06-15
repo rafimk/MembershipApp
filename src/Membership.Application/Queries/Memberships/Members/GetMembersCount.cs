@@ -1,5 +1,6 @@
 using Membership.Application.Abstractions;
-using Membership.Application.DTO.Nationalities;
+using Membership.Application.DTO.Memberships;
+using Membership.Core.ValueObjects;
 
 namespace Membership.Application.Queries.Memberships.Members;
 

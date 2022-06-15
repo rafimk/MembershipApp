@@ -15,7 +15,7 @@ public class FileAttachment
     public bool IsDeleted { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private FileAttachment(Guid id, FileType type, string actualFileName, string fileExtension,
+    private FileAttachment(Guid id, FileType type, string actualFileName, string savedFileName, string fileExtension,
         string fileType,  string filePath, long fileSize, bool isDeleted, DateTime createdAt)
     {
         Id = id;
@@ -34,9 +34,9 @@ public class FileAttachment
     {
     }
     
-    public static Profession Create(Guid id, FileType type, string actualFileName, string fileExtension,
+    public static FileAttachment Create(Guid id, FileType type, string actualFileName, string savedFileName ,string fileExtension,
         string fileType,  string filePath, long fileSize, DateTime createdAt)
-        => new(id, type, actualFileName, fileExtension, fileType, filePath, false, createdAt);
+        => new(id, type, actualFileName, savedFileName, fileExtension, fileType, filePath, fileSize, false, createdAt);
     
     public void Delete()
     {

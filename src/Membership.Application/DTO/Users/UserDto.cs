@@ -9,7 +9,7 @@ public class UserDto
     public string AlternativeContactNumber { get; set; }
     public string Designation { get; set; }
     public string PasswordHash { get; set; }
-    public int Role { get; set; }
+    public string Role { get; set; }
     public Guid? CascadeId { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool IsActive {get; set;}

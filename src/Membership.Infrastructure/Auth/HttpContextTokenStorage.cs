@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http;
-using Membership.Application.DTO;
+using Membership.Application.DTO.Security;
 using Membership.Application.Security;
 
 namespace Membership.Infrastructure.Auth;

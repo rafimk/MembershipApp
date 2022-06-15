@@ -5,10 +5,13 @@ namespace Membership.Core.Policies.Users;
 internal sealed class DistrictAdminUserCreatePolicy : IUserCreatePolicy
 {
     public bool CanBeApplied(UserRole currentUserRole)
-        => currentUserRole == UserRole.DistrictAdmin;
+        => currentUserRole == UserRole.DistrictAdmin();
 
-    public UserRole PermittedUserRole(UserRole currentUserRole)
+    public IEnumerable<UserRole> PermittedUserRole(UserRole currentUserRole)
     {
-        return UserRole.MandalamAgent;
+        return new List<UserRole>
+        {
+            UserRole.MandalamAgent()
+        };
     }
 }

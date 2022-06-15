@@ -1,4 +1,4 @@
-using Membership.Core.Entities.Nationalities;
+using Membership.Core.Entities.Users;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

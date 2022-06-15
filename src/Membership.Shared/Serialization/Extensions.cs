@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Membership.Shared.Abstractions.Serialization;
 
 namespace Membership.Shared.Serialization;
 

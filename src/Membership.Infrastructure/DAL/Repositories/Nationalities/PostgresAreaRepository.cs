@@ -7,9 +7,9 @@ namespace Membership.Infrastructure.DAL.Repositories.Nationalities;
 
 internal sealed class PostgresAreaRepository : IAreaRepository
 {
-    private readonly MMSDbContext _dbContext;
+    private readonly MembershipDbContext _dbContext;
 
-    public PostgresAreaRepository(MMSDbContext dbContext)
+    public PostgresAreaRepository(MembershipDbContext dbContext)
     {
         _dbContext = dbContext;
     }

@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using Membership.Core.Exceptions.Common;
-using Membership.Core.Exceptions.Users;
 
 namespace Membership.Core.ValueObjects;
 

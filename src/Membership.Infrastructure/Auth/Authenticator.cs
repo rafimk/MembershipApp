@@ -1,9 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Membership.Application.DTO.Security;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Membership.Application.DTO;
 using Membership.Application.Security;
 using Membership.Core.Abstractions;
 

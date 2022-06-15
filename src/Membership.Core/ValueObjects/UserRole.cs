@@ -1,10 +1,12 @@
-﻿namespace Membership.Core.ValueObjects;
+﻿using Membership.Core.Exceptions.Users;
+
+namespace Membership.Core.ValueObjects;
 
 public sealed record UserRole
 {
 
     public static IEnumerable<string> AvailableRoles { get; } = new[] {"centralcommittee-admin", 
-        "state-admin", "district-admin", "mandalam-agent"};
+        "state-admin", "district-admin", "mandalam-agent", "dispute-committee"};
 
     public string Value { get; }
 
@@ -27,10 +29,11 @@ public sealed record UserRole
     public static UserRole StateAdmin() => new("state-admin");
     public static UserRole DistrictAdmin() => new("district-admin");
     public static UserRole MandalamAgent() => new("mandalam-agent");
+    public static UserRole DisputeCommittee() => new("dispute-committee");
 
-    public static implicit operator Role(string value) => new Role(value);
+    public static implicit operator UserRole(string value) => new UserRole(value);
 
-    public static implicit operator string(Role value) => value?.Value;
+    public static implicit operator string(UserRole value) => value?.Value;
 
     public override string ToString() => Value;
 }

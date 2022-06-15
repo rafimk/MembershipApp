@@ -1,8 +1,10 @@
 using Membership.Application.Abstractions;
+using Membership.Application.Exceptions;
 using Membership.Application.Exceptions.Users;
+using Membership.Core.Abstractions;
 using Membership.Core.Repositories.Users;
 
-namespace Membership.Application.Commands.Nationalities.Areas.Handlers;
+namespace Membership.Application.Commands.Users.Handlers;
 
 internal sealed class VerifyUserHandler : ICommandHandler<VerifyUser>
 {
@@ -24,14 +26,16 @@ internal sealed class VerifyUserHandler : ICommandHandler<VerifyUser>
             throw new UserNotFoundException(command.UserId);
         }
 
-        verifyCode = user.MobileNumber.Substring(user.MobileNumber.Length - 4, 4);
+        var stringMobile = user.MobileNumber.ToString();
+
+        var verifyCode = stringMobile.Substring(stringMobile.Length - 4, 4);
 
         if (verifyCode != command.VerifyCode)
         {
             throw new InvalidCredentialsException();
         }
 
-        user.Verify(_clock.Now());
+        user.Verify(_clock.Current());
         await _repository.UpdateAsync(user);
     }
 }

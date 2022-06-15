@@ -1,7 +1,7 @@
-using System.Net;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+
 
 namespace Membership.Shared.Observability;
 

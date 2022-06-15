@@ -1,4 +1,4 @@
-namespace Membership.Shared.Serialization;
+namespace Membership.Shared.Abstractions.Serialization;
 
 public interface ISerializer
 {

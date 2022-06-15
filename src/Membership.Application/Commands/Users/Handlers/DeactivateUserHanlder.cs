@@ -2,7 +2,7 @@ using Membership.Application.Abstractions;
 using Membership.Application.Exceptions.Users;
 using Membership.Core.Repositories.Users;
 
-namespace Membership.Application.Commands.Nationalities.Areas.Handlers;
+namespace Membership.Application.Commands.Users.Handlers;
 
 internal sealed class DeactivateUserHanlder : ICommandHandler<DeactivateUser>
 {
@@ -20,7 +20,7 @@ internal sealed class DeactivateUserHanlder : ICommandHandler<DeactivateUser>
             throw new UserNotFoundException(command.UserId);
         }
 
-        user.Dectivate();
+        user.Deactivate();
         await _repository.UpdateAsync(user);
     }
 }

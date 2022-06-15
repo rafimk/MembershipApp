@@ -1,15 +1,14 @@
-using Membership.Core.Entities.Nationalities;
-using Membership.Core.Repositories.Nationalities;
-using Membership.Core.ValueObjects;
+using Membership.Core.Entities.Commons;
+using Membership.Core.Repositories.Commons;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Repositories.Memberships;
+namespace Membership.Infrastructure.DAL.Repositories.Commons;
 
-internal sealed class PostgresFileAttachmentRepository : IProfessionRepository
+internal sealed class PostgresFileAttachmentRepository : IFileAttachmentRepository
 {
-    private readonly MMSDbContext _dbContext;
+    private readonly MembershipDbContext _dbContext;
 
-    public PostgresFileAttachmentRepository(MMSDbContext dbContext)
+    public PostgresFileAttachmentRepository(MembershipDbContext dbContext)
     {
         _dbContext = dbContext;
     }

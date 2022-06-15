@@ -1,3 +1,5 @@
+using Membership.Shared.Abstractions.Messaging;
+
 namespace Membership.Application.Messaging;
 
 internal sealed class DefaultMessageSubscriber : IMessageSubscriber

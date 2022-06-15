@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Membership.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Membership.Api", "src\Membership.Api\Membership.Api.csproj", "{A0AAD25B-3C7E-475E-842D-4C2259FE559B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Membership.Shared", "src\Membership.Shared\Membership.Shared.csproj", "{0E811451-A6C1-4F52-92B5-DD136BBF21BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Membership.Shared.Abstractions", "src\Membership.Shared.Abstractions\Membership.Shared.Abstractions.csproj", "{3FC2A260-2F4D-435A-AE0D-CCF492ADFB45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,8 @@ Global
 		{A49FED3B-F1B0-4562-B323-6C3482426878} = {E32A5F4F-2379-4F4E-B5E7-08047A17ED74}
 		{4339528A-607E-4332-AD30-1F9FA7550683} = {E32A5F4F-2379-4F4E-B5E7-08047A17ED74}
 		{A0AAD25B-3C7E-475E-842D-4C2259FE559B} = {E32A5F4F-2379-4F4E-B5E7-08047A17ED74}
+		{0E811451-A6C1-4F52-92B5-DD136BBF21BB} = {E32A5F4F-2379-4F4E-B5E7-08047A17ED74}
+		{3FC2A260-2F4D-435A-AE0D-CCF492ADFB45} = {E32A5F4F-2379-4F4E-B5E7-08047A17ED74}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5C411597-A647-4B3A-866B-5D6DEC032795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +50,13 @@ Global
 		{A0AAD25B-3C7E-475E-842D-4C2259FE559B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0AAD25B-3C7E-475E-842D-4C2259FE559B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0AAD25B-3C7E-475E-842D-4C2259FE559B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E811451-A6C1-4F52-92B5-DD136BBF21BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E811451-A6C1-4F52-92B5-DD136BBF21BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E811451-A6C1-4F52-92B5-DD136BBF21BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E811451-A6C1-4F52-92B5-DD136BBF21BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FC2A260-2F4D-435A-AE0D-CCF492ADFB45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FC2A260-2F4D-435A-AE0D-CCF492ADFB45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FC2A260-2F4D-435A-AE0D-CCF492ADFB45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FC2A260-2F4D-435A-AE0D-CCF492ADFB45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

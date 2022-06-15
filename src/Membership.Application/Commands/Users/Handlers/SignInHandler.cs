@@ -1,9 +1,9 @@
 using Membership.Application.Abstractions;
 using Membership.Application.Exceptions;
 using Membership.Application.Security;
-using Membership.Core.Repositories;
+using Membership.Core.Repositories.Users;
 
-namespace Membership.Application.Commands.Handlers;
+namespace Membership.Application.Commands.Users.Handlers;
 
 internal sealed class SignInHandler : ICommandHandler<SignIn>
 {
@@ -29,7 +29,7 @@ internal sealed class SignInHandler : ICommandHandler<SignIn>
             throw new InvalidCredentialsException();
         }
 
-        if (!_passwordManager.Validate(command.Password, user.Password))
+        if (!_passwordManager.Validate(command.Password, user.PasswordHash))
         {
             throw new InvalidCredentialsException();
         }

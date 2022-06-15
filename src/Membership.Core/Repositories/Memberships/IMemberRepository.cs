@@ -7,7 +7,7 @@ public interface IMemberRepository
 {
     Task<Member> GetByIdAsync(GenericId id);
     Task<Member> GetByMemberIdAsync(MembershipId membershipId);
-    Task<Member> GetByEmiratesIdAsync(EmiratesId emiratesId);
+    Task<Member> GetByEmiratesIdAsync(EmiratesIdNumber emiratesId);
     Task<IEnumerable<Member>> GetAsync();
     Task AddAsync(Member member);
     Task UpdateAsync(Member member);

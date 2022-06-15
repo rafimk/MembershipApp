@@ -1,5 +1,5 @@
-using Membership.Core.Entities.Nationalities;
-using Membership.Core.Repositories.Nationalities;
+using Membership.Core.Entities.Memberships.Members;
+using Membership.Core.Repositories.Memberships;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +7,9 @@ namespace Membership.Infrastructure.DAL.Repositories.Memberships;
 
 internal sealed class PostgresMemberRepository : IMemberRepository
 {
-    private readonly MMSDbContext _dbContext;
+    private readonly MembershipDbContext _dbContext;
 
-    public PostgresMembershipRepository(MMSDbContext dbContext)
+    public PostgresMemberRepository(MembershipDbContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -21,10 +21,10 @@ internal sealed class PostgresMemberRepository : IMemberRepository
     public  Task<Member> GetByMemberIdAsync(MembershipId membershipId)
         => _dbContext.Members.Include(x => x.Area)
             .Include(x => x.Mandalam).SingleOrDefaultAsync(x => x.MembershipId == membershipId);
-    
-     public  Task<Member> GetByMemberIdAsync(EmiratesId emiratesId)
+
+    public  Task<Member> GetByEmiratesIdAsync(EmiratesIdNumber emiratesId)
         => _dbContext.Members.Include(x => x.Area)
-            .Include(x => x.Mandalam).SingleOrDefaultAsync(x => x.EmiratesId == emiratesId);
+            .Include(x => x.Mandalam).SingleOrDefaultAsync(x => x.EmiratesIdNumber == emiratesId);
     
     public async Task<IEnumerable<Member>> GetAsync()
         => await _dbContext.Members.Where(x => x.IsActive).ToListAsync();

@@ -7,11 +7,13 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Membership.Application\Membership.Application.csproj" />
+        <ProjectReference Include="..\Membership.Shared\Membership.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Humanizer" Version="2.14.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.4" />
         <PackageReference Include="Serilog" Version="2.11.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />

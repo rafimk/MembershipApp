@@ -1,3 +1,4 @@
+using Membership.Shared.Abstractions.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Membership.Shared.Messaging;

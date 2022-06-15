@@ -1,6 +1,13 @@
-using IMessage = Membership.Shared.Messaging.IMessage;
+using System.Reflection;
+using DotPulsar;
+using DotPulsar.Abstractions;
+using DotPulsar.Extensions;
+using Membership.Shared.Abstractions.Messaging;
+using Membership.Shared.Abstractions.Serialization;
+using Microsoft.Extensions.Logging;
+using IMessage = Membership.Shared.Abstractions.Messaging.IMessage;
 
-namespace namespace Membership.Shared.Pulsar;;
+namespace Membership.Shared.Pulsar;
 
 internal sealed class PulsarMessageSubscriber : IMessageSubscriber
 {

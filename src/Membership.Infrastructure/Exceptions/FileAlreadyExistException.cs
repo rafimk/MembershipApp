@@ -1,9 +1,13 @@
 using Membership.Core.Exceptions;
 
-namespace Membership.Application.Exceptions.Memberships;
+namespace Membership.Infrastructure.Exceptions;
 
 public class FileAlreadyExistException : CustomException
 {
+    public string FileName { get; }
     
-    public FileAlreadyExistException() : base($"File name already exist.");
+    public FileAlreadyExistException(string fileName) : base($"File name : {fileName} already exist.")
+    {
+        FileName = fileName;
+    }
 }

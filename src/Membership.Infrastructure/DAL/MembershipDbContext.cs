@@ -1,7 +1,6 @@
 ﻿using Membership.Core.Entities.Commons;
-using Membership.Core.Entities.Memberships;
 using Membership.Core.Entities.Memberships.Members;
-using Membership.Core.Entities.Memberships.MembershipPeriod;
+using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.Entities.Memberships.Qualifications;
 using Membership.Core.Entities.Nationalities;
