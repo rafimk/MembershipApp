@@ -1,6 +1,6 @@
 namespace Membership.Core.Consts;
 
-public enum FileAttachmentType
+public enum FileType
 {
     Photo = 0,
     EmiratesIdFront  = 1,

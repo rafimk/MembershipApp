@@ -31,6 +31,7 @@ public record CreateMemberContract()
     public GenericId MandalamId { get; set; } 
     public bool IsMemberOfAnyIndianRegisteredOrganization { get; set; }
     public bool IsKMCCWelfareScheme { get; set; }
+    public MemberStatus Status {get; set;}
     public DateTime CreatedAt { get; set; } 
     public GenericId CreatedBy { get; set; }
 }

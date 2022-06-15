@@ -40,7 +40,8 @@ public class Member
     public Mandalam Mandalam { get; private set; }
     public bool IsMemberOfAnyIndianRegisteredOrganization { get; private set; }
     public bool IsKMCCWelfareScheme { get; private set; }
-    public double CollectedAmount { get; set; }
+    public double CollectedAmount { get; private set; }
+    public MemberStatus Status {get; private set;}
     public DateTime CreatedAt { get; private set; }
     public GenericId CreatedBy { get; private set; }
     public bool IsActive { get; private set; }
