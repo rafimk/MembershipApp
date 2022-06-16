@@ -6,4 +6,5 @@ public record CreateState() : ICommand
 {
     public Guid? Id { get; set; }
     public string Name{ get; set; }
+    public string Prefix { get; set; }
 }

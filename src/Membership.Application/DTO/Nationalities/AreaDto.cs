@@ -8,6 +8,5 @@ public class AreaDto
     public string Name { get; set; }
     public GenericId StateId { get; set; }
     public StateDto State { get; set; }
-    public string Prefix { get; set; }
     public DateTime CreatedAt { get; set; }
 }

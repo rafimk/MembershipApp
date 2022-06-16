@@ -5,13 +5,15 @@ public class State
 {
     public GenericId Id { get; private set; }
     public StateName Name { get; private set; }
+    public string Prefix { get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private State(GenericId id, StateName name, bool isDeleted, DateTime createdAt)
+    private State(GenericId id, StateName name, string prefix, bool isDeleted, DateTime createdAt)
     {
         Id = id;
         Name = name;
+        Prefix = prefix;
         IsDeleted = isDeleted;
         CreatedAt = createdAt;
     }

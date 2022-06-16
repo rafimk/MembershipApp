@@ -34,13 +34,6 @@ internal sealed class GetLookupsHandler : IQueryHandler<GetLookups, LookupsDto>
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();
-
-        var panchayats = await _dbContext.Panchayats
-            .Include(x => x.Mandalam)
-            .Where(x => !x.IsDelete)
-            .AsNoTracking()
-            .Select(x => x.AsDto())
-            .ToListAsync();
         
         var states = await states = _dbContext.States
             .Where(x => !x.IsDelete)
@@ -63,7 +56,6 @@ internal sealed class GetLookupsHandler : IQueryHandler<GetLookups, LookupsDto>
             Areas = areas,
             Districts = districts,
             Mandalams = mandalams,
-            Panchayats= panchayats,
             States = states,
             Professions = professions,
             Qualifications = qualifications,

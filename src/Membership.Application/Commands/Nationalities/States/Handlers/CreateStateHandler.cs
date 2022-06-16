@@ -13,7 +13,7 @@ internal sealed class CreateStateHandler : ICommandHandler<CreateState>
 
     public async Task HandleAsync(CreateState command)
     {
-        var state = State.Create(Guid.NewGuid(), command.Name, DateTime.UtcNow);
+        var state = State.Create(Guid.NewGuid(), command.Name, command.Prefix, DateTime.UtcNow);
         await _repository.AddAsync(state);
     }
 }
