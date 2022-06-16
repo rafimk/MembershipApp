@@ -15,6 +15,7 @@ internal sealed class GetPanchayatsHandler : IQueryHandler<GetPanchayats, IEnume
     public async Task<IEnumerable<PanchayatDto>> HandleAsync(GetPanchayats query)
         => await _dbContext.Panchayats
             .Include(x => x.Mandalam)
+            .Where(x => !x.IsDelete)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

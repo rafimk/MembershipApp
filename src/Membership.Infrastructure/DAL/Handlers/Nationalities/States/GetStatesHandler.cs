@@ -15,6 +15,7 @@ internal sealed class GetStatesHandler : IQueryHandler<GetStates, IEnumerable<St
 
     public async Task<IEnumerable<StateDto>> HandleAsync(GetStates query)
         => await _dbContext.States
+            .Where(x => !x.IsDelete)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

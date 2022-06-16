@@ -15,6 +15,7 @@ internal sealed class GetMandalamsHandler : IQueryHandler<GetMandalams, IEnumera
     public async Task<IEnumerable<MandalamDto>> HandleAsync(GetMandalams query)
         => await _dbContext.Mandalams
             .Include(x => x.District)
+            .Where(x => !x.IsDelete)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

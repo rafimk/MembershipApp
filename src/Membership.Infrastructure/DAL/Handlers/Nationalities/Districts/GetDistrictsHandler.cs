@@ -14,6 +14,7 @@ internal sealed class GetDistrictsHandler : IQueryHandler<GetDistricts, IEnumera
 
     public async Task<IEnumerable<DistrictDto>> HandleAsync(GetDistricts query)
         => await _dbContext.Districts
+            .Where(x => !x.IsDelete)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

@@ -78,4 +78,33 @@ public static class Extensions
             CascadeId = entity.CascadeId,
             VerifiedAt = entity.VerifiedAt
         };
+
+     public static QualificationDto AsDto(this Qualification entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            Name = entity.Name,
+            CreatedAt = entity.CreatedAt
+        };
+
+    public static ProfessionDto AsDto(this Profession entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            Name = entity.Name,
+            CreatedAt = entity.CreatedAt
+        };
+    }
+
+    public static MembershipPeriodDto AsDto(this MembershipPeriod entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            Start = entity.Start,
+            End = entity.End,
+            RegistrationUntil = entity.RegistrationUntil,
+            IsActive = entity.IsActive,
+            CreatedAt = entity.CreatedAt
+        };
+    }
 }
