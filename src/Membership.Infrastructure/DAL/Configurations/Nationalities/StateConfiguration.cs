@@ -16,6 +16,8 @@ internal sealed class StateConfiguration : IEntityTypeConfiguration<State>
             .HasConversion(x => x.Value, x => new StateName(x))
             .IsRequired()
             .HasMaxLength(100);
+        builder.Property(x => x.Prefix)
+            .HasMaxLength(5);
         builder.Property(x => x.CreatedAt).IsRequired();
     }
 }

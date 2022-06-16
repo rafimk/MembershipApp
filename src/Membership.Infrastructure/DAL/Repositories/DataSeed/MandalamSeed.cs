@@ -1,10 +1,12 @@
 
-namespace Membership.Infrastructure.DAL;
-public static MandalamSeed()
+using Membership.Core.Entities.Nationalities;
+
+namespace Membership.Infrastructure.DAL.Repositories.DataSeed;
+public static class MandalamSeed
 {
     public static List<Mandalam> Get()
     {
-        var panchayaths = new List<Panchayath>            
+        var panchayaths = new List<Panchayath>
         {                
             Panchayath.Create(Guid.Parse("4E14AC81-5462-4C3C-AFE8-001AF60182C9"), "CHELORA",Guid.Parse("0D0718BE-E5B8-4432-8DF5-09A42B269E53", _clock.Current()),
             Panchayath.Create(Guid.Parse("913D0EBB-FF06-4F5D-8C70-0023CD935895"), "THANNITHODE",Guid.Parse("A0990F64-A8FC-4FFB-8E01-EE301C96309E", _clock.Current()),

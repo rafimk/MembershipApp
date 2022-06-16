@@ -1,5 +1,7 @@
 using Membership.Application.Abstractions;
+using Membership.Application.DTO.Commons;
 using Membership.Application.DTO.Nationalities;
+using Membership.Application.Queries.Commons;
 using Membership.Application.Queries.Nationalities;
 using Membership.Application.Queries.Nationalities.Areas;
 using Microsoft.EntityFrameworkCore;
@@ -17,45 +19,39 @@ internal sealed class GetLookupsHandler : IQueryHandler<GetLookups, LookupsDto>
     {
         var areas = await _dbContext.Areas
             .Include(x => x.State)
-            .Where(x => !x.IsDelete)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();
 
         var districts = await _dbContext.Districts
-            .Where(x => !x.IsDelete)
+            .AsNoTracking()
+            .Select(x => x.AsDto())
+            .ToListAsync();
+       
+        var states = await  _dbContext.States
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();
         
-        var mandalams = await _dbContext.Mandalams
-            .Include(x => x.District)
-            .Where(x => !x.IsDelete)
-            .AsNoTracking()
-            .Select(x => x.AsDto())
-            .ToListAsync();
-        
-        var states = await states = _dbContext.States
-            .Where(x => !x.IsDelete)
+        var professions = await _dbContext.Professions
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();
         
         var qualifications = await _dbContext.Qualifications
-            .Where(x => !x.IsDelete)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();
 
-         var membershipPeriod = await _dbContext.MembershipPeriodd
+        var membershipPeriod = await _dbContext.MembershipPeriods
             .AsNoTracking()
-            .FirstAsync(x => x.IsActive).AsDto();
+            .Select(x => x.AsDto())
+            .FirstAsync(x => x.IsActive);
         
         var lookupsDto = new LookupsDto
         {
             Areas = areas,
             Districts = districts,
-            Mandalams = mandalams,
             States = states,
             Professions = professions,
             Qualifications = qualifications,

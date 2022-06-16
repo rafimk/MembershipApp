@@ -1,4 +1,5 @@
 using Membership.Application.Abstractions;
+using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.Queries.Memberships;
 using Membership.Application.Queries.Memberships.Professions;
@@ -16,7 +17,7 @@ internal sealed class GetProfessionByIdHandler : IQueryHandler<GetProfessionById
     
     public async Task<ProfessionDto> HandleAsync(GetProfessionById query)
     {
-        var professionId = new GenericId(query.professionId);
+        var professionId = new GenericId(query.ProfessionId);
         var profession = await _dbContext.Professions
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == professionId);

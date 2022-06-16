@@ -3,7 +3,7 @@ using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.MembershipPeriods;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Membership.MembershipPeriods;
+namespace Membership.Infrastructure.DAL.Handlers.Memberships.MembershipPeriods;
 
 internal sealed class GetMembershipPeriodsHandler : IQueryHandler<GetMembershipPeriods, IEnumerable<MembershipPeriodDto>>
 {
@@ -14,7 +14,7 @@ internal sealed class GetMembershipPeriodsHandler : IQueryHandler<GetMembershipP
 
     public async Task<IEnumerable<MembershipPeriodDto>> HandleAsync(GetMembershipPeriods query)
         => await _dbContext.MembershipPeriods
-            .Where(x => !x.IsDelete)
+            .Where(x => x.IsActive)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

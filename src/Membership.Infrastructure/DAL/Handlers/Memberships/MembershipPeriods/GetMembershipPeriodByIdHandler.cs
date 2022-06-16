@@ -1,11 +1,10 @@
 using Membership.Application.Abstractions;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Memberships;
+using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.MembershipPeriods;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Memberships.MembershipPeriod;
+namespace Membership.Infrastructure.DAL.Handlers.Memberships.MembershipPeriods;
 
 internal sealed class GetMembershipPeriodByIdHandler : IQueryHandler<GetMembershipPeriodById, MembershipPeriodDto>
 {
@@ -17,7 +16,7 @@ internal sealed class GetMembershipPeriodByIdHandler : IQueryHandler<GetMembersh
     public async Task<MembershipPeriodDto> HandleAsync(GetMembershipPeriodById query)
     {
         var membershipPeriodId = new GenericId(query.MembershipPeriodId);
-        var membershipPeriod = await _dbContext.MembershipPeriodd
+        var membershipPeriod = await _dbContext.MembershipPeriods
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == membershipPeriodId);
 

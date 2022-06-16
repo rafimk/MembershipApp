@@ -20,7 +20,7 @@ internal sealed class UpdatePanchayatHandler : ICommandHandler<UpdatePanchayat>
         {
             throw new DistrictNotFoundException(command.PanchayatId);
         }
-        mandalam.Update(command.Name, command.MandalamId, (PanchayatType)command.Type);
+        mandalam.Update(command.Name, command.MandalamId);
         await _repository.UpdateAsync(mandalam);
     }
 }

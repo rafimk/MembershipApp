@@ -16,7 +16,6 @@ internal sealed class GetAreasHandler : IQueryHandler<GetAreas, IEnumerable<Area
     public async Task<IEnumerable<AreaDto>> HandleAsync(GetAreas query)
         => await _dbContext.Areas
             .Include(x => x.State)
-            .Where(x => !x.IsDelete)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

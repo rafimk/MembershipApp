@@ -5,5 +5,5 @@ namespace Membership.Application.Queries.Memberships.Professions;
 
 public class GetProfessionById : IQuery<ProfessionDto>
 {
-    public Guid ProfessionsId { get; set; }
+    public Guid ProfessionId { get; set; }
 }

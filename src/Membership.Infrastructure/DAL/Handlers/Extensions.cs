@@ -1,5 +1,9 @@
-﻿using Membership.Application.DTO.Nationalities;
+﻿using Membership.Application.DTO.Memberships;
+using Membership.Application.DTO.Nationalities;
 using Membership.Application.DTO.Users;
+using Membership.Core.Entities.Memberships.MembershipPeriods;
+using Membership.Core.Entities.Memberships.Professions;
+using Membership.Core.Entities.Memberships.Qualifications;
 using Membership.Core.Entities.Nationalities;
 using Membership.Core.Entities.Users;
 
@@ -94,7 +98,7 @@ public static class Extensions
             Name = entity.Name,
             CreatedAt = entity.CreatedAt
         };
-    }
+    
 
     public static MembershipPeriodDto AsDto(this MembershipPeriod entity)
         => new()
@@ -107,4 +111,3 @@ public static class Extensions
             CreatedAt = entity.CreatedAt
         };
     }
-}

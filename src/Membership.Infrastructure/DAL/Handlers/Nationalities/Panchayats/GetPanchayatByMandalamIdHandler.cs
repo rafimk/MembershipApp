@@ -18,7 +18,7 @@ internal sealed class GetPanchayatByMandalamIdHandler : IQueryHandler<GetPanchay
         var mandalamId = new GenericId(query.MandalamId);
         return await _dbContext.Panchayats
             .AsNoTracking()
-            .Where(x => x.MandalamId == mandalamId && !x.IsDelete)
+            .Where(x => x.MandalamId == mandalamId)
             .Select(x => x.AsDto())
             .ToListAsync();;
     }

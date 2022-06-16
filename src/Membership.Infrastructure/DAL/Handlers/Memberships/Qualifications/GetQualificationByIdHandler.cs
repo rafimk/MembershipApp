@@ -1,10 +1,10 @@
 using Membership.Application.Abstractions;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Membership.Qualifications;
+using Membership.Application.DTO.Memberships;
+using Membership.Application.Queries.Memberships.Qualifications;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Membership.Qualifications;
+namespace Membership.Infrastructure.DAL.Handlers.Memberships.Qualifications;
 
 internal sealed class GetQualificationByIdHandler : IQueryHandler<GetQualificationById, QualificationDto>
 {

@@ -22,8 +22,8 @@ public class State
     {
     }
 
-    public static State Create(GenericId id, StateName name, DateTime createdAt)
-        => new(id, name, false, createdAt);
+    public static State Create(GenericId id, StateName name, string prefix, DateTime createdAt)
+        => new(id, name, prefix, false, createdAt);
     
     public void Update(StateName name)
     {

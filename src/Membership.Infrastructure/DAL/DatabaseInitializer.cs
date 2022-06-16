@@ -1,5 +1,6 @@
 ﻿using Membership.Core.Abstractions;
 using Membership.Core.Entities.Nationalities;
+using Membership.Infrastructure.DAL.Repositories.DataSeed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +25,7 @@ internal sealed class DatabaseInitializer : IHostedService
         var dbContext = scope.ServiceProvider.GetRequiredService<MembershipDbContext>();
         await dbContext.Database.MigrateAsync(cancellationToken);
 
-        if (await !dbContext.States.AnyAsync(cancellationToken))
+        if (await dbContext.States.AnyAsync(cancellationToken))
         {
             var states = new List<State>
             {
@@ -41,7 +42,7 @@ internal sealed class DatabaseInitializer : IHostedService
             await dbContext.States.AddRangeAsync(states, cancellationToken);
         }
 
-        if (await !dbContext.Areas.AnyAsync(cancellationToken))
+        if (await dbContext.Areas.AnyAsync(cancellationToken))
         {
             var areas = new List<Area>
             {

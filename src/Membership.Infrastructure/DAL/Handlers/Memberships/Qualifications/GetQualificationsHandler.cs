@@ -1,4 +1,5 @@
 using Membership.Application.Abstractions;
+using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.Queries.Memberships;
 using Membership.Application.Queries.Memberships.Qualifications;
@@ -15,7 +16,7 @@ internal sealed class GetQualificationsHandler : IQueryHandler<GetQualifications
 
     public async Task<IEnumerable<QualificationDto>> HandleAsync(GetQualifications query)
         => await _dbContext.Qualifications
-            .Where(x => !x.IsDelete)
+            .Where(x => !x.IsDeleted)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

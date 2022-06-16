@@ -19,8 +19,6 @@ internal sealed class AreaConfiguration : IEntityTypeConfiguration<Area>
         builder.Property(x => x.StateId)
             .HasConversion(x => x.Value, x => new GenericId(x))
             .IsRequired();
-        builder.Property(x => x.Prefix)
-            .HasMaxLength(5);
         builder.Property(x => x.CreatedAt).IsRequired();
     }
 }

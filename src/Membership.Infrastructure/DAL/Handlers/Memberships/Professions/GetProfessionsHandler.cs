@@ -1,9 +1,9 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
-using Membership.Application.Queries.Memberships.Profession;
+using Membership.Application.Queries.Memberships.Professions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Membership.Qualifications;
+namespace Membership.Infrastructure.DAL.Handlers.Memberships.Professions;
 
 internal sealed class GetProfessionsHandler : IQueryHandler<GetProfessions, IEnumerable<ProfessionDto>>
 {
@@ -14,7 +14,7 @@ internal sealed class GetProfessionsHandler : IQueryHandler<GetProfessions, IEnu
 
     public async Task<IEnumerable<ProfessionDto>> HandleAsync(GetProfessions query)
         => await _dbContext.Professions
-            .Where(x => !x.IsDelete)
+            .Where(x => !x.IsDeleted)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

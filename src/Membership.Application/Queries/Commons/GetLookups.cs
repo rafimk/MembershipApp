@@ -1,5 +1,5 @@
 using Membership.Application.Abstractions;
-using Membership.Application.DTO.Memberships;
+using Membership.Application.DTO.Commons;
 
 namespace Membership.Application.Queries.Commons;
 
