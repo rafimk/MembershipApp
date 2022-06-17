@@ -14,7 +14,7 @@ internal sealed class CreateDistrictHandler : ICommandHandler<CreateDistrict>
 
     public async Task HandleAsync(CreateDistrict command)
     {
-        var district = District.Create(Guid.NewGuid(), command.Name, DateTime.UtcNow);
+        var district = District.Create(command.DistrictId, command.Name, DateTime.UtcNow);
         await _repository.AddAsync(district);
     }
 }

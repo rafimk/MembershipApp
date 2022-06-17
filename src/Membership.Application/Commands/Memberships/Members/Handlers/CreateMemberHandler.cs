@@ -17,7 +17,7 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
     {
         var membership = Member.Create(new CreateMemberContract
         {
-            Id = Guid.NewGuid(),
+            Id = command.Id,
             MembershipId = "command.MembershipId",
             FullName = command.FullName,
             EmiratesIdNumber = command.EmiratesIdNumber,

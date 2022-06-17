@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
-using Membership.Application.Commands.Nationalities.States;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.Commands.Memberships.Qualifications;
+using Membership.Application.DTO.Memberships;
+using Membership.Application.Queries.Memberships.Qualifications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Membership.Api.Controllers;
+namespace Membership.Api.Controllers.Memberships;
 
 [ApiController]
 [Route("[controller]")]
@@ -18,14 +18,14 @@ public class QualificationsController : ControllerBase
     private readonly ICommandHandler<CreateQualification> _createQualificationHandler;
     private readonly ICommandHandler<UpdateQualification> _updateQualificationHaneHandler;
     private readonly ICommandHandler<DeleteQualification> _deleteQualificationHaneHandler;
-    private readonly IQueryHandler<GetQualificationById, QualificationtDto> _getQualificationByIdHandler;
-    private readonly IQueryHandler<GetQualifications, IEnumerable<QualificationtDto>> _getQualificationsdHandler;
+    private readonly IQueryHandler<GetQualificationById, QualificationDto> _getQualificationByIdHandler;
+    private readonly IQueryHandler<GetQualifications, IEnumerable<QualificationDto>> _getQualificationsdHandler;
 
     public QualificationsController(ICommandHandler<CreateQualification> createQualificationHandler,
         ICommandHandler<UpdateQualification> updateQualificationHaneHandler,
         ICommandHandler<DeleteQualification> deleteQualificationHaneHandler,
-        IQueryHandler<GetQualificationById, QualificationtDto> getQualificationByIdHandler,
-        IQueryHandler<GetQualifications, IEnumerable<DistrictDto>> getQualificationsdHandler)
+        IQueryHandler<GetQualificationById, QualificationDto> getQualificationByIdHandler,
+        IQueryHandler<GetQualifications, IEnumerable<QualificationDto>> getQualificationsdHandler)
     {
         _createQualificationHandler = createQualificationHandler;
         _updateQualificationHaneHandler = updateQualificationHaneHandler;
@@ -37,30 +37,30 @@ public class QualificationsController : ControllerBase
     [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<DistrictDto>>> Get()
+    public async Task<ActionResult<IEnumerable<QualificationDto>>> Get()
     {
-        var Qualifications = await _getQualificationsdHandler.HandleAsync(new GetDistricts { });
+        var qualifications = await _getQualificationsdHandler.HandleAsync(new GetQualifications { });
         
-        if (Qualifications is null)
+        if (qualifications is null)
         {
             return NotFound();
         }
 
-        return Ok(Qualifications);
+        return Ok(qualifications);
     }
     
-    [HttpGet("{QualificationId:guid}")]
+    [HttpGet("{qualificationId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<DistrictDto>> Get(Guid QualificationId)
+    public async Task<ActionResult<QualificationDto>> Get(Guid qualificationId)
     {
-        var Qualification = await _getQualificationByIdHandler.HandleAsync(new GetQualificationById { QualificationId = QualificationId});
-        if (Qualification is null)
+        var qualification = await _getQualificationByIdHandler.HandleAsync(new GetQualificationById { QualificationId = qualificationId});
+        if (qualification is null)
         {
             return NotFound();
         }
 
-        return Qualification;
+        return qualification;
     }
 
     [HttpPost]
@@ -69,23 +69,22 @@ public class QualificationsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post(CreateQualification command)
     {
-        command = command with {Id = Guid.NewGuid()};
+        command = command with {QualificationId = Guid.NewGuid()};
         await _createQualificationHandler.HandleAsync(command);
-        var route = "Get";
-        return CreatedAtAction(route, new {command.Id}, null);
+        return CreatedAtAction(nameof(Get), command, null);
     }
     
-    [HttpPut("{QualificationId:guid}")]
-    public async Task<ActionResult> Put(Guid QualificationId, UpdateQualification command)
+    [HttpPut("{qualificationId:guid}")]
+    public async Task<ActionResult> Put(Guid qualificationId, UpdateQualification command)
     {
-        await _updateQualificationHaneHandler.HandleAsync(command with {QualificationId = QualificationId});
+        await _updateQualificationHaneHandler.HandleAsync(command with {QualificationId = qualificationId});
         return NoContent();
     }
     
-    [HttpDelete("{QualificationId:guid}")]
-    public async Task<ActionResult> Delete(Guid QualificationId)
+    [HttpDelete("{qualificationId:guid}")]
+    public async Task<ActionResult> Delete(Guid qualificationId)
     {
-        await _deleteQualificationHaneHandler.HandleAsync( new DeleteQualification {QualificationId = QualificationId});
+        await _deleteQualificationHaneHandler.HandleAsync( new DeleteQualification {QualificationId = qualificationId});
         return NoContent();
     }
 }

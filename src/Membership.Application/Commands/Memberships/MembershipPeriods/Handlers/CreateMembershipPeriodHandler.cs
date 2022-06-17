@@ -14,7 +14,7 @@ internal sealed class CreateMembershipPeriodHandler : ICommandHandler<CreateMemb
 
     public async Task HandleAsync(CreateMembershipPeriod command)
     {
-        var membershipPeriod = MembershipPeriod.Create(Guid.NewGuid(), (Date)command.Start , (Date)command.End, command.RegistrationUntil, DateTime.UtcNow);
+        var membershipPeriod = MembershipPeriod.Create(command.MembershipPeriodId, (Date)command.Start , (Date)command.End, command.RegistrationUntil, DateTime.UtcNow);
         await _repository.AddAsync(membershipPeriod);
     }
 }

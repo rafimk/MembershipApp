@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
-using Membership.Application.Commands.Nationalities.States;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.DTO.Commons;
+using Membership.Application.Queries.Commons;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
-namespace Membership.Api.Controllers;
+namespace Membership.Api.Controllers.Commons;
 
 [ApiController]
 [Route("[controller]")]
@@ -19,7 +15,7 @@ public class LookupsController : ControllerBase
 
     public LookupsController(IQueryHandler<GetLookups, LookupsDto> getLookupsHandler)
     {
-        _getLookupsHandler = _getLookupsHandler;
+        _getLookupsHandler = getLookupsHandler;
     }
     
     [HttpGet()]

@@ -2,4 +2,7 @@
 
 namespace Membership.Application.Commands.Memberships.Members;
 
-public record DeactivateMember(Guid MemberId): ICommand;
+public record DeactivateMember(): ICommand
+{
+    public Guid MemberId { get; set;}
+}

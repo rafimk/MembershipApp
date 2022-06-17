@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
-using Membership.Application.Commands.Nationalities.States;
+using Membership.Application.Commands.Nationalities.Districts;
 using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.Queries.Nationalities.Districts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Membership.Api.Controllers;
+namespace Membership.Api.Controllers.Nationalities;
 
 [ApiController]
 [Route("[controller]")]
@@ -39,14 +39,14 @@ public class DistrictsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<DistrictDto>>> Get()
     {
-        var states = await _getDistrictsdHandler.HandleAsync(new GetDistricts { });
+        var districts = await _getDistrictsdHandler.HandleAsync(new GetDistricts { });
         
-        if (states is null)
+        if (districts is null)
         {
             return NotFound();
         }
 
-        return Ok(states);
+        return Ok(districts);
     }
     
     [HttpGet("{districtId:guid}")]
@@ -54,31 +54,30 @@ public class DistrictsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<DistrictDto>> Get(Guid districtId)
     {
-        var state = await _getDistrictByIdHandler.HandleAsync(new GetDistrictById { DistrictId = districtId});
-        if (state is null)
+        var districts = await _getDistrictByIdHandler.HandleAsync(new GetDistrictById { DistrictId = districtId});
+        if (districts is null)
         {
             return NotFound();
         }
 
-        return state;
+        return districts;
     }
 
     [HttpPost]
-    [SwaggerOperation("Create distric")]
+    [SwaggerOperation("Create district")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post(CreateDistrict command)
     {
-        command = command with {Id = Guid.NewGuid()};
+        command = command with {DistrictId = Guid.NewGuid()};
         await _createDistrictHandler.HandleAsync(command);
-        var route = "Get";
-        return CreatedAtAction(route, new {command.Id}, null);
+        return CreatedAtAction(nameof(Get), command, null);
     }
     
     [HttpPut("{districtId:guid}")]
     public async Task<ActionResult> Put(Guid districtId, UpdateDistrict command)
     {
-        await _updateStateHaneHandler.HandleAsync(command with {DistrictId = districtId});
+        await _updateDistrictHaneHandler.HandleAsync(command with {DistrictId = districtId});
         return NoContent();
     }
     

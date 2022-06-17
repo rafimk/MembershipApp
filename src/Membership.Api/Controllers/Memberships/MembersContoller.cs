@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
-using Membership.Application.Commands.Nationalities.States;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.Commands.Memberships.Members;
+using Membership.Application.DTO.Memberships;
+using Membership.Application.Queries.Memberships.Members;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Membership.Api.Controllers;
+namespace Membership.Api.Controllers.Memberships;
 
 [ApiController]
 [Route("[controller]")]
@@ -17,75 +16,78 @@ public class MembersController : ControllerBase
 {
     private readonly ICommandHandler<CreateMember> _createMemberHandler;
     private readonly ICommandHandler<UpdateMember> _updateMemberHaneHandler;
-    private readonly ICommandHandler<DeleteMember> _deleteMemberHaneHandler;
-    private readonly IQueryHandler<GetMemberById, MembertDto> _getMemberByIdHandler;
-    private readonly IQueryHandler<GetMembers, IEnumerable<MembertDto>> _getMembersdHandler;
+    private readonly ICommandHandler<ActivateMember> _activateMemberHaneHandler;
+    private readonly ICommandHandler<DeactivateMember> _deactivateMemberHaneHandler;
+    private readonly ICommandHandler<DisputedMember> _disputedMemberHaneHandler;
+    private readonly IQueryHandler<GetMemberById, MemberDto> _getMemberByIdHandler;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
         ICommandHandler<UpdateMember> updateMemberHaneHandler,
-        ICommandHandler<DeleteMember> deleteMemberHaneHandler,
-        IQueryHandler<GetMemberById, MembertDto> getMemberByIdHandler,
-        IQueryHandler<GetMembers, IEnumerable<DistrictDto>> getMembersdHandler)
+        ICommandHandler<ActivateMember> activateMemberHaneHandler,
+        ICommandHandler<DeactivateMember> deactivateMemberHaneHandler,
+        ICommandHandler<DisputedMember> disputedMemberHaneHandler,
+        IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler)
     {
         _createMemberHandler = createMemberHandler;
         _updateMemberHaneHandler = updateMemberHaneHandler;
-        _deleteMemberHaneHandler = deleteMemberHaneHandler;
+        _activateMemberHaneHandler = activateMemberHaneHandler;
+        _deactivateMemberHaneHandler = deactivateMemberHaneHandler;
+        _disputedMemberHaneHandler = disputedMemberHaneHandler;
         _getMemberByIdHandler = getMemberByIdHandler;
-        _getMembersdHandler = getMembersdHandler;
     }
     
-    [HttpGet()]
+    [HttpGet("{memberId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<DistrictDto>>> Get()
+    public async Task<ActionResult<MemberDto>> Get(Guid memberId)
     {
-        var Members = await _getMembersdHandler.HandleAsync(new GetDistricts { });
+        var member = await _getMemberByIdHandler.HandleAsync(new GetMemberById { MemberId = memberId});
         
-        if (Members is null)
+        if (member is null)
         {
             return NotFound();
         }
 
-        return Ok(Members);
-    }
-    
-    [HttpGet("{MemberId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<DistrictDto>> Get(Guid MemberId)
-    {
-        var Member= await _getMemberByIdHandler.HandleAsync(new GetMemberById { MemberId = MemberId});
-        if (Memberis null)
-        {
-            return NotFound();
-        }
-
-        return Member;
+        return member;
     }
 
     [HttpPost]
     [SwaggerOperation("Create Member")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Post(CreateMembercommand)
+    public async Task<ActionResult> Post(CreateMember command)
     {
-        command = command with {Id = Guid.NewGuid()};
+        command = command with {Id =  Guid.NewGuid()};
         await _createMemberHandler.HandleAsync(command);
-        var route = "Get";
-        return CreatedAtAction(route, new {command.Id}, null);
+        return CreatedAtAction(nameof(Get), command, null);
     }
     
-    [HttpPut("{MemberId:guid}")]
-    public async Task<ActionResult> Put(Guid MemberId, UpdateMembercommand)
+    [HttpPut("{memberId:guid}")]
+    public async Task<ActionResult> Put(Guid memberId, UpdateMember command)
     {
-        await _updateMemberHaneHandler.HandleAsync(command with {MemberId = MemberId});
+        await _updateMemberHaneHandler.HandleAsync(command with {Id = memberId});
         return NoContent();
     }
     
-    [HttpDelete("{MemberId:guid}")]
-    public async Task<ActionResult> Delete(Guid MemberId)
+    [HttpPut("activate/{memberId:guid}")]
+    public async Task<ActionResult> Activate(Guid memberId)
     {
-        await _deleteMemberHaneHandler.HandleAsync( new DeleteMember{MemberId = MemberId});
+        var command = new ActivateMember
+        {
+            MemberId = memberId
+        };
+        await _activateMemberHaneHandler.HandleAsync( new ActivateMember { MemberId = memberId});
+        return NoContent();
+    }
+    
+    [HttpPut("deactivate/{memberId:guid}")]
+    public async Task<ActionResult> Deactivate(Guid memberId)
+    {
+        var command = new ActivateMember
+        {
+            MemberId = memberId
+        };
+        await _deactivateMemberHaneHandler.HandleAsync( new DeactivateMember { MemberId = memberId});
         return NoContent();
     }
 }

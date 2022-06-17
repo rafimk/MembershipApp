@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
-using Membership.Application.Commands.Nationalities.States;
+using Membership.Application.Commands.Nationalities.Panchayats;
 using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.Queries.Nationalities.Panchayats;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Membership.Api.Controllers;
+namespace Membership.Api.Controllers.Nationalities;
 
 [ApiController]
 [Route("[controller]")]
@@ -34,7 +34,7 @@ public class PanchayatsController : ControllerBase
         _deletePanchayatHaneHandler = deletePanchayatHaneHandler;
         _getPanchayatByIdHandler = getPanchayatByIdHandler;
         _getPanchayatByMandalamIdHandler = getPanchayatByMandalamIdHandler;
-        _getPanchayatsdHandler = getPanchayatsdHandler;
+        _getPanchayatsHandler = getPanchayatsdHandler;
     }
     
     [HttpGet()]
@@ -42,14 +42,14 @@ public class PanchayatsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<PanchayatDto>>> Get()
     {
-        var Panchayats = await _getPanchayatsHandler.HandleAsync(new GetPanchayats { });
+        var panchayats = await _getPanchayatsHandler.HandleAsync(new GetPanchayats { });
         
-        if (Panchayats is null)
+        if (panchayats is null)
         {
             return NotFound();
         }
 
-        return Ok(Panchayats);
+        return Ok(panchayats);
     }
     
     [HttpGet("{panchayatId:guid}")]
@@ -57,7 +57,7 @@ public class PanchayatsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PanchayatDto>> Get(Guid panchayatId)
     {
-        var panchayat = await _deletePanchayatHaneHandler.HandleAsync(new GetPanchayatById { PanchayatId = panchayatId});
+        var panchayat = await _getPanchayatByIdHandler.HandleAsync(new GetPanchayatById { PanchayatId = panchayatId});
         if (panchayat is null)
         {
             return NotFound();
@@ -66,7 +66,7 @@ public class PanchayatsController : ControllerBase
         return panchayat;
     }
 
-    [HttpGet("{mandalamId:guid}")]
+    [HttpGet("mandalam/{mandalamId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<PanchayatDto>>> ByMandalamId(Guid mandalamId)
@@ -77,7 +77,7 @@ public class PanchayatsController : ControllerBase
             return NotFound();
         }
 
-        return panchayats;
+        return Ok(panchayats);
     }
 
     [HttpPost]
@@ -86,10 +86,9 @@ public class PanchayatsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post(CreatePanchayat command)
     {
-        command = command with {Id = Guid.NewGuid()};
+        command = command with {PanchayatId = Guid.NewGuid()};
         await _createPanchayatHandler.HandleAsync(command);
-        var route = "Get";
-        return CreatedAtAction(route, new {command.Id}, null);
+        return CreatedAtAction(nameof(Get), command, null);
     }
     
     [HttpPut("{panchayatId:guid}")]

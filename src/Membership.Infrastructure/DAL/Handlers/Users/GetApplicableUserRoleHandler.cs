@@ -1,9 +1,7 @@
 using Membership.Application.Abstractions;
-using Membership.Application.DTO.Users;
 using Membership.Application.Queries.Users;
 using Membership.Core.Policies.Users;
 using Membership.Core.ValueObjects;
-using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Users;
 
@@ -16,12 +14,12 @@ internal sealed class GetApplicableUserRoleHandler : IQueryHandler<GetApplicable
     
     public async Task<IEnumerable<string>> HandleAsync(GetApplicableUserRole query)
     {
-        var currentUserRole = userRole;
-        if (!_userCreatePolicy.CanBeAppliedcurrentUserRole)
+        var currentUserRole = UserRole.CentralCommitteeAdmin();
+        if (!_userCreatePolicy.CanBeApplied(currentUserRole))
         {
             return null;
         }
 
-        return _userCreatePolicy.PermittedUserRole(currentUserRole);
+        return _userCreatePolicy.PermittedUserRole(currentUserRole).Select(x => x.ToString());
     }
 }

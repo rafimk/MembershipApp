@@ -13,7 +13,7 @@ internal sealed class CreateAreaHandler : ICommandHandler<CreateArea>
 
     public async Task HandleAsync(CreateArea command)
     {
-        var area = Area.Create(Guid.NewGuid(), command.Name, command.StateId, DateTime.UtcNow);
+        var area = Area.Create(command.AreaId, command.Name, command.StateId, DateTime.UtcNow);
         await _repository.AddAsync(area);
     }
 }

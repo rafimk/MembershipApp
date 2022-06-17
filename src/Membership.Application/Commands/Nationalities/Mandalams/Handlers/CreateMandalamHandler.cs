@@ -13,7 +13,7 @@ internal sealed class CreateMandalamHandler : ICommandHandler<CreateMandalam>
 
     public async Task HandleAsync(CreateMandalam command)
     {
-        var mandalam = Mandalam.Create(Guid.NewGuid(), command.Name, command.DistrictId, DateTime.UtcNow);
+        var mandalam = Mandalam.Create(command.MandalamId, command.Name, command.DistrictId, DateTime.UtcNow);
         await _repository.AddAsync(mandalam);
     }
 }

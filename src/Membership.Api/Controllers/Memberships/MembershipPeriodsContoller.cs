@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
-using Membership.Application.Commands.Nationalities.States;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.Commands.Memberships.MembershipPeriods;
+using Membership.Application.DTO.Memberships;
+using Membership.Application.Queries.Memberships.MembershipPeriods;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Membership.Api.Controllers;
+namespace Membership.Api.Controllers.Memberships;
 
 [ApiController]
 [Route("[controller]")]
@@ -17,19 +17,19 @@ public class MembershipPeriodsController : ControllerBase
 {
     private readonly ICommandHandler<CreateMembershipPeriod> _createMembershipPeriodHandler;
     private readonly ICommandHandler<UpdateMembershipPeriod> _updateMembershipPeriodHaneHandler;
-    private readonly ICommandHandler<DeleteMembershipPeriod> _deleteMembershipPeriodHaneHandler;
-    private readonly IQueryHandler<GetMembershipPeriodById, MembershipPeriodtDto> _getMembershipPeriodByIdHandler;
-    private readonly IQueryHandler<GetMembershipPeriods, IEnumerable<MembershipPeriodtDto>> _getMembershipPeriodsdHandler;
+    private readonly ICommandHandler<DeactivateMembershipPeriod> _deactivateMembershipPeriodHaneHandler;
+    private readonly IQueryHandler<GetMembershipPeriodById, MembershipPeriodDto> _getMembershipPeriodByIdHandler;
+    private readonly IQueryHandler<GetMembershipPeriods, IEnumerable<MembershipPeriodDto>> _getMembershipPeriodsdHandler;
 
     public MembershipPeriodsController(ICommandHandler<CreateMembershipPeriod> createMembershipPeriodHandler,
         ICommandHandler<UpdateMembershipPeriod> updateMembershipPeriodHaneHandler,
-        ICommandHandler<DeleteMembershipPeriod> deleteMembershipPeriodHaneHandler,
-        IQueryHandler<GetMembershipPeriodById, MembershipPeriodtDto> getMembershipPeriodByIdHandler,
-        IQueryHandler<GetMembershipPeriods, IEnumerable<DistrictDto>> getMembershipPeriodsdHandler)
+        ICommandHandler<DeactivateMembershipPeriod> deactivateMembershipPeriodHaneHandler,
+        IQueryHandler<GetMembershipPeriodById, MembershipPeriodDto> getMembershipPeriodByIdHandler,
+        IQueryHandler<GetMembershipPeriods, IEnumerable<MembershipPeriodDto>> getMembershipPeriodsdHandler)
     {
         _createMembershipPeriodHandler = createMembershipPeriodHandler;
         _updateMembershipPeriodHaneHandler = updateMembershipPeriodHaneHandler;
-        _deleteMembershipPeriodHaneHandler = deleteMembershipPeriodHaneHandler;
+        _deactivateMembershipPeriodHaneHandler = deactivateMembershipPeriodHaneHandler;
         _getMembershipPeriodByIdHandler = getMembershipPeriodByIdHandler;
         _getMembershipPeriodsdHandler = getMembershipPeriodsdHandler;
     }
@@ -37,30 +37,30 @@ public class MembershipPeriodsController : ControllerBase
     [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<DistrictDto>>> Get()
+    public async Task<ActionResult<IEnumerable<MembershipPeriodDto>>> Get()
     {
-        var MembershipPeriods = await _getMembershipPeriodsdHandler.HandleAsync(new GetDistricts { });
+        var membershipPeriods = await _getMembershipPeriodsdHandler.HandleAsync(new GetMembershipPeriods { });
         
-        if (MembershipPeriods is null)
+        if (membershipPeriods is null)
         {
             return NotFound();
         }
 
-        return Ok(MembershipPeriods);
+        return Ok(membershipPeriods);
     }
     
-    [HttpGet("{MembershipPeriodId:guid}")]
+    [HttpGet("{membershipPeriodId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<DistrictDto>> Get(Guid MembershipPeriodId)
+    public async Task<ActionResult<MembershipPeriodDto>> Get(Guid membershipPeriodId)
     {
-        var MembershipPeriod = await _getMembershipPeriodByIdHandler.HandleAsync(new GetMembershipPeriodById { MembershipPeriodId = MembershipPeriodId});
-        if (MembershipPeriod is null)
+        var membershipPeriod = await _getMembershipPeriodByIdHandler.HandleAsync(new GetMembershipPeriodById { MembershipPeriodId = membershipPeriodId});
+        if (membershipPeriod is null)
         {
             return NotFound();
         }
 
-        return MembershipPeriod;
+        return membershipPeriod;
     }
 
     [HttpPost]
@@ -69,23 +69,22 @@ public class MembershipPeriodsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post(CreateMembershipPeriod command)
     {
-        command = command with {Id = Guid.NewGuid()};
+        command = command with {MembershipPeriodId = Guid.NewGuid()};
         await _createMembershipPeriodHandler.HandleAsync(command);
-        var route = "Get";
-        return CreatedAtAction(route, new {command.Id}, null);
+        return CreatedAtAction(nameof(Get),  command, null);
     }
     
-    [HttpPut("{MembershipPeriodId:guid}")]
-    public async Task<ActionResult> Put(Guid MembershipPeriodId, UpdateMembershipPeriod command)
+    [HttpPut("{membershipPeriodId:guid}")]
+    public async Task<ActionResult> Put(Guid membershipPeriodId, UpdateMembershipPeriod command)
     {
-        await _updateMembershipPeriodHaneHandler.HandleAsync(command with {MembershipPeriodId = MembershipPeriodId});
+        await _updateMembershipPeriodHaneHandler.HandleAsync(command with {MembershipPeriodId = membershipPeriodId});
         return NoContent();
     }
     
-    [HttpDelete("{MembershipPeriodId:guid}")]
-    public async Task<ActionResult> Delete(Guid MembershipPeriodId)
+    [HttpDelete("{membershipPeriodId:guid}")]
+    public async Task<ActionResult> Delete(Guid membershipPeriodId)
     {
-        await _deleteMembershipPeriodHaneHandler.HandleAsync( new DeleteMembershipPeriod {MembershipPeriodId = ProfessionId});
+        await _deactivateMembershipPeriodHaneHandler.HandleAsync( new DeactivateMembershipPeriod {MembershipPeriodId = membershipPeriodId});
         return NoContent();
     }
 }

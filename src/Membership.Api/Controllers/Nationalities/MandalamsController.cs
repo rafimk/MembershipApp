@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
-using Membership.Application.Commands.Nationalities.States;
+using Membership.Application.Commands.Nationalities.Mandalams;
 using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.Queries.Nationalities.Mandalams;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Membership.Api.Controllers;
+namespace Membership.Api.Controllers.Nationalities;
 
 [ApiController]
 [Route("[controller]")]
@@ -34,7 +34,7 @@ public class MandalamsController : ControllerBase
         _deleteMandalamHaneHandler = deleteMandalamHaneHandler;
         _getMandalamByIdHandler = getMandalamByIdHandler;
         _getMandalamByDistrictIdHandler = getMandalamByDistrictIdHandler;
-        _getMandalamsdHandler = getMandalamsdHandler;
+        _getMandalamsHandler = getMandalamsdHandler;
     }
     
     [HttpGet()]
@@ -66,18 +66,18 @@ public class MandalamsController : ControllerBase
         return mandalam;
     }
 
-    [HttpGet("{districtId:guid}")]
+    [HttpGet("district/{districtId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<MandalamDto>>> GetByDistrictId(Guid districtId)
     {
-        var mandalams = await getMandalamByDistrictIdHandler.HandleAsync(new GetMandalamByDistrictId { DistrictId = districtId});
+        var mandalams = await _getMandalamByDistrictIdHandler.HandleAsync(new GetMandalamByDistrictId { DistrictId = districtId});
         if (mandalams is null)
         {
             return NotFound();
         }
 
-        return mandalams;
+        return Ok(mandalams);
     }
 
     [HttpPost]
@@ -86,10 +86,9 @@ public class MandalamsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post(CreateMandalam command)
     {
-        command = command with {Id = Guid.NewGuid()};
+        command = command with {MandalamId = Guid.NewGuid()};
         await _createMandalamHandler.HandleAsync(command);
-        var route = "Get";
-        return CreatedAtAction(route, new {command.Id}, null);
+        return CreatedAtAction(nameof(Get), command, null);
     }
     
     [HttpPut("{mandalamId:guid}")]

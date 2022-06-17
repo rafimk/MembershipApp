@@ -14,7 +14,7 @@ internal sealed class CreatePanchayatHandler : ICommandHandler<CreatePanchayat>
 
     public async Task HandleAsync(CreatePanchayat command)
     {
-        var panchayat = Panchayat.Create(Guid.NewGuid(), command.Name, command.MandalamId, DateTime.UtcNow);
+        var panchayat = Panchayat.Create(command.PanchayatId, command.Name, command.MandalamId, DateTime.UtcNow);
         await _repository.AddAsync(panchayat);
     }
 }

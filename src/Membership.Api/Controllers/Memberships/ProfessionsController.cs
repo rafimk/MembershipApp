@@ -2,14 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
-using Membership.Application.Commands.Nationalities.States;
+using Membership.Application.Commands.Memberships.Professions;
+using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
+using Membership.Application.Queries.Memberships.Professions;
+using Membership.Application.Queries.Nationalities.Districts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Membership.Api.Controllers;
+namespace Membership.Api.Controllers.Memberships;
 
 [ApiController]
 [Route("[controller]")]
@@ -18,14 +20,14 @@ public class ProfessionsController : ControllerBase
     private readonly ICommandHandler<CreateProfession> _createProfessionHandler;
     private readonly ICommandHandler<UpdateProfession> _updateProfessionHaneHandler;
     private readonly ICommandHandler<DeleteProfession> _deleteProfessionHaneHandler;
-    private readonly IQueryHandler<GetProfessionById, ProfessiontDto> _getProfessionByIdHandler;
-    private readonly IQueryHandler<GetProfessions, IEnumerable<ProfessiontDto>> _getProfessionsdHandler;
+    private readonly IQueryHandler<GetProfessionById, ProfessionDto> _getProfessionByIdHandler;
+    private readonly IQueryHandler<GetProfessions, IEnumerable<ProfessionDto>> _getProfessionsdHandler;
 
     public ProfessionsController(ICommandHandler<CreateProfession> createProfessionHandler,
         ICommandHandler<UpdateProfession> updateProfessionHaneHandler,
         ICommandHandler<DeleteProfession> deleteProfessionHaneHandler,
-        IQueryHandler<GetProfessionById, ProfessiontDto> getProfessionByIdHandler,
-        IQueryHandler<GetProfessions, IEnumerable<DistrictDto>> getProfessionsdHandler)
+        IQueryHandler<GetProfessionById, ProfessionDto> getProfessionByIdHandler,
+        IQueryHandler<GetProfessions, IEnumerable<ProfessionDto>> getProfessionsdHandler)
     {
         _createProfessionHandler = createProfessionHandler;
         _updateProfessionHaneHandler = updateProfessionHaneHandler;
@@ -37,30 +39,30 @@ public class ProfessionsController : ControllerBase
     [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<DistrictDto>>> Get()
+    public async Task<ActionResult<IEnumerable<ProfessionDto>>> Get()
     {
-        var Professions = await _getProfessionsdHandler.HandleAsync(new GetDistricts { });
+        var professions = await _getProfessionsdHandler.HandleAsync(new GetProfessions { });
         
-        if (Professions is null)
+        if (professions is null)
         {
             return NotFound();
         }
 
-        return Ok(Professions);
+        return Ok(professions);
     }
     
-    [HttpGet("{ProfessionId:guid}")]
+    [HttpGet("{professionId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<DistrictDto>> Get(Guid ProfessionId)
+    public async Task<ActionResult<ProfessionDto>> Get(Guid professionId)
     {
-        var Profession = await _getProfessionByIdHandler.HandleAsync(new GetProfessionById { ProfessionId = ProfessionId});
-        if (Profession is null)
+        var profession = await _getProfessionByIdHandler.HandleAsync(new GetProfessionById { ProfessionId = professionId});
+        if (profession is null)
         {
             return NotFound();
         }
 
-        return Profession;
+        return profession;
     }
 
     [HttpPost]
@@ -69,23 +71,22 @@ public class ProfessionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post(CreateProfession command)
     {
-        command = command with {Id = Guid.NewGuid()};
+        command = command with { ProfessionId = Guid.NewGuid()};
         await _createProfessionHandler.HandleAsync(command);
-        var route = "Get";
-        return CreatedAtAction(route, new {command.Id}, null);
+        return CreatedAtAction(nameof(Get), command, null);
     }
     
-    [HttpPut("{ProfessionId:guid}")]
-    public async Task<ActionResult> Put(Guid ProfessionId, UpdateProfession command)
+    [HttpPut("{professionId:guid}")]
+    public async Task<ActionResult> Put(Guid professionId, UpdateProfession command)
     {
-        await _updateProfessionHaneHandler.HandleAsync(command with {ProfessionId = ProfessionId});
+        await _updateProfessionHaneHandler.HandleAsync(command with { ProfessionId = professionId});
         return NoContent();
     }
     
-    [HttpDelete("{ProfessionId:guid}")]
-    public async Task<ActionResult> Delete(Guid ProfessionId)
+    [HttpDelete("{professionId:guid}")]
+    public async Task<ActionResult> Delete(Guid professionId)
     {
-        await _deleteProfessionHaneHandler.HandleAsync( new DeleteProfession {ProfessionId = ProfessionId});
+        await _deleteProfessionHaneHandler.HandleAsync( new DeleteProfession { ProfessionId = professionId});
         return NoContent();
     }
 }
