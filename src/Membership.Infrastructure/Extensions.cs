@@ -36,7 +36,7 @@ public static class Extensions
             swagger.EnableAnnotations();
             swagger.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "MySpot API",
+                Title = "Membership API",
                 Version = "v1"
             });
         });
@@ -61,7 +61,7 @@ public static class Extensions
         {
             reDoc.RoutePrefix = "docs";
             reDoc.SpecUrl("/swagger/v1/swagger.json");
-            reDoc.DocumentTitle = "MySpot API";
+            reDoc.DocumentTitle = "Membership API";
         });
         app.UseAuthentication();
         app.UseAuthorization();
