@@ -1,6 +1,8 @@
-﻿using Membership.Application.Security;
+﻿using Membership.Application.Commands.Memberships.MembershipPeriods;
+using Membership.Application.Security;
 using Membership.Core.Abstractions;
 using Membership.Core.Contracts.Users;
+using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.Entities.Memberships.Qualifications;
 using Membership.Core.Entities.Nationalities;
@@ -93,7 +95,7 @@ internal sealed class DatabaseInitializer : IHostedService
             await dbContext.Districts.AddRangeAsync(districts, cancellationToken);
         }
 
-        if ((await dbContext.Professions.AnyAsync(cancellationToken)))
+        if (!(await dbContext.Professions.AnyAsync(cancellationToken)))
         {
             var professions = new List<Profession>            
             {                
@@ -217,6 +219,24 @@ internal sealed class DatabaseInitializer : IHostedService
             };
  
             await dbContext.Users.AddAsync(User.Create(adminUser), cancellationToken);
+        }
+        
+        if (!(await dbContext.MembershipPeriods.AnyAsync(cancellationToken)))
+        {
+            var contract = new CreateMembershipPeriod
+            {
+                MembershipPeriodId = Guid.NewGuid(),
+                Start = new DateTimeOffset(2022,1,1,0,0,0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022,12,31,23,59,59,999, TimeSpan.Zero),
+                RegistrationUntil = new DateTimeOffset(2022,12,31,23,59,59,999, TimeSpan.Zero),
+            };
+
+            var membershipPeriod = MembershipPeriod.Create(contract.MembershipPeriodId, contract.Start,
+                contract.End, contract.RegistrationUntil, _clock.Current());
+            
+            membershipPeriod.Activate();
+ 
+            await dbContext.MembershipPeriods.AddAsync(membershipPeriod, cancellationToken);
         }
 
         

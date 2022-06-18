@@ -43,10 +43,10 @@ internal sealed class GetLookupsHandler : IQueryHandler<GetLookups, LookupsDto>
             .Select(x => x.AsDto())
             .ToListAsync();
 
-        var membershipPeriod = await _dbContext.MembershipPeriods
-            .AsNoTracking()
-            .Select(x => x.AsDto())
-            .FirstAsync(x => x.IsActive);
+        // var membershipPeriod = await _dbContext.MembershipPeriods
+        //     .AsNoTracking()
+        //     .Select(x => x.AsDto())
+        //     .FirstAsync(x => x.IsActive);
         
         var lookupsDto = new LookupsDto
         {
@@ -55,7 +55,7 @@ internal sealed class GetLookupsHandler : IQueryHandler<GetLookups, LookupsDto>
             States = states,
             Professions = professions,
             Qualifications = qualifications,
-            MembershipPeriod = membershipPeriod
+            //   MembershipPeriod = membershipPeriod
         };
 
         return lookupsDto;
