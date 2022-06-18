@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
-using Membership.Application.Commands;
 using Membership.Application.Commands.Users;
 using Membership.Application.DTO.Security;
 using Membership.Application.DTO.Users;
 using Membership.Application.Queries.Users;
 using Membership.Application.Security;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -71,22 +69,20 @@ public class UsersController : ControllerBase
         return user;
     }
 
-    [HttpGet]
-    [SwaggerOperation("Get list of all the users")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [Authorize(Policy = "is-admin")]
-    public async Task<ActionResult<IEnumerable<UserDto>>> Get([FromQuery] GetUsers query)
-        => Ok(await _getUsersHandler.HandleAsync(query));
-
     [HttpPost]
     [SwaggerOperation("Create the user account")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post(CreateUser command)
     {
-        command = command with {Id = Guid.NewGuid()};
+        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
+        {
+            return Unauthorized();
+        }
+
+        var userId = Guid.Parse(User.Identity?.Name);
+        
+        command = command with {Id = Guid.NewGuid(), LoggedUserId = userId};
         await _createUserHandler.HandleAsync(command);
         return CreatedAtAction(nameof(Get), command, null);
     }
@@ -101,13 +97,29 @@ public class UsersController : ControllerBase
         var jwt = _tokenStorage.Get();
         return jwt;
     }
-
+    
     [HttpGet]
-    [SwaggerOperation("Get list of permited user roles")]
+    [SwaggerOperation("Get list of users")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [Authorize(Policy = "is-admin")]
     public async Task<ActionResult<IEnumerable<UserDto>>> Get()
-        => Ok(await _getApplicableUserRoleHandler.HandleAsync(new GetApplicableUserRole {}));
+        => Ok(await _getUsersHandler.HandleAsync(new GetUsers {}));
+
+    [HttpGet("roles")]
+    [SwaggerOperation("Get list of applicable user roles")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult<IEnumerable<string>>> GetMyApplicableUserRole()
+    {
+        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
+        {
+            return NotFound();
+        }
+
+        var userId = Guid.Parse(User.Identity?.Name);
+        
+        return Ok(await _getApplicableUserRoleHandler.HandleAsync(new GetApplicableUserRole { UserId = userId } ));
+    }
 }

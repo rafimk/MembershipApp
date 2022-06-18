@@ -11,4 +11,6 @@ public record CreateUser() : ICommand
     public string AlternativeContactNumber { get; set; }
     public string Designation { get; set; }
     public string Role { get; set; }
+    public Guid? CascadeId { get; set; }
+    public Guid? LoggedUserId { get; set; }
 }

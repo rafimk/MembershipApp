@@ -1,7 +1,11 @@
-﻿using Membership.Core.Abstractions;
+﻿using Membership.Application.Security;
+using Membership.Core.Abstractions;
+using Membership.Core.Contracts.Users;
 using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.Entities.Memberships.Qualifications;
 using Membership.Core.Entities.Nationalities;
+using Membership.Core.Entities.Users;
+using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,11 +16,14 @@ internal sealed class DatabaseInitializer : IHostedService
 {
     // Service locator "anti-pattern" (but it depends) :)
     private readonly IServiceProvider _serviceProvider;
+    private readonly IPasswordManager _passwordManager;
     private readonly IClock _clock;
 
-    public DatabaseInitializer(IServiceProvider serviceProvider, IClock clock)
+    public DatabaseInitializer(IServiceProvider serviceProvider, 
+        IPasswordManager passwordManager, IClock clock)
     {
         _serviceProvider = serviceProvider;
+        _passwordManager = passwordManager;
         _clock = clock;
     }
     
@@ -189,6 +196,27 @@ internal sealed class DatabaseInitializer : IHostedService
             };
             
             await dbContext.Qualifications.AddRangeAsync(qualifications, cancellationToken);
+        }
+        
+        if (!(await dbContext.Users.AnyAsync(cancellationToken)))
+        {
+            var securedPassword = _passwordManager.Secure("admin@123");
+            
+            var adminUser = new UserCreateContract
+            {
+                Id = Guid.NewGuid(),
+                FullName = "admin",
+                Email = "admin@admin.com",
+                MobileNumber = "0505550444",
+                AlternativeContactNumber = "0505550444",
+                Designation = "admin",
+                PasswordHash = securedPassword,
+                Role = UserRole.CentralCommitteeAdmin(),
+                CascadeId = null,
+                CreatedAt = _clock.Current(),
+            };
+ 
+            await dbContext.Users.AddAsync(User.Create(adminUser), cancellationToken);
         }
 
         

@@ -1,9 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using Membership.Application.Abstractions;
 using Membership.Core.Abstractions;
+using Membership.Infrastructure.Auth;
 using Membership.Infrastructure.DAL;
 using Membership.Infrastructure.Exceptions;
 using Membership.Infrastructure.Logging;
+using Membership.Infrastructure.Security;
 using Membership.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +31,7 @@ public static class Extensions
             .AddSingleton<IClock, Clock>();
 
         services.AddCustomLogging();
-        // services.AddSecurity();
+        services.AddSecurity();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(swagger =>
         {
@@ -48,7 +50,7 @@ public static class Extensions
             .AsImplementedInterfaces()
             .WithScopedLifetime());
 
-        // services.AddAuth(configuration);
+        services.AddAuth(configuration);
 
         return services;
     }

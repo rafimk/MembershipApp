@@ -1,7 +1,13 @@
 ﻿using Membership.Application.Abstractions;
+using Membership.Core.Repositories.Commons;
+using Membership.Core.Repositories.Memberships;
 using Membership.Core.Repositories.Nationalities;
+using Membership.Core.Repositories.Users;
 using Membership.Infrastructure.DAL.Decorators;
+using Membership.Infrastructure.DAL.Repositories.Commons;
+using Membership.Infrastructure.DAL.Repositories.Memberships;
 using Membership.Infrastructure.DAL.Repositories.Nationalities;
+using Membership.Infrastructure.DAL.Repositories.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +23,19 @@ internal static class Extensions
         services.Configure<PostgresOptions>(configuration.GetRequiredSection(OptionsSectionName));
         var postgresOptions = configuration.GetOptions<PostgresOptions>(OptionsSectionName);
         services.AddDbContext<MembershipDbContext>(x => x.UseNpgsql(postgresOptions.ConnectionString));
+        
+        services.AddScoped<IFileAttachmentRepository, PostgresFileAttachmentRepository>();
+        services.AddScoped<IMemberRepository, PostgresMemberRepository>();
+        services.AddScoped<IMembershipPeriodRepository, PostgresMembershipPeriodRepository>();
+        services.AddScoped<IProfessionRepository, PostgresProfessionRepository>();
+        services.AddScoped<IQualificationRepository, PostgresQualificationRepository>();
+        
+        services.AddScoped<IAreaRepository, PostgresAreaRepository>();
+        services.AddScoped<IDistrictRepository, PostgresDistrictRepository>();
         services.AddScoped<IStateRepository, PostgresStateRepository>();
+        
+        services.AddScoped<IUserRepository, PostgresUserRepository>();
+        
         services.AddHostedService<DatabaseInitializer>();
         services.AddScoped<IUnitOfWork, PostgresUnitOfWork>();
 

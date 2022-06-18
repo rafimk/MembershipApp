@@ -1,6 +1,52 @@
 @url = http://localhost:5000
-@stateId = E50C3216-A1B5-46CF-8386-185D3BCF11CF
+@stateId = 774ce13b-3f77-4918-a14d-333111f53d7a
+@userId = 3912657e-df36-40c0-893d-2be8ad374109
 
+
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "admin@admin.com",
+    "password": "admin@123"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+
+###
+GET {{url}}/users
+
+###
+GET {{url}}/users/{{userId}}
+
+
+###
+GET {{url}}/users/me
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/users/roles
+Authorization: Bearer {{accessToken}}
+
+###
+POST {{url}}/users
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "fullName": "state-admin",
+    "email": "state-admin@kmcc.com",
+    "mobileNumber": "0501234123",
+    "alternativeContactNumber": "0501234123",
+    "designation": "state admin",
+    "role": "state-admin",
+    "cascadeId": "3472B53D-0EF9-4251-B291-190B35CD280B"
+}
 
 ###
 GET {{url}}/states
@@ -25,21 +71,7 @@ Content-Type: application/json
 }
 
 ###
-# @name sign_in
-POST {{url}}/users/sign-in
-Content-Type: application/json
-
-{
-    "email": "user1@myspot.io",
-    "password": "secret"
-}
-
-###
-@accessToken = {{sign_in.response.body.$.accessToken}}
-
-###
-GET {{url}}/users/me
-Authorization: Bearer {{accessToken}}
+DELETE {{url}}/states/{{stateId}}
 
 ###
 GET {{url}}/parking-spots
