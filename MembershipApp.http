@@ -52,6 +52,10 @@ Content-Type: application/json
 GET {{url}}/lookups
 
 ###
+GET {{url}}/lookups/me
+Authorization: Bearer {{accessToken}}
+
+###
 GET {{url}}/states
 
 ###

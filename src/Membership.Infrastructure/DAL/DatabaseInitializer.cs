@@ -8,6 +8,7 @@ using Membership.Core.Entities.Memberships.Qualifications;
 using Membership.Core.Entities.Nationalities;
 using Membership.Core.Entities.Users;
 using Membership.Core.ValueObjects;
+using Membership.Infrastructure.DAL.DataSeed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -239,8 +240,36 @@ internal sealed class DatabaseInitializer : IHostedService
             await dbContext.MembershipPeriods.AddAsync(membershipPeriod, cancellationToken);
         }
 
+        if (!(await dbContext.Mandalams.AnyAsync(cancellationToken)))
+        {
+            var mandalams = MandalamDataSeed.GetSeedData();
+
+            var mandalamList = new List<Mandalam>();
+            
+            foreach (var item in mandalams)
+            {
+                var mandalam = Mandalam.Create(item.Id, item.Name, item.DistrictId, _clock.Current());
+                mandalamList.Add(mandalam);
+            }
+            
+            await dbContext.Mandalams.AddRangeAsync(mandalamList, cancellationToken);
+        }
         
-        
+        if (!(await dbContext.Panchayats.AnyAsync(cancellationToken)))
+        {
+            var panchayats = PanchayathDataSeed.GetSeedData();
+
+            var panchayatList = new List<Panchayat>();
+            
+            foreach (var item in panchayats)
+            {
+                var panchayat = Panchayat.Create(item.Id, item.Name, item.MandalamId, _clock.Current());
+                panchayatList.Add(panchayat);
+            }
+            
+            await dbContext.Panchayats.AddRangeAsync(panchayatList, cancellationToken);
+        }
+
         await dbContext.SaveChangesAsync(cancellationToken);    
     }    
         

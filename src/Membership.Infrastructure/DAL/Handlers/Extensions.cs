@@ -19,6 +19,15 @@ public static class Extensions
             CreatedAt = entity.CreatedAt
         };
     
+    public static CascadeDto AsCascadeDto(this State entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            Description = entity.Name,
+        };
+    
+    //
+    
     public static AreaDto AsDto(this Area entity)
         => new()
         {
@@ -41,6 +50,13 @@ public static class Extensions
             CreatedAt = entity.CreatedAt
         };
     
+    public static CascadeDto AsCascadeDto(this District entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            Description = entity.Name,
+        };
+    
     public static MandalamDto AsDto(this Mandalam entity)
         => new()
         {
@@ -53,6 +69,13 @@ public static class Extensions
                 CreatedAt = entity.District.CreatedAt
             },
             CreatedAt = entity.CreatedAt
+        };
+    
+    public static CascadeDto AsCascadeDto(this Mandalam entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            Description = entity.Name,
         };
     
     public static PanchayatDto AsDto(this Panchayat entity)

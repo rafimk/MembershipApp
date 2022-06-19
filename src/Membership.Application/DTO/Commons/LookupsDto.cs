@@ -1,5 +1,6 @@
 using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Nationalities;
+using Membership.Application.DTO.Users;
 
 namespace Membership.Application.DTO.Commons;
 
