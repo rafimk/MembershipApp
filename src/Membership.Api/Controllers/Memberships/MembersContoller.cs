@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Memberships.Members;
@@ -19,24 +20,42 @@ public class MembersController : ControllerBase
     private readonly ICommandHandler<ActivateMember> _activateMemberHaneHandler;
     private readonly ICommandHandler<DeactivateMember> _deactivateMemberHaneHandler;
     private readonly IQueryHandler<GetMemberById, MemberDto> _getMemberByIdHandler;
+    private readonly IQueryHandler<GetMembers, IEnumerable<MemberDto>> _getMembersHandler;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
         ICommandHandler<UpdateMember> updateMemberHaneHandler,
         ICommandHandler<ActivateMember> activateMemberHaneHandler,
         ICommandHandler<DeactivateMember> deactivateMemberHaneHandler,
+        IQueryHandler<GetMembers, IEnumerable<MemberDto>> getMembersHandler,
         IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler)
     {
         _createMemberHandler = createMemberHandler;
         _updateMemberHaneHandler = updateMemberHaneHandler;
         _activateMemberHaneHandler = activateMemberHaneHandler;
         _deactivateMemberHaneHandler = deactivateMemberHaneHandler;
+        _getMembersHandler = getMembersHandler;
         _getMemberByIdHandler = getMemberByIdHandler;
     }
     
-    [HttpGet("{memberId:guid}", Name = "GetById")]
+    [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<MemberDto>> GetById(Guid memberId)
+    public async Task<ActionResult<MemberDto>> Get()
+    {
+        var members = await _getMembersHandler.HandleAsync(new GetMembers { });
+        
+        if (members is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(members);
+    }
+    
+    [HttpGet("{memberId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<MemberDto>> Get(Guid memberId)
     {
         var member = await _getMemberByIdHandler.HandleAsync(new GetMemberById { MemberId = memberId});
         
@@ -56,7 +75,7 @@ public class MembersController : ControllerBase
     {
         command = command with {Id =  Guid.NewGuid()};
         await _createMemberHandler.HandleAsync(command);
-        return CreatedAtAction("GetById", command.Id, null);
+        return CreatedAtAction(nameof(Get), new {command.Id}, null);
     }
     
     [HttpPut("{memberId:guid}")]

@@ -1,4 +1,5 @@
 using Membership.Application;
+using Membership.Core;
 using Membership.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +22,7 @@ builder.Services
                     .AllowAnyMethod();
             });
     })
+    .AddCore()
     .AddApplication()
     .AddInfrastructure(builder.Configuration)
     .AddCors();;

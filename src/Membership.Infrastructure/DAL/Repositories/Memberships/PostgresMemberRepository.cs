@@ -26,6 +26,9 @@ internal sealed class PostgresMemberRepository : IMemberRepository
         => _dbContext.Members.Include(x => x.Area)
             .Include(x => x.Mandalam).SingleOrDefaultAsync(x => x.EmiratesIdNumber == emiratesId);
     
+    public  Task<Member> GetByEmailAsync(Email email)
+        => _dbContext.Members.Include(x => x.Area)
+            .Include(x => x.Mandalam).SingleOrDefaultAsync(x => x.Email == email);
     public async Task<IEnumerable<Member>> GetAsync()
         => await _dbContext.Members.Where(x => x.IsActive).ToListAsync();
     
