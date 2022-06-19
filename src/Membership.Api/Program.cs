@@ -1,5 +1,4 @@
 using Membership.Application;
-using Membership.Core;
 using Membership.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -9,8 +8,19 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "localhost:3000";
+
 builder.Services
-    .AddCore()
+    .AddCors(options =>
+    {
+        options.AddPolicy(name: MyAllowSpecificOrigins,
+            policy =>
+            {
+                policy.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    })
     .AddApplication()
     .AddInfrastructure(builder.Configuration)
     .AddCors();;
@@ -26,7 +36,7 @@ builder.Host.UseSerilog((context, loggerConfiguration) =>
 });
 
 var app = builder.Build();
-app.UseCors();
+app.UseCors(MyAllowSpecificOrigins);
 app.UseInfrastructure();
 app.MapGet("api", (IOptions<AppOptions> options) => Results.Ok(options.Value.Name));
 //app.UseUsersApi();
