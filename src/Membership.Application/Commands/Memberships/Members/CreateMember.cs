@@ -4,7 +4,7 @@ namespace Membership.Application.Commands.Memberships.Members;
 
 public record CreateMember() : ICommand
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public string FullName { get; set; } 
     public string EmiratesIdNumber { get; set; }
     public DateTimeOffset EmiratesIdExpiry { get; set; }

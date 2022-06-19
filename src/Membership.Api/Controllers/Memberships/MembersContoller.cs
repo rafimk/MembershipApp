@@ -18,21 +18,18 @@ public class MembersController : ControllerBase
     private readonly ICommandHandler<UpdateMember> _updateMemberHaneHandler;
     private readonly ICommandHandler<ActivateMember> _activateMemberHaneHandler;
     private readonly ICommandHandler<DeactivateMember> _deactivateMemberHaneHandler;
-    private readonly ICommandHandler<DisputedMember> _disputedMemberHaneHandler;
     private readonly IQueryHandler<GetMemberById, MemberDto> _getMemberByIdHandler;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
         ICommandHandler<UpdateMember> updateMemberHaneHandler,
         ICommandHandler<ActivateMember> activateMemberHaneHandler,
         ICommandHandler<DeactivateMember> deactivateMemberHaneHandler,
-        ICommandHandler<DisputedMember> disputedMemberHaneHandler,
         IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler)
     {
         _createMemberHandler = createMemberHandler;
         _updateMemberHaneHandler = updateMemberHaneHandler;
         _activateMemberHaneHandler = activateMemberHaneHandler;
         _deactivateMemberHaneHandler = deactivateMemberHaneHandler;
-        _disputedMemberHaneHandler = disputedMemberHaneHandler;
         _getMemberByIdHandler = getMemberByIdHandler;
     }
     
