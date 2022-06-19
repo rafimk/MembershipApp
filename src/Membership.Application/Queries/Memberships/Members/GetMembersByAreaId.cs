@@ -3,7 +3,7 @@ using Membership.Application.DTO.Memberships;
 
 namespace Membership.Application.Queries.Memberships.Members;
 
-public class GetMembersByStateIdAsync : IQuery<IEnumerable<MemberDto>>
+public class GetMembersByAreaId : IQuery<IEnumerable<MemberDto>>
 {
-    public Guid StateId { get; set; }
+    public Guid AreaId { get; set; }
 }

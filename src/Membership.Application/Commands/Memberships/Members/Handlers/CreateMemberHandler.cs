@@ -1,24 +1,38 @@
 ﻿using Membership.Application.Abstractions;
+using Membership.Application.Exceptions.Nationalities;
 using Membership.Core.Consts;
 using Membership.Core.Contracts.Memberships;
 using Membership.Core.Entities.Memberships.Members;
 using Membership.Core.Repositories.Memberships;
+using Membership.Core.Repositories.Nationalities;
 
 namespace Membership.Application.Commands.Memberships.Members.Handlers;
 
 internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
 {
-    private readonly IMemberRepository _repository;
+    private readonly IMemberRepository _memberRepository;
+    private readonly IAreaRepository _areaRepository;
 
-    public CreateMemberHandler(IMemberRepository repository)
-        => _repository = repository;
+    public CreateMemberHandler(IMemberRepository memberRepository, IAreaRepository areaRepository)
+    {
+        _memberRepository = memberRepository;
+        _areaRepository = areaRepository;
+    }
 
     public async Task HandleAsync(CreateMember command)
     {
+        var area = await _areaRepository.GetByIdAsync(command.AreaId);
+
+        if (area is null)
+        {
+            throw new AreaNotFoundException(command.AreaId);
+        }
+        
+        var membershipId = _memberRepository.GenerateMembershipId(area.State?.Prefix);
         var membership = Member.Create(new CreateMemberContract
         {
             Id = command.Id,
-            MembershipId = "command.MembershipId",
+            MembershipId = membershipId,
             FullName = command.FullName,
             EmiratesIdNumber = command.EmiratesIdNumber,
             EmiratesIdExpiry = command.EmiratesIdExpiry,
@@ -43,6 +57,6 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             CreatedAt = DateTime.UtcNow,
             CreatedBy = Guid.NewGuid()
         });
-        await _repository.AddAsync(membership);
+        await _memberRepository.AddAsync(membership);
     }
 }

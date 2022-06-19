@@ -33,10 +33,10 @@ public class MembersController : ControllerBase
         _getMemberByIdHandler = getMemberByIdHandler;
     }
     
-    [HttpGet("{memberId:guid}")]
+    [HttpGet("{memberId:guid}", Name = "GetById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<MemberDto>> Get(Guid memberId)
+    public async Task<ActionResult<MemberDto>> GetById(Guid memberId)
     {
         var member = await _getMemberByIdHandler.HandleAsync(new GetMemberById { MemberId = memberId});
         
@@ -56,7 +56,7 @@ public class MembersController : ControllerBase
     {
         command = command with {Id =  Guid.NewGuid()};
         await _createMemberHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command, null);
+        return CreatedAtAction("GetById", command.Id, null);
     }
     
     [HttpPut("{memberId:guid}")]

@@ -33,6 +33,8 @@ internal static class Extensions
         services.AddScoped<IAreaRepository, PostgresAreaRepository>();
         services.AddScoped<IDistrictRepository, PostgresDistrictRepository>();
         services.AddScoped<IStateRepository, PostgresStateRepository>();
+        services.AddScoped<IMandalamRepository, PostgresMandalamRepository>();
+        services.AddScoped<IPanchayatRepository, PostgresPanchayatRepository>();
         
         services.AddScoped<IUserRepository, PostgresUserRepository>();
         

@@ -39,4 +39,10 @@ internal sealed class PostgresMemberRepository : IMemberRepository
         _dbContext.Members.Update(member);
         await Task.CompletedTask;
     }
+
+    public string GenerateMembershipId(string prefix)
+    {
+        var totalRecordCount = _dbContext.Members.Count() + 1;
+        return $"{prefix.Trim()}{totalRecordCount.ToString("D6")}";
+    }
 }

@@ -1,6 +1,7 @@
 @url = http://localhost:5000
 @stateId = 774ce13b-3f77-4918-a14d-333111f53d7a
 @userId = 3912657e-df36-40c0-893d-2be8ad374109
+@districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
 
 
 
@@ -87,6 +88,9 @@ GET {{url}}/area
 GET {{url}}/area/{{stateId}}
 
 ###
+GET {{url}}/mandalams/district/{{districtId}}
+
+###
 POST   {{url}}/members
 Content-Type: application/json
 
@@ -107,12 +111,12 @@ Content-Type: application/json
     "professionId" : "150c5a51-cd2e-4021-8afc-e0767420dca7",
     "qualificationId": "12cedccf-b2f0-4cd5-91a7-ad64464cdd90",
     "bloodGroup": 0,
-    "photo": "",
+    "photo": null,
     "houseName": "Goush",
     "addressInIndia": "Thakwa Nagar",
     "passwordHash": "123",
     "areaId": "9073BB7B-5E09-4FD7-80A4-1D874BC78DC3",
-    "mandalamId": "", 
+    "mandalamId": "fada7507-af5b-4b44-ab76-cd11db72d449", 
     "isMemberOfAnyIndianRegisteredOrganization": true,
     "isKMCCWelfareScheme": true
 }

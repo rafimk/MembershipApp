@@ -72,7 +72,7 @@ public class StatesController : ControllerBase
     {
         command = command with {Id = Guid.NewGuid()};
         await _createStateHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command, null);
+        return CreatedAtAction(nameof(Get), command.Id, null);
     }
     
     [HttpPut("{stateId:guid}")]

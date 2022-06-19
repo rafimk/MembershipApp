@@ -1,6 +1,7 @@
 ﻿using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.DTO.Users;
+using Membership.Core.Entities.Memberships.Members;
 using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.Entities.Memberships.Qualifications;
@@ -132,5 +133,57 @@ public static class Extensions
             RegistrationUntil = entity.RegistrationUntil,
             IsActive = entity.IsActive,
             CreatedAt = entity.CreatedAt
+        };
+    
+    public static MemberDto AsDto(this Member entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            MembershipId = entity.MembershipId,
+            FullName = entity.FullName,
+            EmiratesIdNumber = entity.EmiratesIdNumber,
+            EmiratesIdExpiry = entity.EmiratesIdExpiry,
+            EmiratesIdFrontPage = entity.EmiratesIdFrontPage,
+            EmiratesIdLastPage = entity.EmiratesIdLastPage,
+            DateOfBirth = entity.DateOfBirth,
+            MobileNumber = entity.MobileNumber,
+            AlternativeContactNumber = entity.AlternativeContactNumber,
+            Email = entity.Email,
+            PassportNumber = entity.PassportNumber,
+            PassportExpiry = entity.PassportExpiry,
+            PassportFrontPage = entity.PassportFrontPage,
+            PassportLastPage = entity.PassportLastPage,
+            Profession = new ProfessionDto
+            {
+                Id = entity.ProfessionId,
+                Name = entity.Profession?.Name
+            },
+            Qualification = new QualificationDto
+            {
+                Id = entity.QualificationId,
+                Name = entity.Qualification?.Name
+            },
+            BloodGroup = (int)entity.BloodGroup,
+            Photo = entity.Photo,
+            HouseName = entity.HouseName,
+            AddressInIndia = entity.AddressInIndia,
+            Area = new AreaDto
+            {
+                Id = entity.AreaId,
+                Name = entity.Area?.Name
+            },
+            Mandalam = new MandalamDto
+            {
+                Id = entity.MandalamId,
+                Name = entity.Mandalam?.Name
+                
+            },
+            IsMemberOfAnyIndianRegisteredOrganization = entity.IsMemberOfAnyIndianRegisteredOrganization,
+            IsKMCCWelfareScheme = entity.IsKMCCWelfareScheme,
+            CollectedAmount = entity.CollectedAmount,
+            CreatedBy = entity.CreatedBy,
+            IsActive = entity.IsActive,
+            CreatedAt = entity.CreatedAt,
+            VerifiedAt = entity.VerifiedAt
         };
     }
