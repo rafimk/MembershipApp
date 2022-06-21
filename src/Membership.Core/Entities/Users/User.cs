@@ -14,6 +14,7 @@ public class User
     public string Designation { get; private set; }
     public string PasswordHash { get; private set; }
     public UserRole Role { get; private set; }
+    public Guid? StateId { get; private set; }
     public Guid? CascadeId { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public bool IsActive {get; private set;}
@@ -33,6 +34,7 @@ public class User
         Designation = contract.Designation;
         PasswordHash = contract.PasswordHash;
         Role = contract.Role;
+        StateId = contract.StateId;
         CascadeId = contract.CascadeId;
         CreatedAt = contract.CreatedAt;
         IsActive = contract.IsActive;
@@ -49,6 +51,7 @@ public class User
             Designation = contract.Designation,
             PasswordHash = contract.PasswordHash,
             Role = contract.Role,
+            StateId = contract.StateId,
             CascadeId = contract.CascadeId,
             CreatedAt = contract.CreatedAt,
             IsActive = true

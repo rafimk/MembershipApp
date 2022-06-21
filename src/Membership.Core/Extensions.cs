@@ -10,6 +10,8 @@ public static class Extensions
         services.AddSingleton<IUserCreatePolicy, CentralCommitteeUserCreatePolicy>();
         services.AddSingleton<IUserCreatePolicy, DistrictAdminUserCreatePolicy>();
         services.AddSingleton<IUserCreatePolicy, StateAdminUserCreatePolicy>();
+        services.AddSingleton<IUserService, UserService>();
+        
         return services;
     }
 }

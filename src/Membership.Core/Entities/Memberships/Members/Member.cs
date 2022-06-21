@@ -42,6 +42,7 @@ public class Member
     public bool IsKMCCWelfareScheme { get; private set; }
     public double CollectedAmount { get; private set; }
     public MemberStatus Status {get; private set;}
+    public string CardNumber { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public GenericId CreatedBy { get; private set; }
     public bool IsActive { get; private set; }
@@ -74,8 +75,10 @@ public class Member
         PasswordHash = contract.PasswordHash;
         AreaId = contract.AreaId;
         MandalamId = contract.MandalamId;
+        PanchayatId = contract.PanchayatId;
         IsMemberOfAnyIndianRegisteredOrganization = contract.IsMemberOfAnyIndianRegisteredOrganization;
         IsKMCCWelfareScheme = contract.IsKMCCWelfareScheme;
+        CardNumber = contract.CardNumber;
         CreatedAt = contract.CreatedAt;
         CreatedBy = contract.CreatedBy;
         IsActive = contract.IsActive;
@@ -105,8 +108,10 @@ public class Member
             PasswordHash = contract.PasswordHash,
             AreaId = contract.AreaId,
             MandalamId = contract.MandalamId,
+            PanchayatId = contract.PanchayatId,
             IsMemberOfAnyIndianRegisteredOrganization = contract.IsMemberOfAnyIndianRegisteredOrganization,
             IsKMCCWelfareScheme = contract.IsKMCCWelfareScheme,
+            CardNumber = contract.CardNumber,
             CreatedAt = contract.CreatedAt,
             CreatedBy = contract.CreatedBy,
             IsActive = true

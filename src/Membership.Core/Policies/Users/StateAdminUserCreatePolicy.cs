@@ -15,4 +15,9 @@ internal sealed class StateAdminUserCreatePolicy : IUserCreatePolicy
             UserRole.DistrictAdmin()
         };
     }
+
+    public Guid? GetStateId(Guid? cascadeId, Guid? parentId)
+    {
+        return cascadeId;
+    }
 }

@@ -6,4 +6,5 @@ public interface IUserCreatePolicy
 {
     bool CanBeApplied(UserRole currentUserRole);
     IEnumerable<UserRole> PermittedUserRole(UserRole currentUserRole);
+    Guid? GetStateId(Guid? cascadeId, Guid? parentId);
 }

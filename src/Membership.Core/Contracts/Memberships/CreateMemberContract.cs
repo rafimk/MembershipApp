@@ -29,8 +29,10 @@ public record CreateMemberContract()
     public string PasswordHash { get; set; }
     public GenericId AreaId { get; set; }
     public GenericId MandalamId { get; set; } 
+    public GenericId PanchayatId { get; set;}
     public bool IsMemberOfAnyIndianRegisteredOrganization { get; set; }
     public bool IsKMCCWelfareScheme { get; set; }
+    public string CardNumber { get; private set; }
     public MemberStatus Status {get; set;}
     public DateTime CreatedAt { get; set; } 
     public GenericId CreatedBy { get; set; }

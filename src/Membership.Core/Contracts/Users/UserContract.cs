@@ -12,6 +12,7 @@ public record UserContract()
     public UserRole Role { get; set; }
     public string Designation { get; set; }
     public string PasswordHash { get; set; }
+    public Guid? StateId { get; set; }
     public Guid? CascadeId { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool IsActive { get; set; }

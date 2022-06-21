@@ -12,23 +12,56 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
 {
     private readonly IMemberRepository _memberRepository;
     private readonly IAreaRepository _areaRepository;
+    private readonly IUserService _userService;
 
-    public CreateMemberHandler(IMemberRepository memberRepository, IAreaRepository areaRepository)
+    public CreateMemberHandler(IMemberRepository memberRepository, IAreaRepository areaRepository,
+        IUserService userService)
     {
         _memberRepository = memberRepository;
         _areaRepository = areaRepository;
+        _userService = userService;
     }
 
     public async Task HandleAsync(CreateMember command)
     {
+        if (await _memberRepository.GetByEmailAsync(command.Email) is not null)
+        {
+            throw new EmailAlreadyInUseException(command.Email);
+        }
+
+        if (await _memberRepository.GetByEmiratesIdAsync(command.EmiratesId) is not null)
+        {
+            throw new EmiratesIdAlreadyInUseException(command.EmiratesId);
+        }
+
         var area = await _areaRepository.GetByIdAsync(command.AreaId);
 
         if (area is null)
         {
             throw new AreaNotFoundException(command.AreaId);
         }
-        
+
         var membershipId = _memberRepository.GenerateMembershipId(area.State?.Prefix);
+
+        if (await _memberRepository.GetByMemberIdAsync(command.Email) is not null)
+        {
+            throw new EmailAlreadyInUseException(command.Email);
+        }
+
+        var agent = _userService.gGetByIdAsync(command.AgentId);
+
+        if (agent is null)
+        {
+            throw new NotAuthorizedRoleException(command.Role);
+        }
+
+        var applicableAreas = _areaRepository.GetByStateIdAsync(agent.stateId).Select(x => x.Id);
+
+        if (!applicableAreas.Contains(command.AreaId))
+        {
+            throw new NotAuthorizedToCreateMemberForThisAreaException();
+        }
+
         var membership = Member.Create(new CreateMemberContract
         {
             Id = command.Id,
@@ -51,12 +84,14 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             AddressInIndia = command.AddressInIndia,
             PasswordHash = command.PasswordHash,
             AreaId = command.AreaId,
-            MandalamId = command.MandalamId,
+            MandalamId = agent.CascadeId,
+            PanchayatId = command.PanchayatId,
             IsMemberOfAnyIndianRegisteredOrganization = command.IsMemberOfAnyIndianRegisteredOrganization,
             IsKMCCWelfareScheme = command.IsKMCCWelfareScheme,
             CreatedAt = DateTime.UtcNow,
             CreatedBy = Guid.NewGuid()
         });
+
         await _memberRepository.AddAsync(membership);
     }
 }

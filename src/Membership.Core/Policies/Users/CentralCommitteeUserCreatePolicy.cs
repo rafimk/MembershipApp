@@ -16,4 +16,9 @@ internal sealed class CentralCommitteeUserCreatePolicy : IUserCreatePolicy
             UserRole.DisputeCommittee()
         };
     }
+
+    public Guid? GetStateId(Guid? cascadeId, Guid? parentId)
+    {
+        return null;
+    }
 }

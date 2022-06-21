@@ -14,4 +14,9 @@ internal sealed class DistrictAdminUserCreatePolicy : IUserCreatePolicy
             UserRole.MandalamAgent()
         };
     }
+
+    public Guid? GetStateId(Guid? cascadeId, Guid? parentId)
+    {
+        return parentId;
+    }
 }

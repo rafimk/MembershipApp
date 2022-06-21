@@ -26,7 +26,8 @@ public record CreateMember() : ICommand
     public string AddressInIndia { get; set; }
     public string PasswordHash { get; set; }
     public Guid AreaId { get; set; }
-    public Guid MandalamId { get; set; } 
+    public Guid PanchayatId { get; set; } 
     public bool IsMemberOfAnyIndianRegisteredOrganization { get; set; }
     public bool IsKMCCWelfareScheme { get; set; }
+    public Guid AgentId { get; set; }
 }

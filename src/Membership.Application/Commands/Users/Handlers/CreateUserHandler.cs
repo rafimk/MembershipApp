@@ -15,15 +15,18 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
 {
     private readonly IUserRepository _repository;
     private readonly IPasswordManager _passwordManager;
+    private readonly IUserService _userService;
     private readonly IQueryHandler<GetApplicableUserRole, IEnumerable<string>> _getApplicableUserRoleHandler;
     // private readonly IMessagePublisher _messagePublisher;
     private readonly IClock _clock;
 
     public CreateUserHandler(IUserRepository repository, IPasswordManager passwordManager,
-        IQueryHandler<GetApplicableUserRole, IEnumerable<string>> getApplicableUserRoleHandler, IClock clock)
+        IQueryHandler<GetApplicableUserRole, IEnumerable<string>> getApplicableUserRoleHandler, 
+        IUserService userService, IClock clock)
     {
         _repository = repository;
         _passwordManager = passwordManager;
+        _userService = userService;
         _getApplicableUserRoleHandler = getApplicableUserRoleHandler;
        // _messagePublisher = messagePublisher;
         _clock = clock;
@@ -45,6 +48,13 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             throw new NotAuthorizedRoleException(command.Role);
         }
 
+        var parentUser = _repository.gGetByIdAsync(command.UserId);
+
+        if (parentUser is null)
+        {
+            throw new NotAuthorizedRoleException(command.Role);
+        }
+
         var firstTimePassord = "admin@123"; // _passwordManager.Generate(); 
         var securedPassword = _passwordManager.Secure(firstTimePassord);
 
@@ -58,6 +68,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             Designation = command.Designation,
             PasswordHash = securedPassword,
             Role = new UserRole(command.Role),
+            StateId = _userService.GetStateId(command.cascadeId, command.userId),
             CascadeId = command.CascadeId,
             CreatedAt = _clock.Current(),
         };
