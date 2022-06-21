@@ -21,13 +21,15 @@ public class MembersController : ControllerBase
     private readonly ICommandHandler<DeactivateMember> _deactivateMemberHaneHandler;
     private readonly IQueryHandler<GetMemberById, MemberDto> _getMemberByIdHandler;
     private readonly IQueryHandler<GetMembers, IEnumerable<MemberDto>> _getMembersHandler;
+    private readonly IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> _getMembersByRoleHandler;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
         ICommandHandler<UpdateMember> updateMemberHaneHandler,
         ICommandHandler<ActivateMember> activateMemberHaneHandler,
         ICommandHandler<DeactivateMember> deactivateMemberHaneHandler,
         IQueryHandler<GetMembers, IEnumerable<MemberDto>> getMembersHandler,
-        IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler)
+        IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler,
+        IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> getMembersByRoleHandler)
     {
         _createMemberHandler = createMemberHandler;
         _updateMemberHaneHandler = updateMemberHaneHandler;
@@ -35,6 +37,7 @@ public class MembersController : ControllerBase
         _deactivateMemberHaneHandler = deactivateMemberHaneHandler;
         _getMembersHandler = getMembersHandler;
         _getMemberByIdHandler = getMemberByIdHandler;
+        _getMembersByRoleHandler = getMembersByRoleHandler;
     }
     
     [HttpGet()]
@@ -65,6 +68,28 @@ public class MembersController : ControllerBase
         }
 
         return member;
+    }
+    
+    [HttpGet("role")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<MemberDto>> GetMembersByRole()
+    {
+        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
+        {
+            return NotFound();
+        }
+
+        var userId = Guid.Parse(User?.Identity?.Name);
+        
+        var members = await _getMembersByRoleHandler.HandleAsync(new GetMembersByRole {UserId = userId});
+        
+        if (members is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(members);
     }
 
     [HttpPost]

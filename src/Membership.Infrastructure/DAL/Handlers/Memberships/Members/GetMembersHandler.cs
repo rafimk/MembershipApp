@@ -1,7 +1,6 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;

@@ -18,6 +18,7 @@ namespace Membership.Api.Controllers.Users;
 public class UsersController : ControllerBase
 {
     private readonly IQueryHandler<GetUsers, IEnumerable<UserDto>> _getUsersHandler;
+    private readonly IQueryHandler<GetUsersByRole, IEnumerable<UserDto>> _getUsersByRoleHandler;
     private readonly IQueryHandler<GetUserById, UserDto> _getUserByIdHandler;
     private readonly IQueryHandler<GetApplicableUserRole, IEnumerable<string>> _getApplicableUserRoleHandler;
     private readonly ICommandHandler<SignIn> _signInHandler;
@@ -27,6 +28,7 @@ public class UsersController : ControllerBase
     public UsersController(ICommandHandler<SignIn> signInHandler,
         IQueryHandler<GetUsers, IEnumerable<UserDto>> getUsersHandler,
         IQueryHandler<GetUserById, UserDto> getUserByIdHandler,
+        IQueryHandler<GetUsersByRole, IEnumerable<UserDto>> getUsersByRoleHandler,
         ICommandHandler<CreateUser> createUserHandler,
         IQueryHandler<GetApplicableUserRole, IEnumerable<string>> getApplicableUserRoleHandler,
         ITokenStorage tokenStorage)
@@ -34,6 +36,7 @@ public class UsersController : ControllerBase
         _signInHandler = signInHandler;
         _createUserHandler = createUserHandler;
         _getUsersHandler = getUsersHandler;
+        _getUsersByRoleHandler = getUsersByRoleHandler;
         _getUserByIdHandler = getUserByIdHandler;
         _getApplicableUserRoleHandler = getApplicableUserRoleHandler;
         _tokenStorage = tokenStorage;
@@ -67,6 +70,22 @@ public class UsersController : ControllerBase
         var user = await _getUserByIdHandler.HandleAsync(new GetUserById {UserId = userId});
 
         return user;
+    }
+    
+    [HttpGet("role")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<UserDto>> GetUsersByRole()
+    {
+        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
+        {
+            return NotFound();
+        }
+
+        var userId = Guid.Parse(User?.Identity?.Name);
+        var users = await _getUsersByRoleHandler.HandleAsync(new GetUsersByRole {UserId = userId});
+
+        return Ok(users);
     }
 
     [HttpPost]

@@ -50,6 +50,10 @@ Content-Type: application/json
 }
 
 ###
+GET {{url}}/users/role
+Authorization: Bearer {{accessToken}}
+
+###
 GET {{url}}/lookups
 
 ###
@@ -95,15 +99,15 @@ POST   {{url}}/members
 Content-Type: application/json
 
 {
-    "fullName": "Muhammed Rafi",
-    "emiratesIdNumber": "784-1975-5494627-3",
+    "fullName": "Sameer 6",
+    "emiratesIdNumber": "784-1979-9625765-4",
     "emiratesIdExpiry": "2023-08-15",
     "emiratesIdFrontPage": null,
     "emiratesIdLastPage": null,
     "DateOfBirth": "1975-03-04",
     "mobileNumber": "0554296326",
     "alternativeContactNumber": "0501114111",
-    "email": "test@test.com",
+    "email": "test8@test.com",
     "passportNumber": "2322323",
     "passportExpiry": "2024-02-02",
     "passportFrontPage": null,

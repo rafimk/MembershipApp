@@ -12,6 +12,7 @@ internal sealed class CentralCommitteeUserCreatePolicy : IUserCreatePolicy
     {
         return new List<UserRole>
         {
+            UserRole.CentralCommitteeAdmin(),
             UserRole.StateAdmin(),
             UserRole.DisputeCommittee()
         };
