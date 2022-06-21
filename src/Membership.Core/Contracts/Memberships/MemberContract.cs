@@ -33,7 +33,7 @@ public record MemberContract()
     public bool IsMemberOfAnyIndianRegisteredOrganization { get; set; }
     public bool IsKMCCWelfareScheme { get; set; }
     public MemberStatus Status {get; set;}
-     public string CardNumber { get; private set; }
+    public string CardNumber { get; set; }
     public DateTime CreatedAt { get; set; } 
     public GenericId CreatedBy { get; set; }
     public bool IsActive { get; set; }

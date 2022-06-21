@@ -1,19 +1,23 @@
-using Membership.Core.Entities.Users;
+using Membership.Core.DomainServices.Users;
+using Membership.Core.Policies.Users;
+using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
+using Membership.Infrastructure.DAL.Exceptions;
 
-namespace Membership.Core.DomainServices.Users;
+namespace Membership.Infrastructure.DAL.Services;
 
 internal sealed class UserService : IUserService
 {
     private readonly IEnumerable<IUserCreatePolicy> _policies;
     private readonly IUserRepository _userRepository;
    
-    public UserService(Parameters)
+    public UserService(IEnumerable<IUserCreatePolicy> policies, IUserRepository userRepository)
     {
-        
+        _policies = policies;
+        _userRepository = userRepository;
     }
     
-    public Task<IEnumerable<string>> GetApplicableUserRolesAsync(UserRole role, string userId)
+    public async Task<IEnumerable<string>> GetApplicableUserRolesAsync(UserRole role, Guid? userId)
     {
         var user = await _userRepository.GetByIdAsync(userId);
 
@@ -36,7 +40,7 @@ internal sealed class UserService : IUserService
         return roles;
     }
 
-    public Guid? GetStateId(Guid? cascadeId, Guid? parentUserId)
+    public async Task<Guid?> GetStateId(Guid? cascadeId, Guid? parentUserId)
     {
         var user = await _userRepository.GetByIdAsync(parentUserId);
 

@@ -22,10 +22,12 @@ internal sealed class PostgresFileAttachmentRepository : IFileAttachmentReposito
     public async Task AddAsync(FileAttachment fileAttachment)
     {
         await _dbContext.FileAttachments.AddAsync(fileAttachment);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(FileAttachment fileAttachment)
     {
         _dbContext.FileAttachments.Update(fileAttachment);
+        await _dbContext.SaveChangesAsync();
     }
 }

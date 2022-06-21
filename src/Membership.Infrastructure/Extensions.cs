@@ -1,8 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using Membership.Application.Abstractions;
 using Membership.Core.Abstractions;
+using Membership.Core.DomainServices.Users;
 using Membership.Infrastructure.Auth;
 using Membership.Infrastructure.DAL;
+using Membership.Infrastructure.DAL.Services;
 using Membership.Infrastructure.Exceptions;
 using Membership.Infrastructure.Logging;
 using Membership.Infrastructure.Security;
@@ -27,7 +29,7 @@ public static class Extensions
         
         services
             .AddPostgres(configuration)
-            // .AddSingleton<IWeeklyParkingSpotRepository, InMemoryWeeklyParkingSpotRepository>()
+            .AddScoped<IUserService, UserService>()
             .AddSingleton<IClock, Clock>();
 
         services.AddCustomLogging();

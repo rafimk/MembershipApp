@@ -61,6 +61,9 @@ internal sealed class MemberConfiguration : IEntityTypeConfiguration<Member>
         builder.Property(x => x.MandalamId)
             .HasConversion(x => x.Value, x => new GenericId(x))
             .IsRequired();
+        builder.Property(x => x.PanchayatId)
+            .HasConversion(x => x.Value, x => new GenericId(x))
+            .IsRequired();
         builder.Property(x => x.CreatedBy)
             .HasConversion(x => x.Value, x => new GenericId(x))
             .IsRequired();

@@ -1,8 +1,11 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Commons;
+using Membership.Application.Exceptions.Users;
 using Membership.Application.Queries.Commons;
 using Membership.Application.Queries.Users;
+using Membership.Core.DomainServices.Users;
 using Membership.Core.Repositories.Users;
+using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Commons;
@@ -11,22 +14,26 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
 {
     private readonly MembershipDbContext _dbContext;
     private readonly IUserRepository _userRepository;
-    private readonly IQueryHandler<GetApplicableUserRole, IEnumerable<string>> _getApplicableUserRoleHandler;
+    private readonly IUserService _userService;
 
     public GetMyLookupsHandler(MembershipDbContext dbContext, 
-        IQueryHandler<GetApplicableUserRole, IEnumerable<string>> getApplicableUserRoleHandler,
-        IUserRepository userRepository)
+        IUserService userService, IUserRepository userRepository)
     {
         _dbContext = dbContext;
-        _getApplicableUserRoleHandler = getApplicableUserRoleHandler;
+        _userService = userService;
         _userRepository = userRepository;
     }
 
     public async Task<MyLookupsDto> HandleAsync(GetMyLookups query)
     {
-        var roles = await _getApplicableUserRoleHandler.HandleAsync(new GetApplicableUserRole {UserId = query.UserId});
-
         var userInfo = await _userRepository.GetByIdAsync(query.UserId);
+        
+        var roles = await _userService.GetApplicableUserRolesAsync(userInfo.Role, query.UserId);
+        
+        if (userInfo is null)
+        {
+            throw new UserNotFoundException(query.UserId);
+        }
         
         var lookupsDto = new MyLookupsDto
         {
@@ -65,6 +72,25 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
             lookupsDto.CascadeData = cascadeData;
             lookupsDto.CascadeTitle = "District";
         }
+
+        if (userInfo.Role == UserRole.MandalamAgent())
+        {
+            var areas = await _dbContext.Areas
+                .AsNoTracking()
+                .Where(x => x.StateId.ToString() == userInfo.StateId.ToString())
+                .Select(x => x.AsDto())
+                .ToListAsync();
+            
+            var panchayaths = await _dbContext.Panchayats
+                .AsNoTracking()
+                .Where(x => x.MandalamId.ToString() == userInfo.CascadeId.ToString())
+                .Select(x => x.AsDto())
+                .ToListAsync();
+
+            lookupsDto.Areas = areas;
+            lookupsDto.Panchayats = panchayaths;
+        }
+        
         return lookupsDto;
     }
 }

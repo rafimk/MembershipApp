@@ -1,10 +1,14 @@
 ﻿using Membership.Application.Abstractions;
+using Membership.Application.Exceptions.Memberships;
 using Membership.Application.Exceptions.Nationalities;
+using Membership.Application.Exceptions.Users;
 using Membership.Core.Consts;
 using Membership.Core.Contracts.Memberships;
+using Membership.Core.DomainServices.Users;
 using Membership.Core.Entities.Memberships.Members;
 using Membership.Core.Repositories.Memberships;
 using Membership.Core.Repositories.Nationalities;
+using Membership.Core.Repositories.Users;
 
 namespace Membership.Application.Commands.Memberships.Members.Handlers;
 
@@ -12,13 +16,15 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
 {
     private readonly IMemberRepository _memberRepository;
     private readonly IAreaRepository _areaRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IUserService _userService;
 
     public CreateMemberHandler(IMemberRepository memberRepository, IAreaRepository areaRepository,
-        IUserService userService)
+        IUserRepository userRepository, IUserService userService)
     {
         _memberRepository = memberRepository;
         _areaRepository = areaRepository;
+        _userRepository = userRepository;
         _userService = userService;
     }
 
@@ -29,9 +35,9 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             throw new EmailAlreadyInUseException(command.Email);
         }
 
-        if (await _memberRepository.GetByEmiratesIdAsync(command.EmiratesId) is not null)
+        if (await _memberRepository.GetByEmiratesIdAsync(command.EmiratesIdNumber) is not null)
         {
-            throw new EmiratesIdAlreadyInUseException(command.EmiratesId);
+            throw new EmiratesIdNumberAlreadyInUseException(command.EmiratesIdNumber);
         }
 
         var area = await _areaRepository.GetByIdAsync(command.AreaId);
@@ -48,16 +54,16 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             throw new EmailAlreadyInUseException(command.Email);
         }
 
-        var agent = _userService.gGetByIdAsync(command.AgentId);
+        var agent = await _userRepository.GetByIdAsync(command.AgentId);
 
         if (agent is null)
         {
-            throw new NotAuthorizedRoleException(command.Role);
+            throw new AgentNotFoundException(command.AgentId);
         }
 
-        var applicableAreas = _areaRepository.GetByStateIdAsync(agent.stateId).Select(x => x.Id);
+        var applicableAreasId = (await _areaRepository.GetByStateIdAsync(agent.StateId)).Select(x => x.Id.ToString());
 
-        if (!applicableAreas.Contains(command.AreaId))
+        if (!applicableAreasId.Contains(command.AreaId.ToString()))
         {
             throw new NotAuthorizedToCreateMemberForThisAreaException();
         }

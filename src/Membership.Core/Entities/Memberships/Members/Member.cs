@@ -38,6 +38,8 @@ public class Member
     public Area Area { get; private set; }
     public GenericId MandalamId { get; private set; }
     public Mandalam Mandalam { get; private set; }
+    public GenericId PanchayatId { get; private set; }
+    public Panchayat Panchayat { get; private set; }
     public bool IsMemberOfAnyIndianRegisteredOrganization { get; private set; }
     public bool IsKMCCWelfareScheme { get; private set; }
     public double CollectedAmount { get; private set; }
