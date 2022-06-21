@@ -31,7 +31,7 @@ GET {{url}}/users/me
 Authorization: Bearer {{accessToken}}
 
 ###
-GET {{url}}/users/roles
+GET {{url}}/users/role
 Authorization: Bearer {{accessToken}}
 
 ###
@@ -95,7 +95,12 @@ GET {{url}}/area/{{stateId}}
 GET {{url}}/mandalams/district/{{districtId}}
 
 ###
+GET {{url}}/members/role
+Authorization: Bearer {{accessToken}}
+
+###
 POST   {{url}}/members
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
@@ -120,7 +125,7 @@ Content-Type: application/json
     "addressInIndia": "Thakwa Nagar",
     "passwordHash": "123",
     "areaId": "9073BB7B-5E09-4FD7-80A4-1D874BC78DC3",
-    "mandalamId": "fada7507-af5b-4b44-ab76-cd11db72d449", 
+    "PanchayatId": "2C920E18-0681-4E6F-AB4D-00A602FC88CA", 
     "isMemberOfAnyIndianRegisteredOrganization": true,
     "isKMCCWelfareScheme": true
 }

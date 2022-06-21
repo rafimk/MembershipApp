@@ -30,6 +30,13 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
 
     public async Task HandleAsync(CreateMember command)
     {
+        var agent = await _userRepository.GetByIdAsync(command.AgentId);
+
+        if (agent is null)
+        {
+            throw new AgentNotFoundException(command.AgentId);
+        }
+        
         if (await _memberRepository.GetByEmailAsync(command.Email) is not null)
         {
             throw new EmailAlreadyInUseException(command.Email);
@@ -53,14 +60,7 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
         {
             throw new EmailAlreadyInUseException(command.Email);
         }
-
-        var agent = await _userRepository.GetByIdAsync(command.AgentId);
-
-        if (agent is null)
-        {
-            throw new AgentNotFoundException(command.AgentId);
-        }
-
+        
         var applicableAreasId = (await _areaRepository.GetByStateIdAsync(agent.StateId)).Select(x => x.Id.ToString());
 
         if (!applicableAreasId.Contains(command.AreaId.ToString()))
