@@ -20,6 +20,6 @@ internal sealed class CentralCommitteeUserCreatePolicy : IUserCreatePolicy
 
     public Guid? GetStateId(Guid? cascadeId, Guid? parentId)
     {
-        return null;
+        return cascadeId;
     }
 }

@@ -2,7 +2,6 @@
 using Membership.Application.DTO.Commons;
 using Membership.Application.Exceptions.Users;
 using Membership.Application.Queries.Commons;
-using Membership.Application.Queries.Users;
 using Membership.Core.DomainServices.Users;
 using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
@@ -39,6 +38,10 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
         {
             CascadeData = null,
             CascadeTitle = null,
+            Areas = null,
+            Panchayats = null,
+            Qualifications = null,
+            Professions = null,
             ApplicableUserRole = roles
         };
         
@@ -66,7 +69,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
         {
             var cascadeData = await _dbContext.Mandalams
                 .AsNoTracking()
-                .Where(x => x.DistrictId.ToString() == userInfo.CascadeId.ToString())
+                .Where(x => x.DistrictId == new GenericId((Guid)userInfo.CascadeId))
                 .Select(x => x.AsCascadeDto())
                 .ToListAsync();
             lookupsDto.CascadeData = cascadeData;
@@ -76,19 +79,35 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
         if (userInfo.Role == UserRole.MandalamAgent())
         {
             var areas = await _dbContext.Areas
+                .Include(x => x.State)
                 .AsNoTracking()
-                .Where(x => x.StateId.ToString() == userInfo.StateId.ToString())
+                .Where(x => x.StateId == new GenericId((Guid)userInfo.StateId))
                 .Select(x => x.AsDto())
                 .ToListAsync();
             
             var panchayaths = await _dbContext.Panchayats
+                .Include(x => x.Mandalam)
                 .AsNoTracking()
-                .Where(x => x.MandalamId.ToString() == userInfo.CascadeId.ToString())
+                .Where(x => x.MandalamId == new GenericId((Guid)userInfo.CascadeId))
+                .Select(x => x.AsDto())
+                .ToListAsync();
+            
+            var qualifications = await _dbContext.Qualifications
+                .AsNoTracking()
+                .Where(x => !x.IsDeleted)
+                .Select(x => x.AsDto())
+                .ToListAsync();
+            
+            var professions = await _dbContext.Professions
+                .AsNoTracking()
+                .Where(x => !x.IsDeleted)
                 .Select(x => x.AsDto())
                 .ToListAsync();
 
             lookupsDto.Areas = areas;
             lookupsDto.Panchayats = panchayaths;
+            lookupsDto.Qualifications = qualifications;
+            lookupsDto.Professions = professions;
         }
         
         return lookupsDto;

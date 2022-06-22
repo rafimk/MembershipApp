@@ -1,0 +1,42 @@
+@url = http://localhost:5000
+@districtId = 30ba1c7f-4bd7-43d9-9f62-07c377feb667
+
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "admin@admin.com",
+    "password": "admin@123"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+
+###
+GET {{url}}/districts
+
+###
+GET {{url}}/districts/{{districtId}}
+
+####
+POST {{url}}/districts
+Content-Type: application/json
+
+{
+    "name": "New District"
+}
+
+###
+PUT  {{url}}/districts/{{districtId}}
+Content-Type: application/json
+
+{
+    "name": "New District changed"
+}
+
+###
+DELETE {{url}}/districts/{{districtId}}

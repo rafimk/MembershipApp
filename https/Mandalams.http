@@ -1,0 +1,49 @@
+@url = http://localhost:5000
+@mandalamId = 3912657e-df36-40c0-893d-2be8ad374109
+@districtId = 8e8e52b9-8605-4537-abec-fa2a3492be65
+
+
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "admin@admin.com",
+    "password": "admin@123"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+
+###
+GET {{url}}/mandalams
+
+###
+GET {{url}}/mandalams/{{mandalamId}}
+
+###
+GET {{url}}/mandalams/district/{{districtId}}
+
+####
+POST {{url}}/mandalams
+Content-Type: application/json
+
+{
+    "name": "New Mandalam"
+    "sateId": {{districtId}}
+}
+
+###
+PUT  {{url}}/mandalams/{{mandalamId}}
+Content-Type: application/json
+
+{
+    "name": "Mandalam name changed",
+    "districtId": {{districtId}}
+}
+
+###
+DELETE {{url}}/mandalams/{{mandalamId}}

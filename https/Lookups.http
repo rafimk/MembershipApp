@@ -1,0 +1,23 @@
+@url = http://localhost:5000
+
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "state-admin@kmcc.com",
+    "password": "admin@123"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+###
+GET {{url}}/lookups
+
+###
+GET {{url}}/lookups/me
+Authorization: Bearer {{accessToken}}
+

@@ -1,0 +1,81 @@
+@url = http://localhost:5000
+@userId = 3912657e-df36-40c0-893d-2be8ad374109
+@districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
+
+
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "district-admin@kmcc.com",
+    "password": "admin@123"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+
+###
+GET {{url}}/users
+
+###
+GET {{url}}/users/{{userId}}
+
+
+###
+GET {{url}}/users/me
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/users/role
+Authorization: Bearer {{accessToken}}
+
+###
+POST {{url}}/users
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "fullName": "mandalam-agent",
+    "email": "mandalam-agent@kmcc.com",
+    "mobileNumber": "0501234123",
+    "alternativeContactNumber": "0501234123",
+    "designation": "mandalam-agent",
+    "role": "mandalam-agent",
+    "cascadeId": "fada7507-af5b-4b44-ab76-cd11db72d449"
+}
+
+###
+GET {{url}}/users/role
+Authorization: Bearer {{accessToken}}
+
+
+###
+PUT  {{url}}/users/{{userId}}
+Content-Type: application/json
+
+{
+    "fullName": "Updated Name",
+    "mobileNumber": "0501234123",
+    "alternativeContactNumber": "0501234123",
+    "designation": "state admin"
+}
+
+###
+PUT  {{url}}/users/activate/{{userId}}
+
+###
+PUT  {{url}}/users/deactivate/{{userId}}
+
+###
+PUT  {{url}}/users/verify
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "verifyCode": "Updated Name",
+    "mobileLastFourDigit": ""
+}

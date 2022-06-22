@@ -36,8 +36,8 @@ public static class Extensions
             Name = entity.Name,
             State = new StateDto
             {
-                Id = entity.State.Id.Value,
-                Name = entity.State.Name,
+                Id = entity.StateId,
+                Name = entity.State?.Name,
                 CreatedAt = entity.State.CreatedAt
             },
             CreatedAt = entity.CreatedAt

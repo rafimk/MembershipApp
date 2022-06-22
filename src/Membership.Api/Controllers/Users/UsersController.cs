@@ -23,6 +23,11 @@ public class UsersController : ControllerBase
     private readonly IQueryHandler<GetApplicableUserRole, IEnumerable<string>> _getApplicableUserRoleHandler;
     private readonly ICommandHandler<SignIn> _signInHandler;
     private readonly ICommandHandler<CreateUser> _createUserHandler;
+    private readonly ICommandHandler<UpdateUser> _updateUserHandler;
+    private readonly ICommandHandler<ActivateUser> _activateUserHandler;
+    private readonly ICommandHandler<DeactivateUser> _deactivateUserHandler;
+    private readonly ICommandHandler<VerifyUser> _verifyUserHandler;
+    private readonly ICommandHandler<ChangeUserPassword> _changeUserPasswordHandler;
     private readonly ITokenStorage _tokenStorage;
 
     public UsersController(ICommandHandler<SignIn> signInHandler,
@@ -31,6 +36,11 @@ public class UsersController : ControllerBase
         IQueryHandler<GetUsersByRole, IEnumerable<UserDto>> getUsersByRoleHandler,
         ICommandHandler<CreateUser> createUserHandler,
         IQueryHandler<GetApplicableUserRole, IEnumerable<string>> getApplicableUserRoleHandler,
+        ICommandHandler<UpdateUser> updateUserHandler,
+        ICommandHandler<ActivateUser> activateUserHandler,
+        ICommandHandler<DeactivateUser> deactivateUserHandler,
+        ICommandHandler<VerifyUser> verifyUserHandler,
+        ICommandHandler<ChangeUserPassword> changeUserPasswordHandler,
         ITokenStorage tokenStorage)
     {
         _signInHandler = signInHandler;
@@ -39,6 +49,11 @@ public class UsersController : ControllerBase
         _getUsersByRoleHandler = getUsersByRoleHandler;
         _getUserByIdHandler = getUserByIdHandler;
         _getApplicableUserRoleHandler = getApplicableUserRoleHandler;
+        _updateUserHandler = updateUserHandler;
+        _activateUserHandler = activateUserHandler;
+        _deactivateUserHandler = deactivateUserHandler;
+        _verifyUserHandler = verifyUserHandler;
+        _changeUserPasswordHandler = changeUserPasswordHandler;
         _tokenStorage = tokenStorage;
     }
 
@@ -87,6 +102,31 @@ public class UsersController : ControllerBase
 
         return Ok(users);
     }
+    
+    [HttpGet]
+    [SwaggerOperation("Get list of users")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult<IEnumerable<UserDto>>> Get()
+        => Ok(await _getUsersHandler.HandleAsync(new GetUsers {}));
+
+    [HttpGet("roles")]
+    [SwaggerOperation("Get list of applicable user roles")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult<IEnumerable<string>>> GetMyApplicableUserRole()
+    {
+        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
+        {
+            return NotFound();
+        }
+
+        var userId = Guid.Parse(User.Identity?.Name);
+        
+        return Ok(await _getApplicableUserRoleHandler.HandleAsync(new GetApplicableUserRole { UserId = userId } ));
+    }
 
     [HttpPost]
     [SwaggerOperation("Create the user account")]
@@ -117,28 +157,52 @@ public class UsersController : ControllerBase
         return jwt;
     }
     
-    [HttpGet]
-    [SwaggerOperation("Get list of users")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<IEnumerable<UserDto>>> Get()
-        => Ok(await _getUsersHandler.HandleAsync(new GetUsers {}));
-
-    [HttpGet("roles")]
-    [SwaggerOperation("Get list of applicable user roles")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<IEnumerable<string>>> GetMyApplicableUserRole()
+    [HttpPut("{userId:guid}")]
+    public async Task<ActionResult> Put(Guid userId, UpdateUser command)
+    {
+        await _updateUserHandler.HandleAsync(command with {UserId = userId});
+        return NoContent();
+    }
+    
+    [HttpPut("activate/{userId:guid}")]
+    public async Task<ActionResult> Activate(Guid userId)
+    {
+        await _activateUserHandler.HandleAsync( new ActivateUser {UserId = userId});
+        return NoContent();
+    }
+    
+    [HttpPut("deactivate/{userId:guid}")]
+    public async Task<ActionResult> Deactivate(Guid userId)
+    {
+        await _deactivateUserHandler.HandleAsync( new DeactivateUser {UserId = userId});
+        return NoContent();
+    }
+    
+    [HttpPut("verify")]
+    public async Task<ActionResult> Verify(VerifyUser command)
     {
         if (string.IsNullOrWhiteSpace(User.Identity?.Name))
         {
             return NotFound();
         }
 
-        var userId = Guid.Parse(User.Identity?.Name);
-        
-        return Ok(await _getApplicableUserRoleHandler.HandleAsync(new GetApplicableUserRole { UserId = userId } ));
+        var userId = Guid.Parse(User?.Identity?.Name);
+        command = command with {UserId = userId};
+        await _verifyUserHandler.HandleAsync(command);
+        return NoContent();
+    }
+    
+    [HttpPut("password")]
+    public async Task<ActionResult> ChangeUserPassword(ChangeUserPassword command)
+    {
+        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
+        {
+            return NotFound();
+        }
+
+        var userId = Guid.Parse(User?.Identity?.Name);
+        command = command with {UserId = userId};
+        await _changeUserPasswordHandler.HandleAsync(command);
+        return NoContent();
     }
 }

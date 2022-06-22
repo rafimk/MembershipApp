@@ -1,0 +1,44 @@
+@url = http://localhost:5000
+@stateId = c4613305-d19a-4719-931a-58d7d5853a41
+
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "admin@admin.com",
+    "password": "admin@123"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+
+###
+GET {{url}}/states
+
+###
+GET {{url}}/states/{{stateId}}
+
+###
+POST {{url}}/states
+Content-Type: application/json
+
+{
+    "name": "New State 12",
+    "prefix": "NEW"
+}
+
+###
+PUT  {{url}}/states/{{stateId}}
+Content-Type: application/json
+
+{
+    "name": "FUJAIRAH -"
+}
+
+###
+DELETE {{url}}/states/{{stateId}}
+

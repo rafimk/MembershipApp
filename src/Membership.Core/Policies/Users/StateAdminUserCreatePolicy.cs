@@ -18,6 +18,6 @@ internal sealed class StateAdminUserCreatePolicy : IUserCreatePolicy
 
     public Guid? GetStateId(Guid? cascadeId, Guid? parentId)
     {
-        return cascadeId;
+        return parentId;
     }
 }
