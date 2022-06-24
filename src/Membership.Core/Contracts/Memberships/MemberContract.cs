@@ -9,15 +9,15 @@ public record MemberContract()
     public MembershipId MembershipId { get; set; }
     public FullName FullName { get; set; } 
     public EmiratesIdNumber EmiratesIdNumber { get; set; }
-    public Date EmiratesIdExpiry { get; set; }
+    public DateTime EmiratesIdExpiry { get; set; }
     public Guid? EmiratesIdFrontPage { get; set;}
     public Guid? EmiratesIdLastPage { get; set;}
-    public Date DateOfBirth { get; set; } 
+    public DateTime DateOfBirth { get; set; } 
     public MobileNumber MobileNumber { get; set; }
     public MobileNumber AlternativeContactNumber { get; set; }
     public Email Email { get; set; }
     public PassportNumber PassportNumber { get; set; }
-    public Date PassportExpiry { get; set; }
+    public DateTime PassportExpiry { get; set; }
     public Guid? PassportFrontPage { get; set;}
     public Guid? PassportLastPage { get; set;}
     public GenericId ProfessionId { get; set; }

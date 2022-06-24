@@ -143,7 +143,7 @@ public class UsersController : ControllerBase
         
         command = command with {Id = Guid.NewGuid(), LoggedUserId = userId};
         await _createUserHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command, null);
+        return CreatedAtAction(nameof(Get), new {command.Id}, null);
     }
     
     [HttpPost("sign-in")]

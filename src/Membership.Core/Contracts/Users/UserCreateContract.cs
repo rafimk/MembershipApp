@@ -14,5 +14,6 @@ public record UserCreateContract()
     public UserRole Role { get; set; }
     public Guid? StateId { get; set; }
     public Guid? CascadeId { get; set; }
+    public string CascadeName { get; set; }
     public DateTime CreatedAt { get; set; }
 }

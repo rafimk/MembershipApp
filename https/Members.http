@@ -1,0 +1,50 @@
+@url = http://localhost:5000
+@userId = 3912657e-df36-40c0-893d-2be8ad374109
+@districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
+
+
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "mandalam-agent@kmcc.com",
+    "password": "admin@123"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+
+###
+POST {{url}}/members
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "fullName": "First Member",
+    "emiratesIdNumber": "784-1979-9625765-4",
+    "emiratesIdExpiry": "2023-08-15",
+    "emiratesIdFrontPage": null,
+    "emiratesIdLastPage": null,
+    "dateOfBirth": "1980-01-01",
+    "mobileNumber": "0501234123",
+    "alternativeContactNumber": "0501234123",
+    "email": "first.member@member.com",
+    "passportNumber": "T453256",
+    "passportExpiry": "2025-08-15",
+    "passportFrontPage": null,
+    "passportLastPage": null,
+    "professionId" : "150c5a51-cd2e-4021-8afc-e0767420dca7",
+    "qualificationId": "12cedccf-b2f0-4cd5-91a7-ad64464cdd90",
+    "bloodGroup": 0,
+    "photo": null,
+    "houseName": "First Home",
+    "addressInIndia": "First Street",
+    "areaId": "3d0630fa-6742-4b87-a48c-b0c6096e2583",
+    "panchayatId": "2c920e18-0681-4e6f-ab4d-00a602fc88ca",
+    "isMemberOfAnyIndianRegisteredOrganization": false,
+    "isKMCCWelfareScheme": false
+}
