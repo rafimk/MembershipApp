@@ -16,6 +16,7 @@ public class User
     public UserRole Role { get; private set; }
     public Guid? StateId { get; private set; }
     public Guid? CascadeId { get; private set; }
+    public string CascadeName { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public bool IsActive {get; private set;}
     public DateTime? VerifiedAt { get; private set; }
@@ -36,6 +37,7 @@ public class User
         Role = contract.Role;
         StateId = contract.StateId;
         CascadeId = contract.CascadeId;
+        CascadeName = contract.CascadeName;
         CreatedAt = contract.CreatedAt;
         IsActive = contract.IsActive;
     }
@@ -53,6 +55,7 @@ public class User
             Role = contract.Role,
             StateId = contract.StateId,
             CascadeId = contract.CascadeId,
+            CascadeName = contract.CascadeName,
             CreatedAt = contract.CreatedAt,
             IsActive = true
         });

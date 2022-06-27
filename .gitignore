@@ -330,6 +330,8 @@ ASALocalRun/
 
 logs/
 
+out/
+
 .vscode/
 
 .DS_Store

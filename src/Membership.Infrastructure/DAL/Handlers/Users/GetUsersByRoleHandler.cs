@@ -30,6 +30,8 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, IEnu
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();
+        
+        
 
         return availableUsers.Where(x => applicableUserRoles.Contains(x.Role)).ToList();
     }

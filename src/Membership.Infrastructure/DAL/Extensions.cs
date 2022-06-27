@@ -37,7 +37,7 @@ internal static class Extensions
         services.AddScoped<IPanchayatRepository, PostgresPanchayatRepository>();
         
         services.AddScoped<IUserRepository, PostgresUserRepository>();
-        
+       
         services.AddHostedService<DatabaseInitializer>();
         services.AddScoped<IUnitOfWork, PostgresUnitOfWork>();
 

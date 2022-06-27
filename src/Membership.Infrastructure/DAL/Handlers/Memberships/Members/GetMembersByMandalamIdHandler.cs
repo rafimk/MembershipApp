@@ -17,6 +17,11 @@ internal sealed class GetMembersByMandalamIdHandler : IQueryHandler<GetMembersBy
     {
         var mandalamId = new GenericId(query.MandalamId);
         return await _dbContext.Members
+            .Include(x => x.Profession)
+            .Include(x => x.Qualification)
+            .Include(x => x.Mandalam)
+            .Include(x => x.Panchayat)
+            .Include(x => x.Area).ThenInclude(x => x.State)
             .AsNoTracking()
             .Where(x => x.MandalamId == mandalamId)
             .Select(x => x.AsDto())

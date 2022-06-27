@@ -6,6 +6,7 @@ using Membership.Infrastructure.Auth;
 using Membership.Infrastructure.DAL;
 using Membership.Infrastructure.DAL.Services;
 using Membership.Infrastructure.Exceptions;
+using Membership.Infrastructure.FileManagement;
 using Membership.Infrastructure.Logging;
 using Membership.Infrastructure.Security;
 using Membership.Infrastructure.Time;
@@ -24,13 +25,15 @@ public static class Extensions
     {
         services.AddControllers();
         services.Configure<AppOptions>(configuration.GetRequiredSection("app"));
+        services.Configure<FileOptions>(configuration.GetRequiredSection("file"));
         services.AddSingleton<ExceptionMiddleware>();
         services.AddHttpContextAccessor();
-        
+
         services
             .AddPostgres(configuration)
             .AddScoped<IUserService, UserService>()
-            .AddSingleton<IClock, Clock>();
+            .AddSingleton<IClock, Clock>()
+            .AddScoped<IBufferedFileUploadService, BufferedFileUploadLocalService>();
 
         services.AddCustomLogging();
         services.AddSecurity();
@@ -61,12 +64,13 @@ public static class Extensions
     {
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseSwagger();
-        app.UseReDoc(reDoc =>
-        {
-            reDoc.RoutePrefix = "docs";
-            reDoc.SpecUrl("/swagger/v1/swagger.json");
-            reDoc.DocumentTitle = "Membership API";
-        });
+        app.UseSwaggerUI();
+        // app.UseReDoc(reDoc =>
+        // {
+        //     reDoc.RoutePrefix = "docs";
+        //     reDoc.SpecUrl("/swagger/v1/swagger.json");
+        //     reDoc.DocumentTitle = "Membership API";
+        // });
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();

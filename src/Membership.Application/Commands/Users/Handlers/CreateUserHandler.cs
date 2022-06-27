@@ -7,6 +7,7 @@ using Membership.Core.Abstractions;
 using Membership.Core.Contracts.Users;
 using Membership.Core.DomainServices.Users;
 using Membership.Core.Entities.Users;
+using Membership.Core.Repositories.Nationalities;
 using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
 
@@ -17,16 +18,25 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
     private readonly IUserRepository _userRepository;
     private readonly IPasswordManager _passwordManager;
     private readonly IUserService _userService;
+
+    private readonly IStateRepository _stateRepository;
+    private readonly IDistrictRepository _districtRepository;
+    private readonly IMandalamRepository _mandalamRepository;
+    
+    
     // private readonly IMessagePublisher _messagePublisher;
     private readonly IClock _clock;
 
     public CreateUserHandler(IUserRepository userRepository, IPasswordManager passwordManager,
-        IQueryHandler<GetApplicableUserRole, IEnumerable<string>> getApplicableUserRoleHandler, 
-        IUserService userService, IClock clock)
+        IDistrictRepository districtRepository, IMandalamRepository mandalamRepository,
+        IStateRepository stateRepository,IUserService userService, IClock clock)
     {
         _userRepository = userRepository;
         _passwordManager = passwordManager;
         _userService = userService;
+        _districtRepository = districtRepository;
+        _mandalamRepository = mandalamRepository;
+        _stateRepository = stateRepository;
        // _messagePublisher = messagePublisher;
         _clock = clock;
     }
@@ -55,7 +65,44 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         }
 
         var stateId = await _userService.GetStateId(command.CascadeId, command.LoggedUserId);
-        
+
+        var cascadeName = "";
+
+        switch (command.Role)
+        {
+            case "state-admin":
+            {
+                var state = await _stateRepository.GetByIdAsync(command.CascadeId);
+
+                if (state is not null)
+                {
+                    cascadeName = state.Name;
+                }
+                
+                break;
+            }
+            case "district-admin":
+            {
+                var district = await _districtRepository.GetByIdAsync(command.CascadeId);
+
+                if (district is not null)
+                {
+                    cascadeName = district.Name;
+                }
+                
+                break;
+            }
+            case "mandalam-agent":
+            {
+                var mandalam = await _mandalamRepository.GetByIdAsync(command.CascadeId);
+
+                if (mandalam is not null)
+                {
+                    cascadeName = mandalam.Name;
+                }
+                break;
+            }
+        }
 
         var firstTimePassord = "admin@123"; // _passwordManager.Generate(); 
         var securedPassword = _passwordManager.Secure(firstTimePassord);
@@ -72,6 +119,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             Role = new UserRole(command.Role),
             StateId = stateId,
             CascadeId = command.CascadeId,
+            CascadeName = cascadeName,
             CreatedAt = _clock.Current(),
         };
         

@@ -17,6 +17,11 @@ internal sealed class GetMembersByAreaIdHandler : IQueryHandler<GetMembersByArea
     {
         var areaId = new GenericId(query.AreaId);
         return await _dbContext.Members
+            .Include(x => x.Profession)
+            .Include(x => x.Qualification)
+            .Include(x => x.Mandalam)
+            .Include(x => x.Panchayat)
+            .Include(x => x.Area).ThenInclude(x => x.State)
             .AsNoTracking()
             .Where(x => x.AreaId == areaId)
             .Select(x => x.AsDto())

@@ -25,7 +25,7 @@ builder.Services
     .AddCore()
     .AddApplication()
     .AddInfrastructure(builder.Configuration)
-    .AddCors();;
+    .AddCors();
 
 builder.Host.UseSerilog((context, loggerConfiguration) =>
 {
@@ -37,7 +37,10 @@ builder.Host.UseSerilog((context, loggerConfiguration) =>
     // .Seq("http://localhost:5341");
 });
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+app.MapHealthChecks("/health");
 app.UseCors(MyAllowSpecificOrigins);
 app.UseInfrastructure();
 app.MapGet("api", (IOptions<AppOptions> options) => Results.Ok(options.Value.Name));

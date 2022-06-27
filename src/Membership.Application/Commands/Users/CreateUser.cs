@@ -12,5 +12,6 @@ public record CreateUser() : ICommand
     public string Designation { get; set; }
     public string Role { get; set; }
     public Guid? CascadeId { get; set; }
+    public string CascadeName { get; set; }
     public Guid? LoggedUserId { get; set; }
 }

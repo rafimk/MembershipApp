@@ -1,4 +1,4 @@
-@url = http://localhost:5000
+@url = http://membership-app.me
 @userId = 3912657e-df36-40c0-893d-2be8ad374109
 @districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
 
@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "district-admin@kmcc.com",
+    "email": "admin@admin.com",
     "password": "admin@123"
 }
 
@@ -39,13 +39,13 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "mandalam-agent",
-    "email": "mandalam-agent@kmcc.com",
+    "fullName": "mandalam-agent1",
+    "email": "mandalam-agent1@kmcc.com",
     "mobileNumber": "0501234123",
     "alternativeContactNumber": "0501234123",
     "designation": "mandalam-agent",
     "role": "mandalam-agent",
-    "cascadeId": "fada7507-af5b-4b44-ab76-cd11db72d449"
+    "cascadeId": "05c0b239-06f0-4522-a14d-1f9ac11648b9"
 }
 
 ###

@@ -104,6 +104,7 @@ public static class Extensions
             Designation = entity.Designation,
             Role = entity.Role,
             CascadeId = entity.CascadeId,
+            CascadeName = entity.CascadeName,
             VerifiedAt = entity.VerifiedAt
         };
 

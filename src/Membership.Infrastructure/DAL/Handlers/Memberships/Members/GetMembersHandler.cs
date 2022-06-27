@@ -15,6 +15,11 @@ internal sealed class GetMembersHandler : IQueryHandler<GetMembers, IEnumerable<
     public async Task<IEnumerable<MemberDto>> HandleAsync(GetMembers query)
     {
         return await _dbContext.Members
+            .Include(x => x.Profession)
+            .Include(x => x.Qualification)
+            .Include(x => x.Mandalam)
+            .Include(x => x.Panchayat)
+            .Include(x => x.Area).ThenInclude(x => x.State)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .Take(100)

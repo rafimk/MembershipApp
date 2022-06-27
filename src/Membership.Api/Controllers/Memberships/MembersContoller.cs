@@ -98,7 +98,14 @@ public class MembersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post(CreateMember command)
     {
-        command = command with {Id =  Guid.NewGuid()};
+        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
+        {
+            return NotFound();
+        }
+        
+
+        var userId = Guid.Parse(User?.Identity?.Name);
+        command = command with {Id =  Guid.NewGuid(), AgentId = userId};
         await _createMemberHandler.HandleAsync(command);
         return CreatedAtAction(nameof(Get), new {command.Id}, null);
     }

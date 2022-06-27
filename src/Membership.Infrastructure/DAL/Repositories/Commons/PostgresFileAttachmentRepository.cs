@@ -16,18 +16,23 @@ internal sealed class PostgresFileAttachmentRepository : IFileAttachmentReposito
     public  Task<FileAttachment> GetByIdAsync(Guid id)
         => _dbContext.FileAttachments.SingleOrDefaultAsync(x => x.Id == id);
 
-    public async Task<IEnumerable<FileAttachment>> GetAsync()
-        => await _dbContext.FileAttachments.Where(x => !x.IsDeleted).ToListAsync();
-
-    public async Task AddAsync(FileAttachment fileAttachment)
+   public async Task AddAsync(FileAttachment fileAttachment)
     {
         await _dbContext.FileAttachments.AddAsync(fileAttachment);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(FileAttachment fileAttachment)
+    public async Task DeleteAsync(Guid id)
     {
-        _dbContext.FileAttachments.Update(fileAttachment);
+        var fileAttachment = await _dbContext.FileAttachments.SingleOrDefaultAsync(x => x.Id == id);
+
+        if (fileAttachment is null)
+        {
+            throw new FileNotFoundException();
+        }
+        
+        fileAttachment.Delete();
+        _dbContext.Update(fileAttachment);
         await _dbContext.SaveChangesAsync();
     }
 }

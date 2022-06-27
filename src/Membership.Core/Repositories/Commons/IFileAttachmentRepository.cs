@@ -6,7 +6,6 @@ namespace Membership.Core.Repositories.Commons;
 public interface IFileAttachmentRepository
 {
     Task<FileAttachment> GetByIdAsync(Guid id);
-    Task<IEnumerable<FileAttachment>> GetAsync();
     Task AddAsync(FileAttachment fileAttachment);
-    Task UpdateAsync(FileAttachment fileAttachment);
+    Task DeleteAsync(Guid id);
 }
