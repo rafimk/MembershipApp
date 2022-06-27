@@ -19,9 +19,12 @@ Content-Type: application/json
 
 
 ###
+<<<<<<< HEAD
 GET {{url}}/members
 
 ###
+=======
+>>>>>>> 68eec58b1476d0a1a7dc0be6a2c22cde88a34513
 POST {{url}}/members
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
