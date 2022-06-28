@@ -24,8 +24,7 @@ builder.Services
     })
     .AddCore()
     .AddApplication()
-    .AddInfrastructure(builder.Configuration)
-    .AddCors();
+    .AddInfrastructure(builder.Configuration);
 
 builder.Host.UseSerilog((context, loggerConfiguration) =>
 {
