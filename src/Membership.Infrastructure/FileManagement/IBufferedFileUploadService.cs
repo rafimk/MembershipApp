@@ -7,5 +7,5 @@ public interface IBufferedFileUploadService
 {
     Task<Guid?> UploadFile(IFormFile file, string filePath, FileType type);
 
-    Task<MemoryStream> Download(Guid fileGuid, string fileName, string filePath);
+    Task<BufferedFileUploadDto> Download(Guid fileGuid, string filePath);
 }

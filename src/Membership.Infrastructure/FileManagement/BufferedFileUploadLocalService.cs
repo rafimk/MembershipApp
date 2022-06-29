@@ -16,6 +16,7 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
         _attachmentRepository = attachmentRepository;
         _clock = clock;
     }
+    
     public async Task<Guid?> UploadFile(IFormFile file, string filePath, FileType type)
     {
         if (file.Length > 0)
@@ -55,11 +56,18 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
         }
     }
 
-    public async Task<MemoryStream> Download(Guid fileGuid, string fileName, string filePath)
+    public async Task<MemoryStream> Download(Guid fileGuid, string filePath)
     {
+        var file = await _attachmentRepository.GetByIdAsync(fileGuid);
+
+        if (file is null)
+        {
+            throw new FileNotFoundException();
+        }
+
         var memoryStream = new MemoryStream();
 
-        if (!File.Exists(Path.Combine(filePath, fileName)))
+        if (!File.Exists(Path.Combine(filePath, file.FileName)))
         {
             throw new FileNotFoundException();
         }
@@ -71,6 +79,11 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
         
         memoryStream.Position = 0;
 
-        return memoryStream;
+        return new BufferedFileUploadDto
+        { 
+            Memory = memoryStream,
+            FileType = file.FileType,
+            FileName = file.FileName
+        };
     }
 }

@@ -60,4 +60,11 @@ public class FileUploadController : ControllerBase
 
         return Ok(fileId);
     }
+
+    [HttpGet({fileId:guid}), DisableRequestSizeLimit]
+    public async Task<ActionResult> Download(Guid fileIdeaId)
+    {
+        var result = await _bufferedFileUploadService.Download(fileIdeaId);
+        return File(result.Memory, result.FileType, result.FileName);
+    }
 }
