@@ -14,7 +14,7 @@ internal sealed class GetMembershipPeriodsHandler : IQueryHandler<GetMembershipP
 
     public async Task<IEnumerable<MembershipPeriodDto>> HandleAsync(GetMembershipPeriods query)
         => await _dbContext.MembershipPeriods
-            .OrderBy(x => x.Start);
+            .OrderBy(x => x.Start)
             .Where(x => x.IsActive)
             .AsNoTracking()
             .Select(x => x.AsDto())

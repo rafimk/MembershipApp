@@ -12,5 +12,9 @@ public class MyLookupsDto
     public IEnumerable<PanchayatDto> Panchayats { get; set; }
     public IEnumerable<ProfessionDto> Professions { get; set; }
     public IEnumerable<QualificationDto> Qualifications { get; set; }
+    public IEnumerable<RegisteredOrganizationDto> RegisteredOrganizations { get; set; }
+    public IEnumerable<WelfareSchemeDto> WelfareSchemes { get; set; }
+    public MembershipPeriodDto MembershipPeriod { get; set; }
     public string CascadeTitle { get; set; }
+    public bool CanDisputeCommittee { get; set; } 
 }

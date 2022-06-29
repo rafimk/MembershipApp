@@ -20,7 +20,6 @@ internal sealed class DeactivateMembershipPeriodHandler : ICommandHandler<Deacti
             throw new MembershipPeriodNotFoundException(command.MembershipPeriodId);
         }
         membershipPeriod.Deactivate();
-        membershipPeriod.Update(membershipPeriod.Start, membershipPeriod.End, membershipPeriod.RegistrationUntil);
         await _repository.UpdateAsync(membershipPeriod);
     }
 }

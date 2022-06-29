@@ -4,7 +4,6 @@ using Membership.Application.Exceptions.Nationalities;
 using Membership.Application.Exceptions.Users;
 using Membership.Core.Consts;
 using Membership.Core.Contracts.Memberships;
-using Membership.Core.DomainServices.Users;
 using Membership.Core.Entities.Memberships.Members;
 using Membership.Core.Repositories.Memberships;
 using Membership.Core.Repositories.Nationalities;
@@ -18,15 +17,13 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
     private readonly IMemberRepository _memberRepository;
     private readonly IAreaRepository _areaRepository;
     private readonly IUserRepository _userRepository;
-    private readonly IUserService _userService;
 
     public CreateMemberHandler(IMemberRepository memberRepository, IAreaRepository areaRepository,
-        IUserRepository userRepository, IUserService userService)
+        IUserRepository userRepository)
     {
         _memberRepository = memberRepository;
         _areaRepository = areaRepository;
         _userRepository = userRepository;
-        _userService = userService;
     }
 
     public async Task HandleAsync(CreateMember command)
@@ -97,8 +94,9 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             AreaId = command.AreaId,
             MandalamId = agent.CascadeId,
             PanchayatId = command.PanchayatId,
-            IsMemberOfAnyIndianRegisteredOrganization = command.IsMemberOfAnyIndianRegisteredOrganization,
-            IsKMCCWelfareScheme = command.IsKMCCWelfareScheme,
+            RegisteredOrganizationId = command.RegisteredOrganizationId,
+            WelfareSchemeId = command.WelfareSchemeId,
+            MembershipPeriodId = command.MembershipPeriodId,
             CreatedAt = DateTime.UtcNow,
             CreatedBy = Guid.NewGuid()
         });

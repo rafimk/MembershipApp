@@ -35,7 +35,7 @@ internal sealed class MemberConfiguration : IEntityTypeConfiguration<Member>
             .IsRequired()
             .HasMaxLength(20);
         builder.Property(x => x.AlternativeContactNumber)
-            .HasConversion(x => x.Value, x => new MobileNumber(x))
+            .HasConversion(x => x.Value, x => new OptionalMobileNumber(x))
             .IsRequired()
             .HasMaxLength(20);
         builder.HasIndex(x => x.Email).IsUnique();
@@ -62,6 +62,9 @@ internal sealed class MemberConfiguration : IEntityTypeConfiguration<Member>
             .HasConversion(x => x.Value, x => new GenericId(x))
             .IsRequired();
         builder.Property(x => x.PanchayatId)
+            .HasConversion(x => x.Value, x => new GenericId(x))
+            .IsRequired();
+        builder.Property(x => x.MembershipPeriodId)
             .HasConversion(x => x.Value, x => new GenericId(x))
             .IsRequired();
         builder.Property(x => x.CreatedBy)

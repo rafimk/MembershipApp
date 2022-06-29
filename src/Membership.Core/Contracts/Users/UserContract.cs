@@ -17,4 +17,5 @@ public record UserContract()
     public string CascadeName { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool IsActive { get; set; }
+    public bool IsDisputeCommittee {get; set;}
 }

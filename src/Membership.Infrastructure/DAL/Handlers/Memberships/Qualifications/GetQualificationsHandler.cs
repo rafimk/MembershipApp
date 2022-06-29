@@ -16,6 +16,7 @@ internal sealed class GetQualificationsHandler : IQueryHandler<GetQualifications
 
     public async Task<IEnumerable<QualificationDto>> HandleAsync(GetQualifications query)
         => await _dbContext.Qualifications
+            .OrderBy(x => x.Name)
             .Where(x => !x.IsDeleted)
             .AsNoTracking()
             .Select(x => x.AsDto())

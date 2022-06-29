@@ -14,4 +14,5 @@ public record CreateUser() : ICommand
     public Guid? CascadeId { get; set; }
     public string CascadeName { get; set; }
     public Guid? LoggedUserId { get; set; }
+    public bool IsDisputeCommittee {get; set;}
 }

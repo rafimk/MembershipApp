@@ -29,6 +29,8 @@ internal static class Extensions
         services.AddScoped<IMembershipPeriodRepository, PostgresMembershipPeriodRepository>();
         services.AddScoped<IProfessionRepository, PostgresProfessionRepository>();
         services.AddScoped<IQualificationRepository, PostgresQualificationRepository>();
+        services.AddScoped<IRegisteredOrganizationRepository, PostgresRegisteredOrganizationRepository>();
+        services.AddScoped<IWelfareSchemeRepository, PostgresWelfareSchemeRepository>();
         
         services.AddScoped<IAreaRepository, PostgresAreaRepository>();
         services.AddScoped<IDistrictRepository, PostgresDistrictRepository>();

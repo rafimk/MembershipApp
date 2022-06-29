@@ -22,6 +22,6 @@ public record UpdateMember : ICommand
     public Guid? Photo { get; set;}
     public string HouseName { get; set; }
     public string AddressInIndia { get; set; }
-    public bool IsMemberOfAnyIndianRegisteredOrganization { get; set; }
-    public bool IsKMCCWelfareScheme { get; set; }
+    public Guid? RegisteredOrganizationId { get; set; }
+    public Guid? WelfareSchemeId { get; set; }
 }

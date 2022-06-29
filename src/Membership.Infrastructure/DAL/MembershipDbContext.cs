@@ -3,6 +3,8 @@ using Membership.Core.Entities.Memberships.Members;
 using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.Entities.Memberships.Qualifications;
+using Membership.Core.Entities.Memberships.RegisteredOrganizations;
+using Membership.Core.Entities.Memberships.WelfareSchemes;
 using Membership.Core.Entities.Nationalities;
 using Membership.Core.Entities.Users;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +24,8 @@ internal sealed class MembershipDbContext : DbContext
     public DbSet<Member> Members { get; set; }
     public DbSet<MembershipPeriod> MembershipPeriods { get; set; }
     public DbSet<FileAttachment> FileAttachments { get; set; }
+    public DbSet<RegisteredOrganization> RegisteredOrganizations { get; set; }
+    public DbSet<WelfareScheme> WelfareSchemes { get; set; }
 
     public MembershipDbContext(DbContextOptions<MembershipDbContext> options) : base(options)
     {

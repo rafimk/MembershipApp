@@ -14,6 +14,7 @@ internal sealed class GetMandalamsHandler : IQueryHandler<GetMandalams, IEnumera
 
     public async Task<IEnumerable<MandalamDto>> HandleAsync(GetMandalams query)
         => await _dbContext.Mandalams
+            .OrderBy(x => x.Name)
             .Include(x => x.District)
             .AsNoTracking()
             .Select(x => x.AsDto())

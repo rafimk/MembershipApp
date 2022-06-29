@@ -1,4 +1,4 @@
-using Membership.Core.Entities.Memberships.Professions;
+using Membership.Core.Entities.Memberships.WelfareSchemes;
 using Membership.Core.Repositories.Memberships;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +36,7 @@ internal sealed class PostgresWelfareSchemeRepository : IWelfareSchemeRepository
     {
         var welfareScheme = await GetByIdAsync(id);
         welfareScheme.Delete();
-        _dbContext.WelfareScheme.Update(welfareScheme);
+        _dbContext.WelfareSchemes.Update(welfareScheme);
         await _dbContext.SaveChangesAsync();
     }
 }

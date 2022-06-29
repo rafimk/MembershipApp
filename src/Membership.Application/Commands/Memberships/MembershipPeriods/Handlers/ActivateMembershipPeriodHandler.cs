@@ -24,14 +24,13 @@ internal sealed class ActivateMembershipPeriodHandler : ICommandHandler<Activate
 
         if (activeMembershipPeriod is not null)
         {
-            if (activeMembershipPeriod.Id != command.MembershipPeriodId)
+            if (activeMembershipPeriod.Id.Value != command.MembershipPeriodId)
             {
                 throw new ActiveMembershipPeriodAlreadyExistException();
             }
         }
 
         membershipPeriod.Activate();
-        membershipPeriod.Update(membershipPeriod.Start, membershipPeriod.End, membershipPeriod.RegistrationUntil);
         await _repository.UpdateAsync(membershipPeriod);
     }
 }

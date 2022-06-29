@@ -229,11 +229,10 @@ internal sealed class DatabaseInitializer : IHostedService
                 MembershipPeriodId = Guid.NewGuid(),
                 Start = new DateTimeOffset(2022,1,1,0,0,0, TimeSpan.Zero),
                 End = new DateTimeOffset(2022,12,31,23,59,59,999, TimeSpan.Zero),
-                RegistrationUntil = new DateTimeOffset(2022,12,31,23,59,59,999, TimeSpan.Zero),
             };
 
             var membershipPeriod = MembershipPeriod.Create(contract.MembershipPeriodId, contract.Start,
-                contract.End, contract.RegistrationUntil, _clock.Current());
+                contract.End, _clock.Current());
             
             membershipPeriod.Activate();
  

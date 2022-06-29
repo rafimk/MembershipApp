@@ -12,30 +12,12 @@ namespace Membership.Api.Controllers.Commons;
 [Route("[controller]")]
 public class LookupsController : ControllerBase
 {
-    private readonly IQueryHandler<GetLookups, LookupsDto> _getLookups;
     private readonly IQueryHandler<GetMyLookups, MyLookupsDto> _getMyLookups;
     
 
-    public LookupsController(IQueryHandler<GetLookups, LookupsDto> getLookupsHandler,
-        IQueryHandler<GetMyLookups, MyLookupsDto> getMyLookups)
+    public LookupsController(IQueryHandler<GetMyLookups, MyLookupsDto> getMyLookups)
     {
-        _getLookups = getLookupsHandler;
         _getMyLookups = getMyLookups;
-    }
-    
-    [HttpGet()]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<LookupsDto>> Get()
-    {
-        var lookups = await _getLookups.HandleAsync(new GetLookups { });
-        
-        if (lookups is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(lookups);
     }
     
     [HttpGet("me")]

@@ -27,6 +27,7 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, IEnu
         var applicableUserRoles = await _userService.GetApplicableUserRolesAsync(user.Role, query.UserId);
 
         var availableUsers = await _dbContext.Users
+            .OrderBy(x => x.FullName)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

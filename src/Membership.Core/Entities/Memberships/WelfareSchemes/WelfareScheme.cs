@@ -1,6 +1,6 @@
 using Membership.Core.ValueObjects;
 
-namespace Membership.Core.Entities.Memberships.RegisteredOrganizations;
+namespace Membership.Core.Entities.Memberships.WelfareSchemes;
 
 public class WelfareScheme 
 {

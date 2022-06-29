@@ -15,5 +15,6 @@ public record UserCreateContract()
     public Guid? StateId { get; set; }
     public Guid? CascadeId { get; set; }
     public string CascadeName { get; set; }
+    public bool IsDisputeCommittee {get; set;}
     public DateTime CreatedAt { get; set; }
 }

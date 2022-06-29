@@ -1,4 +1,5 @@
-﻿using Membership.Core.Abstractions;
+﻿using Membership.Application.DTO.Commons;
+using Membership.Core.Abstractions;
 using Membership.Core.Consts;
 using Membership.Core.Entities.Commons;
 using Membership.Core.Repositories.Commons;
@@ -21,17 +22,17 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
     {
         if (file.Length > 0)
         {
-            filePath ??= Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "UploadedFiles"));
+            var uploadFilePath = GetFilePath(filePath);
 
-            if (!Directory.Exists(filePath))
+            if (!Directory.Exists(uploadFilePath))
             {
-                Directory.CreateDirectory(filePath);
+                Directory.CreateDirectory(uploadFilePath);
             }
 
             var id = Guid.NewGuid();
             var newFileName = $"{id}___{file.FileName}";
             var extension = Path.GetExtension(file.FileName);
-            var newPath = Path.Combine(filePath, newFileName);
+            var newPath = Path.Combine(uploadFilePath, newFileName);
 
             if (File.Exists(newPath))
             {
@@ -56,7 +57,7 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
         }
     }
 
-    public async Task<MemoryStream> Download(Guid fileGuid, string filePath)
+    public async Task<BufferedFileUploadDto> Download(Guid fileGuid, string filePath)
     {
         var file = await _attachmentRepository.GetByIdAsync(fileGuid);
 
@@ -64,15 +65,17 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
         {
             throw new FileNotFoundException();
         }
+        
+        var uploadFilePath = GetFilePath(filePath);
 
         var memoryStream = new MemoryStream();
 
-        if (!File.Exists(Path.Combine(filePath, file.FileName)))
+        if (!File.Exists(Path.Combine(uploadFilePath, file.SavedFileName)))
         {
             throw new FileNotFoundException();
         }
         
-        using (var fileStream = new FileStream(Path.Combine(filePath, fileName), FileMode.Open))
+        using (var fileStream = new FileStream(Path.Combine(uploadFilePath, file.SavedFileName), FileMode.Open))
         {
             await fileStream.CopyToAsync(memoryStream);
         }
@@ -83,7 +86,13 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
         { 
             Memory = memoryStream,
             FileType = file.FileType,
-            FileName = file.FileName
+            FileName = file.ActualFileName
         };
+    }
+
+    private string GetFilePath(string filePath)
+    {
+        filePath ??= "UploadedFiles";
+        return Path.GetFullPath(Path.Combine(Environment.CurrentDirectory + "\\", filePath));
     }
 }

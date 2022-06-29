@@ -1,5 +1,6 @@
 using Membership.Application.Abstractions;
 using Membership.Application.Exceptions.Memberships;
+using Membership.Core.Abstractions;
 using Membership.Core.Repositories.Memberships;
 
 namespace Membership.Application.Commands.Memberships.MembershipPeriods.Handlers;

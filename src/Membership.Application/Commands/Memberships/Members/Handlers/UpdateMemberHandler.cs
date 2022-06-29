@@ -37,8 +37,8 @@ internal sealed class UpdateMemberHandler : ICommandHandler<UpdateMember>
             BloodGroup = (BloodGroup)command.BloodGroup,
             HouseName = command.HouseName,
             AddressInIndia = command.AddressInIndia,
-            IsMemberOfAnyIndianRegisteredOrganization = command.IsMemberOfAnyIndianRegisteredOrganization,
-            IsKMCCWelfareScheme = command.IsKMCCWelfareScheme,
+            RegisteredOrganizationId = command.RegisteredOrganizationId,
+            WelfareSchemeId = command.WelfareSchemeId,
             CreatedAt = DateTime.UtcNow,
             CreatedBy = Guid.NewGuid()
         };

@@ -42,6 +42,6 @@ var app = builder.Build();
 app.MapHealthChecks("/health");
 app.UseCors(MyAllowSpecificOrigins);
 app.UseInfrastructure();
-app.MapGet("api", (IOptions<AppOptions> options) => Results.Ok(options.Value.Name));
+app.MapGet("/api", (IOptions<AppOptions> options) => Results.Ok(options.Value.Name));
 //app.UseUsersApi();
 app.Run();

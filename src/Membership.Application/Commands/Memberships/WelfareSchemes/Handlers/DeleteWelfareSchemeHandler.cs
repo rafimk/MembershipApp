@@ -8,18 +8,18 @@ internal sealed class DeleteWelfareSchemeHandler : ICommandHandler<DeleteWelfare
 {
     private readonly IWelfareSchemeRepository _repository;
 
-    public DeleteWelfareSchemesHandler(IWelfareSchemeRepository repository)
+    public DeleteWelfareSchemeHandler(IWelfareSchemeRepository repository)
         => _repository = repository;
 
     public async Task HandleAsync(DeleteWelfareScheme command)
     {
-        var welfareSchemes = await _repository.GetByIdAsync(command.WelfareSchemeId);
+        var welfareScheme = await _repository.GetByIdAsync(command.WelfareSchemeId);
 
-        if (welfareSchemes is null)
+        if (welfareScheme is null)
         {
             throw new WelfareSchemeNotFoundException(command.WelfareSchemeId);
         }
-        welfareSchemes.Delete();
-        await _repository.UpdateAsync(welfareSchemes);
+        welfareScheme.Delete();
+        await _repository.UpdateAsync(welfareScheme);
     }
 }

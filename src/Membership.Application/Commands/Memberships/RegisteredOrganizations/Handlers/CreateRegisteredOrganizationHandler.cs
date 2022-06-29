@@ -1,5 +1,6 @@
 using Membership.Application.Abstractions;
-using Membership.Core.Entities.Memberships.Qualifications;
+using Membership.Core.Abstractions;
+using Membership.Core.Entities.Memberships.RegisteredOrganizations;
 using Membership.Core.Repositories.Memberships;
 
 namespace Membership.Application.Commands.Memberships.RegisteredOrganizations.Handlers;
@@ -18,6 +19,6 @@ internal sealed class CreateRegisteredOrganizationHandler : ICommandHandler<Crea
     public async Task HandleAsync(CreateRegisteredOrganization command)
     {
         var registeredOrganization = RegisteredOrganization.Create(command.RegisteredOrganizationId, command.Name, _clock.Current());
-        await _repository.AddAsync(qualification);
+        await _repository.AddAsync(registeredOrganization);
     }
 }

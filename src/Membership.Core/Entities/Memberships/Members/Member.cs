@@ -1,7 +1,10 @@
 ﻿using Membership.Core.Consts;
 using Membership.Core.Contracts.Memberships;
+using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.Entities.Memberships.Qualifications;
+using Membership.Core.Entities.Memberships.RegisteredOrganizations;
+using Membership.Core.Entities.Memberships.WelfareSchemes;
 using Membership.Core.Entities.Nationalities;
 using Membership.Core.Exceptions.Users;
 using Membership.Core.ValueObjects;
@@ -50,7 +53,7 @@ public class Member
     public DateTime CreatedAt { get; private set; }
     public GenericId CreatedBy { get; private set; }
     public GenericId MembershipPeriodId { get; private set; }
-    public MembershipPeriod MembershipPeriodId { get; private set; }
+    public MembershipPeriod MembershipPeriod { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime? VerifiedAt { get; private set; }
 
@@ -116,9 +119,9 @@ public class Member
             AreaId = contract.AreaId,
             MandalamId = contract.MandalamId,
             PanchayatId = contract.PanchayatId,
-            RegisteredOrganizationId = contract.RegisteredOrganizationId;
-            WelfareSchemeId = contract.WelfareSchemeId;
-            MembershipPeriodId = contract.MembershipPeriodId;
+            RegisteredOrganizationId = contract.RegisteredOrganizationId,
+            WelfareSchemeId = contract.WelfareSchemeId,
+            MembershipPeriodId = contract.MembershipPeriodId,
             CardNumber = contract.CardNumber,
             CreatedAt = contract.CreatedAt,
             CreatedBy = contract.CreatedBy,

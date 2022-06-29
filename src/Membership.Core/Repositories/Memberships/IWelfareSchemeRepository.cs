@@ -1,4 +1,5 @@
-using Membership.Core.Entities.Memberships.Professions;
+using Membership.Core.Entities.Memberships.RegisteredOrganizations;
+using Membership.Core.Entities.Memberships.WelfareSchemes;
 using Membership.Core.ValueObjects;
 
 namespace Membership.Core.Repositories.Memberships;

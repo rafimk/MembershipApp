@@ -7,15 +7,13 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "mandalam-agent@kmcc.com",
+    "email": "admin@admin.com",
     "password": "admin@123"
 }
 
 ###
 @accessToken = {{sign_in.response.body.$.accessToken}}
 
-###
-GET {{url}}/lookups
 
 ###
 GET {{url}}/lookups/me

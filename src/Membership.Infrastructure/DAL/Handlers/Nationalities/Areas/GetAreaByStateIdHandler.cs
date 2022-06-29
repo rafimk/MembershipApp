@@ -18,9 +18,9 @@ internal sealed class GetAreaByStateIdHandler : IQueryHandler<GetAreaByStateId, 
     {
         var stateId = new GenericId(query.StateId);
         return await _dbContext.Areas
+            .OrderBy(x => x.Name)
             .AsNoTracking()
             .Include(x => x.State)
-            .OrderBy(x => x.Name)
             .Where(x => x.StateId == stateId).Select(x => x.AsDto())
             .ToListAsync();
     }

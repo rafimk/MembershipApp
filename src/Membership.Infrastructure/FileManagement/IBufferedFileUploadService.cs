@@ -1,4 +1,5 @@
-﻿using Membership.Core.Consts;
+﻿using Membership.Application.DTO.Commons;
+using Membership.Core.Consts;
 using Microsoft.AspNetCore.Http;
 
 namespace Membership.Infrastructure.FileManagement;

@@ -33,11 +33,15 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
         }
         
         return await _dbContext.Members
+            .OrderBy(x => x.FullName)
             .AsNoTracking()
             .Include(x => x.Profession)
             .Include(x => x.Qualification)
             .Include(x => x.Mandalam)
             .Include(x => x.Panchayat)
+            .Include(x => x.RegisteredOrganization)
+            .Include(x => x.WelfareScheme)
+            .Include(x => x.MembershipPeriod)
             .Include(x => x.Area).ThenInclude(x => x.State)
             .Select(x => x.AsDto())
             .Where(x => x.MandalamId.ToString() == user.CascadeId.ToString())

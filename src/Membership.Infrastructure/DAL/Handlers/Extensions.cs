@@ -5,6 +5,8 @@ using Membership.Core.Entities.Memberships.Members;
 using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.Entities.Memberships.Qualifications;
+using Membership.Core.Entities.Memberships.RegisteredOrganizations;
+using Membership.Core.Entities.Memberships.WelfareSchemes;
 using Membership.Core.Entities.Nationalities;
 using Membership.Core.Entities.Users;
 
@@ -105,7 +107,10 @@ public static class Extensions
             Role = entity.Role,
             CascadeId = entity.CascadeId,
             CascadeName = entity.CascadeName,
-            VerifiedAt = entity.VerifiedAt
+            VerifiedAt = entity.VerifiedAt,
+            IsActive = entity.IsActive,
+            IsDisputeCommittee = entity.IsDisputeCommittee,
+            CreatedAt = entity.CreatedAt
         };
 
      public static QualificationDto AsDto(this Qualification entity)
@@ -124,6 +129,22 @@ public static class Extensions
             CreatedAt = entity.CreatedAt
         };
     
+    public static RegisteredOrganizationDto AsDto(this RegisteredOrganization entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            Name = entity.Name,
+            CreatedAt = entity.CreatedAt
+        };
+    
+    public static WelfareSchemeDto AsDto(this WelfareScheme entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            Name = entity.Name,
+            CreatedAt = entity.CreatedAt
+        };
+    
 
     public static MembershipPeriodDto AsDto(this MembershipPeriod entity)
         => new()
@@ -131,7 +152,8 @@ public static class Extensions
             Id = entity.Id.Value,
             Start = entity.Start,
             End = entity.End,
-            RegistrationUntil = entity.RegistrationUntil,
+            RegistrationStarted = entity.RegistrationStarted,
+            RegistrationEnded = entity.RegistrationEnded,
             IsActive = entity.IsActive,
             CreatedAt = entity.CreatedAt
         };
@@ -179,8 +201,27 @@ public static class Extensions
                 Name = entity.Mandalam?.Name
                 
             },
-            IsMemberOfAnyIndianRegisteredOrganization = entity.IsMemberOfAnyIndianRegisteredOrganization,
-            IsKMCCWelfareScheme = entity.IsKMCCWelfareScheme,
+            RegisteredOrganization = new RegisteredOrganizationDto
+            {
+                Id = entity.RegisteredOrganizationId,
+                Name = entity.RegisteredOrganization?.Name
+            },
+            WelfareScheme = new WelfareSchemeDto
+            {
+                Id = entity.WelfareSchemeId,
+                Name = entity.WelfareScheme?.Name
+            },
+            MembershipPeriod = new MembershipPeriodDto
+            {
+                Id = entity.MembershipPeriodId,
+                Start = entity.MembershipPeriod.Start,
+                End = entity.MembershipPeriod.End,
+                RegistrationStarted = entity.MembershipPeriod.RegistrationStarted,
+                RegistrationEnded = entity.MembershipPeriod.RegistrationEnded,
+                IsActive = entity.MembershipPeriod.IsActive,
+                IsEnrollActive = entity.MembershipPeriod.IsEnrollActive,
+                CreatedAt = entity.MembershipPeriod.CreatedAt,
+            },
             CollectedAmount = entity.CollectedAmount,
             CreatedBy = entity.CreatedBy,
             IsActive = entity.IsActive,

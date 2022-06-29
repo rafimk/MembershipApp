@@ -1,4 +1,5 @@
 ﻿using Membership.Application.Abstractions;
+using Membership.Core.Abstractions;
 using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Repositories.Memberships;
 using Membership.Core.ValueObjects;

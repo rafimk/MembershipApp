@@ -14,6 +14,7 @@ internal sealed class GetDistrictsHandler : IQueryHandler<GetDistricts, IEnumera
 
     public async Task<IEnumerable<DistrictDto>> HandleAsync(GetDistricts query)
         => await _dbContext.Districts
+            .OrderBy(x => x.Name)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

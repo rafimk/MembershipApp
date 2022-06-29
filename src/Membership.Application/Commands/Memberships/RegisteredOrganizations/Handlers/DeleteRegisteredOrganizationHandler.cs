@@ -2,7 +2,7 @@ using Membership.Application.Abstractions;
 using Membership.Application.Exceptions.Memberships;
 using Membership.Core.Repositories.Memberships;
 
-namespace Membership.Application.Commands.Memberships.Professions.Handlers;
+namespace Membership.Application.Commands.Memberships.RegisteredOrganizations.Handlers;
 
 internal sealed class DeleteRegisteredOrganizationHandler : ICommandHandler<DeleteRegisteredOrganization>
 {

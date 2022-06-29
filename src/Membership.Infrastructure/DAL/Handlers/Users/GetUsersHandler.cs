@@ -14,6 +14,7 @@ internal sealed class GetUsersHandler : IQueryHandler<GetUsers, IEnumerable<User
 
     public async Task<IEnumerable<UserDto>> HandleAsync(GetUsers query)
         => await _dbContext.Users
+            .OrderBy(x => x.FullName)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

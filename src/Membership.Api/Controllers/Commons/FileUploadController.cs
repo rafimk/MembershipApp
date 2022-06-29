@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Membership.Core.Consts;
 using Membership.Infrastructure;
 using Membership.Infrastructure.FileManagement;
@@ -61,10 +62,10 @@ public class FileUploadController : ControllerBase
         return Ok(fileId);
     }
 
-    [HttpGet({fileId:guid}), DisableRequestSizeLimit]
-    public async Task<ActionResult> Download(Guid fileIdeaId)
+    [HttpGet("{fileId:guid}"), DisableRequestSizeLimit]
+    public async Task<ActionResult> Download(Guid fileId)
     {
-        var result = await _bufferedFileUploadService.Download(fileIdeaId);
+        var result = await _bufferedFileUploadService.Download(fileId, _fileOptions.FilePath);
         return File(result.Memory, result.FileType, result.FileName);
     }
 }

@@ -18,9 +18,6 @@ internal sealed class MembershipPeriodConfiguration : IEntityTypeConfiguration<M
         builder.Property(x => x.End)
             .HasConversion(x => x.Value, x => new Date(x))
             .IsRequired();
-        builder.Property(x => x.RegistrationUntil)
-            .HasConversion(x => x.Value, x => new Date(x))
-            .IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
     }
 }

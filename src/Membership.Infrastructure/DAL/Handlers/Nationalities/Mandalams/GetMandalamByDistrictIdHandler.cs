@@ -17,6 +17,7 @@ internal sealed class GetMandalamByDistrictIdHandler : IQueryHandler<GetMandalam
     {
         var districtId = new GenericId(query.DistrictId);
         return await _dbContext.Mandalams
+            .OrderBy(x => x.Name)
             .Include(x => x.District)
             .AsNoTracking()
             .OrderBy(x => x.Name)

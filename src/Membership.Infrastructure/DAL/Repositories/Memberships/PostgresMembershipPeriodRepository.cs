@@ -50,7 +50,4 @@ internal sealed class PostgresMembershipPeriodRepository : IMembershipPeriodRepo
         _dbContext.MembershipPeriods.Update(membershipPeriod);
         await _dbContext.SaveChangesAsync();
     }
-
-    public  Task<int> GetActivePeriodCountAsync()
-        => _dbContext.MembershipPeriods.Where(x => x.IsActive).Count()
 }

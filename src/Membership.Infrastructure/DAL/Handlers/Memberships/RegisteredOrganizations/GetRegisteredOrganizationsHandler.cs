@@ -1,11 +1,9 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
-using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Memberships;
-using Membership.Application.Queries.Memberships.Qualifications;
+using Membership.Application.Queries.Memberships.RegisteredOrganizations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Memberships.Qualifications;
+namespace Membership.Infrastructure.DAL.Handlers.Memberships.RegisteredOrganizations;
 
 internal sealed class GetRegisteredOrganizationsHandler : IQueryHandler<GetRegisteredOrganizations, IEnumerable<RegisteredOrganizationDto>>
 {
@@ -17,7 +15,7 @@ internal sealed class GetRegisteredOrganizationsHandler : IQueryHandler<GetRegis
     public async Task<IEnumerable<RegisteredOrganizationDto>> HandleAsync(GetRegisteredOrganizations query)
         => await _dbContext.RegisteredOrganizations
             .Where(x => !x.IsDeleted)
-            .OrderBy(x => x.Name);
+            .OrderBy(x => x.Name)
             .AsNoTracking()
             .Select(x => x.AsDto())
             .ToListAsync();

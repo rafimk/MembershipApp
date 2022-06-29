@@ -94,12 +94,19 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             }
             case "mandalam-agent":
             {
+                command.IsDisputeCommittee = false;
+                
                 var mandalam = await _mandalamRepository.GetByIdAsync(command.CascadeId);
 
                 if (mandalam is not null)
                 {
                     cascadeName = mandalam.Name;
                 }
+                break;
+            }
+            case "dispute-committee":
+            {
+                command.IsDisputeCommittee = false;
                 break;
             }
         }
@@ -120,6 +127,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             StateId = stateId,
             CascadeId = command.CascadeId,
             CascadeName = cascadeName,
+            IsDisputeCommittee = command.IsDisputeCommittee,
             CreatedAt = _clock.Current(),
         };
         

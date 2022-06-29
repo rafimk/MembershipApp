@@ -2,6 +2,7 @@ using Membership.Application.Abstractions;
 using Membership.Application.Exceptions.Users;
 using Membership.Core.Contracts.Users;
 using Membership.Core.Repositories.Users;
+using Membership.Core.ValueObjects;
 
 namespace Membership.Application.Commands.Users.Handlers;
 
@@ -21,12 +22,18 @@ internal sealed class UpdateUserHandler : ICommandHandler<UpdateUser>
             throw new UserNotFoundException(command.UserId);
         }
 
+        if (user.Role == UserRole.MandalamAgent() || user.Role == UserRole.DisputeCommittee())
+        {
+            command.IsDisputeCommittee = false;
+        }
+
         var contract = new UpdateCreateContract
         {
             FullName = command.FullName,
             MobileNumber = command.MobileNumber,
             AlternativeContactNumber = command.AlternativeContactNumber,
-            Designation = command.Designation
+            Designation = command.Designation,
+            IsDisputeCommittee = command.IsDisputeCommittee,
         };
 
         user.Update(contract);

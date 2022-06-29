@@ -14,6 +14,7 @@ internal sealed class GetProfessionsHandler : IQueryHandler<GetProfessions, IEnu
 
     public async Task<IEnumerable<ProfessionDto>> HandleAsync(GetProfessions query)
         => await _dbContext.Professions
+            .OrderBy(x => x.Name)
             .Where(x => !x.IsDeleted)
             .AsNoTracking()
             .Select(x => x.AsDto())
