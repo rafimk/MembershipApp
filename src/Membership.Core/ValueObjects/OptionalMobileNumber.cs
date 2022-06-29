@@ -1,0 +1,38 @@
+using System.Text.RegularExpressions;
+using Membership.Core.Exceptions.Common;
+
+namespace Membership.Core.ValueObjects;
+
+public record OptionalMobileNumber
+{
+    public string Value { get; }
+
+    public OptionalMobileNumber(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value) || value.Length is > 20 or < 9)
+        {
+            throw new InvalidMobileNumberException();
+        }
+
+        if (!ValidateMobileNumber(value))
+        {
+            throw new InvalidMobileNumberException();
+        }
+        
+        Value = value;
+    }
+    
+    private bool ValidateMobileNumber(string mobileNumber)  
+    {  
+        Regex regex = new Regex(@"^([\+]?33[-]?|[0])?[1-9][0-9]{8}$");  
+        Match match = regex.Match(mobileNumber); 
+        
+        return match.Success; 
+    }  
+
+    public static implicit operator string(OptionalMobileNumber mobileNumber)
+        => mobileNumber.Value;
+    
+    public static implicit operator OptionalMobileNumber(string mobileNumber)
+        => new(mobileNumber);
+}

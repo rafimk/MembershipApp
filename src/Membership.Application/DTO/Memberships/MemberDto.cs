@@ -31,13 +31,16 @@ public class MemberDto
     public string PasswordHash { get; set; }
     public Guid AreaId { get; set; }
     public AreaDto Area { get; set; }
-    public GenericId MandalamId { get; set; }
+    public Guid MandalamId { get; set; }
     public MandalamDto Mandalam { get; set; }
-    public bool IsMemberOfAnyIndianRegisteredOrganization { get; set; }
-    public bool IsKMCCWelfareScheme { get; set; }
+    public Guid PanchayatId { get; set; }
+    public PanchayatDto Panchayat { get; set; }
+    public RegisteredOrganizationDto RegisteredOrganization { get; set; }
+    public WelfareSchemeDto WelfareScheme { get; set; }
+    public MembershipPeriodDto MembershipPeriod { get; set;}
     public double CollectedAmount { get; set; }
     public DateTime CreatedAt { get; set; }
-    public GenericId CreatedBy { get; set; }
+    public Guid CreatedBy { get; set; }
     public bool IsActive { get; set; }
     public DateTime? VerifiedAt { get; set; }
 }

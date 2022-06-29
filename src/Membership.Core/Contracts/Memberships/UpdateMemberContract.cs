@@ -22,8 +22,8 @@ public record UpdateMemberContract()
     public Guid? Photo { get; set;}
     public string HouseName { get; set; }
     public string AddressInIndia { get; set; }
-    public bool IsMemberOfAnyIndianRegisteredOrganization { get; set; }
-    public bool IsKMCCWelfareScheme { get; set; }
+    public GenericId? RegisteredOrganizationId { get; set; }
+    public GenericId? WelfareSchemeId { get; set; }
     public MemberStatus Status {get; set;}
     public DateTime CreatedAt { get; set; } 
     public GenericId CreatedBy { get; set; }

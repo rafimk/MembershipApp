@@ -30,8 +30,9 @@ public record CreateMemberContract()
     public GenericId AreaId { get; set; }
     public GenericId MandalamId { get; set; } 
     public GenericId PanchayatId { get; set;}
-    public bool IsMemberOfAnyIndianRegisteredOrganization { get; set; }
-    public bool IsKMCCWelfareScheme { get; set; }
+    public Guid? RegisteredOrganizationId { get; set; }
+    public Guid? WelfareSchemeId { get; set; }
+    public GenericId MembershipPeriodId { get; set; }
     public string CardNumber { get; set; }
     public MemberStatus Status {get; set;}
     public DateTime CreatedAt { get; set; } 
