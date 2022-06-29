@@ -19,6 +19,17 @@ internal sealed class ActivateMembershipPeriodHandler : ICommandHandler<Activate
         {
             throw new MembershipPeriodNotFoundException(command.MembershipPeriodId);
         }
+
+        var activeMembershipPeriod = await _repository.GetActivePeriodAsync();
+
+        if (activeMembershipPeriod is not null)
+        {
+            if (activeMembershipPeriod.Id != command.MembershipPeriodId)
+            {
+                throw new ActiveMembershipPeriodAlreadyExistException();
+            }
+        }
+
         membershipPeriod.Activate();
         membershipPeriod.Update(membershipPeriod.Start, membershipPeriod.End, membershipPeriod.RegistrationUntil);
         await _repository.UpdateAsync(membershipPeriod);

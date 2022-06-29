@@ -19,7 +19,7 @@ public class Member
     public Guid? EmiratesIdLastPage { get; private set; }
     public Date DateOfBirth { get; private set; }
     public MobileNumber MobileNumber { get; private set; }
-    public MobileNumber AlternativeContactNumber { get; private set; }
+    public OptionalMobileNumber AlternativeContactNumber { get; private set; }
     public Email Email { get; private set; }
     public PassportNumber PassportNumber { get; private set; }
     public Date PassportExpiry { get; private set; }
@@ -40,13 +40,17 @@ public class Member
     public Mandalam Mandalam { get; private set; }
     public GenericId PanchayatId { get; private set; }
     public Panchayat Panchayat { get; private set; }
-    public bool IsMemberOfAnyIndianRegisteredOrganization { get; private set; }
-    public bool IsKMCCWelfareScheme { get; private set; }
+    public Guid? RegisteredOrganizationId { get; private set; }
+    public RegisteredOrganization RegisteredOrganization { get; private set; }
+    public Guid? WelfareSchemeId { get; private set; }
+    public WelfareScheme WelfareScheme { get; private set; }
     public double CollectedAmount { get; private set; }
     public MemberStatus Status {get; private set;}
     public string CardNumber { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public GenericId CreatedBy { get; private set; }
+    public GenericId MembershipPeriodId { get; private set; }
+    public MembershipPeriod MembershipPeriodId { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime? VerifiedAt { get; private set; }
 
@@ -78,8 +82,9 @@ public class Member
         AreaId = contract.AreaId;
         MandalamId = contract.MandalamId;
         PanchayatId = contract.PanchayatId;
-        IsMemberOfAnyIndianRegisteredOrganization = contract.IsMemberOfAnyIndianRegisteredOrganization;
-        IsKMCCWelfareScheme = contract.IsKMCCWelfareScheme;
+        RegisteredOrganizationId = contract.RegisteredOrganizationId;
+        WelfareSchemeId = contract.WelfareSchemeId;
+        MembershipPeriodId = contract.MembershipPeriodId;
         CardNumber = contract.CardNumber;
         CreatedAt = contract.CreatedAt;
         CreatedBy = contract.CreatedBy;
@@ -111,8 +116,9 @@ public class Member
             AreaId = contract.AreaId,
             MandalamId = contract.MandalamId,
             PanchayatId = contract.PanchayatId,
-            IsMemberOfAnyIndianRegisteredOrganization = contract.IsMemberOfAnyIndianRegisteredOrganization,
-            IsKMCCWelfareScheme = contract.IsKMCCWelfareScheme,
+            RegisteredOrganizationId = contract.RegisteredOrganizationId;
+            WelfareSchemeId = contract.WelfareSchemeId;
+            MembershipPeriodId = contract.MembershipPeriodId;
             CardNumber = contract.CardNumber,
             CreatedAt = contract.CreatedAt,
             CreatedBy = contract.CreatedBy,
@@ -135,8 +141,8 @@ public class Member
         BloodGroup = contract.BloodGroup;
         HouseName = contract.HouseName;
         AddressInIndia = contract.AddressInIndia;
-        IsMemberOfAnyIndianRegisteredOrganization = contract.IsMemberOfAnyIndianRegisteredOrganization;
-        IsKMCCWelfareScheme = contract.IsKMCCWelfareScheme;
+        RegisteredOrganizationId = contract.RegisteredOrganizationId;
+        WelfareSchemeId = contract.WelfareSchemeId;
     }
 
     public void Deactivate()

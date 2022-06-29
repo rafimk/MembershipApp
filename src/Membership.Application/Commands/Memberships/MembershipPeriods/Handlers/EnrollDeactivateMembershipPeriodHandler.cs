@@ -1,17 +1,21 @@
-﻿using Membership.Application.Abstractions;
+using Membership.Application.Abstractions;
 using Membership.Application.Exceptions.Memberships;
 using Membership.Core.Repositories.Memberships;
 
 namespace Membership.Application.Commands.Memberships.MembershipPeriods.Handlers;
 
-internal sealed class UpdateMembershipPeriodHandler : ICommandHandler<UpdateMembershipPeriod>
+internal sealed class EnrollDeactivateMembershipPeriodHandler : ICommandHandler<EnrollDeactivateMembershipPeriod>
 {
     private readonly IMembershipPeriodRepository _repository;
+    private readonly IClock _clock;
 
-    public UpdateMembershipPeriodHandler(IMembershipPeriodRepository repository)
-        => _repository = repository;
+    public EnrollDeactivateMembershipPeriodHandler(IMembershipPeriodRepository repository, IClock clock)
+    {
+        _repository = repository;
+        _clock = clock;
+    }
 
-    public async Task HandleAsync(UpdateMembershipPeriod command)
+    public async Task HandleAsync(EnrollDeactivateMembershipPeriod command)
     {
         var membershipPeriod = await _repository.GetByIdAsync(command.MembershipPeriodId);
 
@@ -19,7 +23,7 @@ internal sealed class UpdateMembershipPeriodHandler : ICommandHandler<UpdateMemb
         {
             throw new MembershipPeriodNotFoundException(command.MembershipPeriodId);
         }
-        membershipPeriod.Update(command.Start, command.End);
+        membershipPeriod.EnrollDeactivate(_clock.Current());
         await _repository.UpdateAsync(membershipPeriod);
     }
 }

@@ -8,13 +8,17 @@ namespace Membership.Application.Commands.Memberships.MembershipPeriods.Handlers
 internal sealed class CreateMembershipPeriodHandler : ICommandHandler<CreateMembershipPeriod>
 {
     private readonly IMembershipPeriodRepository _repository;
+    private readonly IClock _clock;
 
-    public CreateMembershipPeriodHandler(IMembershipPeriodRepository repository)
-        => _repository = repository;
+    public CreateMembershipPeriodHandler(IMembershipPeriodRepository repository, IClock clock)
+    {
+        _repository = repository;
+        _clock = clock;
+    }
 
     public async Task HandleAsync(CreateMembershipPeriod command)
     {
-        var membershipPeriod = MembershipPeriod.Create(command.MembershipPeriodId, (Date)command.Start , (Date)command.End, command.RegistrationUntil, DateTime.UtcNow);
+        var membershipPeriod = MembershipPeriod.Create(command.MembershipPeriodId, (Date)command.Start , (Date)command.End, _clock.Current());
         await _repository.AddAsync(membershipPeriod);
     }
 }
