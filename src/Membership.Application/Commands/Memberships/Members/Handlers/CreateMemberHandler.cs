@@ -17,13 +17,15 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
     private readonly IMemberRepository _memberRepository;
     private readonly IAreaRepository _areaRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IMembershipPeriodRepository _membershipPeriodRepository;
 
     public CreateMemberHandler(IMemberRepository memberRepository, IAreaRepository areaRepository,
-        IUserRepository userRepository)
+        IUserRepository userRepository, IMembershipPeriodRepository membershipPeriodRepository)
     {
         _memberRepository = memberRepository;
         _areaRepository = areaRepository;
         _userRepository = userRepository;
+        _membershipPeriodRepository = membershipPeriodRepository;
     }
 
     public async Task HandleAsync(CreateMember command)
@@ -67,6 +69,13 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
         {
             throw new NotAuthorizedToCreateMemberForThisAreaException();
         }
+
+        var membershipPeriod = await _membershipPeriodRepository.GetActivePeriodAsync();
+ 
+        if (membershipPeriod is null)
+        {
+            throw new ThereIsNoActiveMembershipPeriodAvailable();
+        }
         
         var membership = Member.Create(new CreateMemberContract
         {
@@ -96,7 +105,8 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             PanchayatId = command.PanchayatId,
             RegisteredOrganizationId = command.RegisteredOrganizationId,
             WelfareSchemeId = command.WelfareSchemeId,
-            MembershipPeriodId = command.MembershipPeriodId,
+            MembershipPeriodId = membershipPeriod.Id,
+            Status = MemberStatus.Draft,
             CreatedAt = DateTime.UtcNow,
             CreatedBy = Guid.NewGuid()
         });

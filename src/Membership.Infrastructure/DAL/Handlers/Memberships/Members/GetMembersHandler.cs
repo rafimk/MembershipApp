@@ -20,9 +20,10 @@ internal sealed class GetMembersHandler : IQueryHandler<GetMembers, IEnumerable<
             .Include(x => x.Mandalam)
             .Include(x => x.Panchayat)
             .Include(x => x.Area).ThenInclude(x => x.State)
+            .Include(x => x.MembershipPeriod)
             .AsNoTracking()
             .Select(x => x.AsDto())
-            .Take(100)
+            .Take(1000)
             .ToListAsync();
     }
 }

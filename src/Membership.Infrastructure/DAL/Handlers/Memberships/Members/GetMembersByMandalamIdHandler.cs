@@ -22,8 +22,6 @@ internal sealed class GetMembersByMandalamIdHandler : IQueryHandler<GetMembersBy
             .Include(x => x.Qualification)
             .Include(x => x.Mandalam)
             .Include(x => x.Panchayat)
-            .Include(x => x.RegisteredOrganization)
-            .Include(x => x.WelfareScheme)
             .Include(x => x.MembershipPeriod)
             .Include(x => x.Area).ThenInclude(x => x.State)
             .AsNoTracking()

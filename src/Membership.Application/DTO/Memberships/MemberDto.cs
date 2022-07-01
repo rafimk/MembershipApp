@@ -35,8 +35,8 @@ public class MemberDto
     public MandalamDto Mandalam { get; set; }
     public Guid PanchayatId { get; set; }
     public PanchayatDto Panchayat { get; set; }
-    public RegisteredOrganizationDto RegisteredOrganization { get; set; }
-    public WelfareSchemeDto WelfareScheme { get; set; }
+    public Guid? RegisteredOrganizationId { get; set; }
+    public Guid? WelfareSchemeId  { get; set; }
     public MembershipPeriodDto MembershipPeriod { get; set;}
     public double CollectedAmount { get; set; }
     public DateTime CreatedAt { get; set; }

@@ -22,6 +22,10 @@ Content-Type: application/json
 GET {{url}}/members
 
 ###
+GET {{url}}/members/role
+Authorization: Bearer {{accessToken}}
+
+###
 POST {{url}}/members
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
@@ -40,14 +44,14 @@ Content-Type: application/json
     "passportExpiry": "2025-08-15",
     "passportFrontPage": null,
     "passportLastPage": null,
-    "professionId" : "150c5a51-cd2e-4021-8afc-e0767420dca7",
-    "qualificationId": "12cedccf-b2f0-4cd5-91a7-ad64464cdd90",
+    "professionId" : "624b5f9d-15af-4b5e-b473-c76c87cf51ce",
+    "qualificationId": "7c8d2faa-43d1-43ad-ad43-39e05e572159",
     "bloodGroup": 0,
     "photo": null,
     "houseName": "First Home",
     "addressInIndia": "First Street",
-    "areaId": "3d0630fa-6742-4b87-a48c-b0c6096e2583",
+    "areaId": "97856452-46ee-4a51-a6c9-dfc065ec73dd",
     "panchayatId": "2c920e18-0681-4e6f-ab4d-00a602fc88ca",
-    "isMemberOfAnyIndianRegisteredOrganization": false,
-    "isKMCCWelfareScheme": false
+    "registeredOrganizationId": null,
+    "welfareSchemeId": null
 }

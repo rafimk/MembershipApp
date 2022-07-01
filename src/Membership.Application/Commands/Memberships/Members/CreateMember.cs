@@ -29,6 +29,5 @@ public record CreateMember() : ICommand
     public Guid PanchayatId { get; set; } 
     public Guid? RegisteredOrganizationId { get; set; }
     public Guid? WelfareSchemeId { get; set; }
-    public Guid MembershipPeriodId { get; set; }
     public Guid? AgentId { get; set; }
 }

@@ -9,5 +9,5 @@ public record UpdateUser() : ICommand
     public string MobileNumber { get; set; }
     public string AlternativeContactNumber { get; set; }
     public string Designation { get; set; }
-    public bool IsDisputeCommittee {get; set;}
+    public bool IsDisputeCommittee { get; set; } = false;
 }

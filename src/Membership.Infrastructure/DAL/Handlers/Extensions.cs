@@ -201,16 +201,8 @@ public static class Extensions
                 Name = entity.Mandalam?.Name
                 
             },
-            RegisteredOrganization = new RegisteredOrganizationDto
-            {
-                Id = entity.RegisteredOrganizationId,
-                Name = entity.RegisteredOrganization?.Name
-            },
-            WelfareScheme = new WelfareSchemeDto
-            {
-                Id = entity.WelfareSchemeId,
-                Name = entity.WelfareScheme?.Name
-            },
+            RegisteredOrganizationId = entity.RegisteredOrganizationId,
+            WelfareSchemeId = entity.WelfareSchemeId,
             MembershipPeriod = new MembershipPeriodDto
             {
                 Id = entity.MembershipPeriodId,
