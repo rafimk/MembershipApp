@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "district-admin@kmcc.com",
+    "email": "mandalam-agent@kmcc.com",
     "password": "admin@123"
 }
 
