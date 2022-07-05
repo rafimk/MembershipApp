@@ -39,8 +39,6 @@ internal sealed class UpdateMemberHandler : ICommandHandler<UpdateMember>
             AddressInIndia = command.AddressInIndia,
             RegisteredOrganizationId = command.RegisteredOrganizationId,
             WelfareSchemeId = command.WelfareSchemeId,
-            CreatedAt = DateTime.UtcNow,
-            CreatedBy = Guid.NewGuid()
         };
         membership.Update(contract);
         await _repository.UpdateAsync(membership);

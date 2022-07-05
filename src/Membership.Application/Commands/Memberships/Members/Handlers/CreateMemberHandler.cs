@@ -2,6 +2,7 @@
 using Membership.Application.Exceptions.Memberships;
 using Membership.Application.Exceptions.Nationalities;
 using Membership.Application.Exceptions.Users;
+using Membership.Core.Abstractions;
 using Membership.Core.Consts;
 using Membership.Core.Contracts.Memberships;
 using Membership.Core.Entities.Memberships.Members;
@@ -18,14 +19,16 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
     private readonly IAreaRepository _areaRepository;
     private readonly IUserRepository _userRepository;
     private readonly IMembershipPeriodRepository _membershipPeriodRepository;
+    private readonly IClock _clock;
 
     public CreateMemberHandler(IMemberRepository memberRepository, IAreaRepository areaRepository,
-        IUserRepository userRepository, IMembershipPeriodRepository membershipPeriodRepository)
+        IUserRepository userRepository, IMembershipPeriodRepository membershipPeriodRepository, IClock clock)
     {
         _memberRepository = memberRepository;
         _areaRepository = areaRepository;
         _userRepository = userRepository;
         _membershipPeriodRepository = membershipPeriodRepository;
+        _clock = clock;
     }
 
     public async Task HandleAsync(CreateMember command)
@@ -107,8 +110,8 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             WelfareSchemeId = command.WelfareSchemeId,
             MembershipPeriodId = membershipPeriod.Id,
             Status = MemberStatus.Draft,
-            CreatedAt = DateTime.UtcNow,
-            CreatedBy = Guid.NewGuid()
+            CreatedAt = _clock.Current(),
+            CreatedBy = command.AgentId
         });
         
         await _memberRepository.AddAsync(membership);

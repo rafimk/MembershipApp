@@ -1,5 +1,4 @@
 using Membership.Core.Entities.Commons;
-using Membership.Core.ValueObjects;
 
 namespace Membership.Core.Repositories.Commons;
 
