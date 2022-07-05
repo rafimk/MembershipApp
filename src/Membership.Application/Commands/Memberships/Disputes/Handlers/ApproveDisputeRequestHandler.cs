@@ -1,9 +1,8 @@
 using Membership.Application.Abstractions;
-using Membership.Application.Commands.Memberships.Disputes;
 using Membership.Application.Exceptions.Memberships;
 using Membership.Core.Repositories.Memberships;
 
-namespace Membership.Application.Commands.Memberships.Members.Handlers;
+namespace Membership.Application.Commands.Memberships.Disputes.Handlers;
 
 internal sealed class ApproveDisputeRequestHandler : ICommandHandler<ApproveDisputeRequest>
 {

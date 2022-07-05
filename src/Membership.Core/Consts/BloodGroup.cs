@@ -8,7 +8,7 @@ public enum BloodGroup
     BNegative = 3,
     OPositive = 4,
     ONegative = 5,
-    ABPositive = 6,
-    ABNegative = 7,
+    AbPositive = 6,
+    AbNegative = 7,
     Unknown = 8
 }

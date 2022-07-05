@@ -1,30 +1,30 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
-using Membership.Application.Queries.Memberships.Members;
+using Membership.Application.Queries.Memberships.Disputes;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
+namespace Membership.Infrastructure.DAL.Handlers.Memberships.Disputes;
 
-internal sealed class GetDisputeRequestsByStateIdHandler : IQueryHandler<GetDisputeRequestsByStateId, DisputeRequestDto>
+internal sealed class GetDisputeRequestsByStateIdHandler : IQueryHandler<GetDisputeRequestsByStateId, IEnumerable<DisputeRequestDto>>
 {
     private readonly MembershipDbContext _dbContext;
     
     public GetDisputeRequestsByStateIdHandler(MembershipDbContext dbContext)
         => _dbContext = dbContext;
     
-    public async Task<DisputeRequestDto> HandleAsync(GetDisputeRequestsByStateId query)
+    public async Task<IEnumerable<DisputeRequestDto>> HandleAsync(GetDisputeRequestsByStateId query)
     {
-        var memberId = new GenericId(query.MemberId);
-        var member = await _dbContext.Members
-            .Include(x => x.Profession)
-            .Include(x => x.Qualification)
-            .Include(x => x.Mandalam)
-            .Include(x => x.Panchayat)
-            .Include(x => x.Area).ThenInclude(x => x.State)
+        var stateId = new GenericId(query.StateId);
+        var disputeRequests = await _dbContext.DisputeRequests
+            .Include(x => x.ProposedArea).ThenInclude(x => x.State)
+            .Include(x => x.ProposedMandalam)
+            .Include(x => x.ProposedPanchayat)
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Id == memberId);
+            .Where(x => x.ProposedArea.StateId == stateId)
+            .Select(x => x.AsDto())
+            .ToListAsync();
 
-        return member?.AsDto();
+        return disputeRequests;
     }
 }

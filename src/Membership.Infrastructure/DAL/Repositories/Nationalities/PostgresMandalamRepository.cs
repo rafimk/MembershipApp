@@ -23,15 +23,15 @@ internal sealed class PostgresMandalamRepository : IMandalamRepository
     public async Task<IEnumerable<Mandalam>> GetAsync()
         => await _dbContext.Mandalams.Where(x => !x.IsDeleted).ToListAsync();
 
-    public async Task AddAsync(Mandalam Mandalam)
+    public async Task AddAsync(Mandalam mandalam)
     {
-        await _dbContext.Mandalams.AddAsync(Mandalam);
+        await _dbContext.Mandalams.AddAsync(mandalam);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Mandalam Mandalam)
+    public async Task UpdateAsync(Mandalam mandalam)
     {
-        _dbContext.Mandalams.Update(Mandalam);
+        _dbContext.Mandalams.Update(mandalam);
         await _dbContext.SaveChangesAsync();
     }
 }

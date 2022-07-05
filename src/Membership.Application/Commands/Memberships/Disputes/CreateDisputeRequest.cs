@@ -10,6 +10,5 @@ public record CreateDisputeRequest() : ICommand
     public Guid ProposedMandalamId { get; set; }
     public Guid ProposedPanchayatId { get; set; }
     public string Reason { get; set; }
-    public DateTime SubmittedDate  { get; set; }
     public Guid? SubmittedBy { get; set; }
 }

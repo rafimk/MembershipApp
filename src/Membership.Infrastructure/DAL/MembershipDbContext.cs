@@ -1,4 +1,5 @@
 ﻿using Membership.Core.Entities.Commons;
+using Membership.Core.Entities.Memberships.Disputes;
 using Membership.Core.Entities.Memberships.Members;
 using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Entities.Memberships.Professions;
@@ -27,7 +28,7 @@ internal sealed class MembershipDbContext : DbContext
     public DbSet<RegisteredOrganization> RegisteredOrganizations { get; set; }
     public DbSet<WelfareScheme> WelfareSchemes { get; set; }
     public DbSet<DisputeRequest> DisputeRequests { get; set; }
-    public DbSet<OCRResult> OCRResults { get; set; }
+    public DbSet<OcrResult> OcrResults { get; set; }
 
     public MembershipDbContext(DbContextOptions<MembershipDbContext> options) : base(options)
     {

@@ -1,30 +1,48 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
-using Membership.Application.Queries.Memberships.Members;
+using Membership.Application.Queries.Memberships.Disputes;
+using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
+namespace Membership.Infrastructure.DAL.Handlers.Memberships.Disputes;
 
-internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeRequestByRole, DisputeRequestDto>
+internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeRequestByRole, IEnumerable<DisputeRequestDto>>
 {
     private readonly MembershipDbContext _dbContext;
-    
-    public GetDisputeRequestByRoleHandler(MembershipDbContext dbContext)
-        => _dbContext = dbContext;
-    
-    public async Task<DisputeRequestDto> HandleAsync(GetDisputeRequestByRole query)
-    {
-        var memberId = new GenericId(query.MemberId);
-        var member = await _dbContext.Members
-            .Include(x => x.Profession)
-            .Include(x => x.Qualification)
-            .Include(x => x.Mandalam)
-            .Include(x => x.Panchayat)
-            .Include(x => x.Area).ThenInclude(x => x.State)
-            .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Id == memberId);
+    private readonly IUserRepository _userRepository;
 
-        return member?.AsDto();
+    public GetDisputeRequestByRoleHandler(MembershipDbContext dbContext, IUserRepository userRepository)
+    {
+        _dbContext = dbContext;
+        _userRepository = userRepository;
+    }
+
+    public async Task<IEnumerable<DisputeRequestDto>> HandleAsync(GetDisputeRequestByRole query)
+    {
+        var user = await _userRepository.GetByIdAsync(query.UserId);
+
+        if (user is null)
+        {
+            return null;
+        }
+        
+        if (user.Role != UserRole.MandalamAgent())
+        {
+            return null;
+        }
+        
+        var mandalamId = new GenericId((Guid)user.CascadeId);
+        
+        var disputeRequests = await _dbContext.DisputeRequests
+            .Include(x => x.ProposedArea).ThenInclude(x => x.State)
+            .Include(x => x.ProposedMandalam)
+            .Include(x => x.ProposedPanchayat)
+            .AsNoTracking()
+            .Where(x => x.ProposedMandalamId == mandalamId)
+            .Select(x => x.AsDto())
+            .ToListAsync();
+
+        return disputeRequests;
     }
 }

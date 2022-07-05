@@ -23,15 +23,15 @@ internal sealed class PostgresPanchayatRepository : IPanchayatRepository
     public async Task<IEnumerable<Panchayat>> GetAsync()
         => await _dbContext.Panchayats.Where(x => !x.IsDeleted).ToListAsync();
 
-    public async Task AddAsync(Panchayat Panchayat)
+    public async Task AddAsync(Panchayat panchayat)
     {
-        await _dbContext.Panchayats.AddAsync(Panchayat);
+        await _dbContext.Panchayats.AddAsync(panchayat);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Panchayat Panchayat)
+    public async Task UpdateAsync(Panchayat panchayat)
     {
-        _dbContext.Panchayats.Update(Panchayat);
+        _dbContext.Panchayats.Update(panchayat);
         await _dbContext.SaveChangesAsync();
     }
 }

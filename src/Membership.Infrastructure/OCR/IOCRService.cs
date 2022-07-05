@@ -1,8 +1,8 @@
 using Membership.Core.Entities.Commons;
 
-namespace Membership.Core.Repositories.Commons;
+namespace Membership.Infrastructure.OCR;
 
-public interface IOCRService
+public interface IOcrService
 {
-    Task<OCRResult> ReadData(string fileInfo);
+    Task<OcrResult> ReadData(string fileInfo);
 }

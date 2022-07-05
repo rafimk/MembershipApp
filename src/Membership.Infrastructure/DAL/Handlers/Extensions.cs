@@ -1,6 +1,7 @@
 ﻿using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.DTO.Users;
+using Membership.Core.Entities.Memberships.Disputes;
 using Membership.Core.Entities.Memberships.Members;
 using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Entities.Memberships.Professions;
@@ -219,5 +220,26 @@ public static class Extensions
             IsActive = entity.IsActive,
             CreatedAt = entity.CreatedAt,
             VerifiedAt = entity.VerifiedAt
+        };
+    
+     public static DisputeRequestDto AsDto(this DisputeRequest entity)
+        => new()
+        {
+            Id = entity.Id.Value,
+            MemberId = entity.MemberId,
+            Member = entity.Member.AsDto(),
+            ProposedAreaId = entity.ProposedAreaId,
+            ProposedArea = entity.ProposedArea.AsDto(),
+            ProposedMandalamId = entity.ProposedMandalamId,
+            ProposedMandalam = entity.ProposedMandalam.AsDto(),
+            ProposedPanchayatId = entity.ProposedPanchayatId,
+            ProposedPanchayat = entity.ProposedPanchayat.AsDto(),
+            Reason = entity.Reason,
+            JustificationComment = entity.JustificationComment,
+            SubmittedDate = entity.SubmittedDate,
+            SubmittedBy = entity.SubmittedBy,
+            ActionDate = entity.ActionDate,
+            ActionBy = entity.ActionBy,
+            Status = (int)entity.Status,
         };
     }

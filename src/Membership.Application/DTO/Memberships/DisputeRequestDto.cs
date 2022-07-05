@@ -6,6 +6,7 @@ public class DisputeRequestDto
 {
     public Guid Id { get; set; }
     public Guid MemberId { get; set; }
+    public MemberDto Member { get; set; }
     public Guid ProposedAreaId { get; set; }
     public AreaDto ProposedArea { get; set; }
     public Guid ProposedMandalamId { get; set; }

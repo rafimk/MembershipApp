@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Membership.Infrastructure.DAL.Configurations.Commons;
 
-internal sealed class OCRResultConfiguration : IEntityTypeConfiguration<OCRResult>
+internal sealed class OcrResultConfiguration : IEntityTypeConfiguration<OcrResult>
 {
-    public void Configure(EntityTypeBuilder<OCRResult> builder)
+    public void Configure(EntityTypeBuilder<OcrResult> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Type).HasConversion<string>();
+        builder.Property(x => x.CardType).HasConversion<string>();
     }
 }
