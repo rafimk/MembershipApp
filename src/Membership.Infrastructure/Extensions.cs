@@ -8,6 +8,7 @@ using Membership.Infrastructure.DAL.Services;
 using Membership.Infrastructure.Exceptions;
 using Membership.Infrastructure.FileManagement;
 using Membership.Infrastructure.Logging;
+using Membership.Infrastructure.OCR;
 using Membership.Infrastructure.Security;
 using Membership.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;

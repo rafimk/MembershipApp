@@ -1,4 +1,4 @@
-@url = http://membership-app.me:5000
+@url = http://localhost:5000
 @userId = 5e0a9aab-4c8e-4685-ace3-1e18f679de8f
 @districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
 
@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "mandalam-agent@kmcc.com",
+    "email": "admin@admin.com",
     "password": "admin@123"
 }
 

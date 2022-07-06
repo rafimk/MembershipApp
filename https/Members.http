@@ -32,14 +32,14 @@ Content-Type: application/json
 
 {
     "fullName": "First Member",
-    "emiratesIdNumber": "784-1979-9625765-4",
+    "emiratesIdNumber": "784-1979-9625765-6",
     "emiratesIdExpiry": "2023-08-15",
     "emiratesIdFrontPage": null,
     "emiratesIdLastPage": null,
     "dateOfBirth": "1980-01-01",
     "mobileNumber": "0501234123",
     "alternativeContactNumber": "0501234123",
-    "email": "first.member@member.com",
+    "email": "first.member2@member.com",
     "passportNumber": "T453256",
     "passportExpiry": "2025-08-15",
     "passportFrontPage": null,

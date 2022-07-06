@@ -1,4 +1,6 @@
+using System.Text;
 using Membership.Core.Abstractions;
+using Membership.Core.Consts;
 using Membership.Core.Repositories.Commons;
 using Membership.Infrastructure.OCR;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
@@ -20,7 +22,7 @@ internal sealed class OcrService : IOcrService
         _client = Authenticate(_endpoint, _subscriptionKey);
     }
     
-    public async Task<OcrResult> ReadData(string fileInfo)
+    public async Task<OcrResult> ReadData(string fileInfo, Guid? frontPageId, Guid? lastPageId)
     {
            // Read text from URL
         var textHeaders = await _client.ReadInStreamAsync(File.OpenRead(fileInfo));
@@ -44,19 +46,56 @@ internal sealed class OcrService : IOcrService
         while ((results.Status == OperationStatusCodes.Running ||
             results.Status == OperationStatusCodes.NotStarted));
 
-        var result = OcrResult.Create(Guid.NewGuid(), null, null, null );
-        {
-
-        };
+        var readResult = new StringBuilder();
 
         var textUrlFileResults = results.AnalyzeResult.ReadResults;
         foreach (ReadResult page in textUrlFileResults)
         {
             foreach (Line line in page.Lines)
             {
-                Console.WriteLine(line.Text);
+                readResult.Append(line.Text + " ");
             }
         }
+        
+        string eidNo = "";
+        string name = "";
+        var dob = "";
+        
+        var finalResult = readResult.ToString().RemoveSpecialCharacters();
+
+        int firstStringPositionForEid = finalResult.IndexOf("ID Number ");
+
+        if (firstStringPositionForEid > 0)
+        {
+            eidNo = finalResult.Substring(firstStringPositionForEid + 10, 18);
+        }
+
+        int firstStringPositionForName = finalResult.IndexOf("Name:");    
+        int secondStringPositionForName = finalResult.IndexOf(":  Nationality:");
+
+        if (firstStringPositionForName > 0)
+        {
+            name = finalResult.Substring(firstStringPositionForName + 5,
+                secondStringPositionForName - (firstStringPositionForName + 5));
+        }
+
+        var split = name.Split(":");
+        
+        if (split.Length > 1)
+        {
+            name = split[0];
+            dob = split[1].Substring(0, 8);
+        }
+
+        int firstStringPositionForDob = finalResult.IndexOf(" Date of Birth");
+
+        if (firstStringPositionForDob > 0) 
+        {
+            dob = finalResult.Substring(firstStringPositionForDob - 8, 8);
+        }
+        
+        var result = OcrResult.Create(Guid.NewGuid(),  frontPageId, lastPageId, eidNo, name, new DateOnly(), 
+            new DateOnly(), "", CardType.New, DateTime.UtcNow, Guid.NewGuid());
 
         return result;
     }

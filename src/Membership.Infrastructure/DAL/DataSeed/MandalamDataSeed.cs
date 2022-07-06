@@ -7,7 +7,7 @@ internal sealed class MandalamDataSeed
     public static IEnumerable<MandalamSeedContract> GetSeedData()
     {
         string path = Directory.GetCurrentDirectory();
-        string filePath = path +  @"\DataSeed\Mandalam.json";
+        string filePath = path +  @"./DataSeed/Mandalam.json";
         if (!File.Exists(filePath))
         {
             return null;
