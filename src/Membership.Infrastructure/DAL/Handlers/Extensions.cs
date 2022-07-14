@@ -245,4 +245,25 @@ public static class Extensions
             ActionBy = entity.ActionBy,
             Status = (int)entity.Status,
         };
+     
+     public static DisputeRequestDto AsDtoWithMember(this DisputeRequest entity)
+         => new()
+         {
+             Id = entity.Id.Value,
+             MemberId = entity.MemberId,
+             Member = entity.Member.AsDto(),
+             ProposedAreaId = entity.ProposedAreaId,
+             ProposedArea = entity.ProposedArea.AsDto(),
+             ProposedMandalamId = entity.ProposedMandalamId,
+             ProposedMandalam = entity.ProposedMandalam.AsDto(),
+             ProposedPanchayatId = entity.ProposedPanchayatId,
+             ProposedPanchayat = entity.ProposedPanchayat.AsDto(),
+             Reason = entity.Reason,
+             JustificationComment = entity.JustificationComment,
+             SubmittedDate = entity.SubmittedDate,
+             SubmittedBy = entity.SubmittedBy,
+             ActionDate = entity.ActionDate,
+             ActionBy = entity.ActionBy,
+             Status = (int)entity.Status,
+         };
     }

@@ -17,12 +17,18 @@ internal sealed class GetDisputeRequestByIdHandler : IQueryHandler<GetDisputeReq
     {
         var requestId = new GenericId(query.RequestId);
         var disputeRequest = await _dbContext.DisputeRequests
+            .Include(x => x.Member).ThenInclude(x => x.Area)
+            .Include(x => x.Member).ThenInclude(x => x.Mandalam).ThenInclude(x => x.District)
+            .Include(x => x.Member).ThenInclude(x => x.Panchayat)
+            .Include(x => x.Member).ThenInclude(x => x.Qualification)
+            .Include(x => x.Member).ThenInclude(x => x.Profession)
+            .Include(x => x.Member).ThenInclude(x => x.MembershipPeriod)
             .Include(x => x.ProposedArea).ThenInclude(x => x.State)
             .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
             .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == requestId);
 
-        return disputeRequest?.AsDto();
+        return disputeRequest?.AsDtoWithMember();
     }
 }
