@@ -20,20 +20,14 @@ public class MemberDto
     public DateTimeOffset PassportExpiry { get; set; }
     public Guid? PassportFrontPage { get; set; }
     public Guid? PassportLastPage { get; set; }
-    public Guid ProfessionId { get; set; }
     public ProfessionDto Profession { get; set; }
-    public Guid QualificationId { get; set; }
     public QualificationDto Qualification { get; set; }
     public int BloodGroup { get; set; }
     public Guid? Photo { get; set; }
     public string HouseName { get; set; }
     public string AddressInIndia { get; set; }
-    public string PasswordHash { get; set; }
-    public Guid AreaId { get; set; }
     public AreaDto Area { get; set; }
-    public Guid MandalamId { get; set; }
     public MandalamDto Mandalam { get; set; }
-    public Guid PanchayatId { get; set; }
     public PanchayatDto Panchayat { get; set; }
     public Guid? RegisteredOrganizationId { get; set; }
     public Guid? WelfareSchemeId  { get; set; }

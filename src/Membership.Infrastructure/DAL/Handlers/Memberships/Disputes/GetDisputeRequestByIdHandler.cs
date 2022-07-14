@@ -18,8 +18,8 @@ internal sealed class GetDisputeRequestByIdHandler : IQueryHandler<GetDisputeReq
         var requestId = new GenericId(query.RequestId);
         var disputeRequest = await _dbContext.DisputeRequests
             .Include(x => x.ProposedArea).ThenInclude(x => x.State)
-            .Include(x => x.ProposedMandalam)
-            .Include(x => x.ProposedPanchayat)
+            .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
+            .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == requestId);
 

@@ -18,8 +18,8 @@ internal sealed class GetDisputeRequestByMandalamIdHandler : IQueryHandler<GetDi
         var mandalamId = new GenericId(query.MandalamId);
         var disputeRequests = await _dbContext.DisputeRequests
             .Include(x => x.ProposedArea).ThenInclude(x => x.State)
-            .Include(x => x.ProposedMandalam)
-            .Include(x => x.ProposedPanchayat)
+            .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
+            .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
             .AsNoTracking()
             .Where(x => x.ProposedMandalamId == mandalamId)
             .Select(x => x.AsDto())

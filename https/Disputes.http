@@ -1,0 +1,51 @@
+@url = http://localhost:5000
+@userId = 3912657e-df36-40c0-893d-2be8ad374109
+@requestId = a28acf6b-a270-4182-b5f9-bb736dccbdaa
+@areaId = 97856452-46ee-4a51-a6c9-dfc065ec73dd
+@mandalamId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
+@stateId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "mandalam-agent@kmcc.com",
+    "password": "admin@123"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+
+###
+GET {{url}}/disputes
+
+###
+GET {{url}}/disputes/{{requestId}}
+
+###
+GET {{url}}/disputes/role
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/disputes/area/{{areaId}}
+
+###
+GET {{url}}/disputes/mandalam/{{mandalamId}}
+
+###
+GET {{url}}/disputes/state/{{stateId}}
+
+###
+POST {{url}}/disputes
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "memberId": "79c2b8b4-2f85-4207-8889-32250034451c",
+    "proposedAreaId": "9073bb7b-5e09-4fd7-80a4-1d874bc78dc3",
+    "proposedPanchayatId": "2c920e18-0681-4e6f-ab4d-00a602fc88ca",
+    "reason": "test"
+}

@@ -20,7 +20,7 @@ internal sealed class GetMembersByAreaIdHandler : IQueryHandler<GetMembersByArea
             .OrderBy(x => x.FullName)
             .Include(x => x.Profession)
             .Include(x => x.Qualification)
-            .Include(x => x.Mandalam)
+            .Include(x => x.Mandalam).ThenInclude(x => x.District)
             .Include(x => x.Panchayat)
             .Include(x => x.MembershipPeriod)
             .Include(x => x.Area).ThenInclude(x => x.State)

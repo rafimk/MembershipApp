@@ -1,7 +1,6 @@
 @url = http://localhost:5000
-@userId = 3912657e-df36-40c0-893d-2be8ad374109
+@memberId = 79c2b8b4-2f85-4207-8889-32250034451c
 @districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
-
 
 
 ###
@@ -20,6 +19,9 @@ Content-Type: application/json
 
 ###
 GET {{url}}/members
+
+###
+GET {{url}}/members/{{memberId}}
 
 ###
 GET {{url}}/members/role

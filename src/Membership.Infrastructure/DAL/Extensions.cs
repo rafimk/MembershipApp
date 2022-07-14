@@ -25,12 +25,14 @@ internal static class Extensions
         services.AddDbContext<MembershipDbContext>(x => x.UseNpgsql(postgresOptions.ConnectionString));
         
         services.AddScoped<IFileAttachmentRepository, PostgresFileAttachmentRepository>();
+        
         services.AddScoped<IMemberRepository, PostgresMemberRepository>();
         services.AddScoped<IMembershipPeriodRepository, PostgresMembershipPeriodRepository>();
         services.AddScoped<IProfessionRepository, PostgresProfessionRepository>();
         services.AddScoped<IQualificationRepository, PostgresQualificationRepository>();
         services.AddScoped<IRegisteredOrganizationRepository, PostgresRegisteredOrganizationRepository>();
         services.AddScoped<IWelfareSchemeRepository, PostgresWelfareSchemeRepository>();
+        services.AddScoped<IDisputeRequestRepository, PostgresDisputeRequestRepository>();
         
         services.AddScoped<IAreaRepository, PostgresAreaRepository>();
         services.AddScoped<IDistrictRepository, PostgresDistrictRepository>();

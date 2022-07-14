@@ -17,7 +17,7 @@ internal sealed class GetMembersHandler : IQueryHandler<GetMembers, IEnumerable<
         return await _dbContext.Members
             .Include(x => x.Profession)
             .Include(x => x.Qualification)
-            .Include(x => x.Mandalam)
+            .Include(x => x.Mandalam).ThenInclude(x => x.District)
             .Include(x => x.Panchayat)
             .Include(x => x.Area).ThenInclude(x => x.State)
             .Include(x => x.MembershipPeriod)

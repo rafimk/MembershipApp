@@ -16,25 +16,25 @@ namespace Membership.Api.Controllers.Memberships;
 public class MembersController : ControllerBase
 {
     private readonly ICommandHandler<CreateMember> _createMemberHandler;
-    private readonly ICommandHandler<UpdateMember> _updateMemberHaneHandler;
-    private readonly ICommandHandler<ActivateMember> _activateMemberHaneHandler;
-    private readonly ICommandHandler<DeactivateMember> _deactivateMemberHaneHandler;
+    private readonly ICommandHandler<UpdateMember> _updateMemberHandler;
+    private readonly ICommandHandler<ActivateMember> _activateMemberHandler;
+    private readonly ICommandHandler<DeactivateMember> _deactivateMemberHandler;
     private readonly IQueryHandler<GetMemberById, MemberDto> _getMemberByIdHandler;
     private readonly IQueryHandler<GetMembers, IEnumerable<MemberDto>> _getMembersHandler;
     private readonly IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> _getMembersByRoleHandler;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
-        ICommandHandler<UpdateMember> updateMemberHaneHandler,
-        ICommandHandler<ActivateMember> activateMemberHaneHandler,
-        ICommandHandler<DeactivateMember> deactivateMemberHaneHandler,
+        ICommandHandler<UpdateMember> updateMemberHandler,
+        ICommandHandler<ActivateMember> activateMemberHandler,
+        ICommandHandler<DeactivateMember> deactivateMemberHandler,
         IQueryHandler<GetMembers, IEnumerable<MemberDto>> getMembersHandler,
         IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler,
         IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> getMembersByRoleHandler)
     {
         _createMemberHandler = createMemberHandler;
-        _updateMemberHaneHandler = updateMemberHaneHandler;
-        _activateMemberHaneHandler = activateMemberHaneHandler;
-        _deactivateMemberHaneHandler = deactivateMemberHaneHandler;
+        _updateMemberHandler = updateMemberHandler;
+        _activateMemberHandler = activateMemberHandler;
+        _deactivateMemberHandler = deactivateMemberHandler;
         _getMembersHandler = getMembersHandler;
         _getMemberByIdHandler = getMemberByIdHandler;
         _getMembersByRoleHandler = getMembersByRoleHandler;
@@ -43,7 +43,7 @@ public class MembersController : ControllerBase
     [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<MemberDto>> Get()
+    public async Task<ActionResult<IEnumerable<MemberDto>>> Get()
     {
         var members = await _getMembersHandler.HandleAsync(new GetMembers { });
         
@@ -73,7 +73,7 @@ public class MembersController : ControllerBase
     [HttpGet("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<MemberDto>> GetMembersByRole()
+    public async Task<ActionResult<IEnumerable<MemberDto>>> GetMembersByRole()
     {
         if (string.IsNullOrWhiteSpace(User.Identity?.Name))
         {
@@ -113,29 +113,21 @@ public class MembersController : ControllerBase
     [HttpPut("{memberId:guid}")]
     public async Task<ActionResult> Put(Guid memberId, UpdateMember command)
     {
-        await _updateMemberHaneHandler.HandleAsync(command with {Id = memberId});
+        await _updateMemberHandler.HandleAsync(command with {Id = memberId});
         return NoContent();
     }
     
     [HttpPut("activate/{memberId:guid}")]
     public async Task<ActionResult> Activate(Guid memberId)
     {
-        var command = new ActivateMember
-        {
-            MemberId = memberId
-        };
-        await _activateMemberHaneHandler.HandleAsync( new ActivateMember { MemberId = memberId});
+        await _activateMemberHandler.HandleAsync( new ActivateMember { MemberId = memberId});
         return NoContent();
     }
     
     [HttpPut("deactivate/{memberId:guid}")]
     public async Task<ActionResult> Deactivate(Guid memberId)
     {
-        var command = new ActivateMember
-        {
-            MemberId = memberId
-        };
-        await _deactivateMemberHaneHandler.HandleAsync( new DeactivateMember { MemberId = memberId});
+        await _deactivateMemberHandler.HandleAsync( new DeactivateMember { MemberId = memberId});
         return NoContent();
     }
 }

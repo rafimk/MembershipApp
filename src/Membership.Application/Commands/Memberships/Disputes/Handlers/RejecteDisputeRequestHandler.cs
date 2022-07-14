@@ -4,14 +4,14 @@ using Membership.Core.Repositories.Memberships;
 
 namespace Membership.Application.Commands.Memberships.Disputes.Handlers;
 
-internal sealed class RejecteDisputeRequestHandler : ICommandHandler<RejecteDisputeRequest>
+internal sealed class RejecteDisputeRequestHandler : ICommandHandler<RejectDisputeRequest>
 {
     private readonly IDisputeRequestRepository _repository;
 
     public RejecteDisputeRequestHandler(IDisputeRequestRepository repository)
         => _repository = repository;
 
-    public async Task HandleAsync(RejecteDisputeRequest command)
+    public async Task HandleAsync(RejectDisputeRequest command)
     {
         var disputeRequest = await _repository.GetByIdAsync(command.RequestId);
 

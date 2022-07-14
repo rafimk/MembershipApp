@@ -200,7 +200,11 @@ public static class Extensions
             {
                 Id = entity.MandalamId,
                 Name = entity.Mandalam?.Name
-                
+            },
+            Panchayat = new PanchayatDto
+            {
+                Id = entity.PanchayatId,
+                Name = entity.Panchayat?.Name
             },
             RegisteredOrganizationId = entity.RegisteredOrganizationId,
             WelfareSchemeId = entity.WelfareSchemeId,
@@ -227,7 +231,6 @@ public static class Extensions
         {
             Id = entity.Id.Value,
             MemberId = entity.MemberId,
-            Member = entity.Member.AsDto(),
             ProposedAreaId = entity.ProposedAreaId,
             ProposedArea = entity.ProposedArea.AsDto(),
             ProposedMandalamId = entity.ProposedMandalamId,

@@ -37,8 +37,10 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
         {
             throw new AgentNotFoundException(command.SubmittedBy);
         }
+
+        var member = await _memberRepository.GetByIdAsync(command.MemberId);
         
-        if (await _memberRepository.GetByIdAsync(command.MemberId) is not null)
+        if (member is null)
         {
             throw new MemberNotFoundException(command.MemberId);
         }
@@ -64,7 +66,7 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
             Id = command.Id,
             MemberId = command.MemberId,
             ProposedAreaId = command.ProposedAreaId,
-            ProposedMandalamId = command.ProposedMandalamId,
+            ProposedMandalamId = agent.CascadeId,
             ProposedPanchayatId = command.ProposedPanchayatId,
             Reason = command.Reason,
             SubmittedDate = _clock.Current(),
