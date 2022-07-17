@@ -2,29 +2,33 @@ using System.Text;
 using Membership.Core.Abstractions;
 using Membership.Core.Consts;
 using Membership.Core.Repositories.Commons;
+using Membership.Infrastructure.Exceptions;
 using Membership.Infrastructure.OCR;
+using Membership.Infrastructure.OCR.Consts;
+using Membership.Infrastructure.OCR.Policies;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
-using OcrResult = Membership.Core.Entities.Commons.OcrResult;
 
 internal sealed class OcrService : IOcrService
 {
+    private readonly IEnumerable<ICardReadPolicy> _policies;
     private readonly IOcrResultRepository _repository;
     private readonly IClock _clock;
-    private readonly string _subscriptionKey = "01b9a5cdb3d047a6b2689ef7cfd076a4";
-    private readonly string _endpoint = "https://membership-app.cognitiveservices.azure.com/";
+    private readonly string _subscriptionKey = "70e5ba5b9aa7470d80868632927cf0c3";
+    private readonly string _endpoint = "https://membershipapp.cognitiveservices.azure.com/";
     private readonly ComputerVisionClient _client;
     
-    public OcrService(IOcrResultRepository repository, IClock clock)
+    public OcrService(IEnumerable<ICardReadPolicy> policies, IOcrResultRepository repository, IClock clock)
     {
-        repository = repository;
+        _policies = policies;
+        _repository = repository;
         _clock = clock;
         _client = Authenticate(_endpoint, _subscriptionKey);
     }
     
-    public async Task<OcrResult> ReadData(string fileInfo, Guid? frontPageId, Guid? lastPageId)
+    public async Task<OcrData> ReadData(string fileInfo, Guid userId)
     {
-           // Read text from URL
+        // Read text from URL
         var textHeaders = await _client.ReadInStreamAsync(File.OpenRead(fileInfo));
         // After the request, get the operation location (operation ID)
         string operationLocation = textHeaders.OperationLocation;
@@ -57,47 +61,44 @@ internal sealed class OcrService : IOcrService
             }
         }
         
-        string eidNo = "";
-        string name = "";
-        var dob = "";
-        
         var finalResult = readResult.ToString().RemoveSpecialCharacters();
-
-        int firstStringPositionForEid = finalResult.IndexOf("ID Number ");
-
-        if (firstStringPositionForEid > 0)
-        {
-            eidNo = finalResult.Substring(firstStringPositionForEid + 10, 18);
-        }
-
-        int firstStringPositionForName = finalResult.IndexOf("Name:");    
-        int secondStringPositionForName = finalResult.IndexOf(":  Nationality:");
-
-        if (firstStringPositionForName > 0)
-        {
-            name = finalResult.Substring(firstStringPositionForName + 5,
-                secondStringPositionForName - (firstStringPositionForName + 5));
-        }
-
-        var split = name.Split(":");
         
-        if (split.Length > 1)
+        CardSide currentCardSide = null;
+        CardType currentCardType = CardType.New;
+        
+        // Check if the card is new or old 
+        if (finalResult.IndexOf("Name:") > 0 && finalResult.IndexOf("Expiry Date") > 0)
         {
-            name = split[0];
-            dob = split[1].Substring(0, 8);
+            currentCardSide = CardSide.NewCardFrontSide();
+            currentCardType = CardType.New;
         }
 
-        int firstStringPositionForDob = finalResult.IndexOf(" Date of Birth");
-
-        if (firstStringPositionForDob > 0) 
+        if (finalResult.IndexOf("Name:") > 0 && finalResult.IndexOf("Expiry Date") == -1)
         {
-            dob = finalResult.Substring(firstStringPositionForDob - 8, 8);
+            currentCardSide = CardSide.OldCardFrontSide();
+            currentCardType = CardType.Old;
+        }
+
+        if (finalResult.IndexOf("Issuing Place:") > 0)
+        {
+            currentCardSide = CardSide.NewCardBackSide();
+            currentCardType = CardType.New;
+        }
+
+        if (finalResult.IndexOf("Sex:") > 0 && finalResult.IndexOf("Name:") == -1)
+        {
+            currentCardSide = CardSide.OldCardBackSide();
+            currentCardType = CardType.Old;
         }
         
-        var result = OcrResult.Create(Guid.NewGuid(),  frontPageId, lastPageId, eidNo, name, new DateOnly(), 
-            new DateOnly(), "", CardType.New, DateTime.UtcNow, Guid.NewGuid());
+        var policy = _policies.SingleOrDefault(x => x.CanBeApplied(currentCardSide));
 
-        return result;
+        if (policy is null)
+        {
+            throw new NoCardPolicyFoundException(currentCardSide.ToString());
+        }
+ 
+        return policy.ReadData(currentCardSide, finalResult);
     }
     
     private ComputerVisionClient Authenticate(string endpoint, string key)
@@ -107,4 +108,5 @@ internal sealed class OcrService : IOcrService
                 { Endpoint = endpoint };
         return client;
     }
+
 }

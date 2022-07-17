@@ -16,6 +16,12 @@ internal sealed class PostgresOcrResultRepository : IOcrResultRepository
 
     public  Task<OcrResult> GetByIdAsync(Guid id)
         => _dbContext.OcrResults.SingleOrDefaultAsync(x => x.Id == id);
+    
+    public  Task<OcrResult> GetByFrontPageIdAsync(Guid? frontPageId)
+        => _dbContext.OcrResults.SingleOrDefaultAsync(x => x.FrontPageId == frontPageId);
+    
+    public  Task<OcrResult> GetByLastPageIdAsync(Guid? lastPageId)
+        => _dbContext.OcrResults.SingleOrDefaultAsync(x => x.LastPageId == lastPageId);
 
    public async Task AddAsync(OcrResult ocrResult)
     {

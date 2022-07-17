@@ -9,6 +9,7 @@ using Membership.Infrastructure.Exceptions;
 using Membership.Infrastructure.FileManagement;
 using Membership.Infrastructure.Logging;
 using Membership.Infrastructure.OCR;
+using Membership.Infrastructure.OCR.Policies;
 using Membership.Infrastructure.Security;
 using Membership.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
@@ -26,15 +27,21 @@ public static class Extensions
     {
         services.AddControllers();
         services.Configure<AppOptions>(configuration.GetRequiredSection("app"));
-        services.Configure<FileOptions>(configuration.GetRequiredSection("file"));
+        services.Configure<FileUploadOptions>(configuration.GetRequiredSection("file"));
         services.AddSingleton<ExceptionMiddleware>();
         services.AddHttpContextAccessor();
 
         services
             .AddPostgres(configuration)
-            .AddScoped<IUserService, UserService>()
             .AddSingleton<IClock, Clock>()
-            .AddScoped<IBufferedFileUploadService, BufferedFileUploadLocalService>();
+            .AddSingleton<ICardReadPolicy, NewCardFrontSideReadPolicy>()
+            .AddSingleton<ICardReadPolicy, NewCardBackSideReadPolicy>()
+            .AddSingleton<ICardReadPolicy, OldCardFrontSideReadPolicy>()
+            .AddSingleton<ICardReadPolicy, OldCardBackSideReadPolicy>()
+            .AddScoped<IUserService, UserService>()
+            .AddScoped<IBufferedFileUploadService, BufferedFileUploadLocalService>()
+            
+            .AddScoped<IOcrService, OcrService>();
 
         services.AddCustomLogging();
         services.AddSecurity();

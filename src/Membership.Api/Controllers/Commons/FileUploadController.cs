@@ -14,18 +14,18 @@ namespace Membership.Api.Controllers.Commons;
 public class FileUploadController : ControllerBase
 {
     readonly IBufferedFileUploadService _bufferedFileUploadService;
-    private readonly FileOptions _fileOptions;
+    private readonly FileUploadOptions _fileUploadOptions;
 
-    public FileUploadController(IBufferedFileUploadService bufferedFileUploadService, IOptions<FileOptions> fileOptions)
+    public FileUploadController(IBufferedFileUploadService bufferedFileUploadService, IOptions<FileUploadOptions> fileOptions)
     {
         _bufferedFileUploadService = bufferedFileUploadService;
-        _fileOptions = fileOptions.Value;
+        _fileUploadOptions = fileOptions.Value;
     }
     
     [HttpPost("photo")]
     public async Task<ActionResult> PhotoUpload(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileOptions.FilePath, FileType.Photo);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.Photo);
 
         return Ok(fileId);
     }
@@ -33,7 +33,7 @@ public class FileUploadController : ControllerBase
     [HttpPost("emirates-id-front")]
     public async Task<ActionResult> EmiratesIdFront(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileOptions.FilePath, FileType.EmiratesIdFront);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.EmiratesIdFront);
 
         return Ok(fileId);
     }
@@ -41,7 +41,7 @@ public class FileUploadController : ControllerBase
     [HttpPost("emirates-id-back")]
     public async Task<ActionResult> EmiratesIdBack(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileOptions.FilePath, FileType.EmiratesIdBack);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.EmiratesIdBack);
 
         return Ok(fileId);
     }
@@ -49,7 +49,7 @@ public class FileUploadController : ControllerBase
     [HttpPost("passport-first")]
     public async Task<ActionResult> PassportFirst(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileOptions.FilePath, FileType.PassportFirst);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.PassportFirst);
 
         return Ok(fileId);
     }
@@ -57,7 +57,7 @@ public class FileUploadController : ControllerBase
     [HttpPost("passport-last")]
     public async Task<ActionResult> PassportLast(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileOptions.FilePath, FileType.PassportLast);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.PassportLast);
 
         return Ok(fileId);
     }
@@ -65,7 +65,7 @@ public class FileUploadController : ControllerBase
     [HttpGet("{fileId:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> Download(Guid fileId)
     {
-        var result = await _bufferedFileUploadService.Download(fileId, _fileOptions.FilePath);
+        var result = await _bufferedFileUploadService.Download(fileId, _fileUploadOptions.FilePath);
         return File(result.Memory, result.FileType, result.FileName);
     }
 }
