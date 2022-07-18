@@ -3,6 +3,7 @@ using Membership.Application.DTO.Commons;
 using Membership.Application.Queries.Commons;
 using Membership.Core.Entities.Commons;
 using Membership.Core.Repositories.Commons;
+using Membership.Core.Repositories.Memberships;
 using Membership.Infrastructure.OCR;
 
 namespace Membership.Infrastructure.DAL.Handlers.Commons;
@@ -12,12 +13,15 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
     private readonly IOcrService _ocrService;
     private readonly IFileAttachmentRepository _fileAttachmentRepository;
     private readonly IOcrResultRepository _ocrResultRepository;
+    private readonly IMemberRepository _memberRepository;
     
-    public OcrDataReadHandler(IOcrService ocrService, IFileAttachmentRepository fileAttachmentRepository, IOcrResultRepository ocrResultRepository)
+    public OcrDataReadHandler(IOcrService ocrService, IFileAttachmentRepository fileAttachmentRepository, 
+        IOcrResultRepository ocrResultRepository, IMemberRepository memberRepository)
     {
         _ocrService = ocrService;
         _fileAttachmentRepository = fileAttachmentRepository;
         _ocrResultRepository = ocrResultRepository;
+        _memberRepository = memberRepository;
     }
     public async Task<OcrDataDto> HandleAsync(OcrDataRead query)
     {
@@ -81,6 +85,13 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
             result.ExpiryDate, result.CardNumber, result.CardType, DateTime.UtcNow, (Guid)query.UserId);
 
         await _ocrResultRepository.AddAsync(ocrResult);
+
+        var member = await _memberRepository.GetByEmiratesIdAsync(result.IdNumber);
+
+        if (member is not null)
+        {
+            result.IsDispute = true;
+        }
             
         return result;
     }

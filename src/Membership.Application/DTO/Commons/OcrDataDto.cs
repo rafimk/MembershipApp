@@ -10,4 +10,5 @@ public class OcrDataDto
     public DateTime? ExpiryDate { get; set; }
     public string CardNumber { get; set;}
     public CardType CardType { get; set;}
+    public bool IsDispute { get; set; } = false;
 }

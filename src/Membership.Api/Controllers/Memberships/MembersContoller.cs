@@ -22,6 +22,7 @@ public class MembersController : ControllerBase
     private readonly IQueryHandler<GetMemberById, MemberDto> _getMemberByIdHandler;
     private readonly IQueryHandler<GetMembers, IEnumerable<MemberDto>> _getMembersHandler;
     private readonly IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> _getMembersByRoleHandler;
+    private readonly IQueryHandler<IsDispute, IsDisputeDto> _isDisputeHandler;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
         ICommandHandler<UpdateMember> updateMemberHandler,
@@ -29,7 +30,8 @@ public class MembersController : ControllerBase
         ICommandHandler<DeactivateMember> deactivateMemberHandler,
         IQueryHandler<GetMembers, IEnumerable<MemberDto>> getMembersHandler,
         IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler,
-        IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> getMembersByRoleHandler)
+        IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> getMembersByRoleHandler,
+        IQueryHandler<IsDispute, IsDisputeDto> isDisputeHandler)
     {
         _createMemberHandler = createMemberHandler;
         _updateMemberHandler = updateMemberHandler;
@@ -38,6 +40,7 @@ public class MembersController : ControllerBase
         _getMembersHandler = getMembersHandler;
         _getMemberByIdHandler = getMemberByIdHandler;
         _getMembersByRoleHandler = getMembersByRoleHandler;
+        _isDisputeHandler = isDisputeHandler;
     }
     
     [HttpGet()]
@@ -68,6 +71,21 @@ public class MembersController : ControllerBase
         }
 
         return member;
+    }
+    
+    [HttpGet("isdispute")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IsDisputeDto>> IsDispute(string emiratesIdNumber)
+    {
+        var isDispute = await _isDisputeHandler.HandleAsync(new IsDispute { EmiratesIdNumber = emiratesIdNumber});
+        
+        if (isDispute is null)
+        {
+            return NotFound();
+        }
+
+        return isDispute;
     }
     
     [HttpGet("role")]
