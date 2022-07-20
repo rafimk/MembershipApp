@@ -1,20 +1,16 @@
-using Membership.Core.ValueObjects;
+﻿using Membership.Core.ValueObjects;
 
 namespace Membership.Core.Policies.Users;
 
-internal sealed class StateAdminUserCreatePolicy : IUserCreatePolicy
+internal sealed class MonitoringOfficerUserCreatePolicy : IUserCreatePolicy
 {
    
     public bool CanBeApplied(UserRole currentUserRole)
-        => currentUserRole == UserRole.StateAdmin();
+        => currentUserRole == UserRole.MonitoringOfficer();
 
     public IEnumerable<UserRole> PermittedUserRole(UserRole currentUserRole)
     {
-        return new List<UserRole>
-        {
-            UserRole.DistrictAdmin(),
-            UserRole.DistrictAgent()
-        };
+        return new List<UserRole>();
     }
 
     public Guid? GetStateId(Guid? cascadeId, Guid? parentId)

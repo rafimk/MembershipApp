@@ -3,6 +3,7 @@ using Membership.Application.DTO.Commons;
 using Membership.Application.Exceptions.Users;
 using Membership.Application.Queries.Commons;
 using Membership.Core.DomainServices.Users;
+using Membership.Core.Repositories.Nationalities;
 using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,15 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
     private readonly MembershipDbContext _dbContext;
     private readonly IUserRepository _userRepository;
     private readonly IUserService _userService;
+    private readonly IStateRepository _stateRepository;
 
     public GetMyLookupsHandler(MembershipDbContext dbContext, 
-        IUserService userService, IUserRepository userRepository)
+        IUserService userService, IUserRepository userRepository, IStateRepository stateRepository)
     {
         _dbContext = dbContext;
         _userService = userService;
         _userRepository = userRepository;
+        _stateRepository = stateRepository;
     }
 
     public async Task<MyLookupsDto> HandleAsync(GetMyLookups query)
@@ -46,7 +49,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
             CanDisputeCommittee = true
         };
         
-        if (roles.Contains("state-admin"))
+        if (roles.Contains("state-admin") || roles.Contains("monitoring-officer"))
         {
             var cascadeData = await  _dbContext.States
                 .OrderBy(x => x.Name)
@@ -80,7 +83,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
             lookupsDto.CascadeTitle = "District";
         }
 
-        if (userInfo.Role == UserRole.MandalamAgent())
+        if (userInfo.Role == UserRole.MandalamAgent() || userInfo.Role == UserRole.DistrictAgent())
         {
             var areas = await _dbContext.Areas
                 .OrderBy(x => x.Name)
@@ -130,6 +133,18 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .AsNoTracking()
                 .FirstAsync(x => x.IsActive);
 
+            if (userInfo.Role == UserRole.DistrictAgent())
+            {
+                var cascadeData = await _dbContext.Mandalams
+                    .OrderBy(x => x.Name)
+                    .AsNoTracking()
+                    .Where(x => x.DistrictId == new GenericId((Guid) userInfo.CascadeId))
+                    .Select(x => x.AsCascadeDto())
+                    .ToListAsync();
+                lookupsDto.CascadeData = cascadeData;
+                lookupsDto.CascadeTitle = "Mandalam";
+            }
+
             lookupsDto.Areas = areas;
             lookupsDto.Panchayats = panchayaths;
             lookupsDto.Qualifications = qualifications;
@@ -143,7 +158,19 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
         {
             lookupsDto.CanDisputeCommittee = false;
         }
+
+        if (userInfo.StateId is null)
+        {
+            return lookupsDto;
+        }
         
+        var userSate = await _stateRepository.GetByIdAsync(userInfo.StateId);
+
+        if (userSate is not null)
+        {
+            lookupsDto.StateName = userSate.Name;
+        }
+
         return lookupsDto;
     }
 }

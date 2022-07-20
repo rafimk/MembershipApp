@@ -16,5 +16,6 @@ public class MyLookupsDto
     public IEnumerable<WelfareSchemeDto> WelfareSchemes { get; set; }
     public MembershipPeriodDto MembershipPeriod { get; set; }
     public string CascadeTitle { get; set; }
+    public string StateName { get; set; }
     public bool CanDisputeCommittee { get; set; } 
 }

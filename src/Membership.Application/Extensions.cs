@@ -1,4 +1,5 @@
 ﻿using Membership.Application.Abstractions;
+using Membership.Application.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Membership.Application;
@@ -13,7 +14,7 @@ public static class Extensions
             .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
             .AsImplementedInterfaces()
             .WithScopedLifetime());
-        
+
         return services;
     }
 }

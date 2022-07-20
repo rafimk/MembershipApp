@@ -1,7 +1,6 @@
 using Membership.Application.Abstractions;
 using Membership.Application.Events;
 using Membership.Application.Exceptions.Users;
-using Membership.Application.Queries.Users;
 using Membership.Application.Security;
 using Membership.Core.Abstractions;
 using Membership.Core.Contracts.Users;
@@ -10,6 +9,7 @@ using Membership.Core.Entities.Users;
 using Membership.Core.Repositories.Nationalities;
 using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
+using Membership.Shared.Abstractions.Messaging;
 
 namespace Membership.Application.Commands.Users.Handlers;
 
@@ -24,12 +24,12 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
     private readonly IMandalamRepository _mandalamRepository;
     
     
-    // private readonly IMessagePublisher _messagePublisher;
+    private readonly IMessagePublisher _messagePublisher;
     private readonly IClock _clock;
 
     public CreateUserHandler(IUserRepository userRepository, IPasswordManager passwordManager,
         IDistrictRepository districtRepository, IMandalamRepository mandalamRepository,
-        IStateRepository stateRepository,IUserService userService, IClock clock)
+        IStateRepository stateRepository,IUserService userService, IMessagePublisher messagePublisher, IClock clock)
     {
         _userRepository = userRepository;
         _passwordManager = passwordManager;
@@ -37,7 +37,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         _districtRepository = districtRepository;
         _mandalamRepository = mandalamRepository;
         _stateRepository = stateRepository;
-       // _messagePublisher = messagePublisher;
+        _messagePublisher = messagePublisher;
         _clock = clock;
     }
 
@@ -111,7 +111,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             }
         }
 
-        var firstTimePassord = "admin@123"; // _passwordManager.Generate(); 
+        var firstTimePassord = "admin@123"; //_passwordManager.Generate(); 
         var securedPassword = _passwordManager.Secure(firstTimePassord);
 
         var contract = new UserCreateContract
@@ -133,7 +133,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         
         var user = User.Create(contract);
         await _userRepository.AddAsync(user);
-        var integrationEvent = new UserCreated(user.Email, user.FullName, user.PasswordHash);
+        var integrationEvent = new UserCreated(user.Email, user.FullName, firstTimePassord);
         // await _messagePublisher.PublishAsync<UserCreated>("user-created", integrationEvent);
     }
 }

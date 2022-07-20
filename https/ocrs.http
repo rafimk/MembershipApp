@@ -14,6 +14,7 @@ Content-Type: application/json
     "password": "admin@123"
 }
 
+
 ###
 @accessToken = {{sign_in.response.body.$.accessToken}}
 
