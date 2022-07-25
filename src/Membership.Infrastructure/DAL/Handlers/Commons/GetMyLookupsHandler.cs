@@ -16,14 +16,16 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
     private readonly IUserRepository _userRepository;
     private readonly IUserService _userService;
     private readonly IStateRepository _stateRepository;
+    private readonly IDistrictRepository _districtRepository;
 
-    public GetMyLookupsHandler(MembershipDbContext dbContext, 
-        IUserService userService, IUserRepository userRepository, IStateRepository stateRepository)
+    public GetMyLookupsHandler(MembershipDbContext dbContext, IUserService userService,
+         IUserRepository userRepository, IStateRepository stateRepository, IDistrictRepository districtRepository)
     {
         _dbContext = dbContext;
         _userService = userService;
         _userRepository = userRepository;
         _stateRepository = stateRepository;
+        _districtRepository = districtRepository;
     }
 
     public async Task<MyLookupsDto> HandleAsync(GetMyLookups query)
@@ -80,7 +82,14 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .Select(x => x.AsCascadeDto())
                 .ToListAsync();
             lookupsDto.CascadeData = cascadeData;
-            lookupsDto.CascadeTitle = "District";
+            lookupsDto.CascadeTitle = "Mandalam";
+            
+            var userDistrict = await _districtRepository.GetByIdAsync(userInfo.CascadeId);
+
+            if (userDistrict is not null)
+            {
+                lookupsDto.DistrictsName = userDistrict.Name;
+            }
         }
 
         if (userInfo.Role == UserRole.MandalamAgent() || userInfo.Role == UserRole.DistrictAgent())
@@ -132,6 +141,14 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
             var membershipPeriod = await _dbContext.MembershipPeriods
                 .AsNoTracking()
                 .FirstAsync(x => x.IsActive);
+            lookupsDto.CascadeTitle = userInfo.CascadeName;
+            
+            var userDistrict = await _districtRepository.GetByIdAsync(userInfo.CascadeId);
+
+            if (userDistrict is not null)
+            {
+                lookupsDto.DistrictsName = userDistrict.Name;
+            }
 
             if (userInfo.Role == UserRole.DistrictAgent())
             {
@@ -152,7 +169,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
             lookupsDto.RegisteredOrganizations = registeredOrganizations;
             lookupsDto.WelfareSchemes = welfareSchemes;
             lookupsDto.MembershipPeriod = membershipPeriod?.AsDto();
-            lookupsDto.CanDisputeCommittee = false;
+            lookupsDto.CanDisputeCommittee = true;
         }
         else if (userInfo.Role == UserRole.DisputeCommittee())
         {

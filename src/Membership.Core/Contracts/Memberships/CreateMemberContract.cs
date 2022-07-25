@@ -23,6 +23,7 @@ public record CreateMemberContract()
     public GenericId ProfessionId { get; set; }
     public GenericId QualificationId { get; set; }
     public BloodGroup BloodGroup { get; set; }
+    public Gender Gender { get; set; }
     public Guid? Photo { get; set;}
     public string HouseName { get; set; }
     public string AddressInIndia { get; set; }

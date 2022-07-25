@@ -70,6 +70,7 @@ internal sealed class MemberConfiguration : IEntityTypeConfiguration<Member>
         builder.Property(x => x.CreatedBy)
             .HasConversion(x => x.Value, x => new GenericId(x))
             .IsRequired();
+        builder.Property(x => x.Gender).HasConversion<string>();
         builder.Property(x => x.CreatedAt).IsRequired();
     }
 }

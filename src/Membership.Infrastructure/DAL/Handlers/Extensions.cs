@@ -188,6 +188,7 @@ public static class Extensions
                 Name = entity.Qualification?.Name
             },
             BloodGroup = (int)entity.BloodGroup,
+            Gender = (int)entity.Gender,
             Photo = entity.Photo,
             HouseName = entity.HouseName,
             AddressInIndia = entity.AddressInIndia,

@@ -33,6 +33,7 @@ public class Member
     public GenericId QualificationId { get; private set; }
     public Qualification Qualification { get; private set; }
     public BloodGroup BloodGroup { get; private set; }
+    public Gender Gender { get; set; } = Gender.Male;
     public Guid? Photo { get; private set; }
     public string HouseName { get; private set; }
     public string AddressInIndia { get; private set; }
@@ -79,6 +80,10 @@ public class Member
         ProfessionId = contract.ProfessionId;
         QualificationId = contract.QualificationId;
         BloodGroup = contract.BloodGroup;
+        Gender = contract.Gender;
+        PassportFrontPage = contract.PassportFrontPage;
+        PassportLastPage = contract.PassportLastPage;
+        Photo = contract.Photo;
         HouseName = contract.HouseName;
         AddressInIndia = contract.AddressInIndia;
         PasswordHash = contract.PasswordHash;
@@ -89,6 +94,7 @@ public class Member
         WelfareSchemeId = contract.WelfareSchemeId;
         MembershipPeriodId = contract.MembershipPeriodId;
         CardNumber = contract.CardNumber;
+        Status = MemberStatus.Completed;
         CreatedAt = contract.CreatedAt;
         CreatedBy = contract.CreatedBy;
         IsActive = contract.IsActive;
@@ -130,19 +136,24 @@ public class Member
 
     public void Update(UpdateMemberContract contract)
     {
-        EmiratesIdExpiry = contract.EmiratesIdExpiry;
+        EmiratesIdExpiry = new Date(contract.EmiratesIdExpiry);
         EmiratesIdFrontPage = contract.EmiratesIdFrontPage;
         EmiratesIdLastPage = contract.EmiratesIdLastPage;
-        DateOfBirth = contract.DateOfBirth;
+        DateOfBirth = new Date(contract.DateOfBirth);
         MobileNumber = contract.MobileNumber;
         AlternativeContactNumber = contract.AlternativeContactNumber;
         Email = contract.Email;
         PassportNumber = contract.PassportNumber;
-        PassportExpiry = contract.PassportExpiry;
+        PassportExpiry = new Date(contract.PassportExpiry);
+        PassportFrontPage = contract.PassportFrontPage;
+        PassportLastPage = contract.PassportLastPage;
+        Photo = contract.Photo;
         ProfessionId = contract.ProfessionId;
         QualificationId = contract.QualificationId;
         BloodGroup = contract.BloodGroup;
+        Gender = contract.Gender;
         HouseName = contract.HouseName;
+        Status = contract.Status;
         AddressInIndia = contract.AddressInIndia;
         RegisteredOrganizationId = contract.RegisteredOrganizationId;
         WelfareSchemeId = contract.WelfareSchemeId;

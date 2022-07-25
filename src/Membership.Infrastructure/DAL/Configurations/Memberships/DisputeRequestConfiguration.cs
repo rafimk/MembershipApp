@@ -28,5 +28,6 @@ internal sealed class DisputeRequestConfiguration : IEntityTypeConfiguration<Dis
             .HasConversion(x => x.Value, x => new GenericId(x))
             .IsRequired();
         builder.Property(x => x.SubmittedDate).IsRequired();
+        builder.Property(x => x.Status).HasConversion<string>();
     }
 }

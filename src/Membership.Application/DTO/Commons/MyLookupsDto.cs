@@ -17,5 +17,6 @@ public class MyLookupsDto
     public MembershipPeriodDto MembershipPeriod { get; set; }
     public string CascadeTitle { get; set; }
     public string StateName { get; set; }
+    public string DistrictsName { get; set; }
     public bool CanDisputeCommittee { get; set; } 
 }

@@ -100,6 +100,8 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             ProfessionId = command.ProfessionId,
             QualificationId = command.QualificationId,
             BloodGroup = (BloodGroup)command.BloodGroup,
+            Gender = (Gender)command.Gender,
+            Photo = command.Photo,
             HouseName = command.HouseName,
             AddressInIndia = command.AddressInIndia,
             PasswordHash = command.PasswordHash,
