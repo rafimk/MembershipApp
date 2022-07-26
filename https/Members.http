@@ -1,5 +1,5 @@
 @url = http://localhost:5000
-@memberId = 79c2b8b4-2f85-4207-8889-32250034451c
+@memberId = dab847f8-a528-4540-9fd3-64bd0402c897
 @districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
 
 
@@ -34,14 +34,14 @@ Content-Type: application/json
 
 {
     "fullName": "First Member",
-    "emiratesIdNumber": "784-1979-9625765-6",
+    "emiratesIdNumber": "784-1979-9625765-7",
     "emiratesIdExpiry": "2023-08-15",
     "emiratesIdFrontPage": null,
     "emiratesIdLastPage": null,
     "dateOfBirth": "1980-01-01",
     "mobileNumber": "0501234123",
     "alternativeContactNumber": "0501234123",
-    "email": "first.member2@member.com",
+    "email": "first.member3@member.com",
     "passportNumber": "T453256",
     "passportExpiry": "2025-08-15",
     "passportFrontPage": null,
@@ -49,6 +49,7 @@ Content-Type: application/json
     "professionId" : "624b5f9d-15af-4b5e-b473-c76c87cf51ce",
     "qualificationId": "7c8d2faa-43d1-43ad-ad43-39e05e572159",
     "bloodGroup": 0,
+    "gender": 0,
     "photo": null,
     "houseName": "First Home",
     "addressInIndia": "First Street",

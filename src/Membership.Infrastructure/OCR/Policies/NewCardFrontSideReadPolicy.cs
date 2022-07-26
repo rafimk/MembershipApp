@@ -15,6 +15,7 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
         var name = "";
         var dob = "";
         var expiry = "";
+        var gender = "";
 
 
         int firstStringPositionForEid = result.IndexOf("ID Number ");    
@@ -53,6 +54,13 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             dtDob = DateParseHelper.PaseAsDateOnly(dob);
         }
         
+        var genderType = gender == "M" ? Gender.Male : Gender.Others;
+
+        if (gender == "F")
+        {
+            genderType = Gender.Female;
+        }
+        
         return new OcrData
         {
             IdNumber = eidNo,
@@ -60,7 +68,8 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             DateofBirth = dtDob,
             ExpiryDate = dtExpiry,
             CardNumber = null,
-            CardType = CardType.New
+            CardType = CardType.New,
+            Gender = genderType
         };
     }
 }

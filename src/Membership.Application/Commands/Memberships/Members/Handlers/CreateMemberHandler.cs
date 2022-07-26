@@ -6,6 +6,7 @@ using Membership.Core.Abstractions;
 using Membership.Core.Consts;
 using Membership.Core.Contracts.Memberships;
 using Membership.Core.Entities.Memberships.Members;
+using Membership.Core.Exceptions.Memberships;
 using Membership.Core.Repositories.Memberships;
 using Membership.Core.Repositories.Nationalities;
 using Membership.Core.Repositories.Users;
@@ -33,6 +34,16 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
 
     public async Task HandleAsync(CreateMember command)
     {
+        if (!IsAgeLessThan18Years(command.DateOfBirth))
+        {
+            throw new AgeLessThan18YearsException();
+        }
+        
+        if (command.EmiratesIdExpiry <= DateTime.Today )
+        {
+            throw new InvalidEmiratesIdExpiryDate();
+        }
+        
         var agent = await _userRepository.GetByIdAsync(command.AgentId);
 
         if (agent is null)
@@ -117,5 +128,32 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
         });
         
         await _memberRepository.AddAsync(membership);
+    }
+    
+    private bool IsAgeLessThan18Years(DateTime birthDate)
+    {
+        if (DateTime.Now.Year - birthDate.Year > 18)
+        {
+            return false;
+        }
+        else if (DateTime.Now.Year - birthDate.Year < 18)
+        {
+            return true;
+        }
+        else //if (DateTime.Now.Year - birthDate.Year == 18)
+        {
+            if (birthDate.DayOfYear < DateTime.Now.DayOfYear)
+            {
+                return false;
+            }
+            else if (birthDate.DayOfYear > DateTime.Now.DayOfYear)
+            {
+                return true;
+            }
+            else //if (birthDate.DayOfYear == DateTime.Now.DayOfYear)
+            {
+                return false;
+            }
+        }
     }
 }

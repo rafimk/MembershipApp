@@ -10,4 +10,5 @@ public class OcrData
     public DateTime? ExpiryDate { get; set; }
     public string CardNumber { get; set;}
     public CardType CardType { get; set;}
+    public Gender Gender { get; set; }
 }

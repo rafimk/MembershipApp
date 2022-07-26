@@ -14,6 +14,7 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
         var expiry = "";
         var cardNo = "";
         var dob = "";
+        var gender = "";
 
         int firstStringPositionForExpiry = result.IndexOf("Card Number");
 
@@ -34,6 +35,12 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
         {
             dob = result.Substring(firstStringPositionForDob - 10, 10);
         }
+        
+        var genderIndexStart = result.IndexOf("Sex:");
+        if (genderIndexStart > 0) 
+        {
+            gender = result.Substring(genderIndexStart + 5, 1);
+        }
 
         DateTime? dtExpiry = null;
         DateTime? dtDob = null;
@@ -47,6 +54,13 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
         {
             dtDob = DateParseHelper.PaseAsDateOnly(dob);
         }
+
+        var genderType = gender == "M" ? Gender.Male : Gender.Others;
+
+        if (gender == "F")
+        {
+            genderType = Gender.Female;
+        }
         
         return new OcrData
         {
@@ -55,7 +69,8 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
             DateofBirth = dtDob,
             ExpiryDate = dtExpiry,
             CardNumber = cardNo,
-            CardType = CardType.Old
+            CardType = CardType.Old,
+            Gender = genderType
         };
     }
 }

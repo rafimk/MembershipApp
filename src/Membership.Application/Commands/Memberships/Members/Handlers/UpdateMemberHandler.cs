@@ -2,6 +2,7 @@
 using Membership.Application.Exceptions.Memberships;
 using Membership.Core.Consts;
 using Membership.Core.Contracts.Memberships;
+using Membership.Core.Exceptions.Memberships;
 using Membership.Core.Repositories.Memberships;
 
 namespace Membership.Application.Commands.Memberships.Members.Handlers;
@@ -20,6 +21,16 @@ internal sealed class UpdateMemberHandler : ICommandHandler<UpdateMember>
         if (membership is null)
         {
             throw new MemberNotFoundException(command.Id);
+        }
+        
+        if (!IsAgeLessThan18Years(command.DateOfBirth))
+        {
+            throw new AgeLessThan18YearsException();
+        }
+        
+        if (command.EmiratesIdExpiry <= DateTime.Today )
+        {
+            throw new InvalidEmiratesIdExpiryDate();
         }
         
         var contract = new UpdateMemberContract
@@ -47,5 +58,32 @@ internal sealed class UpdateMemberHandler : ICommandHandler<UpdateMember>
         };
         membership.Update(contract);
         await _repository.UpdateAsync(membership);
+    }
+    
+    private bool IsAgeLessThan18Years(DateTime birthDate)
+    {
+        if (DateTime.Now.Year - birthDate.Year > 18)
+        {
+            return false;
+        }
+        else if (DateTime.Now.Year - birthDate.Year < 18)
+        {
+            return true;
+        }
+        else //if (DateTime.Now.Year - birthDate.Year == 18)
+        {
+            if (birthDate.DayOfYear < DateTime.Now.DayOfYear)
+            {
+                return false;
+            }
+            else if (birthDate.DayOfYear > DateTime.Now.DayOfYear)
+            {
+                return true;
+            }
+            else //if (birthDate.DayOfYear == DateTime.Now.DayOfYear)
+            {
+                return false;
+            }
+        }
     }
 }

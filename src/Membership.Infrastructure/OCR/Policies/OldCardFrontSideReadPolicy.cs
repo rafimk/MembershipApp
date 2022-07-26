@@ -34,7 +34,8 @@ public class OldCardFrontSideReadPolicy : ICardReadPolicy
             DateofBirth = null,
             ExpiryDate = null,
             CardNumber = "",
-            CardType = CardType.New
+            CardType = CardType.New,
+            Gender = Gender.NotAvailable
         };
     }
 }
