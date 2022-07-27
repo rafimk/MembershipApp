@@ -32,7 +32,7 @@ POST {{url}}/mandalams
 Content-Type: application/json
 
 {
-    "name": "New Mandalam"
+    "name": "New Mandalam",
     "sateId": {{districtId}}
 }
 

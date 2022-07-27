@@ -134,6 +134,6 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         var user = User.Create(contract);
         await _userRepository.AddAsync(user);
         var integrationEvent = new UserCreated(user.Email, user.FullName, firstTimePassord);
-        // await _messagePublisher.PublishAsync<UserCreated>("user-created", integrationEvent);
+        await _messagePublisher.PublishAsync<UserCreated>("user-created", integrationEvent);
     }
 }

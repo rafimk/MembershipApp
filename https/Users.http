@@ -39,13 +39,13 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "monitoring-officer",
-    "email": "monitoring-officer@kmcc.com",
+    "fullName": "district-admin-alappy1",
+    "email": "district-admin-alappy1@kmcc.com",
     "mobileNumber": "0501234123",
     "alternativeContactNumber": "0501234123",
-    "designation": "monitoring-officer",
-    "role": "monitoring-officer",
-    "cascadeId": "c4613305-d19a-4719-931a-58d7d5853a41",
+    "designation": "district-admin-alappy",
+    "role": "district-admin",
+    "cascadeId": "cf5e40d1-6f85-4540-9cb6-5ad7d7980141",
     "isDisputeCommittee": false
 }
 

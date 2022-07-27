@@ -142,12 +142,17 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .AsNoTracking()
                 .FirstAsync(x => x.IsActive);
             lookupsDto.CascadeTitle = userInfo.CascadeName;
-            
-            var userDistrict = await _districtRepository.GetByIdAsync(userInfo.CascadeId);
 
-            if (userDistrict is not null)
+            if (userInfo.Role == UserRole.MandalamAgent())
             {
-                lookupsDto.DistrictsName = userDistrict.Name;
+                var userMandalam = await _dbContext.Mandalams
+                    .Include(x => x.District)
+                    .SingleOrDefaultAsync(x => x.Id == new GenericId((Guid)userInfo.CascadeId));
+
+                if (userMandalam is not null)
+                {
+                    lookupsDto.DistrictsName = userMandalam.District?.Name;
+                }
             }
 
             if (userInfo.Role == UserRole.DistrictAgent())
@@ -160,6 +165,13 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                     .ToListAsync();
                 lookupsDto.CascadeData = cascadeData;
                 lookupsDto.CascadeTitle = "Mandalam";
+                
+                var userDistrict = await _districtRepository.GetByIdAsync(userInfo.CascadeId);
+
+                if (userDistrict is not null)
+                {
+                    lookupsDto.DistrictsName = userDistrict.Name;
+                }
             }
 
             lookupsDto.Areas = areas;
