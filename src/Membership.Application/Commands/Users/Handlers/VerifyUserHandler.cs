@@ -28,7 +28,7 @@ internal sealed class VerifyUserHandler : ICommandHandler<VerifyUser>
             throw new UserNotFoundByEmailException(command.Email);
         }
 
-        var stringMobile = user.MobileNumber.ToString();
+        var stringMobile = user.MobileNumber.Value.ToString();
 
         var mobileLastFourDigit = stringMobile.Substring(stringMobile.Length - 4, 4);
 

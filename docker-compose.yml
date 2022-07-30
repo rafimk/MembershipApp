@@ -2,6 +2,9 @@ version: '3.8'
 services:
   mydb:
     image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
@@ -9,4 +12,4 @@ services:
  
 volumes:
   db-data:
-    driver: C:/Projects/MembershipData/postgresdata
+    driver: local

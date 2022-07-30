@@ -78,6 +78,11 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "verifyCode": "Updated Name",
-    "mobileLastFourDigit": ""
+    "email": "rafi.genius.cs@gmail.com",
+    "verifyCode": "6251",
+    "mobileLastFourDigit": "6326",
+    "password": "admin@123",
+    "confirmPassword": "admin@123"
 }
+
+
