@@ -92,7 +92,7 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         {
             result.IsDispute = true;
         }
-            
+
         return result;
     }
 
@@ -129,7 +129,13 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         {
             result.CardType = ocrData.CardType;
         }
-
+        
+        if (IsAgeLessThan18Years(result.DateofBirth.Value))
+        {
+            result.IsValidate = false;
+            result.ErrorMessage = "Age Under 18 not allowed";
+        }
+        
         return result;
     }
 
@@ -147,12 +153,12 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
 
         if (availableOcrResult.DateofBirth is not null)
         {
-            result.DateofBirth = availableOcrResult.DateofBirth;
+            result.DateofBirth = availableOcrResult.DateofBirth.Value.Date;
         }
 
         if (availableOcrResult.ExpiryDate is not null)
         {
-            result.ExpiryDate = availableOcrResult.ExpiryDate;
+            result.ExpiryDate = availableOcrResult.ExpiryDate.Value.Date;
         }
 
         if (availableOcrResult.CardNumber is not null)
@@ -164,6 +170,12 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         {
             result.CardType = availableOcrResult.CardType;
         }
+        
+        if (IsAgeLessThan18Years(result.DateofBirth.Value))
+        {
+            result.IsValidate = false;
+            result.ErrorMessage = "Age Under 18 not allowed";
+        }
 
         return result;
     }
@@ -172,5 +184,32 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
     {
         filePath ??= "UploadedFiles";
         return Path.GetFullPath(Path.Combine(Environment.CurrentDirectory + "\\", filePath));
+    }
+    
+    private bool IsAgeLessThan18Years(DateTime birthDate)
+    {
+        if (DateTime.Now.Year - birthDate.Year > 18)
+        {
+            return false;
+        }
+        else if (DateTime.Now.Year - birthDate.Year < 18)
+        {
+            return true;
+        }
+        else //if (DateTime.Now.Year - birthDate.Year == 18)
+        {
+            if (birthDate.DayOfYear < DateTime.Now.DayOfYear)
+            {
+                return false;
+            }
+            else if (birthDate.DayOfYear > DateTime.Now.DayOfYear)
+            {
+                return true;
+            }
+            else //if (birthDate.DayOfYear == DateTime.Now.DayOfYear)
+            {
+                return false;
+            }
+        }
     }
 }

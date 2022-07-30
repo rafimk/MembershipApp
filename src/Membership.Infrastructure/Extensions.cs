@@ -44,6 +44,7 @@ public static class Extensions
             .AddSingleton<ICardReadPolicy, NewCardBackSideReadPolicy>()
             .AddSingleton<ICardReadPolicy, OldCardFrontSideReadPolicy>()
             .AddSingleton<ICardReadPolicy, OldCardBackSideReadPolicy>()
+            .AddSingleton<ICardReadPolicy, OldCardBackSideChildReadPolicy>()
             .AddScoped<IUserService, UserService>()
             .AddScoped<IBufferedFileUploadService, BufferedFileUploadLocalService>()
             

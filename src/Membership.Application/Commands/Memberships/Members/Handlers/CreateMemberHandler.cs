@@ -34,7 +34,7 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
 
     public async Task HandleAsync(CreateMember command)
     {
-        if (!IsAgeLessThan18Years(command.DateOfBirth))
+        if (IsAgeLessThan18Years(command.DateOfBirth))
         {
             throw new AgeLessThan18YearsException();
         }

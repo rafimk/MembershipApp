@@ -87,13 +87,14 @@ public class User
         IsActive = false;
     }
 
-    public void Verify(DateTime verifiedAt)
+    public void Verify(DateTime verifiedAt, string password)
     {
         if (VerifiedAt.HasValue)
         {
             throw new UserAlreadyVerifiedException(Email);
         }
 
+        PasswordHash = password;
         VerifiedAt = verifiedAt;
     }
 }

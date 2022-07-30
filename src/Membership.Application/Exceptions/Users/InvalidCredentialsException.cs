@@ -1,6 +1,6 @@
 using Membership.Core.Exceptions;
 
-namespace Membership.Application.Exceptions;
+namespace Membership.Application.Exceptions.Users;
 
 public class InvalidCredentialsException : CustomException
 {

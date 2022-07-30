@@ -27,7 +27,7 @@ public class UsersController : ControllerBase
     private readonly ICommandHandler<ActivateUser> _activateUserHandler;
     private readonly ICommandHandler<DeactivateUser> _deactivateUserHandler;
     private readonly ICommandHandler<VerifyUser> _verifyUserHandler;
-    private readonly ICommandHandler<ChangeUserPassword> _changeUserPasswordHandler;
+    private readonly ICommandHandler<ResetPassword> _resetPasswordHandler;
     private readonly ITokenStorage _tokenStorage;
 
     public UsersController(ICommandHandler<SignIn> signInHandler,
@@ -40,7 +40,7 @@ public class UsersController : ControllerBase
         ICommandHandler<ActivateUser> activateUserHandler,
         ICommandHandler<DeactivateUser> deactivateUserHandler,
         ICommandHandler<VerifyUser> verifyUserHandler,
-        ICommandHandler<ChangeUserPassword> changeUserPasswordHandler,
+        ICommandHandler<ResetPassword> resetPasswordHandler,
         ITokenStorage tokenStorage)
     {
         _signInHandler = signInHandler;
@@ -53,7 +53,7 @@ public class UsersController : ControllerBase
         _activateUserHandler = activateUserHandler;
         _deactivateUserHandler = deactivateUserHandler;
         _verifyUserHandler = verifyUserHandler;
-        _changeUserPasswordHandler = changeUserPasswordHandler;
+        _resetPasswordHandler = resetPasswordHandler;
         _tokenStorage = tokenStorage;
     }
 
@@ -181,28 +181,14 @@ public class UsersController : ControllerBase
     [HttpPut("verify")]
     public async Task<ActionResult> Verify(VerifyUser command)
     {
-        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
-        {
-            return NotFound();
-        }
-
-        var userId = Guid.Parse(User?.Identity?.Name);
-        command = command with {UserId = userId};
         await _verifyUserHandler.HandleAsync(command);
         return NoContent();
     }
     
     [HttpPut("password")]
-    public async Task<ActionResult> ChangeUserPassword(ChangeUserPassword command)
+    public async Task<ActionResult> ChangeUserPassword(ResetPassword command)
     {
-        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
-        {
-            return NotFound();
-        }
-
-        var userId = Guid.Parse(User?.Identity?.Name);
-        command = command with {UserId = userId};
-        await _changeUserPasswordHandler.HandleAsync(command);
+        await _resetPasswordHandler.HandleAsync(command);
         return NoContent();
     }
 }

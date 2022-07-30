@@ -6,7 +6,7 @@ public sealed record CardSide
 {
 
     public static IEnumerable<string> AvailableSides { get; } = new[] {"new-card-front-side", 
-        "old-card-front-side", "new-card-back-side", "old-card-back-side"};
+        "old-card-front-side", "new-card-back-side", "old-card-back-side", "old-card-back-side-child"};
 
     public string Value { get; }
 
@@ -29,6 +29,7 @@ public sealed record CardSide
     public static CardSide OldCardFrontSide() => new("old-card-front-side");
     public static CardSide NewCardBackSide() => new("new-card-back-side");
     public static CardSide OldCardBackSide() => new("old-card-back-side");
+    public static CardSide OldCardBackChildSide() => new("old-card-back-side-child");
 
     public static implicit operator CardSide(string value) => new CardSide(value);
 

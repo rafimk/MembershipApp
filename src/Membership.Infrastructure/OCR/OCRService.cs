@@ -14,8 +14,8 @@ internal sealed class OcrService : IOcrService
     private readonly IEnumerable<ICardReadPolicy> _policies;
     private readonly IOcrResultRepository _repository;
     private readonly IClock _clock;
-    private readonly string _subscriptionKey = "70e5ba5b9aa7470d80868632927cf0c3";
-    private readonly string _endpoint = "https://membershipapp.cognitiveservices.azure.com/";
+    private readonly string _subscriptionKey = "d4f537561bdd405489046ac0e633cdc0";
+    private readonly string _endpoint = "https://uaekmcc.cognitiveservices.azure.com/";
     private readonly ComputerVisionClient _client;
     
     public OcrService(IEnumerable<ICardReadPolicy> policies, IOcrResultRepository repository, IClock clock)
@@ -84,8 +84,14 @@ internal sealed class OcrService : IOcrService
             currentCardSide = CardSide.NewCardBackSide();
             currentCardType = CardType.New;
         }
+        
+        if (finalResult.IndexOf("Sex:") > 0 && finalResult.IndexOf("Name:") == -1 && finalResult.IndexOf("No signature") > 0)
+        {
+            currentCardSide = CardSide.OldCardBackChildSide();
+            currentCardType = CardType.Old;
+        }
 
-        if (finalResult.IndexOf("Sex:") > 0 && finalResult.IndexOf("Name:") == -1)
+        if (finalResult.IndexOf("Sex:") > 0 && finalResult.IndexOf("Name:") == -1 && finalResult.IndexOf("No signature") == -1)
         {
             currentCardSide = CardSide.OldCardBackSide();
             currentCardType = CardType.Old;

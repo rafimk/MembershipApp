@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "mandalam-agent@kmcc.com",
+    "email": "admin@admin.com",
     "password": "admin@123"
 }
 
@@ -39,13 +39,13 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "district-admin-alappy1",
-    "email": "district-admin-alappy1@kmcc.com",
-    "mobileNumber": "0501234123",
-    "alternativeContactNumber": "0501234123",
-    "designation": "district-admin-alappy",
-    "role": "district-admin",
-    "cascadeId": "cf5e40d1-6f85-4540-9cb6-5ad7d7980141",
+    "fullName": "state-admin",
+    "email": "rafi.genius.cs@gmail.com",
+    "mobileNumber": "0554296326",
+    "alternativeContactNumber": "0554296326",
+    "designation": "state-admin",
+    "role": "state-admin",
+    "cascadeId": "c4613305-d19a-4719-931a-58d7d5853a41",
     "isDisputeCommittee": false
 }
 

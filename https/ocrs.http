@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "mandalam-agent@kmcc.com",
+    "email": "admin@admin.com",
     "password": "admin@123"
 }
 
@@ -35,7 +35,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "eb6b5aaa-3b2e-4365-81c3-03ee494cf8fd",
-    "LastPageId": "4f4ea2ac-ae07-4b70-a99b-03d672c60931",
+    "FrontPageId": "c41d87a6-f09b-43b5-baaf-ad6002159202",
+    "LastPageId": "dc70e67f-8aad-4d51-bc7b-c56e2e6feaa5",
     "UserId": null
 }

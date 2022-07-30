@@ -1,5 +1,6 @@
 using Membership.Application.Abstractions;
 using Membership.Application.Exceptions;
+using Membership.Application.Exceptions.Users;
 using Membership.Application.Security;
 using Membership.Core.Repositories.Users;
 

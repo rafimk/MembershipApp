@@ -12,4 +12,6 @@ public class OcrDataDto
     public int Gender { get; set;}
     public CardType CardType { get; set;}
     public bool IsDispute { get; set; } = false;
+    public bool IsValidate { get; set; } = true;
+    public string ErrorMessage { get; set; }
 }

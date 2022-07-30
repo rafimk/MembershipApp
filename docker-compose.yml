@@ -1,19 +1,12 @@
 version: '3.8'
 services:
-  db:
-    image: postgres:14.1-alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  mydb:
+    image: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
-
-  standalone:
-    image: apachepulsar/pulsar:2.6.0
-    ports:
-      - 8080:8080
-      - 6650:6650
-    environment:
-      - PULSAR_MEM=' -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g'
-    command: bin/pulsar standalone
+      - 5432:5432
+ 
+volumes:
+  db-data:
+    driver: C:/Projects/MembershipData/postgresdata
