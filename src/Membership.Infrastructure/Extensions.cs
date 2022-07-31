@@ -12,9 +12,7 @@ using Membership.Infrastructure.OCR;
 using Membership.Infrastructure.OCR.Policies;
 using Membership.Infrastructure.Security;
 using Membership.Infrastructure.Time;
-using Membership.Shared.Messaging;
-using Membership.Shared.Pulsar;
-using Membership.Shared.Serialization;
+using Membership.Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,9 +31,7 @@ public static class Extensions
         services.Configure<FileUploadOptions>(configuration.GetRequiredSection("file"));
         services.AddSingleton<ExceptionMiddleware>();
         services.AddHttpContextAccessor();
-        services.AddSerialization();
         services.AddMessaging();
-        services.AddPulsar();
 
         services
             .AddPostgres(configuration)

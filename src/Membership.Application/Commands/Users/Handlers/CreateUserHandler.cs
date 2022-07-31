@@ -1,6 +1,6 @@
 using Membership.Application.Abstractions;
-using Membership.Application.Events;
 using Membership.Application.Exceptions.Users;
+using Membership.Application.Messages;
 using Membership.Application.Security;
 using Membership.Core.Abstractions;
 using Membership.Core.Contracts.Users;
@@ -9,7 +9,7 @@ using Membership.Core.Entities.Users;
 using Membership.Core.Repositories.Nationalities;
 using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
-using Membership.Shared.Abstractions.Messaging;
+using Membership.Shared.Publishers;
 
 namespace Membership.Application.Commands.Users.Handlers;
 
@@ -133,7 +133,8 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         
         var user = User.Create(contract);
         await _userRepository.AddAsync(user);
-        var integrationEvent = new UserCreated(user.Email, user.FullName, firstTimePassord);
-        await _messagePublisher.PublishAsync<UserCreated>("user-created", integrationEvent);
+        string messageId = Guid.NewGuid().ToString("N");
+        var message = new UserCreated(command.FullName, command.Email, firstTimePassord);
+        await _messagePublisher.PublishAsync("user", $"created", message, messageId);
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Membership.Application.Abstractions;
-using Membership.Application.Events;
 using Membership.Application.Exceptions.Users;
+using Membership.Application.Messages;
 using Membership.Application.Security;
 using Membership.Core.Repositories.Users;
-using Membership.Shared.Abstractions.Messaging;
+using Membership.Shared.Publishers;
 
 namespace Membership.Application.Commands.Users.Handlers;
 
@@ -31,7 +31,8 @@ internal sealed class ForgetPasswordHandler : ICommandHandler<ForgetPassword>
         }
         
         var otp = _passwordManager.Generate();
-        var integrationEvent = new UserCreated(user.Email, user.FullName, otp);
-        await _messagePublisher.PublishAsync<UserCreated>("user-created", integrationEvent);
+        string messageId = Guid.NewGuid().ToString("N");
+        var message = new UserCreated(user.FullName, command.Email, otp);
+        await _messagePublisher.PublishAsync("user", $"created", message, messageId);
     }
 }
