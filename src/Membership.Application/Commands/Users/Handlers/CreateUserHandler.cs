@@ -92,6 +92,17 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
                 
                 break;
             }
+            case "district-agent":
+            {
+                var district = await _districtRepository.GetByIdAsync(command.CascadeId);
+
+                if (district is not null)
+                {
+                    cascadeName = district.Name;
+                }
+                
+                break;
+            }
             case "mandalam-agent":
             {
                 command.IsDisputeCommittee = false;
