@@ -5,6 +5,8 @@ using Membership.Core.Contracts.Users;
 using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.Entities.Memberships.Qualifications;
+using Membership.Core.Entities.Memberships.RegisteredOrganizations;
+using Membership.Core.Entities.Memberships.WelfareSchemes;
 using Membership.Core.Entities.Nationalities;
 using Membership.Core.Entities.Users;
 using Membership.Core.ValueObjects;
@@ -57,17 +59,34 @@ internal sealed class DatabaseInitializer : IHostedService
         {
             var areas = new List<Area>
             {
-                Area.Create(Guid.Parse("3472B53D-0EF9-4251-B291-190B35CD280B"), "DUBAI",Guid.Parse("D6C29ACF-2C83-446F-BFA2-70C914218969"), _clock.Current()),
-                Area.Create(Guid.Parse("9073BB7B-5E09-4FD7-80A4-1D874BC78DC3"), "MUSAFFAH", Guid.Parse("C4613305-D19A-4719-931A-58D7D5853A41"), _clock.Current()),
-                Area.Create(Guid.Parse("43FFA5C5-1D27-482C-8E67-40069AFB92A4"), "AJMAN", Guid.Parse("6C0C8AC8-8C1E-43AD-8399-F66E2D53A9C9"),  _clock.Current()),
-                Area.Create(Guid.Parse("D48D1A9F-18E0-47BF-B8FC-598901276F92"), "AL AIN", Guid.Parse("B9BE4F9E-1EF0-4EF6-B4B3-7015F689532B"),  _clock.Current()),
-                Area.Create(Guid.Parse("920060E9-D813-4278-A1E3-5A6064F86636"), "SHARJAH", Guid.Parse("B4A729EB-E004-4E53-8C03-220D4B4F9B12"), _clock.Current()),
-                Area.Create(Guid.Parse("19D83AD7-B5BC-47B8-997B-5CDD0F5363C4"), "AWEER", Guid.Parse("D6C29ACF-2C83-446F-BFA2-70C914218969"), _clock.Current()),
-                Area.Create(Guid.Parse("A1C223A3-9570-4E50-B92A-795A6E696D21"), "RAS AL KHAIMAH", Guid.Parse("353BE5CA-EA67-47EA-9E78-E3E8B55A8A15"), _clock.Current()),
-                Area.Create(Guid.Parse("4141A690-4730-488D-BD08-88392276A5CB"), "FUJAIRAH", Guid.Parse("E50C3216-A1B5-46CF-8386-185D3BCF11CF"), _clock.Current()),
-                Area.Create(Guid.Parse("DF2F9A09-B0C9-459D-8FE6-98EF2E8DC8E3"), "UMM AL QUWAIN", Guid.Parse("B6D27754-B617-47FA-B8CB-E23C92EC2AD0"), _clock.Current()),
-                Area.Create(Guid.Parse("3D0630FA-6742-4B87-A48C-B0C6096E2583"), "BANIYAS", Guid.Parse("C4613305-D19A-4719-931A-58D7D5853A41"), _clock.Current()),
-                Area.Create(Guid.Parse("97856452-46EE-4A51-A6C9-DFC065EC73DD"), "ABU DHABI", Guid.Parse("C4613305-D19A-4719-931A-58D7D5853A41"), _clock.Current())
+                Area.Create(Guid.Parse("3472b53d-0ef9-4251-b291-190b35cd280b"), "DUBAI",Guid.Parse("d6c29acf-2c83-446f-bfa2-70c914218969"), _clock.Current()),
+                Area.Create(Guid.Parse("3d0630fa-6742-4b87-a48c-b0c6096e2583"), "BANIYAS",Guid.Parse("c4613305-d19a-4719-931a-58d7d5853a41"), _clock.Current()),
+                Area.Create(Guid.Parse("4141a690-4730-488d-bd08-88392276a5cb"), "FUJAIRAH",Guid.Parse("e50c3216-a1b5-46cf-8386-185d3bcf11cf"), _clock.Current()),
+                Area.Create(Guid.Parse("43ffa5c5-1d27-482c-8e67-40069afb92a4"), "AJMAN",Guid.Parse("6c0c8ac8-8c1e-43ad-8399-f66e2d53a9c9"), _clock.Current()),
+                Area.Create(Guid.Parse("9073bb7b-5e09-4fd7-80a4-1d874bc78dc3"), "MUSAFFAH",Guid.Parse("c4613305-d19a-4719-931a-58d7d5853a41"), _clock.Current()),
+                Area.Create(Guid.Parse("920060e9-d813-4278-a1e3-5a6064f86636"), "SHARJAH",Guid.Parse("b4a729eb-e004-4e53-8c03-220d4b4f9b12"), _clock.Current()),
+                Area.Create(Guid.Parse("97856452-46ee-4a51-a6c9-dfc065ec73dd"), "ABU DHABI",Guid.Parse("c4613305-d19a-4719-931a-58d7d5853a41"), _clock.Current()),
+                Area.Create(Guid.Parse("a1c223a3-9570-4e50-b92a-795a6e696d21"), "RAS AL KHAIMAH",Guid.Parse("353be5ca-ea67-47ea-9e78-e3e8b55a8a15"), _clock.Current()),
+                Area.Create(Guid.Parse("d48d1a9f-18e0-47bf-b8fc-598901276f92"), "AL AIN",Guid.Parse("b9be4f9e-1ef0-4ef6-b4b3-7015f689532b"), _clock.Current()),
+                Area.Create(Guid.Parse("df2f9a09-b0c9-459d-8fe6-98ef2e8dc8e3"), "UMM AL QUWAIN",Guid.Parse("b6d27754-b617-47fa-b8cb-e23c92ec2ad0"), _clock.Current()),
+                Area.Create(Guid.Parse("F5E7525B-1D75-4F51-B102-1A2A980197CF"), "SHAHAMA",Guid.Parse("c4613305-d19a-4719-931a-58d7d5853a41"), _clock.Current()),
+                Area.Create(Guid.Parse("ECF6AD62-FC9B-4ACE-852A-8C19608C717F"), "AL KHATHAM",Guid.Parse("c4613305-d19a-4719-931a-58d7d5853a41"), _clock.Current()),
+                Area.Create(Guid.Parse("BFC7D8A2-FE94-4D7A-A9E7-67B3676AF267"), "SHAM",Guid.Parse("353be5ca-ea67-47ea-9e78-e3e8b55a8a15"), _clock.Current()),
+                Area.Create(Guid.Parse("A37C8A63-0C43-4AB0-AB72-7073825F7381"), "RAMS",Guid.Parse("353be5ca-ea67-47ea-9e78-e3e8b55a8a15"), _clock.Current()),
+                Area.Create(Guid.Parse("6441BCB4-E503-4723-A2C3-BD08983CAC30"), "MARIDH",Guid.Parse("353be5ca-ea67-47ea-9e78-e3e8b55a8a15"), _clock.Current()),
+                Area.Create(Guid.Parse("52F0A04F-1071-4E9D-A819-2D07EE3763D9"), "KARAN",Guid.Parse("353be5ca-ea67-47ea-9e78-e3e8b55a8a15"), _clock.Current()),
+                Area.Create(Guid.Parse("13CBC723-BBEF-4686-92F2-7026D18DEEC1"), "AL KHAIL",Guid.Parse("353be5ca-ea67-47ea-9e78-e3e8b55a8a15"), _clock.Current()),
+                Area.Create(Guid.Parse("D6FFD518-0AAC-43C1-9A12-A1CA59FCC796"), "DIBBA",Guid.Parse("e50c3216-a1b5-46cf-8386-185d3bcf11cf"), _clock.Current()),
+                Area.Create(Guid.Parse("D75C20BE-05FE-43F3-8D24-1FDD8A54ED05"), "MASAFI",Guid.Parse("e50c3216-a1b5-46cf-8386-185d3bcf11cf"), _clock.Current()),
+                Area.Create(Guid.Parse("18FE66D6-4303-4633-9501-893333311D63"), "KHORFOKAR",Guid.Parse("e50c3216-a1b5-46cf-8386-185d3bcf11cf"), _clock.Current()),
+                Area.Create(Guid.Parse("E051961C-359B-44E5-B2EC-58DC200378DC"), "BASAR",Guid.Parse("b6d27754-b617-47fa-b8cb-e23c92ec2ad0"), _clock.Current()),
+                Area.Create(Guid.Parse("0B9FF92E-758F-420B-9B10-C78F2A821522"), "JAMMIYA",Guid.Parse("b6d27754-b617-47fa-b8cb-e23c92ec2ad0"), _clock.Current()),
+                Area.Create(Guid.Parse("1D7D27F7-B6B2-4AEF-B72F-98D52DB02399"), "OLD SANAYIYYA",Guid.Parse("b6d27754-b617-47fa-b8cb-e23c92ec2ad0"), _clock.Current()),
+                Area.Create(Guid.Parse("A8242176-5398-4484-9D87-0587165E37DB"), "SALAMA",Guid.Parse("b6d27754-b617-47fa-b8cb-e23c92ec2ad0"), _clock.Current()),
+                Area.Create(Guid.Parse("9241704C-5D10-4004-88DF-C4E3E1C57925"), "NEW SANAYIYYA",Guid.Parse("b6d27754-b617-47fa-b8cb-e23c92ec2ad0"), _clock.Current()),
+                Area.Create(Guid.Parse("E38E9F88-38C7-4755-A768-CF8BACC0E81A"), "FALAJ AL MUALLA",Guid.Parse("b6d27754-b617-47fa-b8cb-e23c92ec2ad0"), _clock.Current()),
+                Area.Create(Guid.Parse("FB2EA6FB-16DE-4F71-A3D8-FAEBE7CFE1AD"), "AL AIN - 1",Guid.Parse("b9be4f9e-1ef0-4ef6-b4b3-7015f689532b"), _clock.Current()),
+                Area.Create(Guid.Parse("2E07B808-7645-4FF0-BC7B-29A6D9895E00"), "AL AIN - 2",Guid.Parse("b9be4f9e-1ef0-4ef6-b4b3-7015f689532b"), _clock.Current())
             };
 
             await dbContext.Areas.AddRangeAsync(areas, cancellationToken);
@@ -100,77 +119,35 @@ internal sealed class DatabaseInitializer : IHostedService
         {
             var professions = new List<Profession>            
             {                
-                Profession.Create(Guid.NewGuid(), "ACCOUNTANT", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "ACTOR", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "ACTRESS", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "AIR TRAFFIC CONTROLLER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "ARCHITECT", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "ARTIST", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "ATTORNEY", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "BANKER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "BARTENDER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "BARBER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "BOOKKEEPER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "BUILDER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "BUSINESSMAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "BUSINESSWOMAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "BUSINESSPERSON", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "BUTCHER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "CARPENTER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "CASHIER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "CHEF", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "COACH", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "DENTAL HYGIENIST", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "DENTIST", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "DESIGNER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "DEVELOPER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "DIETICIAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "DOCTOR", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "ECONOMIST", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "EDITOR", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "ELECTRICIAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "ENGINEER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "FARMER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "FILMMAKER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "FISHERMAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "FLIGHT ATTENDANT", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "JEWELER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "JUDGE", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "LAWYER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "MECHANIC", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "MUSICIAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "NUTRITIONIST", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "NURSE", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "OPTICIAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PAINTER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PHARMACIST", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PHOTOGRAPHER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PHYSICIAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PHYSICIAN'S ASSISTANT", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PILOT", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PLUMBER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "POLICE OFFICER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "POLITICIAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PROFESSOR", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PROGRAMMER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "PSYCHOLOGIST", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "RECEPTIONIST", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "SALESMAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "SALESPERSON", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "SALESWOMAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "SECRETARY", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "SINGER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "SURGEON", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "TEACHER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "THERAPIST", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "TRANSLATOR", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "TRANSLATOR", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "UNDERTAKER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "VETERINARIAN", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "VIDEOGRAPHER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "WAITER", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "WAITRESS", _clock.Current()),
-                Profession.Create(Guid.NewGuid(), "WRITER", _clock.Current()),
+                Profession.Create(Guid.Parse("93321f12-2cdf-42bc-95b1-2ec949b08160"), "DENTAL HYGIENIST", _clock.Current()),
+                Profession.Create(Guid.Parse("99a55dbe-4cfe-4ff6-8e6c-8eb5c9022887"), "DOCTOR", _clock.Current()),
+                Profession.Create(Guid.Parse("9c125ec5-1274-4536-a74c-6643bf35c943"), "BUTCHER", _clock.Current()),
+                Profession.Create(Guid.Parse("9c150285-d96f-4ea0-a4a3-440502af09b0"), "VIDEOGRAPHER", _clock.Current()),
+                Profession.Create(Guid.Parse("9fd112c1-db2f-4a6a-b587-04e84deb2bf8"), "BUILDER", _clock.Current()),
+                Profession.Create(Guid.Parse("a26834fe-adb9-4f38-9410-29f2e9f347f2"), "SALESWOMAN", _clock.Current()),
+                Profession.Create(Guid.Parse("ac288549-ab52-419e-b976-b769dc24749e"), "DENTIST", _clock.Current()),
+                Profession.Create(Guid.Parse("accb64c5-6244-4a92-aec3-c9d646763919"), "PHYSICIAN", _clock.Current()),
+                Profession.Create(Guid.Parse("af058d8b-ab61-495c-ae35-05eb41ac342a"), "ARCHITECT", _clock.Current()),
+                Profession.Create(Guid.Parse("afaac11f-4389-4ff9-b2ba-11d32463baac"), "ARTIST", _clock.Current()),
+                Profession.Create(Guid.Parse("b150a12f-7fbd-425d-b73a-d085d845a277"), "JEWELER", _clock.Current()),
+                Profession.Create(Guid.Parse("bda002ef-8948-42cc-8e62-259ac7dd6e1d"), "ACTOR", _clock.Current()),
+                Profession.Create(Guid.Parse("c3dae612-feaf-4d97-a526-0422b0216ddd"), "CASHIER", _clock.Current()),
+                Profession.Create(Guid.Parse("c58884f4-1596-4cb6-bb16-a5c3d713fe60"), "ACTRESS", _clock.Current()),
+                Profession.Create(Guid.Parse("c5bc05d7-ecb1-4426-a73e-8fe464bfaa2a"), "SURGEON", _clock.Current()),
+                Profession.Create(Guid.Parse("d3109548-6387-45eb-8897-8f10ad6598ca"), "PHOTOGRAPHER", _clock.Current()),
+                Profession.Create(Guid.Parse("d6d44ea8-2225-4c4b-9c7b-4da4af6eed93"), "ELECTRICIAN", _clock.Current()),
+                Profession.Create(Guid.Parse("dcc20f80-fc4e-49dc-a0bc-bf18b3882ff1"), "JUDGE", _clock.Current()),
+                Profession.Create(Guid.Parse("e2ed2d07-3d01-4dbb-ae7b-6368c34e84da"), "POLITICIAN", _clock.Current()),
+                Profession.Create(Guid.Parse("e2febb04-f615-4181-9d9b-14169c5f5158"), "BARTENDER", _clock.Current()),
+                Profession.Create(Guid.Parse("e8cd7aa2-3bed-46df-bce0-f0da68ac8e35"), "PLUMBER", _clock.Current()),
+                Profession.Create(Guid.Parse("ef83c83d-b769-4e61-94a9-b4ddde649ec5"), "NURSE", _clock.Current()),
+                Profession.Create(Guid.Parse("f42c9c10-317b-44ce-b344-90c2f2af7ca2"), "EDITOR", _clock.Current()),
+                Profession.Create(Guid.Parse("f5e3c868-84e8-47b6-a5ed-c7c491258fe4"), "ATTORNEY", _clock.Current()),
+                Profession.Create(Guid.Parse("f62f7f9d-5a9a-4dea-9f8a-7993da581e02"), "PROGRAMMER", _clock.Current()),
+                Profession.Create(Guid.Parse("f70eecdc-df41-43d8-a96b-6bc2fe3702dc"), "PHYSICIAN'S ASSISTANT", _clock.Current()),
+                Profession.Create(Guid.Parse("fb256e70-d629-467a-ad1c-cdc7b1171f2d"), "PROFESSOR", _clock.Current()),
+                Profession.Create(Guid.Parse("fc7a5dd0-237c-4ea1-8229-3eb51898957e"), "ECONOMIST", _clock.Current()),
+                Profession.Create(Guid.Parse("fc9368fe-56e8-4717-8c1d-c19b04a028a7"), "PAINTER", _clock.Current())
             };            
             await dbContext.Professions.AddRangeAsync(professions, cancellationToken);
         }
@@ -179,26 +156,53 @@ internal sealed class DatabaseInitializer : IHostedService
         {
             var qualifications = new List<Qualification>
             {
-                Qualification.Create(Guid.NewGuid(), "DIPLOMAS", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "THREE YEAR BACHELOR PASS DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "FOUR YEAR BACHELOR PASS DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "FOUR YEAR BACHELOR HONOURS DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "ONE YEAR BACHELOR HONOURS DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "DOUBLE BACHELOR DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "GRADUATE ENTRY BACHELOR DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "GRADUATE CERTIFICATES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "GRADUATE DIPLOMAS", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "MASTERS BY COURSEWORK DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "MASTERS BY RESEARCH DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "DOCTORAL DEGREES BY THESIS", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "HIGHER DOCTORAL DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "HONORARY DOCTORAL DEGREES", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "SECONDARY SCHOOL LEAVING CERTIFICATE", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "PLUS TWO / PRE-UNIVERSITY COURSE", _clock.Current()),
-                Qualification.Create(Guid.NewGuid(), "OTHERS (N/A)", _clock.Current()),
+                Qualification.Create(Guid.Parse("0de682b5-b491-4623-889b-5ba9c72aea53"), "OTHERS (N/A)", _clock.Current()),
+                Qualification.Create(Guid.Parse("A69D8042-662D-4CE2-AAB3-0E8759260AFD"), "PRIMARY", _clock.Current()),
+                Qualification.Create(Guid.Parse("B828BA9E-FEE6-44C1-B9C3-89EF49BEFF7B"), "SECONDARY", _clock.Current()),
+                Qualification.Create(Guid.Parse("15a66750-cb44-4268-bbd9-b9bc1bc11c23"), "PLUS TWO / PRE-UNIVERSITY COURSE", _clock.Current()),
+                Qualification.Create(Guid.Parse("3b90e6f8-86f6-4065-a751-4142d43937c5"), "DIPLOMA", _clock.Current()),
+                Qualification.Create(Guid.Parse("45e7f4c7-4551-463a-89ba-460602c4ee81"), "GRADUATE DEGREE", _clock.Current()),
+                Qualification.Create(Guid.Parse("8e159a00-2954-471b-9a38-0736c5d9029c"), "PROFESSIONAL DEGREE", _clock.Current()),
+                Qualification.Create(Guid.Parse("71a23ce0-36bd-42bf-b43c-c8d589a92519"), "MASTER DEGREE", _clock.Current()),
+                Qualification.Create(Guid.Parse("7ba442e9-5485-446f-861a-bec8cee780af"), "DOCTORATE DEGREE", _clock.Current())
             };
             
             await dbContext.Qualifications.AddRangeAsync(qualifications, cancellationToken);
+        }
+        
+        if (!(await dbContext.WelfareSchemes.AnyAsync(cancellationToken)))
+        {
+            var welfareSchemes = new List<WelfareScheme>
+            {
+                WelfareScheme.Create(Guid.Parse("8b08b3f0-6b8f-40f1-9a27-b8582392a1ad"), "DUBAI KMCC Welfare Scheme", _clock.Current()),
+                WelfareScheme.Create(Guid.Parse("F4503A80-4EAC-4AEB-AD45-D8D495C2B649"), "ABUDHABI KMCC Care", _clock.Current()),
+                WelfareScheme.Create(Guid.Parse("6C4550E8-EDF1-44E2-B727-9392764160BC"), "Pratheekasha Kozhikkode", _clock.Current()),
+                WelfareScheme.Create(Guid.Parse("146023A0-CEDD-42DF-BE17-929138939C48"), "Kadappuram Panchayath Welfare Scheme", _clock.Current())
+            };
+            
+            await dbContext.WelfareSchemes.AddRangeAsync(welfareSchemes, cancellationToken);
+        }
+        
+        if (!(await dbContext.RegisteredOrganizations.AnyAsync(cancellationToken)))
+        {
+            var registeredOrganizations = new List<RegisteredOrganization>
+            {
+                RegisteredOrganization.Create(Guid.Parse("7f16542d-df41-44a1-b7a6-bac0c480d366"), "ABUDHABI INDIAN ISLAMIC CENTRE", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("a78b37ba-6a3e-4dc5-88f5-2040c66acc39"), "ABUDHABI INDIAN SOCIAL CENTRE", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("CD8F44F7-B9E8-454A-AFF2-9CDFFFE8CE61"), "ABUDHABI MALYALI SAMAJAM", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("6DD72A10-7713-414D-B4A3-82DBD3161342"), "ABUDHABI KERALA SOCIAL CENTRE", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("30BACBC9-9F5C-4FFC-9611-CDB2A0340570"), "FUJAIRAH INDIAN SOCIAL CLUB", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("8CC583A9-905D-4249-A3BD-39E9FC722A03"), "SHARJA INDIAN ASSOACIATION", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("3A32DAD9-B942-4CA9-976D-A11DD9D46474"), "AJMAN INDIAN ASSOCIATION", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("52F10D30-640B-4F94-AE82-3994BA0F6B1D"), "AJMAN INDIAN SOCIAL CENTRE", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("43414897-0CC1-487D-8843-4F516B69E396"), "AL AIN INDIAN SOCIAL CENTRE", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("B3049D55-91BB-4718-9745-1A302A35BC1D"), "RAK INDIAN ASSOCIATION", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("F5A6C45E-0385-49C5-94CD-A75DB6644D0E"), "RAK KERALA SAMAJAM", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("4B41CB4F-7D2E-4CE4-B6E7-A52790B1B628"), "RAK INDIAN RELIEF COMMUNITEE", _clock.Current()),
+                RegisteredOrganization.Create(Guid.Parse("A3E46BCF-5E92-45D8-9155-271C4E2F7203"), "RAK INDIAN BUSINESS AND PROFESSIONAL COUNCIL", _clock.Current())
+            };
+            
+            await dbContext.RegisteredOrganizations.AddRangeAsync(registeredOrganizations, cancellationToken);
         }
         
         if (!(await dbContext.Users.AnyAsync(cancellationToken)))
