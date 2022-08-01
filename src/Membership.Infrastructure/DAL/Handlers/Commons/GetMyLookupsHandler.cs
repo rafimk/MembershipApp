@@ -138,10 +138,19 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .Select(x => x.AsDto())
                 .ToListAsync();
             
+            var districts = await _dbContext.Districts
+                .OrderBy(x => x.Name)
+                .AsNoTracking()
+                .Where(x => !x.IsDeleted)
+                .Select(x => x.AsDto())
+                .ToListAsync();
+            
             var membershipPeriod = await _dbContext.MembershipPeriods
                 .AsNoTracking()
                 .FirstAsync(x => x.IsActive);
             lookupsDto.CascadeTitle = userInfo.CascadeName;
+            
+            lookupsDto.District = districts;
 
             if (userInfo.Role == UserRole.MandalamAgent())
             {
@@ -152,6 +161,8 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 if (userMandalam is not null)
                 {
                     lookupsDto.DistrictsName = userMandalam.District?.Name;
+                    lookupsDto.AgentDistrictId = userMandalam.DistrictId;
+                    lookupsDto.AgentMandalamId = userInfo.CascadeId;
                 }
             }
 
@@ -171,6 +182,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 if (userDistrict is not null)
                 {
                     lookupsDto.DistrictsName = userDistrict.Name;
+                    lookupsDto.AgentDistrictId = userDistrict.Id;
                 }
             }
 

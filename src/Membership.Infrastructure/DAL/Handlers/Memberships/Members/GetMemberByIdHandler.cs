@@ -26,6 +26,41 @@ internal sealed class GetMemberByIdHandler : IQueryHandler<GetMemberById, Member
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == memberId);
 
-        return member?.AsDto();
+        var result = member?.AsDto();
+
+        if (member?.AddressInDistrictId is not null)
+        {
+            var addressInDistrict =
+                await _dbContext.Districts.SingleOrDefaultAsync(x =>
+                    x.Id == new GenericId((Guid) member.AddressInDistrictId));
+            if (addressInDistrict is not null)
+            {
+                result.AddressInDistrict = addressInDistrict.AsDto();
+            }
+        }
+
+        if (member?.AddressInMandalamId is not null)
+        {
+            var addressInMandalam =
+                await _dbContext.Mandalams.SingleOrDefaultAsync(x =>
+                    x.Id == new GenericId((Guid) member.AddressInMandalamId));
+            if (addressInMandalam is not null)
+            {
+                result.AddressInMandalam = addressInMandalam.AsDto();
+            }
+        }
+        
+        if (member?.AddressInPanchayatId is not null)
+        {
+            var addressInPanchayat =
+                await _dbContext.Panchayats.SingleOrDefaultAsync(x =>
+                    x.Id == new GenericId((Guid) member.AddressInPanchayatId));
+            if (addressInPanchayat is not null)
+            {
+                result.AddressInPanchayat = addressInPanchayat.AsDto();
+            }
+        }
+
+        return result;
     }
 }

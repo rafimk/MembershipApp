@@ -19,4 +19,8 @@ public class MyLookupsDto
     public string StateName { get; set; }
     public string DistrictsName { get; set; }
     public bool CanDisputeCommittee { get; set; } 
+    
+    public Guid? AgentDistrictId { get; set; }
+    public Guid? AgentMandalamId { get; set; }
+    public IEnumerable<DistrictDto> District { get; set; }
 }

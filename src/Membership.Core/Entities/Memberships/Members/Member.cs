@@ -38,6 +38,14 @@ public class Member
     public string HouseName { get; private set; }
     public string AddressInIndia { get; private set; }
     public string PasswordHash { get; private set; }
+    
+    public Guid? AddressInDistrictId { get; private set; }
+    public District AddressInDistrict { get; private set; }
+    public Guid? AddressInMandalamId { get; private set; }
+    public Mandalam AddressInMandalam { get; private set; }
+    public Guid? AddressInPanchayatId { get; private set; }
+    public Panchayat AddressInPanchayat { get; private set; }
+    
     public GenericId AreaId { get; private set; }
     public Area Area { get; private set; }
     public GenericId MandalamId { get; private set; }
@@ -86,6 +94,9 @@ public class Member
         Photo = contract.Photo;
         HouseName = contract.HouseName;
         AddressInIndia = contract.AddressInIndia;
+        AddressInDistrictId = contract.AddressInDistrictId;
+        AddressInMandalamId = contract.AddressInMandalamId;
+        AddressInPanchayatId = contract.AddressInPanchayatId;
         PasswordHash = contract.PasswordHash;
         AreaId = contract.AreaId;
         MandalamId = contract.MandalamId;
@@ -121,6 +132,9 @@ public class Member
             BloodGroup = contract.BloodGroup,
             HouseName = contract.HouseName,
             AddressInIndia = contract.AddressInIndia,
+            AddressInDistrictId = contract.AddressInDistrictId,
+            AddressInMandalamId = contract.AddressInMandalamId,
+            AddressInPanchayatId = contract.AddressInPanchayatId,
             PasswordHash = contract.PasswordHash,
             AreaId = contract.AreaId,
             MandalamId = contract.MandalamId,
@@ -155,6 +169,9 @@ public class Member
         HouseName = contract.HouseName;
         Status = contract.Status;
         AddressInIndia = contract.AddressInIndia;
+        AddressInDistrictId = contract.AddressInDistrictId;
+        AddressInMandalamId = contract.AddressInMandalamId;
+        AddressInPanchayatId = contract.AddressInPanchayatId;
         RegisteredOrganizationId = contract.RegisteredOrganizationId;
         WelfareSchemeId = contract.WelfareSchemeId;
     }

@@ -23,6 +23,9 @@ public record UpdateMemberContract()
     public Guid? Photo { get; set;}
     public string HouseName { get; set; }
     public string AddressInIndia { get; set; }
+    public Guid? AddressInDistrictId { get; set; }
+    public Guid? AddressInMandalamId { get; set; }
+    public Guid? AddressInPanchayatId { get; set; }
     public GenericId? RegisteredOrganizationId { get; set; }
     public GenericId? WelfareSchemeId { get; set; }
     public MemberStatus Status {get; set;}

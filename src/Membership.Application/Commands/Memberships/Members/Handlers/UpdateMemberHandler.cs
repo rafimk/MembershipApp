@@ -45,7 +45,7 @@ internal sealed class UpdateMemberHandler : ICommandHandler<UpdateMember>
             PassportNumber = command.PassportNumber,
             PassportExpiry = command.PassportExpiry,
             PassportFrontPage = command.PassportFrontPage,
-            PassportLastPage = command.EmiratesIdLastPage,
+            PassportLastPage = command.PassportLastPage,
             ProfessionId = command.ProfessionId,
             QualificationId = command.QualificationId,
             Gender = (Gender)command.Gender,
@@ -53,6 +53,9 @@ internal sealed class UpdateMemberHandler : ICommandHandler<UpdateMember>
             BloodGroup = (BloodGroup)command.BloodGroup,
             HouseName = command.HouseName,
             AddressInIndia = command.AddressInIndia,
+            AddressInDistrictId = command.AddressInDistrictId,
+            AddressInMandalamId = command.AddressInMandalamId,
+            AddressInPanchayatId = command.AddressInPanchayatId,
             RegisteredOrganizationId = command.RegisteredOrganizationId,
             WelfareSchemeId = command.WelfareSchemeId,
         };

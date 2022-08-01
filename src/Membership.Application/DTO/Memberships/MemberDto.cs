@@ -27,6 +27,9 @@ public class MemberDto
     public Guid? Photo { get; set; }
     public string HouseName { get; set; }
     public string AddressInIndia { get; set; }
+    public DistrictDto AddressInDistrict { get; set; }
+    public MandalamDto AddressInMandalam { get; set; }
+    public PanchayatDto AddressInPanchayat { get; set; }
     public AreaDto Area { get; set; }
     public MandalamDto Mandalam { get; set; }
     public PanchayatDto Panchayat { get; set; }

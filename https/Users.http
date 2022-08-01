@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "admin@admin.com",
+    "email": "mandalam-agent@admin.com",
     "password": "admin@123"
 }
 
@@ -39,13 +39,12 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "state-admin",
-    "email": "rafi.genius.cs@gmail.com",
+    "fullName": "mandalam-agent",
+    "email": "mandalam-agent@admin.com",
     "mobileNumber": "0554296326",
-    "alternativeContactNumber": "0554296326",
-    "designation": "state-admin",
-    "role": "state-admin",
-    "cascadeId": "c4613305-d19a-4719-931a-58d7d5853a41",
+    "designation": "mandalam-agent",
+    "role": "mandalam-agent",
+    "cascadeId": "fada7507-af5b-4b44-ab76-cd11db72d449",
     "isDisputeCommittee": false
 }
 

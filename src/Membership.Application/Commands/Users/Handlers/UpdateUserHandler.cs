@@ -31,7 +31,7 @@ internal sealed class UpdateUserHandler : ICommandHandler<UpdateUser>
         {
             FullName = command.FullName,
             MobileNumber = command.MobileNumber,
-            AlternativeContactNumber = command.AlternativeContactNumber,
+            AlternativeContactNumber = command.MobileNumber,
             Designation = command.Designation,
             IsDisputeCommittee = command.IsDisputeCommittee,
         };

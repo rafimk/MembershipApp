@@ -27,6 +27,9 @@ public record MemberContract()
     public Guid? Photo { get; set;}
     public string HouseName { get; set; }
     public string AddressInIndia { get; set; }
+    public Guid? AddressInDistrictId { get; set; }
+    public Guid? AddressInMandalamId { get; set; }
+    public Guid? AddressInPanchayatId { get; set; }
     public string PasswordHash { get; set; }
     public GenericId AreaId { get; set; }
     public GenericId MandalamId { get; set; } 

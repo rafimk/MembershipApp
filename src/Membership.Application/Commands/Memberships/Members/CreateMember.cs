@@ -12,7 +12,6 @@ public record CreateMember() : ICommand
     public Guid? EmiratesIdLastPage { get; set;}
     public DateTime DateOfBirth { get; set; } 
     public string MobileNumber { get; set; }
-    public string AlternativeContactNumber { get; set; }
     public string Email { get; set; }
     public string PassportNumber { get; set; }
     public DateTime PassportExpiry { get; set; }
@@ -25,6 +24,9 @@ public record CreateMember() : ICommand
     public Guid? Photo { get; set;}
     public string HouseName { get; set; }
     public string AddressInIndia { get; set; }
+    public Guid? AddressInDistrictId { get; set; }
+    public Guid? AddressInMandalamId { get; set; }
+    public Guid? AddressInPanchayatId { get; set; }
     public string PasswordHash { get; set; }
     public Guid AreaId { get; set; }
     public Guid PanchayatId { get; set; } 

@@ -1,5 +1,5 @@
 @url = http://localhost:5000
-@memberId = dab847f8-a528-4540-9fd3-64bd0402c897
+@memberId = 354c1baf-cad9-4392-bf85-7a843cc161c1
 @districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
 
 
@@ -9,7 +9,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "mandalam-agent@kmcc.com",
+    "email": "mandalam-agent@admin.com",
     "password": "admin@123"
 }
 
@@ -33,28 +33,30 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "First Member",
+    "fullName": "Muhammed Rafi",
     "emiratesIdNumber": "784-1979-9625765-7",
     "emiratesIdExpiry": "2023-08-15",
     "emiratesIdFrontPage": null,
     "emiratesIdLastPage": null,
     "dateOfBirth": "1980-01-01",
     "mobileNumber": "0501234123",
-    "alternativeContactNumber": "0501234123",
-    "email": "first.member3@member.com",
+    "email": "rafi.genius.cs@gmail.com",
     "passportNumber": "T453256",
     "passportExpiry": "2025-08-15",
     "passportFrontPage": null,
     "passportLastPage": null,
-    "professionId" : "624b5f9d-15af-4b5e-b473-c76c87cf51ce",
-    "qualificationId": "7c8d2faa-43d1-43ad-ad43-39e05e572159",
+    "professionId" : "a867d6c2-6af8-48ee-b840-72688604cbe8",
+    "qualificationId": "c793833f-0286-41e0-b6f4-adc6c68370f8",
     "bloodGroup": 0,
     "gender": 0,
     "photo": null,
     "houseName": "First Home",
     "addressInIndia": "First Street",
+    "addressInDistrictId": "30ba1c7f-4bd7-43d9-9f62-07c377feb667",
+    "addressInMandalamId": "fada7507-af5b-4b44-ab76-cd11db72d449",
+    "addressInPanchayatId": "5837254e-105d-436b-a6ca-0e4d3bf7781f",
     "areaId": "97856452-46ee-4a51-a6c9-dfc065ec73dd",
-    "panchayatId": "2c920e18-0681-4e6f-ab4d-00a602fc88ca",
+    "panchayatId": "5837254e-105d-436b-a6ca-0e4d3bf7781f",
     "registeredOrganizationId": null,
     "welfareSchemeId": null
 }
