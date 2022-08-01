@@ -31,7 +31,7 @@ public static class Extensions
         services.Configure<FileUploadOptions>(configuration.GetRequiredSection("file"));
         services.AddSingleton<ExceptionMiddleware>();
         services.AddHttpContextAccessor();
-        services.AddMessaging();
+        services.AddMessaging(configuration);
 
         services
             .AddPostgres(configuration)

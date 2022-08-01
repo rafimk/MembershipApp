@@ -11,9 +11,11 @@ namespace Membership.Shared;
 
 public static class Extensions
 {
-    public static IServiceCollection AddMessaging(this IServiceCollection services, Action<IMessagingConfiguration> configure = default)
+    private const string OptionsSectionName = "rabbitmq";
+    public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration, Action<IMessagingConfiguration> configure = default)
     {
-        var factory = new ConnectionFactory {HostName = "localhost"};
+        var rabbitmqOptions = configuration.GetOptions<RabbitmqOptions>(OptionsSectionName);
+        var factory = new ConnectionFactory {HostName = rabbitmqOptions.Host};
         var connection = factory.CreateConnection();
 
         services.AddSingleton(connection);
