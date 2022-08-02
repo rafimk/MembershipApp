@@ -15,6 +15,7 @@ public class User
     public string PasswordHash { get; private set; }
     public UserRole Role { get; private set; }
     public Guid? StateId { get; private set; }
+    public Guid? DistrictId { get; private set; }
     public Guid? CascadeId { get; private set; }
     public string CascadeName { get; private set; }
     public DateTime CreatedAt { get; private set; }
@@ -37,6 +38,7 @@ public class User
         PasswordHash = contract.PasswordHash;
         Role = contract.Role;
         StateId = contract.StateId;
+        DistrictId = contract.DistrictId;
         CascadeId = contract.CascadeId;
         CascadeName = contract.CascadeName;
         CreatedAt = contract.CreatedAt;
@@ -56,6 +58,7 @@ public class User
             PasswordHash = contract.PasswordHash,
             Role = contract.Role,
             StateId = contract.StateId,
+            DistrictId = contract.DistrictId,
             CascadeId = contract.CascadeId,
             CascadeName = contract.CascadeName,
             CreatedAt = contract.CreatedAt,

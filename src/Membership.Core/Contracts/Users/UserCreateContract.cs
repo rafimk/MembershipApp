@@ -13,6 +13,7 @@ public record UserCreateContract()
     public string PasswordHash { get; set; }
     public UserRole Role { get; set; }
     public Guid? StateId { get; set; }
+    public Guid? DistrictId { get; set; }
     public Guid? CascadeId { get; set; }
     public string CascadeName { get; set; }
     public bool IsDisputeCommittee {get; set;}

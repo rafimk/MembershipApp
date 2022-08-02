@@ -4,10 +4,12 @@ using Membership.Core.Repositories.Memberships;
 using Membership.Core.Repositories.Nationalities;
 using Membership.Core.Repositories.Users;
 using Membership.Infrastructure.DAL.Decorators;
+using Membership.Infrastructure.DAL.Handlers.Users.Policies;
 using Membership.Infrastructure.DAL.Repositories.Commons;
 using Membership.Infrastructure.DAL.Repositories.Memberships;
 using Membership.Infrastructure.DAL.Repositories.Nationalities;
 using Membership.Infrastructure.DAL.Repositories.Users;
+using Membership.Infrastructure.OCR.Policies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +42,14 @@ internal static class Extensions
         services.AddScoped<IStateRepository, PostgresStateRepository>();
         services.AddScoped<IMandalamRepository, PostgresMandalamRepository>();
         services.AddScoped<IPanchayatRepository, PostgresPanchayatRepository>();
+
+        services.AddSingleton<IUserDataRetrievePolicy, CentralCommitteeUserDataRetrievePolicy>();
+        services.AddSingleton<IUserDataRetrievePolicy, DisputeCommitteeUserDataRetrievePolicy>();
+        services.AddSingleton<IUserDataRetrievePolicy, DistrictAdminUserDataRetrievePolicy>();
+        services.AddSingleton<IUserDataRetrievePolicy, DistrictAgentUserDataRetrievePolicy>();
+        services.AddSingleton<IUserDataRetrievePolicy, MandalamAgentUserDataRetrievePolicy>();
+        services.AddSingleton<IUserDataRetrievePolicy, MonitoringOfficerUserDataRetrievePolicy>();
+        services.AddSingleton<IUserDataRetrievePolicy, StateAdminUserDataRetrievePolicy>();
         
         services.AddScoped<IUserRepository, PostgresUserRepository>();
        

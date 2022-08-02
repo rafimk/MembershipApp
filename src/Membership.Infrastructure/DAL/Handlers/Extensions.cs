@@ -107,6 +107,8 @@ public static class Extensions
             Designation = entity.Designation,
             Role = entity.Role,
             CascadeId = entity.CascadeId,
+            StateId = entity.StateId,
+            DistrictId = entity.DistrictId,
             CascadeName = entity.CascadeName,
             VerifiedAt = entity.VerifiedAt,
             IsActive = entity.IsActive,

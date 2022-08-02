@@ -28,6 +28,8 @@ public class UsersController : ControllerBase
     private readonly ICommandHandler<DeactivateUser> _deactivateUserHandler;
     private readonly ICommandHandler<VerifyUser> _verifyUserHandler;
     private readonly ICommandHandler<ResetPassword> _resetPasswordHandler;
+    private readonly ICommandHandler<ForgetPassword> _forgetPasswordHandler;
+    
     private readonly ITokenStorage _tokenStorage;
 
     public UsersController(ICommandHandler<SignIn> signInHandler,
@@ -41,6 +43,7 @@ public class UsersController : ControllerBase
         ICommandHandler<DeactivateUser> deactivateUserHandler,
         ICommandHandler<VerifyUser> verifyUserHandler,
         ICommandHandler<ResetPassword> resetPasswordHandler,
+        ICommandHandler<ForgetPassword> forgetPasswordHandler,
         ITokenStorage tokenStorage)
     {
         _signInHandler = signInHandler;
@@ -54,6 +57,7 @@ public class UsersController : ControllerBase
         _deactivateUserHandler = deactivateUserHandler;
         _verifyUserHandler = verifyUserHandler;
         _resetPasswordHandler = resetPasswordHandler;
+        _forgetPasswordHandler = forgetPasswordHandler;
         _tokenStorage = tokenStorage;
     }
 
@@ -189,6 +193,13 @@ public class UsersController : ControllerBase
     public async Task<ActionResult> ChangeUserPassword(ResetPassword command)
     {
         await _resetPasswordHandler.HandleAsync(command);
+        return NoContent();
+    }
+    
+    [HttpPut("forgetpassword")]
+    public async Task<ActionResult> ForgetPassword(ForgetPassword command)
+    {
+        await _forgetPasswordHandler.HandleAsync(command);
         return NoContent();
     }
 }

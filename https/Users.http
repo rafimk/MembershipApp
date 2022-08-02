@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "mandalam-agent@admin.com",
+    "email": "district-admin-alp@admin.com",
     "password": "admin@123"
 }
 
@@ -39,12 +39,12 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "mandalam-agent",
-    "email": "mandalam-agent@admin.com",
+    "fullName": "mandalam-agent-arr",
+    "email": "mandalam-agent-arr@admin.com",
     "mobileNumber": "0554296326",
     "designation": "mandalam-agent",
     "role": "mandalam-agent",
-    "cascadeId": "fada7507-af5b-4b44-ab76-cd11db72d449",
+    "cascadeId": "0efb46eb-1872-492d-bc92-a2976079dd8d",
     "isDisputeCommittee": false
 }
 
@@ -82,6 +82,28 @@ Content-Type: application/json
     "mobileLastFourDigit": "6326",
     "password": "admin@123",
     "confirmPassword": "admin@123"
+}
+
+###
+PUT  {{url}}/users/forgetpassword
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "email": "rafi.genius.cs@gmail.com",
+    "mobileLastFourDigit": "6326",
+}
+
+###
+PUT  {{url}}/users/password
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "email": "rafi.genius.cs@gmail.com",
+    "oldPassword": "6251",
+    "password": "6326",
+    "confirmPassword": "admin@123",
 }
 
 

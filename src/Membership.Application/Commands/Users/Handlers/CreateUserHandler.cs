@@ -67,10 +67,22 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         var stateId = await _userService.GetStateId(command.CascadeId, command.LoggedUserId);
 
         var cascadeName = "";
+        Guid? districtId = null;;
 
         switch (command.Role)
         {
             case "state-admin":
+            {
+                var state = await _stateRepository.GetByIdAsync(command.CascadeId);
+
+                if (state is not null)
+                {
+                    cascadeName = state.Name;
+                }
+                
+                break;
+            }
+            case "monitoring-officer":
             {
                 var state = await _stateRepository.GetByIdAsync(command.CascadeId);
 
@@ -88,6 +100,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
                 if (district is not null)
                 {
                     cascadeName = district.Name;
+                    districtId = district.Id;
                 }
                 
                 break;
@@ -99,6 +112,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
                 if (district is not null)
                 {
                     cascadeName = district.Name;
+                    districtId = district.Id;
                 }
                 
                 break;
@@ -106,6 +120,12 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             case "mandalam-agent":
             {
                 command.IsDisputeCommittee = false;
+                var district = await _districtRepository.GetByIdAsync(parentUser.DistrictId);
+
+                if (district is not null)
+                {
+                    districtId = district.Id;
+                }
                 
                 var mandalam = await _mandalamRepository.GetByIdAsync(command.CascadeId);
 
@@ -137,6 +157,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             Role = new UserRole(command.Role),
             StateId = stateId,
             CascadeId = command.CascadeId,
+            DistrictId = districtId,
             CascadeName = cascadeName,
             IsDisputeCommittee = command.IsDisputeCommittee,
             CreatedAt = _clock.Current(),

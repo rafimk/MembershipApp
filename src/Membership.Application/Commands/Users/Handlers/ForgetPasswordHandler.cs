@@ -29,7 +29,16 @@ internal sealed class ForgetPasswordHandler : ICommandHandler<ForgetPassword>
         {
             throw new UserNotFoundByEmailException(command.Email);
         }
-        
+
+        var stringMobile = user.MobileNumber.Value.ToString();
+
+        var mobileLastFourDigit = stringMobile.Substring(stringMobile.Length - 4, 4);
+
+        if (mobileLastFourDigit != command.MobileLastFourDigit)
+        {
+            throw new LastFourDigitMismatchException(command.Email);
+        }
+
         var otp = _passwordManager.Generate();
         string messageId = Guid.NewGuid().ToString("N");
         var message = new UserCreated(user.FullName, command.Email, otp);
