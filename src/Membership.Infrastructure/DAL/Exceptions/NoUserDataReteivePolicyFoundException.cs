@@ -1,6 +1,6 @@
 ﻿using Membership.Core.Exceptions;
 
-namespace Membership.Infrastructure.Exceptions;
+namespace Membership.Infrastructure.DAL.Exceptions;
 
 public class NoUserDataReteivePolicyFoundException : CustomException
 {

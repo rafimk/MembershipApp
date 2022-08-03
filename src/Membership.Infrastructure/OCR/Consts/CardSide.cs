@@ -1,4 +1,5 @@
-﻿using Membership.Infrastructure.Exceptions;
+﻿using Membership.Infrastructure.DAL.Exceptions;
+using Membership.Infrastructure.Exceptions;
 
 namespace Membership.Infrastructure.OCR.Consts;
 

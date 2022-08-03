@@ -6,8 +6,11 @@ internal sealed class MandalamDataSeed
 {
     public static IEnumerable<MandalamSeedContract> GetSeedData()
     {
-        string path = Directory.GetCurrentDirectory();
-        string filePath = path +  @"./DataSeed/Mandalam.json";
+        string fileName = "Mandalam.json";
+        string filePath = "./DataSeed/";
+        
+        filePath = Path.Combine(filePath, fileName);
+        
         if (!File.Exists(filePath))
         {
             return null;

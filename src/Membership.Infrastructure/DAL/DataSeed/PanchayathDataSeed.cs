@@ -6,8 +6,11 @@ internal sealed class PanchayathDataSeed
 {
     public static IEnumerable<PanchayathSeedContract> GetSeedData()
     {
-        string path = Directory.GetCurrentDirectory();
-        string filePath = path +  @"./DataSeed/Panchayath.json";
+        string fileName = "Panchayath.json";
+        string filePath = "./DataSeed/";
+        
+        filePath = Path.Combine(filePath, fileName);
+        
         if (!File.Exists(filePath))
         {
             return null;

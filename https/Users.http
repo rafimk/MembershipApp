@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "district-admin-alp@admin.com",
+    "email": "admin@admin.com",
     "password": "admin@123"
 }
 
@@ -90,8 +90,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "email": "rafi.genius.cs@gmail.com",
-    "mobileLastFourDigit": "6326",
+    "email": "mandalam-agent-arr@admin.com",
+    "mobileLastFourDigit": "6326"
 }
 
 ###

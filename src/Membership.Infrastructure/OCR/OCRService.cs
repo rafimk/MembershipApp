@@ -2,6 +2,7 @@ using System.Text;
 using Membership.Core.Abstractions;
 using Membership.Core.Consts;
 using Membership.Core.Repositories.Commons;
+using Membership.Infrastructure.DAL.Exceptions;
 using Membership.Infrastructure.Exceptions;
 using Membership.Infrastructure.OCR;
 using Membership.Infrastructure.OCR.Consts;

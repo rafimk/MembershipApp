@@ -3,6 +3,7 @@ using Membership.Application.DTO.Users;
 using Membership.Application.Queries.Users;
 using Membership.Core.DomainServices.Users;
 using Membership.Core.Repositories.Users;
+using Membership.Infrastructure.DAL.Exceptions;
 using Membership.Infrastructure.DAL.Handlers.Users.Policies;
 using Membership.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,7 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, IEnu
         {
             throw new NoUserDataReteivePolicyFoundException(user.Role.ToString());
         }
+        var users = policy.GetData(user.Role, availableUsers, applicableUserRoles, user.StateId, user.DistrictId);
  
         return policy.GetData(user.Role, availableUsers, applicableUserRoles, user.StateId, user.DistrictId);
     }

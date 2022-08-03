@@ -23,6 +23,7 @@ public class MembersController : ControllerBase
     private readonly IQueryHandler<GetMembers, IEnumerable<MemberDto>> _getMembersHandler;
     private readonly IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> _getMembersByRoleHandler;
     private readonly IQueryHandler<IsDispute, IsDisputeDto> _isDisputeHandler;
+    private readonly IQueryHandler<GetMembershipCard, ReportDto> _getMembershipCardHandler;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
         ICommandHandler<UpdateMember> updateMemberHandler,
@@ -31,7 +32,8 @@ public class MembersController : ControllerBase
         IQueryHandler<GetMembers, IEnumerable<MemberDto>> getMembersHandler,
         IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler,
         IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> getMembersByRoleHandler,
-        IQueryHandler<IsDispute, IsDisputeDto> isDisputeHandler)
+        IQueryHandler<IsDispute, IsDisputeDto> isDisputeHandler,
+        IQueryHandler<GetMembershipCard, ReportDto> getMembershipCardHandler)
     {
         _createMemberHandler = createMemberHandler;
         _updateMemberHandler = updateMemberHandler;
@@ -41,6 +43,7 @@ public class MembersController : ControllerBase
         _getMemberByIdHandler = getMemberByIdHandler;
         _getMembersByRoleHandler = getMembersByRoleHandler;
         _isDisputeHandler = isDisputeHandler;
+        _getMembershipCardHandler = getMembershipCardHandler;
     }
     
     [HttpGet()]
@@ -147,5 +150,14 @@ public class MembersController : ControllerBase
     {
         await _deactivateMemberHandler.HandleAsync( new DeactivateMember { MemberId = memberId});
         return NoContent();
+    }
+    
+    [HttpGet("membershipcard/{memberId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IsDisputeDto>> GetMembershipCard(Guid memberId)
+    {
+        var result = await _getMembershipCardHandler.HandleAsync(new GetMembershipCard { MemberId = memberId});
+        return File(result.File, result.FileType, result.FileName);
     }
 }

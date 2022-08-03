@@ -5,6 +5,7 @@ using Membership.Core.Repositories.Nationalities;
 using Membership.Core.Repositories.Users;
 using Membership.Infrastructure.DAL.Decorators;
 using Membership.Infrastructure.DAL.Handlers.Users.Policies;
+using Membership.Infrastructure.DAL.Handlers.Widgets.Policies;
 using Membership.Infrastructure.DAL.Repositories.Commons;
 using Membership.Infrastructure.DAL.Repositories.Memberships;
 using Membership.Infrastructure.DAL.Repositories.Nationalities;
@@ -50,6 +51,14 @@ internal static class Extensions
         services.AddSingleton<IUserDataRetrievePolicy, MandalamAgentUserDataRetrievePolicy>();
         services.AddSingleton<IUserDataRetrievePolicy, MonitoringOfficerUserDataRetrievePolicy>();
         services.AddSingleton<IUserDataRetrievePolicy, StateAdminUserDataRetrievePolicy>();
+        
+        services.AddSingleton<IWidgetPolicy, CentralCommitteeWidgetPolicy>();
+        services.AddSingleton<IWidgetPolicy, DisputeCommitteeWidgetPolicy>();
+        services.AddSingleton<IWidgetPolicy, DistrictAdminWidgetPolicy>();
+        services.AddSingleton<IWidgetPolicy, DistrictAgentWidgetPolicy>();
+        services.AddSingleton<IWidgetPolicy, MandalamAgentWidgetPolicy>();
+        services.AddSingleton<IWidgetPolicy, MonitoringOfficerWidgetPolicy>();
+        services.AddSingleton<IWidgetPolicy, StateAdminUserWidgetPolicy>();
         
         services.AddScoped<IUserRepository, PostgresUserRepository>();
        
