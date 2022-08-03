@@ -1,4 +1,5 @@
-﻿using Membership.Application.DTO.Memberships;
+﻿using Humanizer;
+using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Users;
 using Membership.Application.DTO.Widgets;
 using Membership.Core.ValueObjects;
@@ -14,11 +15,6 @@ internal sealed class CentralCommitteeWidgetPolicy : IWidgetPolicy
         IEnumerable<UserDto> users, 
         IEnumerable<MemberDto> members)
     {
-        // "centralcommittee-admin",
-        // "state-admin",
-        // "dispute-committee",
-        // "monitoring-officer"
-
         List<WidgetDto> widget = new();
 
         List<WidgetDetailDto> widgetDetails= new();
@@ -29,7 +25,7 @@ internal sealed class CentralCommitteeWidgetPolicy : IWidgetPolicy
         {
             widgetDetails.Add(new WidgetDetailDto
             {
-                Text = group.Key,
+                Text = group.Key.Humanize(LetterCasing.Title),
                 IntValue = group.Count(),
                 TextValue = ""
             });

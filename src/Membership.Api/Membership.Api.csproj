@@ -16,4 +16,19 @@
         <ProjectReference Include="..\Membership.Infrastructure\Membership.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Reports\ReceiptV1.rdlc">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="DataSeed\Mandalam.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="DataSeed\Panchayath.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

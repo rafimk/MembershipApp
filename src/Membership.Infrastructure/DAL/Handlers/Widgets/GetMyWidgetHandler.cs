@@ -59,7 +59,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
         {
             throw new NoWidgetPolicyFoundException(user.Role.ToString());
         }
-        
+
         return widgetPolicies.GetData(user.Role, users, new List<MemberDto>());
     }
 }
