@@ -33,6 +33,7 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
             var newFileName = $"{id}___{file.FileName}";
             var extension = Path.GetExtension(file.FileName);
             var newPath = Path.Combine(uploadFilePath, newFileName);
+            var fileType = extension.Replace(".", string.Empty);
 
             if (File.Exists(newPath))
             {
@@ -45,7 +46,7 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
             }
 
             var fileAttachment = FileAttachment.Create(id, type, file.FileName, newFileName,
-                extension, extension, newPath, file.Length, _clock.Current());
+                extension, $"application/{fileType}", newPath, file.Length, _clock.Current());
 
             await _attachmentRepository.AddAsync(fileAttachment);
 
@@ -84,7 +85,7 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
 
         return new BufferedFileUploadDto
         { 
-            Memory = memoryStream,
+            File = memoryStream.ToArray(),
             FileType = file.FileType,
             FileName = file.ActualFileName
         };

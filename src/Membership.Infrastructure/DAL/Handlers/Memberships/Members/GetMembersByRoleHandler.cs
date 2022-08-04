@@ -27,12 +27,34 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             return null;
         }
         
-        if (user.Role != UserRole.MandalamAgent())
+        if (user.Role != UserRole.MandalamAgent() || user.Role != UserRole.DistrictAgent())
         {
-            return null;
+            return new List<MemberDto>();
+        }
+
+        if (user.Role == UserRole.DistrictAgent())
+        {
+            var districtAgentDistrictId = new GenericId((Guid)user.CascadeId);
+            var districtAgentStateId = new GenericId((Guid)user.StateId);
+            
+            return await _dbContext.Members
+                .OrderBy(x => x.FullName)
+                .Include(x => x.Profession)
+                .Include(x => x.Qualification)
+                .Include(x => x.Mandalam).ThenInclude(x => x.District)
+                .Include(x => x.Panchayat)
+                .Include(x => x.Area).ThenInclude(x => x.State)
+                .Include(x => x.MembershipPeriod)
+                .AsNoTracking()
+                .Where(x => x.Mandalam.DistrictId == districtAgentDistrictId && 
+                            x.Area.StateId == districtAgentStateId)
+                .Select(x => x.AsDto())
+                .ToListAsync();
         }
         
-        var mandalamId = new GenericId((Guid)user.CascadeId);
+        var agentmandalamId = new GenericId((Guid)user.CascadeId);
+        var agentStateId = new GenericId((Guid)user.StateId);
+        
         return await _dbContext.Members
             .OrderBy(x => x.FullName)
             .Include(x => x.Profession)
@@ -42,7 +64,8 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             .Include(x => x.Area).ThenInclude(x => x.State)
             .Include(x => x.MembershipPeriod)
             .AsNoTracking()
-            .Where(x => x.MandalamId == mandalamId)
+            .Where(x => x.MandalamId == agentmandalamId &&
+                        x.Area.StateId == agentStateId)
             .Select(x => x.AsDto())
             .ToListAsync();
     }

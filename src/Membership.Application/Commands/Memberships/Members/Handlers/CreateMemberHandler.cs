@@ -55,12 +55,7 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
         {
             command.MandalamId = (Guid)agent?.CascadeId;
         }
-        
-        if (await _memberRepository.GetByEmailAsync(command.Email) is not null)
-        {
-            throw new EmailAlreadyInUseException(command.Email);
-        }
-        
+
         if (await _memberRepository.GetByEmiratesIdAsync(command.EmiratesIdNumber) is not null)
         {
             throw new EmiratesIdNumberAlreadyInUseException(command.EmiratesIdNumber);
@@ -75,11 +70,6 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
         
         var membershipId = _memberRepository.GenerateMembershipId(area.State?.Prefix);
         
-        if (await _memberRepository.GetByMemberIdAsync(command.Email) is not null)
-        {
-            throw new EmailAlreadyInUseException(command.Email);
-        }
-
         var applicableAreas = await _areaRepository.GetByStateIdAsync(agent.StateId);
 
         var findArea = applicableAreas.FirstOrDefault(x => x.Id == new GenericId(command.AreaId));
@@ -124,7 +114,9 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             AddressInMandalamId = command.AddressInMandalamId,
             AddressInPanchayatId = command.AddressInPanchayatId,
             PasswordHash = command.PasswordHash,
+            StateId = agent.StateId,
             AreaId = command.AreaId,
+            DistrictId = agent.DistrictId,
             MandalamId = command.MandalamId,
             PanchayatId = command.PanchayatId,
             RegisteredOrganizationId = command.RegisteredOrganizationId,

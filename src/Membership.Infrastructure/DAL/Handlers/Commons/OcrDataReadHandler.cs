@@ -42,9 +42,7 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
                     Directory.CreateDirectory(uploadFilePath);
                 }
 
-                var readFileInfo = Path.Combine(uploadFilePath, frontPage.SavedFileName);
-
-                result = await GetOcrData(readFileInfo, (Guid) query.UserId, result);
+                result = await GetOcrData(frontPage.FilePath, frontPage.SavedFileName, (Guid) query.UserId, result);
             }
         }
         else
@@ -69,16 +67,7 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
 
         if (lastPage is not null)
         {
-            var uploadFilePath = GetFilePath(query.FilePath);
-
-            if (!Directory.Exists(uploadFilePath))
-            {
-                Directory.CreateDirectory(uploadFilePath);
-            }
-
-            var readFileInfo = Path.Combine(uploadFilePath, lastPage.SavedFileName);
-
-            result = await GetOcrData(readFileInfo, (Guid) query.UserId, result);
+            result = await GetOcrData(lastPage.FilePath, lastPage.SavedFileName , (Guid) query.UserId, result);
         }
 
         var ocrResult = OcrResult.Create(Guid.NewGuid(),  query.FrontPageId, query.LastPageId, result.IdNumber, result.Name, result.DateofBirth, 
@@ -96,9 +85,9 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         return result;
     }
 
-    private async Task<OcrDataDto> GetOcrData(string readFileInfo, Guid userId, OcrDataDto result)
+    private async Task<OcrDataDto> GetOcrData(string filePath, string readFileInfo, Guid userId, OcrDataDto result)
     {
-        var ocrData = await _ocrService.ReadData(readFileInfo, userId);
+        var ocrData = await _ocrService.ReadData(filePath, readFileInfo, userId);
         
         if (ocrData.IdNumber is not null)
         {

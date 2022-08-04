@@ -66,6 +66,6 @@ public class FileUploadController : ControllerBase
     public async Task<ActionResult> Download(Guid fileId)
     {
         var result = await _bufferedFileUploadService.Download(fileId, _fileUploadOptions.FilePath);
-        return File(result.Memory, result.FileType, result.FileName);
+        return File(result.File, result.FileType, result.FileName);
     }
 }

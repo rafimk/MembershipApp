@@ -6,7 +6,7 @@ namespace Membership.Application.DTO.Commons;
 
 public class BufferedFileUploadDto
 {
-    public MemoryStream Memory { get; set;}
+    public byte[] File { get; set;}
     public string FileType { get; set; }
     public string FileName { get; set; }
 }

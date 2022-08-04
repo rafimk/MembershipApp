@@ -23,14 +23,14 @@ public class Member
     public Date DateOfBirth { get; private set; }
     public MobileNumber MobileNumber { get; private set; }
     public OptionalMobileNumber AlternativeContactNumber { get; private set; }
-    public Email Email { get; private set; }
-    public PassportNumber PassportNumber { get; private set; }
-    public Date PassportExpiry { get; private set; }
+    public string Email { get; private set; }
+    public string PassportNumber { get; private set; }
+    public DateTime? PassportExpiry { get; private set; }
     public Guid? PassportFrontPage { get; private set; }
     public Guid? PassportLastPage { get; private set; }
-    public GenericId ProfessionId { get; private set; }
+    public Guid? ProfessionId { get; private set; }
     public Profession Profession { get; private set; }
-    public GenericId QualificationId { get; private set; }
+    public Guid? QualificationId { get; private set; }
     public Qualification Qualification { get; private set; }
     public BloodGroup BloodGroup { get; private set; }
     public Gender Gender { get; set; } = Gender.Male;
@@ -46,8 +46,12 @@ public class Member
     public Guid? AddressInPanchayatId { get; private set; }
     public Panchayat AddressInPanchayat { get; private set; }
     
+    public Guid StateId { get; private set; }
+    public State State { get; private set; }
     public GenericId AreaId { get; private set; }
     public Area Area { get; private set; }
+    public Guid DistrictId { get; private set; }
+    public District District { get; private set; }
     public GenericId MandalamId { get; private set; }
     public Mandalam Mandalam { get; private set; }
     public GenericId PanchayatId { get; private set; }
@@ -84,7 +88,7 @@ public class Member
         AlternativeContactNumber = contract.AlternativeContactNumber;
         Email = contract.Email;
         PassportNumber = contract.PassportNumber;
-        PassportExpiry = new Date(contract.PassportExpiry);
+        PassportExpiry = contract.PassportExpiry;
         ProfessionId = contract.ProfessionId;
         QualificationId = contract.QualificationId;
         BloodGroup = contract.BloodGroup;
@@ -98,7 +102,9 @@ public class Member
         AddressInMandalamId = contract.AddressInMandalamId;
         AddressInPanchayatId = contract.AddressInPanchayatId;
         PasswordHash = contract.PasswordHash;
+        StateId = contract.StateId;
         AreaId = contract.AreaId;
+        DistrictId = contract.DistrictId;
         MandalamId = contract.MandalamId;
         PanchayatId = contract.PanchayatId;
         RegisteredOrganizationId = contract.RegisteredOrganizationId;
@@ -136,7 +142,9 @@ public class Member
             AddressInMandalamId = contract.AddressInMandalamId,
             AddressInPanchayatId = contract.AddressInPanchayatId,
             PasswordHash = contract.PasswordHash,
+            StateId = contract.StateId,
             AreaId = contract.AreaId,
+            DistrictId = contract.DistrictId,
             MandalamId = contract.MandalamId,
             PanchayatId = contract.PanchayatId,
             RegisteredOrganizationId = contract.RegisteredOrganizationId,
@@ -158,7 +166,7 @@ public class Member
         AlternativeContactNumber = contract.AlternativeContactNumber;
         Email = contract.Email;
         PassportNumber = contract.PassportNumber;
-        PassportExpiry = new Date(contract.PassportExpiry);
+        PassportExpiry = contract.PassportExpiry;
         PassportFrontPage = contract.PassportFrontPage;
         PassportLastPage = contract.PassportLastPage;
         Photo = contract.Photo;

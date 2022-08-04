@@ -42,7 +42,7 @@ public static class Extensions
             .AddSingleton<ICardReadPolicy, OldCardBackSideReadPolicy>()
             .AddSingleton<ICardReadPolicy, OldCardBackSideChildReadPolicy>()
             .AddScoped<IUserService, UserService>()
-            .AddScoped<IBufferedFileUploadService, BufferedFileUploadLocalService>()
+            .AddScoped<IBufferedFileUploadService, AzureStorageBlobsFileUploadService>()
             
             .AddScoped<IOcrService, OcrService>();
 

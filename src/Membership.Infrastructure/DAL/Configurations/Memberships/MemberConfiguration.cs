@@ -38,23 +38,10 @@ internal sealed class MemberConfiguration : IEntityTypeConfiguration<Member>
             .HasConversion(x => x.Value, x => new OptionalMobileNumber(x))
             .IsRequired()
             .HasMaxLength(20);
-        builder.HasIndex(x => x.Email).IsUnique();
         builder.Property(x => x.Email)
-            .HasConversion(x => x.Value, x => new Email(x))
-            .IsRequired()
             .HasMaxLength(100);
         builder.Property(x => x.PassportNumber)
-            .HasConversion(x => x.Value, x => new PassportNumber(x))
             .HasMaxLength(25);
-        builder.Property(x => x.PassportExpiry)
-            .HasConversion(x => x.Value, x => new Date(x))
-            .IsRequired();
-        builder.Property(x => x.ProfessionId)
-            .HasConversion(x => x.Value, x => new GenericId(x))
-            .IsRequired();
-        builder.Property(x => x.QualificationId)
-            .HasConversion(x => x.Value, x => new GenericId(x))
-            .IsRequired();
         builder.Property(x => x.AreaId)
             .HasConversion(x => x.Value, x => new GenericId(x))
             .IsRequired();

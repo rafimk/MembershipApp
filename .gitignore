@@ -197,6 +197,9 @@ csx/
 ecf/
 rcf/
 
+# Upload folder
+src/Membership.Api/UploadedFiles
+
 # Windows Store app package directories and files
 AppPackages/
 BundleArtifacts/

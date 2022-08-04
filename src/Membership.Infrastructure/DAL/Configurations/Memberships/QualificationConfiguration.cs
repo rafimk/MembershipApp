@@ -13,7 +13,6 @@ internal sealed class QualificationConfiguration : IEntityTypeConfiguration<Qual
         builder.Property(x => x.Id)
             .HasConversion(x => x.Value, x => new GenericId(x));
         builder.Property(x => x.Name)
-            .HasConversion(x => x.Value, x => new QualificationName(x))
             .IsRequired()
             .HasMaxLength(100);
         builder.Property(x => x.CreatedAt).IsRequired();

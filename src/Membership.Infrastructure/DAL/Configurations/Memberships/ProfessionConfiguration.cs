@@ -13,7 +13,6 @@ internal sealed class ProfessionConfiguration : IEntityTypeConfiguration<Profess
         builder.Property(x => x.Id)
             .HasConversion(x => x.Value, x => new GenericId(x));
         builder.Property(x => x.Name)
-            .HasConversion(x => x.Value, x => new ProfessionName(x))
             .IsRequired()
             .HasMaxLength(100);
         builder.Property(x => x.CreatedAt).IsRequired();

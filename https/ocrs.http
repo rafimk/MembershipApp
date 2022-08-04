@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "admin@admin.com",
+    "email": "mandalam-agent@admin.com",
     "password": "admin@123"
 }
 
@@ -24,8 +24,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "f5b835ba-ba1a-402c-ba6a-bf3b2166e632",
-    "LastPageId": "2cbad087-d529-40cc-8a42-ee3bd01b3e4b",
+    "FrontPageId": "5f81657d-ce3d-49e7-b468-1e140609b1fb",
+    "LastPageId": "d89fc171-1170-4c64-8d96-d7e116622dbc",
     "UserId": null
 }
 

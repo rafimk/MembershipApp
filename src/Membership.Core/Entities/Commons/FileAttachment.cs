@@ -13,6 +13,7 @@ public class FileAttachment
     public string FilePath { get; private set; }
     public long FileSize { get; private set; }
     public bool IsDeleted { get; private set; }
+    public Guid? MemberId { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     private FileAttachment(Guid id, FileType type, string actualFileName, string savedFileName, string fileExtension,
@@ -41,5 +42,10 @@ public class FileAttachment
     public void Delete()
     {
         IsDeleted = true;
+    }
+    
+    public void AssignToMember(Guid memberId)
+    {
+        MemberId = memberId;
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Membership.Infrastructure.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Membership.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(MembershipDbContext))]
-    partial class MembershipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220804192646_Member_District_And_State_Added")]
+    partial class Member_District_And_State_Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,6 +219,7 @@ namespace Membership.Infrastructure.DAL.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -334,6 +337,9 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.HasIndex("AreaId");
 
                     b.HasIndex("DistrictId1");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("MandalamId");
 

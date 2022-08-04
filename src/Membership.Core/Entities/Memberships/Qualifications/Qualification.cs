@@ -5,11 +5,11 @@ namespace Membership.Core.Entities.Memberships.Qualifications;
 public class Qualification 
 {
     public GenericId Id { get; private set; }
-    public QualificationName Name{ get; private set; }
+    public string Name{ get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private Qualification(GenericId id, QualificationName name, bool isDeleted, DateTime createdAt)
+    private Qualification(GenericId id, string name, bool isDeleted, DateTime createdAt)
     {
         Id = id;
         Name = name;
@@ -21,10 +21,10 @@ public class Qualification
     {
     }
     
-    public static Qualification Create(GenericId id, QualificationName name, DateTime createdAt)
+    public static Qualification Create(GenericId id, string name, DateTime createdAt)
         => new(id, name, false, createdAt);
 
-    public void Update(QualificationName name)
+    public void Update(string name)
     {
         Name = name;
     }

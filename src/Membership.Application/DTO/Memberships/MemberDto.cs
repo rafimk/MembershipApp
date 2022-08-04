@@ -17,7 +17,7 @@ public class MemberDto
     public string AlternativeContactNumber { get; set; }
     public string Email { get; set; }
     public string PassportNumber { get; set; }
-    public DateTimeOffset PassportExpiry { get; set; }
+    public DateTime? PassportExpiry { get; set; }
     public Guid? PassportFrontPage { get; set; }
     public Guid? PassportLastPage { get; set; }
     public ProfessionDto Profession { get; set; }

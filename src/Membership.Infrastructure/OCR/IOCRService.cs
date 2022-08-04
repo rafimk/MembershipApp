@@ -4,5 +4,5 @@ namespace Membership.Infrastructure.OCR;
 
 public interface IOcrService
 {
-    Task<OcrData> ReadData(string fileInfo, Guid userId);
+    Task<OcrData> ReadData(string filePath, string fileInfo, Guid userId);
 }

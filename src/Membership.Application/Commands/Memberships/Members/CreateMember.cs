@@ -14,11 +14,11 @@ public record CreateMember() : ICommand
     public string MobileNumber { get; set; }
     public string Email { get; set; }
     public string PassportNumber { get; set; }
-    public DateTime PassportExpiry { get; set; }
+    public DateTime? PassportExpiry { get; set; }
     public Guid? PassportFrontPage { get; set;}
     public Guid? PassportLastPage { get; set;}
-    public Guid ProfessionId { get; set; }
-    public Guid QualificationId { get; set; }
+    public Guid? ProfessionId { get; set; }
+    public Guid? QualificationId { get; set; }
     public int BloodGroup { get; set; }
     public int Gender { get; set; } = 0;
     public Guid? Photo { get; set;}

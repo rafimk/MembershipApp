@@ -1,7 +1,9 @@
 using System.Text;
+using Azure.Storage.Blobs;
 using Membership.Core.Abstractions;
 using Membership.Core.Consts;
 using Membership.Core.Repositories.Commons;
+using Membership.Infrastructure;
 using Membership.Infrastructure.DAL.Exceptions;
 using Membership.Infrastructure.Exceptions;
 using Membership.Infrastructure.OCR;
@@ -9,6 +11,7 @@ using Membership.Infrastructure.OCR.Consts;
 using Membership.Infrastructure.OCR.Policies;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using Microsoft.Extensions.Options;
 
 internal sealed class OcrService : IOcrService
 {
@@ -18,19 +21,35 @@ internal sealed class OcrService : IOcrService
     private readonly string _subscriptionKey = "d4f537561bdd405489046ac0e633cdc0";
     private readonly string _endpoint = "https://uaekmcc.cognitiveservices.azure.com/";
     private readonly ComputerVisionClient _client;
+    private readonly FileUploadOptions _fileUploadOptions;
     
-    public OcrService(IEnumerable<ICardReadPolicy> policies, IOcrResultRepository repository, IClock clock)
+    public OcrService(IEnumerable<ICardReadPolicy> policies, IOcrResultRepository repository, 
+        IClock clock, IOptions<FileUploadOptions> fileUploadOptions)
     {
         _policies = policies;
         _repository = repository;
         _clock = clock;
         _client = Authenticate(_endpoint, _subscriptionKey);
+        _fileUploadOptions = fileUploadOptions.Value;
     }
     
-    public async Task<OcrData> ReadData(string fileInfo, Guid userId)
+    public async Task<OcrData> ReadData(string filePath, string fileInfo, Guid userId)
     {
+        string connectionString = _fileUploadOptions.StorageConnection;
+        string containerName = filePath;
+            
+        BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+        BlobClient blobClient = containerClient.GetBlobClient(fileInfo);
+        
+        
+        using var memoryStream = new MemoryStream();
+        await blobClient.DownloadToAsync(memoryStream);
+        memoryStream.Position = 0;
+        
         // Read text from URL
-        var textHeaders = await _client.ReadInStreamAsync(File.OpenRead(fileInfo));
+        var textHeaders = await _client.ReadInStreamAsync(memoryStream);
         // After the request, get the operation location (operation ID)
         string operationLocation = textHeaders.OperationLocation;
         Thread.Sleep(2000);
