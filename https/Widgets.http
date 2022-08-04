@@ -1,0 +1,20 @@
+@url = http://localhost:5000
+
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "mandalam-agent@admin.com",
+    "password": "admin@123"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+
+###
+GET {{url}}/widgets
+Authorization: Bearer {{accessToken}}

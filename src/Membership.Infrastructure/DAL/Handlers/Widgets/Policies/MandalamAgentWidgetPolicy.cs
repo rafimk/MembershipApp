@@ -14,6 +14,10 @@ internal sealed class MandalamAgentWidgetPolicy : IWidgetPolicy
         IEnumerable<UserDto> users, 
         IEnumerable<MemberDto> members)
     {
-        return null;
+        List<WidgetDto> widget = new();
+
+        List<WidgetDetailDto> widgetDetails= new();
+
+        return widget;
     }
 }

@@ -29,6 +29,7 @@ public record CreateMember() : ICommand
     public Guid? AddressInPanchayatId { get; set; }
     public string PasswordHash { get; set; }
     public Guid AreaId { get; set; }
+    public Guid MandalamId { get; set; }
     public Guid PanchayatId { get; set; } 
     public Guid? RegisteredOrganizationId { get; set; }
     public Guid? WelfareSchemeId { get; set; }

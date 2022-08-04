@@ -14,6 +14,10 @@ internal sealed class DistrictAgentWidgetPolicy : IWidgetPolicy
         IEnumerable<UserDto> users, 
         IEnumerable<MemberDto> members)
     {
-        return null;
+        List<WidgetDto> widget = new();
+
+        List<WidgetDetailDto> widgetDetails= new();
+
+        return widget;
     }
 }

@@ -18,28 +18,32 @@ internal sealed class DistrictAdminWidgetPolicy : IWidgetPolicy
         List<WidgetDto> widget = new();
 
         List<WidgetDetailDto> widgetDetails= new();
-        
-        var userResult = users.GroupBy(x => x.Role.ToString()).OrderBy(stu => stu.Key);
 
-        foreach (var group in userResult)
+        if (users.Any())
         {
-            widgetDetails.Add(new WidgetDetailDto
+
+            var userResult = users.GroupBy(x => x.Role.ToString()).OrderBy(stu => stu.Key);
+
+            foreach (var group in userResult)
             {
-                Text = group.Key.Humanize(LetterCasing.Title),
-                IntValue = group.Count(),
-                TextValue = ""
+                widgetDetails.Add(new WidgetDetailDto
+                {
+                    Text = group.Key.Humanize(LetterCasing.Title),
+                    IntValue = group.Count(),
+                    TextValue = ""
+                });
+            }
+
+            // Users
+            widget.Add(new WidgetDto
+            {
+                No = 1,
+                Title = "Total Users",
+                SummaryValue = users.Count(),
+                SummaryText = null,
+                Details = widgetDetails
             });
         }
-
-        // Users
-        widget.Add(new WidgetDto
-        { 
-            No = 1,
-            Title = "Total Users",
-            SummaryValue = users.Count(),
-            SummaryText = null,
-            Details = widgetDetails
-        });
 
         return widget;
     }

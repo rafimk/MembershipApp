@@ -50,6 +50,11 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
         {
             throw new AgentNotFoundException(command.AgentId);
         }
+
+        if (agent.Role == UserRole.MandalamAgent())
+        {
+            command.MandalamId = (Guid)agent?.CascadeId;
+        }
         
         if (await _memberRepository.GetByEmailAsync(command.Email) is not null)
         {
@@ -120,7 +125,7 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             AddressInPanchayatId = command.AddressInPanchayatId,
             PasswordHash = command.PasswordHash,
             AreaId = command.AreaId,
-            MandalamId = agent.CascadeId,
+            MandalamId = command.MandalamId,
             PanchayatId = command.PanchayatId,
             RegisteredOrganizationId = command.RegisteredOrganizationId,
             WelfareSchemeId = command.WelfareSchemeId,
