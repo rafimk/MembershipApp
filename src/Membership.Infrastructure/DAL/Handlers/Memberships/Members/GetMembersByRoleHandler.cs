@@ -27,7 +27,7 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             return null;
         }
         
-        if (user.Role != UserRole.MandalamAgent() || user.Role != UserRole.DistrictAgent())
+        if (user.Role != UserRole.MandalamAgent() && user.Role != UserRole.DistrictAgent())
         {
             return new List<MemberDto>();
         }
@@ -39,8 +39,6 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             
             return await _dbContext.Members
                 .OrderBy(x => x.FullName)
-                .Include(x => x.Profession)
-                .Include(x => x.Qualification)
                 .Include(x => x.Mandalam).ThenInclude(x => x.District)
                 .Include(x => x.Panchayat)
                 .Include(x => x.Area).ThenInclude(x => x.State)
@@ -57,8 +55,6 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
         
         return await _dbContext.Members
             .OrderBy(x => x.FullName)
-            .Include(x => x.Profession)
-            .Include(x => x.Qualification)
             .Include(x => x.Mandalam).ThenInclude(x => x.District)
             .Include(x => x.Panchayat)
             .Include(x => x.Area).ThenInclude(x => x.State)
