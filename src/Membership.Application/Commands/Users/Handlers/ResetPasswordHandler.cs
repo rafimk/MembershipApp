@@ -31,9 +31,9 @@ internal sealed class ResetPasswordHandler : ICommandHandler<ResetPassword>
             throw new UserNotFoundException(command.UserId);
         }
 
-        var test = new Email(command.Email);
+        var email = new Email(command.Email);
         
-        var userByEmail = await _repository.GetByEmailAsync(new Email(command.Email));
+        var userByEmail = await _repository.GetByEmailAsync(email);
 
         if (userByEmail is not null)
         {
@@ -47,7 +47,7 @@ internal sealed class ResetPasswordHandler : ICommandHandler<ResetPassword>
 
         var securedPassword = _passwordManager.Secure(firstTimePassord);
 
-        user.ChangePassword(securedPassword, securedPassword);
+        user.ChangePassword(securedPassword, email.Value);
         await _repository.UpdateAsync(user);
         string messageId = Guid.NewGuid().ToString("N");
         var message = new UserCreated(user.FullName, command.Email, firstTimePassord);
