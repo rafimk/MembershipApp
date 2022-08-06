@@ -34,8 +34,8 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
 
         if (user.Role == UserRole.DistrictAgent())
         {
-            var districtAgentDistrictId = new GenericId((Guid)user.CascadeId);
-            var districtAgentStateId = new GenericId((Guid)user.StateId);
+            var districtAgentDistrictId = (Guid)user.CascadeId;
+            var districtAgentStateId = (Guid)user.StateId;
             
             return await _dbContext.Members
                 .OrderBy(x => x.FullName)
@@ -50,8 +50,8 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
                 .ToListAsync();
         }
         
-        var agentmandalamId = new GenericId((Guid)user.CascadeId);
-        var agentStateId = new GenericId((Guid)user.StateId);
+        var agentmandalamId = (Guid)user.CascadeId;
+        var agentStateId = (Guid)user.StateId;
         
         return await _dbContext.Members
             .OrderBy(x => x.FullName)

@@ -13,7 +13,7 @@ internal sealed class ActivateMembershipPeriodHandler : ICommandHandler<Activate
 
     public async Task HandleAsync(ActivateMembershipPeriod command)
     {
-        var membershipPeriod = await _repository.GetByIdAsync(command.MembershipPeriodId);
+        var membershipPeriod = await _repository.GetByIdAsync((Guid)command.MembershipPeriodId);
 
         if (membershipPeriod is null)
         {
@@ -24,7 +24,7 @@ internal sealed class ActivateMembershipPeriodHandler : ICommandHandler<Activate
 
         if (activeMembershipPeriod is not null)
         {
-            if (activeMembershipPeriod.Id.Value != command.MembershipPeriodId)
+            if (activeMembershipPeriod.Id != command.MembershipPeriodId)
             {
                 throw new ActiveMembershipPeriodAlreadyExistException();
             }

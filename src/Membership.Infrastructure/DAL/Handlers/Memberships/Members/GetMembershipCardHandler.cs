@@ -16,7 +16,7 @@ internal sealed class GetMembershipCardHandler : IQueryHandler<GetMembershipCard
     
     public async Task<ReportDto> HandleAsync(GetMembershipCard query)
     {
-        var memberId = new GenericId(query.MemberId);
+        var memberId = query.MemberId;
         var member = await _dbContext.Members
             .Include(x => x.Profession)
             .Include(x => x.Qualification)
@@ -33,7 +33,7 @@ internal sealed class GetMembershipCardHandler : IQueryHandler<GetMembershipCard
         {
             var addressInDistrict =
                 await _dbContext.Districts.SingleOrDefaultAsync(x =>
-                    x.Id == new GenericId((Guid) member.AddressInDistrictId));
+                    x.Id == (Guid) member.AddressInDistrictId);
             if (addressInDistrict is not null)
             {
                 result.AddressInDistrict = addressInDistrict.AsDto();
@@ -44,7 +44,7 @@ internal sealed class GetMembershipCardHandler : IQueryHandler<GetMembershipCard
         {
             var addressInMandalam =
                 await _dbContext.Mandalams.SingleOrDefaultAsync(x =>
-                    x.Id == new GenericId((Guid) member.AddressInMandalamId));
+                    x.Id == (Guid) member.AddressInMandalamId);
             if (addressInMandalam is not null)
             {
                 result.AddressInMandalam = addressInMandalam.AsDto();
@@ -55,7 +55,7 @@ internal sealed class GetMembershipCardHandler : IQueryHandler<GetMembershipCard
         {
             var addressInPanchayat =
                 await _dbContext.Panchayats.SingleOrDefaultAsync(x =>
-                    x.Id == new GenericId((Guid) member.AddressInPanchayatId));
+                    x.Id == (Guid) member.AddressInPanchayatId);
             if (addressInPanchayat is not null)
             {
                 result.AddressInPanchayat = addressInPanchayat.AsDto();

@@ -1,13 +1,12 @@
 using Membership.Core.Entities.Memberships.RegisteredOrganizations;
-using Membership.Core.ValueObjects;
 
 namespace Membership.Core.Repositories.Memberships;
 
 public interface IRegisteredOrganizationRepository
 {
-    Task<RegisteredOrganization> GetByIdAsync(GenericId id);
+    Task<RegisteredOrganization> GetByIdAsync(Guid id);
     Task<IEnumerable<RegisteredOrganization>> GetAsync();
     Task AddAsync(RegisteredOrganization registeredOrganization);
     Task UpdateAsync(RegisteredOrganization registeredOrganization);
-    Task DeleteAsync(GenericId id);
+    Task DeleteAsync(Guid id);
 }

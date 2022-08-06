@@ -1,6 +1,5 @@
 using Membership.Core.Entities.Memberships.WelfareSchemes;
 using Membership.Core.Repositories.Memberships;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Memberships;
@@ -14,7 +13,7 @@ internal sealed class PostgresWelfareSchemeRepository : IWelfareSchemeRepository
         _dbContext = dbContext;
     }
 
-    public  Task<WelfareScheme> GetByIdAsync(GenericId id)
+    public  Task<WelfareScheme> GetByIdAsync(Guid id)
         => _dbContext.WelfareSchemes.SingleOrDefaultAsync(x => x.Id == id);
 
     public async Task<IEnumerable<WelfareScheme>> GetAsync()
@@ -32,7 +31,7 @@ internal sealed class PostgresWelfareSchemeRepository : IWelfareSchemeRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(GenericId id)
+    public async Task DeleteAsync(Guid id)
     {
         var welfareScheme = await GetByIdAsync(id);
         welfareScheme.Delete();

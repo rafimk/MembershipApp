@@ -8,19 +8,19 @@ namespace Membership.Core.Entities.Memberships.Disputes;
 
 public class DisputeRequest
 {
-    public GenericId Id { get; private set; }
-    public GenericId MemberId { get; private set; }
+    public Guid Id { get; private set; }
+    public Guid MemberId { get; private set; }
     public Member Member { get; private set; }
-    public GenericId ProposedAreaId { get; private set; }
+    public Guid ProposedAreaId { get; private set; }
     public Area ProposedArea { get; private set; }
-    public GenericId ProposedMandalamId { get; private set; }
+    public Guid ProposedMandalamId { get; private set; }
     public Mandalam ProposedMandalam { get; private set; }
-    public GenericId ProposedPanchayatId { get; private set; }
+    public Guid ProposedPanchayatId { get; private set; }
     public Panchayat ProposedPanchayat { get; private set; }
     public string Reason { get; private set; }
     public string JustificationComment { get; private set; }
     public DateTime SubmittedDate  { get; private set; }
-    public GenericId SubmittedBy { get; private set; }
+    public Guid SubmittedBy { get; private set; }
     public DateTime? ActionDate  { get; private set; }
     public Guid? ActionBy { get; private set; }
     public DisputeStatus Status { get; private set; }

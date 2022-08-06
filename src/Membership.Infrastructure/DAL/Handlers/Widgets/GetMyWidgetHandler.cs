@@ -34,7 +34,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
 
     public async Task<IEnumerable<WidgetDto>> HandleAsync(GetMyWidget query)
     {
-        var user = await _userRepository.GetByIdAsync(query.UserId);
+        var user = await _userRepository.GetByIdAsync((Guid)query.UserId);
         
         var applicableUserRoles = await _userService.GetApplicableUserRolesAsync(user.Role, query.UserId);
 

@@ -15,7 +15,7 @@ internal sealed class UpdateUserHandler : ICommandHandler<UpdateUser>
 
     public async Task HandleAsync(UpdateUser command)
     {
-        var user = await _repository.GetByIdAsync(command.UserId);
+        var user = await _repository.GetByIdAsync((Guid)command.UserId);
 
         if (user is null)
         {

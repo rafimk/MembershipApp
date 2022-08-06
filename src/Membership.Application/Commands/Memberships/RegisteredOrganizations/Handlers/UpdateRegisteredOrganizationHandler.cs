@@ -13,7 +13,7 @@ internal sealed class UpdateRegisteredOrganizationHandler : ICommandHandler<Upda
 
     public async Task HandleAsync(UpdateRegisteredOrganization command)
     {
-        var registeredOrganization = await _repository.GetByIdAsync(command.RegisteredOrganizationId);
+        var registeredOrganization = await _repository.GetByIdAsync((Guid)command.RegisteredOrganizationId);
 
         if (registeredOrganization is null)
         {

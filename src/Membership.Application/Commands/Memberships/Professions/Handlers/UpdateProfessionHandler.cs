@@ -13,7 +13,7 @@ internal sealed class UpdateProfessionHandler : ICommandHandler<UpdateProfession
 
     public async Task HandleAsync(UpdateProfession command)
     {
-        var profession = await _repository.GetByIdAsync(command.ProfessionId);
+        var profession = await _repository.GetByIdAsync((Guid)command.ProfessionId);
 
         if (profession is null)
         {

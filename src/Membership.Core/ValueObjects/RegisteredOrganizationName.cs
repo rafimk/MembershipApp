@@ -8,11 +8,6 @@ public record RegisteredOrganizationName
 
     public RegisteredOrganizationName(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new EmptyRegisteredOrganizationNameException();
-        }
-        
         Value = value;
     }
 

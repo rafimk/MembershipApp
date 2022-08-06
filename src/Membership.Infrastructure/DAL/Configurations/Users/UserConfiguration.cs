@@ -10,8 +10,6 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id)
-            .HasConversion(x => x.Value, x => new GenericId(x));
         builder.Property(x => x.FullName)
             .HasConversion(x => x.Value, x => new FullName(x))
             .IsRequired()
@@ -22,10 +20,6 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(100);
         builder.Property(x => x.MobileNumber)
-            .HasConversion(x => x.Value, x => new MobileNumber(x))
-            .IsRequired()
-            .HasMaxLength(20);
-        builder.Property(x => x.AlternativeContactNumber)
             .HasConversion(x => x.Value, x => new MobileNumber(x))
             .IsRequired()
             .HasMaxLength(20);

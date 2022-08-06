@@ -23,7 +23,7 @@ internal sealed class ChangeUserPasswordHandler : ICommandHandler<ChangeUserPass
 
     public async Task HandleAsync(ChangeUserPassword command)
     {
-        var user = await _repository.GetByIdAsync(command.UserId);
+        var user = await _repository.GetByIdAsync((Guid)command.UserId);
 
         if (user is null)
         {

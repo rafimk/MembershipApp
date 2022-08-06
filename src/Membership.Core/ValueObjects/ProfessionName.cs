@@ -8,11 +8,6 @@ public record ProfessionName
 
     public ProfessionName(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new EmptyProfessionNameException();
-        }
-        
         Value = value;
     }
 

@@ -1,6 +1,5 @@
 using Membership.Core.Entities.Memberships.RegisteredOrganizations;
 using Membership.Core.Repositories.Memberships;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Memberships;
@@ -14,7 +13,7 @@ internal sealed class PostgresRegisteredOrganizationRepository : IRegisteredOrga
         _dbContext = dbContext;
     }
 
-    public  Task<RegisteredOrganization> GetByIdAsync(GenericId id)
+    public  Task<RegisteredOrganization> GetByIdAsync(Guid id)
         => _dbContext.RegisteredOrganizations.SingleOrDefaultAsync(x => x.Id == id);
 
     public async Task<IEnumerable<RegisteredOrganization>> GetAsync()
@@ -32,7 +31,7 @@ internal sealed class PostgresRegisteredOrganizationRepository : IRegisteredOrga
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(GenericId id)
+    public async Task DeleteAsync(Guid id)
     {
         var registeredOrganization = await GetByIdAsync(id);
         registeredOrganization.Delete();

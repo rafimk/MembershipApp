@@ -13,7 +13,7 @@ internal sealed class UpdateMandalamHandler : ICommandHandler<UpdateMandalam>
 
     public async Task HandleAsync(UpdateMandalam command)
     {
-        var mandalam = await _repository.GetByIdAsync(command.MandalamId);
+        var mandalam = await _repository.GetByIdAsync((Guid)command.MandalamId);
 
         if (mandalam is null)
         {

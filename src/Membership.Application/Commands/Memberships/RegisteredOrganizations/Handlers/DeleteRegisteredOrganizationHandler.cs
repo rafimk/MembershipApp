@@ -13,7 +13,7 @@ internal sealed class DeleteRegisteredOrganizationHandler : ICommandHandler<Dele
 
     public async Task HandleAsync(DeleteRegisteredOrganization command)
     {
-        var registeredOrganization = await _repository.GetByIdAsync(command.RegisteredOrganizationId);
+        var registeredOrganization = await _repository.GetByIdAsync((Guid)command.RegisteredOrganizationId);
 
         if (registeredOrganization is null)
         {

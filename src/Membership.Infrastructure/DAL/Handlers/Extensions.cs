@@ -18,7 +18,7 @@ public static class Extensions
     public static StateDto AsDto(this State entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Name = entity.Name,
             CreatedAt = entity.CreatedAt
         };
@@ -26,7 +26,7 @@ public static class Extensions
     public static CascadeDto AsCascadeDto(this State entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Description = entity.Name,
         };
     
@@ -35,7 +35,7 @@ public static class Extensions
     public static AreaDto AsDto(this Area entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Name = entity.Name,
             State = new StateDto
             {
@@ -49,7 +49,7 @@ public static class Extensions
     public static DistrictDto AsDto(this District entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Name = entity.Name,
             CreatedAt = entity.CreatedAt
         };
@@ -57,18 +57,18 @@ public static class Extensions
     public static CascadeDto AsCascadeDto(this District entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Description = entity.Name,
         };
     
     public static MandalamDto AsDto(this Mandalam entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Name = entity.Name,
             District = new DistrictDto
             {
-                Id = entity.District.Id.Value,
+                Id = entity.District.Id,
                 Name = entity.District.Name,
                 CreatedAt = entity.District.CreatedAt
             },
@@ -78,18 +78,18 @@ public static class Extensions
     public static CascadeDto AsCascadeDto(this Mandalam entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Description = entity.Name,
         };
     
     public static PanchayatDto AsDto(this Panchayat entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Name = entity.Name,
             Mandalam = new MandalamDto
             {
-                Id = entity.Mandalam.Id.Value,
+                Id = entity.Mandalam.Id,
                 Name = entity.Mandalam.Name,
                 CreatedAt = entity.Mandalam.CreatedAt
             },
@@ -99,11 +99,10 @@ public static class Extensions
     public static UserDto AsDto(this User entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             FullName = entity.FullName,
             Email = entity.Email,
             MobileNumber = entity.MobileNumber,
-            AlternativeContactNumber = entity.AlternativeContactNumber,
             Designation = entity.Designation,
             Role = entity.Role,
             CascadeId = entity.CascadeId,
@@ -119,7 +118,7 @@ public static class Extensions
      public static QualificationDto AsDto(this Qualification entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Name = entity.Name,
             CreatedAt = entity.CreatedAt
         };
@@ -127,7 +126,7 @@ public static class Extensions
     public static ProfessionDto AsDto(this Profession entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Name = entity.Name,
             CreatedAt = entity.CreatedAt
         };
@@ -135,7 +134,7 @@ public static class Extensions
     public static RegisteredOrganizationDto AsDto(this RegisteredOrganization entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Name = entity.Name,
             CreatedAt = entity.CreatedAt
         };
@@ -143,7 +142,7 @@ public static class Extensions
     public static WelfareSchemeDto AsDto(this WelfareScheme entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Name = entity.Name,
             CreatedAt = entity.CreatedAt
         };
@@ -152,7 +151,7 @@ public static class Extensions
     public static MembershipPeriodDto AsDto(this MembershipPeriod entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             Start = entity.Start,
             End = entity.End,
             RegistrationStarted = entity.RegistrationStarted,
@@ -164,7 +163,7 @@ public static class Extensions
     public static MemberDto AsDto(this Member entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             MembershipId = entity.MembershipId,
             FullName = entity.FullName,
             EmiratesIdNumber = entity.EmiratesIdNumber,
@@ -173,7 +172,6 @@ public static class Extensions
             EmiratesIdLastPage = entity.EmiratesIdLastPage,
             DateOfBirth = entity.DateOfBirth,
             MobileNumber = entity.MobileNumber,
-            AlternativeContactNumber = entity.AlternativeContactNumber,
             Email = entity.Email,
             PassportNumber = entity.PassportNumber,
             PassportExpiry = entity.PassportExpiry,
@@ -232,7 +230,7 @@ public static class Extensions
      public static DisputeRequestDto AsDto(this DisputeRequest entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id,
             MemberId = entity.MemberId,
             ProposedAreaId = entity.ProposedAreaId,
             ProposedArea = entity.ProposedArea.AsDto(),
@@ -252,7 +250,7 @@ public static class Extensions
      public static DisputeRequestDto AsDtoWithMember(this DisputeRequest entity)
          => new()
          {
-             Id = entity.Id.Value,
+             Id = entity.Id,
              MemberId = entity.MemberId,
              Member = entity.Member.AsDto(),
              ProposedAreaId = entity.ProposedAreaId,

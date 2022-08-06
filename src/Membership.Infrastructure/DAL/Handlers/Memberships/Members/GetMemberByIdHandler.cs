@@ -1,7 +1,6 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
@@ -15,7 +14,7 @@ internal sealed class GetMemberByIdHandler : IQueryHandler<GetMemberById, Member
     
     public async Task<MemberDto> HandleAsync(GetMemberById query)
     {
-        var memberId = new GenericId(query.MemberId);
+        var memberId = query.MemberId;
         var member = await _dbContext.Members
             .Include(x => x.Profession)
             .Include(x => x.Qualification)
@@ -32,7 +31,7 @@ internal sealed class GetMemberByIdHandler : IQueryHandler<GetMemberById, Member
         {
             var addressInDistrict =
                 await _dbContext.Districts.SingleOrDefaultAsync(x =>
-                    x.Id == new GenericId((Guid) member.AddressInDistrictId));
+                    x.Id == ((Guid) member.AddressInDistrictId));
             if (addressInDistrict is not null)
             {
                 result.AddressInDistrict = addressInDistrict.AsDto();
@@ -43,7 +42,7 @@ internal sealed class GetMemberByIdHandler : IQueryHandler<GetMemberById, Member
         {
             var addressInMandalam =
                 await _dbContext.Mandalams.SingleOrDefaultAsync(x =>
-                    x.Id == new GenericId((Guid) member.AddressInMandalamId));
+                    x.Id == (Guid) member.AddressInMandalamId);
             if (addressInMandalam is not null)
             {
                 result.AddressInMandalam = addressInMandalam.AsDto();
@@ -54,7 +53,7 @@ internal sealed class GetMemberByIdHandler : IQueryHandler<GetMemberById, Member
         {
             var addressInPanchayat =
                 await _dbContext.Panchayats.SingleOrDefaultAsync(x =>
-                    x.Id == new GenericId((Guid) member.AddressInPanchayatId));
+                    x.Id == (Guid) member.AddressInPanchayatId);
             if (addressInPanchayat is not null)
             {
                 result.AddressInPanchayat = addressInPanchayat.AsDto();

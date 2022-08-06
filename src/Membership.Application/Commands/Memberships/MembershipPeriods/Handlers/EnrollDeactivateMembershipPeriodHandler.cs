@@ -18,7 +18,7 @@ internal sealed class EnrollDeactivateMembershipPeriodHandler : ICommandHandler<
 
     public async Task HandleAsync(EnrollDeactivateMembershipPeriod command)
     {
-        var membershipPeriod = await _repository.GetByIdAsync(command.MembershipPeriodId);
+        var membershipPeriod = await _repository.GetByIdAsync((Guid)command.MembershipPeriodId);
 
         if (membershipPeriod is null)
         {

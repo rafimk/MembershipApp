@@ -1,8 +1,6 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
 using Membership.Application.Queries.Nationalities.Areas;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Nationalities.Areas;
@@ -16,7 +14,7 @@ internal sealed class GetAreaByStateIdHandler : IQueryHandler<GetAreaByStateId, 
     
     public async Task<IEnumerable<AreaDto>> HandleAsync(GetAreaByStateId query)
     {
-        var stateId = new GenericId(query.StateId);
+        var stateId = query.StateId;
         return await _dbContext.Areas
             .OrderBy(x => x.Name)
             .AsNoTracking()

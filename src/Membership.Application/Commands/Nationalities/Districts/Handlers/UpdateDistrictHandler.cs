@@ -13,7 +13,7 @@ internal sealed class UpdateDistrictHandle : ICommandHandler<UpdateDistrict>
 
     public async Task HandleAsync(UpdateDistrict command)
     {
-        var district = await _repository.GetByIdAsync(command.DistrictId);
+        var district = await _repository.GetByIdAsync((Guid)command.DistrictId);
 
         if (district is null)
         {

@@ -14,7 +14,7 @@ internal sealed class DeleteDistrictHandler : ICommandHandler<DeleteDistrict>
 
     public async Task HandleAsync(DeleteDistrict command)
     {
-        var district = await _repository.GetByIdAsync(command.DistrictId);
+        var district = await _repository.GetByIdAsync((Guid)command.DistrictId);
 
         if (district is null)
         {

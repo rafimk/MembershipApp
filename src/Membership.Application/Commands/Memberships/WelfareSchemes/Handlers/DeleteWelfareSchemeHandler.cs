@@ -13,7 +13,7 @@ internal sealed class DeleteWelfareSchemeHandler : ICommandHandler<DeleteWelfare
 
     public async Task HandleAsync(DeleteWelfareScheme command)
     {
-        var welfareScheme = await _repository.GetByIdAsync(command.WelfareSchemeId);
+        var welfareScheme = await _repository.GetByIdAsync((Guid)command.WelfareSchemeId);
 
         if (welfareScheme is null)
         {

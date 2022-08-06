@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "admin@admin.com",
+     "email": "district-admin@admin.com",
     "password": "admin@123"
 }
 
@@ -39,12 +39,12 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "mandalam-agent-arr",
-    "email": "mandalam-agent-arr@admin.com",
+    "fullName": "mandalam-agent",
+    "email": "mandalam-agent@admin.com",
     "mobileNumber": "0554296326",
     "designation": "mandalam-agent",
     "role": "mandalam-agent",
-    "cascadeId": "0efb46eb-1872-492d-bc92-a2976079dd8d",
+    "cascadeId": "fada7507-af5b-4b44-ab76-cd11db72d449",
     "isDisputeCommittee": false
 }
 

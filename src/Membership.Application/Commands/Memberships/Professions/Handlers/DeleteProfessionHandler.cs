@@ -13,7 +13,7 @@ internal sealed class DeleteProfessionHandler : ICommandHandler<DeleteProfession
 
     public async Task HandleAsync(DeleteProfession command)
     {
-        var profession = await _repository.GetByIdAsync(command.ProfessionId);
+        var profession = await _repository.GetByIdAsync((Guid)command.ProfessionId);
 
         if (profession is null)
         {

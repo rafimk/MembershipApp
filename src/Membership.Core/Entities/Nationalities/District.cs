@@ -4,12 +4,12 @@ namespace Membership.Core.Entities.Nationalities;
 
 public class District
 {
-    public GenericId Id { get; private set; }
+    public Guid Id { get; private set; }
     public DistrictName Name{ get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private District(GenericId id, DistrictName name, bool isDeleted, DateTime createdAt)
+    private District(Guid id, DistrictName name, bool isDeleted, DateTime createdAt)
     {
         Id = id;
         Name = name;
@@ -21,7 +21,7 @@ public class District
     {
     }
 
-    public static District Create(GenericId id, DistrictName name, DateTime createdAt)
+    public static District Create(Guid id, DistrictName name, DateTime createdAt)
         => new(id, name, false, createdAt);
 
     public void Update(DistrictName name)

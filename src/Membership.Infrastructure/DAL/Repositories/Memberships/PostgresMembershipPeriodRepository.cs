@@ -1,6 +1,5 @@
 using Membership.Core.Entities.Memberships.MembershipPeriods;
 using Membership.Core.Repositories.Memberships;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Memberships;
@@ -14,7 +13,7 @@ internal sealed class PostgresMembershipPeriodRepository : IMembershipPeriodRepo
         _dbContext = dbContext;
     }
 
-    public  Task<MembershipPeriod> GetByIdAsync(GenericId id)
+    public  Task<MembershipPeriod> GetByIdAsync(Guid id)
         => _dbContext.MembershipPeriods.SingleOrDefaultAsync(x => x.Id == id);
 
     public async Task<IEnumerable<MembershipPeriod>> GetAsync()
@@ -35,7 +34,7 @@ internal sealed class PostgresMembershipPeriodRepository : IMembershipPeriodRepo
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task ActiveAsync(GenericId id)
+    public async Task ActiveAsync(Guid id)
     {
         var membershipPeriod = await GetByIdAsync(id);
         membershipPeriod.Activate();
@@ -43,7 +42,7 @@ internal sealed class PostgresMembershipPeriodRepository : IMembershipPeriodRepo
         await _dbContext.SaveChangesAsync();
     }
     
-    public async Task InActive(GenericId id)
+    public async Task InActive(Guid id)
     {
         var membershipPeriod = await GetByIdAsync(id);
         membershipPeriod.Deactivate();

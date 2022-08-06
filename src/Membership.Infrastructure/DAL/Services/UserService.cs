@@ -19,7 +19,7 @@ internal sealed class UserService : IUserService
     
     public async Task<IEnumerable<string>> GetApplicableUserRolesAsync(UserRole role, Guid? userId)
     {
-        var user = await _userRepository.GetByIdAsync(userId);
+        var user = await _userRepository.GetByIdAsync((Guid)userId);
 
         if (user is null)
         {
@@ -42,7 +42,7 @@ internal sealed class UserService : IUserService
 
     public async Task<Guid?> GetStateId(Guid? cascadeId, Guid? parentUserId)
     {
-        var user = await _userRepository.GetByIdAsync(parentUserId);
+        var user = await _userRepository.GetByIdAsync((Guid)parentUserId);
 
         if (user is null)
         {

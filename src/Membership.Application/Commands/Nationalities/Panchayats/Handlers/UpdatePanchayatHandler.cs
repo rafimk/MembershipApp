@@ -14,7 +14,7 @@ internal sealed class UpdatePanchayatHandler : ICommandHandler<UpdatePanchayat>
 
     public async Task HandleAsync(UpdatePanchayat command)
     {
-        var mandalam = await _repository.GetByIdAsync(command.PanchayatId);
+        var mandalam = await _repository.GetByIdAsync((Guid)command.PanchayatId);
 
         if (mandalam is null)
         {

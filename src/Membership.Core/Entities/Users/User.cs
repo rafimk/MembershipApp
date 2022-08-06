@@ -6,11 +6,10 @@ namespace Membership.Core.Entities.Users;
 
 public class User
 {
-    public GenericId Id { get; private set; }
+    public Guid Id { get; private set; }
     public FullName FullName { get; private set; }
     public Email Email { get; private set; }
     public MobileNumber MobileNumber { get; private set; }
-    public MobileNumber AlternativeContactNumber { get; private set; }
     public string Designation { get; private set; }
     public string PasswordHash { get; private set; }
     public UserRole Role { get; private set; }
@@ -33,7 +32,6 @@ public class User
         FullName = contract.FullName;
         Email = contract.Email;
         MobileNumber = contract.MobileNumber;
-        AlternativeContactNumber = contract.AlternativeContactNumber;
         Designation = contract.Designation;
         PasswordHash = contract.PasswordHash;
         Role = contract.Role;
@@ -53,7 +51,6 @@ public class User
             FullName = contract.FullName,
             Email = contract.Email,
             MobileNumber = contract.MobileNumber,
-            AlternativeContactNumber = contract.AlternativeContactNumber,
             Designation = contract.Designation,
             PasswordHash = contract.PasswordHash,
             Role = contract.Role,
@@ -70,7 +67,6 @@ public class User
     {
         FullName = contract.FullName;
         MobileNumber = contract.MobileNumber;
-        AlternativeContactNumber = contract.AlternativeContactNumber;
         Designation = contract.Designation;
         IsDisputeCommittee = contract.IsDisputeCommittee;
     }

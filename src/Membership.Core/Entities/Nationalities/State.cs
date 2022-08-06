@@ -3,13 +3,13 @@ namespace Membership.Core.Entities.Nationalities;
 
 public class State 
 {
-    public GenericId Id { get; private set; }
+    public Guid Id { get; private set; }
     public StateName Name { get; private set; }
     public string Prefix { get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private State(GenericId id, StateName name, string prefix, bool isDeleted, DateTime createdAt)
+    private State(Guid id, StateName name, string prefix, bool isDeleted, DateTime createdAt)
     {
         Id = id;
         Name = name;
@@ -22,7 +22,7 @@ public class State
     {
     }
 
-    public static State Create(GenericId id, StateName name, string prefix, DateTime createdAt)
+    public static State Create(Guid id, StateName name, string prefix, DateTime createdAt)
         => new(id, name, prefix, false, createdAt);
     
     public void Update(StateName name)

@@ -10,8 +10,6 @@ internal sealed class DistrictConfiguration : IEntityTypeConfiguration<District>
     public void Configure(EntityTypeBuilder<District> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id)
-            .HasConversion(x => x.Value, x => new GenericId(x));
         builder.Property(x => x.Name)
             .HasConversion(x => x.Value, x => new DistrictName(x))
             .IsRequired()

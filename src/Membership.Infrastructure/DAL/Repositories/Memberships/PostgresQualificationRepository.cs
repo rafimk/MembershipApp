@@ -1,6 +1,5 @@
 using Membership.Core.Entities.Memberships.Qualifications;
 using Membership.Core.Repositories.Memberships;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Memberships;
@@ -14,7 +13,7 @@ internal sealed class PostgresQualificationRepository : IQualificationRepository
         _dbContext = dbContext;
     }
 
-    public  Task<Qualification> GetByIdAsync(GenericId id)
+    public  Task<Qualification> GetByIdAsync(Guid id)
         => _dbContext.Qualifications.SingleOrDefaultAsync(x => x.Id == id);
 
     public async Task<IEnumerable<Qualification>> GetAsync()
@@ -32,7 +31,7 @@ internal sealed class PostgresQualificationRepository : IQualificationRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(GenericId id)
+    public async Task DeleteAsync(Guid id)
     {
         var qualification = await GetByIdAsync(id);
         qualification.Delete();

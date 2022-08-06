@@ -13,7 +13,7 @@ internal sealed class DeleteQualificationHandler : ICommandHandler<DeleteQualifi
 
     public async Task HandleAsync(DeleteQualification command)
     {
-        var qualification = await _repository.GetByIdAsync(command.QualificationId);
+        var qualification = await _repository.GetByIdAsync((Guid)command.QualificationId);
 
         if (qualification is null)
         {

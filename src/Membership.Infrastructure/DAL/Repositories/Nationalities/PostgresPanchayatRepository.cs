@@ -1,6 +1,5 @@
 ﻿using Membership.Core.Entities.Nationalities;
 using Membership.Core.Repositories.Nationalities;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Nationalities;
@@ -14,10 +13,10 @@ internal sealed class PostgresPanchayatRepository : IPanchayatRepository
         _dbContext = dbContext;
     }
 
-    public  Task<Panchayat> GetByIdAsync(GenericId id)
+    public  Task<Panchayat> GetByIdAsync(Guid id)
         => _dbContext.Panchayats.Include(x => x.Mandalam).SingleOrDefaultAsync(x => x.Id == id);
 
-    public async Task<IEnumerable<Panchayat>> GetByMandalamIdAsync(GenericId mandalamId)
+    public async Task<IEnumerable<Panchayat>> GetByMandalamIdAsync(Guid mandalamId)
         => await _dbContext.Panchayats.Where(x => x.MandalamId == mandalamId && !x.IsDeleted).ToListAsync();
     
     public async Task<IEnumerable<Panchayat>> GetAsync()

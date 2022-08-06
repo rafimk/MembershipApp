@@ -1,6 +1,5 @@
 using Membership.Core.Entities.Memberships.Disputes;
 using Membership.Core.Repositories.Memberships;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Memberships;
@@ -14,12 +13,12 @@ internal sealed class PostgresDisputeRequestRepository : IDisputeRequestReposito
         _dbContext = dbContext;
     }
 
-    public  Task<DisputeRequest> GetByIdAsync(GenericId id)
+    public  Task<DisputeRequest> GetByIdAsync(Guid id)
         => _dbContext.DisputeRequests.Include(x => x.ProposedArea)
                 .Include(x => x.ProposedMandalam)
                 .Include(x => x.ProposedPanchayat).SingleOrDefaultAsync(x => x.Id == id);
 
-    public  Task<DisputeRequest> GetByMemberIdAsync(GenericId memberId)
+    public  Task<DisputeRequest> GetByMemberIdAsync(Guid memberId)
         => _dbContext.DisputeRequests.Include(x => x.ProposedArea)
             .Include(x => x.ProposedMandalam)
             .Include(x => x.ProposedPanchayat).SingleOrDefaultAsync(x => x.MemberId == memberId);

@@ -50,7 +50,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             throw new EmailAlreadyInUseException(command.Email);
         }
         
-        var parentUser = await _userRepository.GetByIdAsync(command.LoggedUserId);
+        var parentUser = await _userRepository.GetByIdAsync((Guid)command.LoggedUserId);
 
         if (parentUser is null)
         {
@@ -73,7 +73,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         {
             case "state-admin":
             {
-                var state = await _stateRepository.GetByIdAsync(command.CascadeId);
+                var state = await _stateRepository.GetByIdAsync((Guid)command.CascadeId);
 
                 if (state is not null)
                 {
@@ -84,7 +84,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             }
             case "monitoring-officer":
             {
-                var state = await _stateRepository.GetByIdAsync(command.CascadeId);
+                var state = await _stateRepository.GetByIdAsync((Guid)command.CascadeId);
 
                 if (state is not null)
                 {
@@ -95,7 +95,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             }
             case "district-admin":
             {
-                var district = await _districtRepository.GetByIdAsync(command.CascadeId);
+                var district = await _districtRepository.GetByIdAsync((Guid)command.CascadeId);
 
                 if (district is not null)
                 {
@@ -107,7 +107,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             }
             case "district-agent":
             {
-                var district = await _districtRepository.GetByIdAsync(command.CascadeId);
+                var district = await _districtRepository.GetByIdAsync((Guid)command.CascadeId);
 
                 if (district is not null)
                 {
@@ -120,14 +120,14 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             case "mandalam-agent":
             {
                 command.IsDisputeCommittee = false;
-                var district = await _districtRepository.GetByIdAsync(parentUser.DistrictId);
+                var district = await _districtRepository.GetByIdAsync((Guid)parentUser.DistrictId);
 
                 if (district is not null)
                 {
                     districtId = district.Id;
                 }
                 
-                var mandalam = await _mandalamRepository.GetByIdAsync(command.CascadeId);
+                var mandalam = await _mandalamRepository.GetByIdAsync((Guid)command.CascadeId);
 
                 if (mandalam is not null)
                 {
@@ -142,16 +142,15 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             }
         }
 
-        var firstTimePassord = _passwordManager.Generate(); //"admin@123"
+        var firstTimePassord = "admin@123"; // _passwordManager.Generate(); //
         var securedPassword = _passwordManager.Secure(firstTimePassord);
 
         var contract = new UserCreateContract
         {
-            Id = command.Id,
+            Id = (Guid)command.Id,
             FullName = command.FullName,
             Email = command.Email,
             MobileNumber = command.MobileNumber,
-            AlternativeContactNumber = command.MobileNumber,
             Designation = command.Designation,
             PasswordHash = securedPassword,
             Role = new UserRole(command.Role),
@@ -167,6 +166,6 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         await _userRepository.AddAsync(user);
         string messageId = Guid.NewGuid().ToString("N");
         var message = new UserCreated(command.FullName, command.Email, firstTimePassord);
-        await _messagePublisher.PublishAsync("user", $"created", message, messageId);
+        // await _messagePublisher.PublishAsync("user", $"created", message, messageId);
     }
 }

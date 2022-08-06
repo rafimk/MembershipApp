@@ -40,7 +40,6 @@ internal sealed class UpdateMemberHandler : ICommandHandler<UpdateMember>
             EmiratesIdExpiry = command.EmiratesIdExpiry,
             DateOfBirth = command.DateOfBirth,
             MobileNumber = command.MobileNumber,
-            AlternativeContactNumber = command.AlternativeContactNumber,
             Email = command.Email,
             PassportNumber = command.PassportNumber,
             PassportExpiry = command.PassportExpiry,

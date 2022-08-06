@@ -10,8 +10,6 @@ internal sealed class StateConfiguration : IEntityTypeConfiguration<State>
     public void Configure(EntityTypeBuilder<State> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id)
-            .HasConversion(x => x.Value, x => new GenericId(x));
         builder.Property(x => x.Name)
             .HasConversion(x => x.Value, x => new StateName(x))
             .IsRequired()

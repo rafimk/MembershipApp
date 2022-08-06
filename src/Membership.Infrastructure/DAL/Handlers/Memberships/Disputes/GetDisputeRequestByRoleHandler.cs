@@ -32,7 +32,7 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
             return null;
         }
         
-        var mandalamId = new GenericId((Guid)user.CascadeId);
+        var mandalamId = (Guid)user.CascadeId;
         
         var disputeRequests = await _dbContext.DisputeRequests
             .Include(x => x.ProposedArea).ThenInclude(x => x.State)

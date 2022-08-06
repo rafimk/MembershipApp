@@ -1,15 +1,14 @@
-﻿using Membership.Core.ValueObjects;
-
+﻿
 namespace Membership.Core.Entities.Memberships.Professions;
 
 public class Profession 
 {
-    public GenericId Id { get; private set; }
+    public Guid Id { get; private set; }
     public string Name{ get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTime CreatedAt { get; private set; }
-
-    private Profession(GenericId id, string name, bool isDeleted, DateTime createdAt)
+ 
+    private Profession(Guid id, string name, bool isDeleted, DateTime createdAt)
     {
         Id = id;
         Name = name;
@@ -21,10 +20,10 @@ public class Profession
     {
     }
     
-    public static Profession Create(GenericId id, string name, DateTime createdAt)
+    public static Profession Create(Guid id, string name, DateTime createdAt)
         => new(id, name, false, createdAt);
 
-    public void Update(ProfessionName name)
+    public void Update(string name)
     {
         Name = name;
     }

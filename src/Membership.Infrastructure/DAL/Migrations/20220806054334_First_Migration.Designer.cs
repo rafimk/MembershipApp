@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Membership.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(MembershipDbContext))]
-    [Migration("20220802174307_User_AddDistrictId")]
-    partial class User_AddDistrictId
+    [Migration("20220806054334_First_Migration")]
+    partial class First_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,9 @@ namespace Membership.Infrastructure.DAL.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
+
+                    b.Property<Guid?>("MemberId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("SavedFileName")
                         .HasColumnType("text");
@@ -108,6 +111,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Memberships.Disputes.DisputeRequest", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("ActionBy")
@@ -160,12 +164,10 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Memberships.Members.Member", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("AddressInDistrictId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("AddressInDistrictId1")
                         .HasColumnType("uuid");
 
                     b.Property<string>("AddressInIndia")
@@ -174,25 +176,15 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.Property<Guid?>("AddressInMandalamId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AddressInMandalamId1")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid?>("AddressInPanchayatId")
                         .HasColumnType("uuid");
-
-                    b.Property<Guid?>("AddressInPanchayatId1")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AlternativeContactNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
 
                     b.Property<Guid>("AreaId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("BloodGroup")
-                        .HasColumnType("integer");
+                    b.Property<string>("BloodGroup")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("CardNumber")
                         .HasColumnType("text");
@@ -209,8 +201,10 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.Property<DateTimeOffset>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("DistrictId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -262,8 +256,8 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.Property<Guid>("PanchayatId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("PassportExpiry")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("PassportExpiry")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("PassportFrontPage")
                         .HasColumnType("uuid");
@@ -281,20 +275,21 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.Property<Guid?>("Photo")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ProfessionId")
+                    b.Property<Guid?>("ProfessionId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("QualificationId")
+                    b.Property<Guid?>("QualificationId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("RegisteredOrganizationId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("RegisteredOrganizationId1")
+                    b.Property<Guid>("StateId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("VerifiedAt")
                         .HasColumnType("timestamp without time zone");
@@ -302,21 +297,11 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.Property<Guid?>("WelfareSchemeId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("WelfareSchemeId1")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressInDistrictId1");
-
-                    b.HasIndex("AddressInMandalamId1");
-
-                    b.HasIndex("AddressInPanchayatId1");
 
                     b.HasIndex("AreaId");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
+                    b.HasIndex("DistrictId");
 
                     b.HasIndex("MandalamId");
 
@@ -328,9 +313,11 @@ namespace Membership.Infrastructure.DAL.Migrations
 
                     b.HasIndex("QualificationId");
 
-                    b.HasIndex("RegisteredOrganizationId1");
+                    b.HasIndex("RegisteredOrganizationId");
 
-                    b.HasIndex("WelfareSchemeId1");
+                    b.HasIndex("StateId");
+
+                    b.HasIndex("WelfareSchemeId");
 
                     b.ToTable("Members");
                 });
@@ -338,6 +325,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Memberships.MembershipPeriods.MembershipPeriod", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -369,6 +357,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Memberships.Professions.Profession", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -390,6 +379,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Memberships.Qualifications.Qualification", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -411,6 +401,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Memberships.RegisteredOrganizations.RegisteredOrganization", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -432,6 +423,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Memberships.WelfareSchemes.WelfareScheme", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -453,6 +445,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Nationalities.Area", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -479,6 +472,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Nationalities.District", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -500,6 +494,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Nationalities.Mandalam", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -526,6 +521,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Nationalities.Panchayat", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -552,6 +548,7 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Nationalities.State", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -577,12 +574,8 @@ namespace Membership.Infrastructure.DAL.Migrations
             modelBuilder.Entity("Membership.Core.Entities.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("AlternativeContactNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
 
                     b.Property<Guid?>("CascadeId")
                         .HasColumnType("uuid");
@@ -677,21 +670,15 @@ namespace Membership.Infrastructure.DAL.Migrations
 
             modelBuilder.Entity("Membership.Core.Entities.Memberships.Members.Member", b =>
                 {
-                    b.HasOne("Membership.Core.Entities.Nationalities.District", "AddressInDistrict")
-                        .WithMany()
-                        .HasForeignKey("AddressInDistrictId1");
-
-                    b.HasOne("Membership.Core.Entities.Nationalities.Mandalam", "AddressInMandalam")
-                        .WithMany()
-                        .HasForeignKey("AddressInMandalamId1");
-
-                    b.HasOne("Membership.Core.Entities.Nationalities.Panchayat", "AddressInPanchayat")
-                        .WithMany()
-                        .HasForeignKey("AddressInPanchayatId1");
-
                     b.HasOne("Membership.Core.Entities.Nationalities.Area", "Area")
                         .WithMany()
                         .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Membership.Core.Entities.Nationalities.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -715,31 +702,29 @@ namespace Membership.Infrastructure.DAL.Migrations
 
                     b.HasOne("Membership.Core.Entities.Memberships.Professions.Profession", "Profession")
                         .WithMany()
-                        .HasForeignKey("ProfessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProfessionId");
 
                     b.HasOne("Membership.Core.Entities.Memberships.Qualifications.Qualification", "Qualification")
                         .WithMany()
-                        .HasForeignKey("QualificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("QualificationId");
 
                     b.HasOne("Membership.Core.Entities.Memberships.RegisteredOrganizations.RegisteredOrganization", "RegisteredOrganization")
                         .WithMany()
-                        .HasForeignKey("RegisteredOrganizationId1");
+                        .HasForeignKey("RegisteredOrganizationId");
+
+                    b.HasOne("Membership.Core.Entities.Nationalities.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Membership.Core.Entities.Memberships.WelfareSchemes.WelfareScheme", "WelfareScheme")
                         .WithMany()
-                        .HasForeignKey("WelfareSchemeId1");
-
-                    b.Navigation("AddressInDistrict");
-
-                    b.Navigation("AddressInMandalam");
-
-                    b.Navigation("AddressInPanchayat");
+                        .HasForeignKey("WelfareSchemeId");
 
                     b.Navigation("Area");
+
+                    b.Navigation("District");
 
                     b.Navigation("Mandalam");
 
@@ -752,6 +737,8 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.Navigation("Qualification");
 
                     b.Navigation("RegisteredOrganization");
+
+                    b.Navigation("State");
 
                     b.Navigation("WelfareScheme");
                 });

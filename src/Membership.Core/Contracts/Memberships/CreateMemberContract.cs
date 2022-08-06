@@ -5,7 +5,7 @@ namespace Membership.Core.Contracts.Memberships;
 
 public record CreateMemberContract()
 {
-    public GenericId Id { get; set; }
+    public Guid Id { get; set; }
     public MembershipId MembershipId { get; set; }
     public FullName FullName { get; set; } 
     public EmiratesIdNumber EmiratesIdNumber { get; set; }
@@ -14,7 +14,6 @@ public record CreateMemberContract()
     public Guid? EmiratesIdLastPage { get; set;}
     public DateTime DateOfBirth { get; set; } 
     public MobileNumber MobileNumber { get; set; }
-    public OptionalMobileNumber AlternativeContactNumber { get; set; }
     public string Email { get; set; }
     public string PassportNumber { get; set; }
     public DateTime? PassportExpiry { get; set; }
@@ -31,16 +30,16 @@ public record CreateMemberContract()
     public Guid? AddressInMandalamId { get; set; }
     public Guid? AddressInPanchayatId { get; set; }
     public string PasswordHash { get; set; }
-    public GenericId StateId { get; set; }
-    public GenericId AreaId { get; set; }
-    public GenericId DistrictId { get; set; } 
-    public GenericId MandalamId { get; set; } 
-    public GenericId PanchayatId { get; set;}
+    public Guid StateId { get; set; }
+    public Guid AreaId { get; set; }
+    public Guid DistrictId { get; set; } 
+    public Guid MandalamId { get; set; } 
+    public Guid PanchayatId { get; set;}
     public Guid? RegisteredOrganizationId { get; set; }
     public Guid? WelfareSchemeId { get; set; }
-    public GenericId MembershipPeriodId { get; set; }
+    public Guid MembershipPeriodId { get; set; }
     public string CardNumber { get; set; }
     public MemberStatus Status {get; set;}
     public DateTime CreatedAt { get; set; } 
-    public GenericId CreatedBy { get; set; }
+    public Guid CreatedBy { get; set; }
 }

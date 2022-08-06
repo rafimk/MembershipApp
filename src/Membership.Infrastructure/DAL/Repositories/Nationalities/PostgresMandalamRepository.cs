@@ -1,6 +1,5 @@
 ﻿using Membership.Core.Entities.Nationalities;
 using Membership.Core.Repositories.Nationalities;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Nationalities;
@@ -14,10 +13,10 @@ internal sealed class PostgresMandalamRepository : IMandalamRepository
         _dbContext = dbContext;
     }
 
-    public  Task<Mandalam> GetByIdAsync(GenericId id)
+    public  Task<Mandalam> GetByIdAsync(Guid id)
         => _dbContext.Mandalams.Include(x => x.District).SingleOrDefaultAsync(x => x.Id == id);
     
-    public async Task<IEnumerable<Mandalam>> GetByDistrictIdAsync(GenericId districtId)
+    public async Task<IEnumerable<Mandalam>> GetByDistrictIdAsync(Guid districtId)
         => await _dbContext.Mandalams.Where(x => x.DistrictId == districtId && !x.IsDeleted).ToListAsync();
     
     public async Task<IEnumerable<Mandalam>> GetAsync()

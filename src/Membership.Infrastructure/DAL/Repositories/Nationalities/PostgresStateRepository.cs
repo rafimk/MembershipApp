@@ -1,6 +1,5 @@
 ﻿using Membership.Core.Entities.Nationalities;
 using Membership.Core.Repositories.Nationalities;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Nationalities;
@@ -14,7 +13,7 @@ internal sealed class PostgresStateRepository : IStateRepository
         _states = dbContext.States;
     }
 
-    public  Task<State> GetByIdAsync(GenericId id)
+    public  Task<State> GetByIdAsync(Guid id)
         => _states.SingleOrDefaultAsync(x => x.Id == id);
 
     public async Task<IEnumerable<State>> GetAsync()

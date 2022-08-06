@@ -4,7 +4,7 @@ namespace Membership.Core.Entities.Memberships.MembershipPeriods;
 
 public class MembershipPeriod 
 {
-    public GenericId Id { get; private set; }
+    public Guid Id { get; private set; }
     public Date Start { get; private set; }
     public Date End {get; private set;}
     public DateTime? RegistrationStarted  { get; private set; }
@@ -13,7 +13,7 @@ public class MembershipPeriod
     public bool IsEnrollActive  { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private MembershipPeriod(GenericId id, Date start, Date end, DateTime? registrationStarted, 
+    private MembershipPeriod(Guid id, Date start, Date end, DateTime? registrationStarted, 
         DateTime? registrationEnded, bool isEnrollActive, bool isActive, DateTime createdAt)
     {
         Id = id;
@@ -30,7 +30,7 @@ public class MembershipPeriod
     {
     }
     
-    public static MembershipPeriod Create(GenericId id, Date start, Date end, DateTime createdAt)
+    public static MembershipPeriod Create(Guid id, Date start, Date end, DateTime createdAt)
         => new(id, start, end, null, null, false, false, createdAt);
 
     public void Update(Date start, Date end)

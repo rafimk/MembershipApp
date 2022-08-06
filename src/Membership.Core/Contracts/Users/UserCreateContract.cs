@@ -4,11 +4,10 @@ namespace Membership.Core.Contracts.Users;
 
 public record UserCreateContract()
 {
-    public GenericId Id { get; set; }
+    public Guid Id { get; set; }
     public FullName FullName { get; set; }
     public Email Email { get; set; }
     public MobileNumber MobileNumber { get; set; } 
-    public MobileNumber AlternativeContactNumber { get; set; }
     public string Designation { get; set; }
     public string PasswordHash { get; set; }
     public UserRole Role { get; set; }

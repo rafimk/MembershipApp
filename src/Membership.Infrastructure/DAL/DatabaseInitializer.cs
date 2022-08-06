@@ -119,6 +119,7 @@ internal sealed class DatabaseInitializer : IHostedService
         {
             var professions = new List<Profession>            
             {                
+                // Profession.Create(Guid.Parse("00000000-0000-0000-0000-000000000000"), "N/A", _clock.Current()),
                 Profession.Create(Guid.Parse("93321f12-2cdf-42bc-95b1-2ec949b08160"), "DENTAL HYGIENIST", _clock.Current()),
                 Profession.Create(Guid.Parse("99a55dbe-4cfe-4ff6-8e6c-8eb5c9022887"), "DOCTOR", _clock.Current()),
                 Profession.Create(Guid.Parse("9c125ec5-1274-4536-a74c-6643bf35c943"), "BUTCHER", _clock.Current()),
@@ -156,6 +157,7 @@ internal sealed class DatabaseInitializer : IHostedService
         {
             var qualifications = new List<Qualification>
             {
+                // Qualification.Create(Guid.Parse("00000000-0000-0000-0000-000000000000"), "N/A", _clock.Current()),
                 Qualification.Create(Guid.Parse("0de682b5-b491-4623-889b-5ba9c72aea53"), "OTHERS (N/A)", _clock.Current()),
                 Qualification.Create(Guid.Parse("A69D8042-662D-4CE2-AAB3-0E8759260AFD"), "PRIMARY", _clock.Current()),
                 Qualification.Create(Guid.Parse("B828BA9E-FEE6-44C1-B9C3-89EF49BEFF7B"), "SECONDARY", _clock.Current()),
@@ -174,6 +176,7 @@ internal sealed class DatabaseInitializer : IHostedService
         {
             var welfareSchemes = new List<WelfareScheme>
             {
+                // WelfareScheme.Create(Guid.Parse("00000000-0000-0000-0000-000000000000"), "N/A", _clock.Current()),
                 WelfareScheme.Create(Guid.Parse("8b08b3f0-6b8f-40f1-9a27-b8582392a1ad"), "DUBAI KMCC Welfare Scheme", _clock.Current()),
                 WelfareScheme.Create(Guid.Parse("F4503A80-4EAC-4AEB-AD45-D8D495C2B649"), "ABUDHABI KMCC Care", _clock.Current()),
                 WelfareScheme.Create(Guid.Parse("6C4550E8-EDF1-44E2-B727-9392764160BC"), "Pratheekasha Kozhikkode", _clock.Current()),
@@ -187,6 +190,7 @@ internal sealed class DatabaseInitializer : IHostedService
         {
             var registeredOrganizations = new List<RegisteredOrganization>
             {
+                // RegisteredOrganization.Create(Guid.Parse("00000000-0000-0000-0000-000000000000"), "N/A", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("7f16542d-df41-44a1-b7a6-bac0c480d366"), "ABUDHABI INDIAN ISLAMIC CENTRE", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("a78b37ba-6a3e-4dc5-88f5-2040c66acc39"), "ABUDHABI INDIAN SOCIAL CENTRE", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("CD8F44F7-B9E8-454A-AFF2-9CDFFFE8CE61"), "ABUDHABI MALYALI SAMAJAM", _clock.Current()),
@@ -215,7 +219,6 @@ internal sealed class DatabaseInitializer : IHostedService
                 FullName = "admin",
                 Email = "admin@admin.com",
                 MobileNumber = "0505550444",
-                AlternativeContactNumber = "0505550444",
                 Designation = "admin",
                 PasswordHash = securedPassword,
                 Role = UserRole.CentralCommitteeAdmin(),

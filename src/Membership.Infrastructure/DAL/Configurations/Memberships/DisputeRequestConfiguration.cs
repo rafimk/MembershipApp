@@ -10,23 +10,7 @@ internal sealed class DisputeRequestConfiguration : IEntityTypeConfiguration<Dis
     public void Configure(EntityTypeBuilder<DisputeRequest> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id)
-            .HasConversion(x => x.Value, x => new GenericId(x));
-        builder.Property(x => x.MemberId)
-            .HasConversion(x => x.Value, x => new GenericId(x))
-            .IsRequired();
-        builder.Property(x => x.ProposedAreaId)
-            .HasConversion(x => x.Value, x => new GenericId(x))
-            .IsRequired();
-        builder.Property(x => x.ProposedMandalamId)
-            .HasConversion(x => x.Value, x => new GenericId(x))
-            .IsRequired();
-        builder.Property(x => x.ProposedPanchayatId)
-            .HasConversion(x => x.Value, x => new GenericId(x))
-            .IsRequired();
-        builder.Property(x => x.SubmittedBy)
-            .HasConversion(x => x.Value, x => new GenericId(x))
-            .IsRequired();
+
         builder.Property(x => x.SubmittedDate).IsRequired();
         builder.Property(x => x.Status).HasConversion<string>();
     }

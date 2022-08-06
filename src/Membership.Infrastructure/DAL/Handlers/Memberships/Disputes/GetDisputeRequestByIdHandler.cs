@@ -1,7 +1,6 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Disputes;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.Disputes;
@@ -15,7 +14,7 @@ internal sealed class GetDisputeRequestByIdHandler : IQueryHandler<GetDisputeReq
     
     public async Task<DisputeRequestDto> HandleAsync(GetDisputeRequestById query)
     {
-        var requestId = new GenericId(query.RequestId);
+        var requestId = query.RequestId;
         var disputeRequest = await _dbContext.DisputeRequests
             .Include(x => x.Member).ThenInclude(x => x.Area)
             .Include(x => x.Member).ThenInclude(x => x.Mandalam).ThenInclude(x => x.District)

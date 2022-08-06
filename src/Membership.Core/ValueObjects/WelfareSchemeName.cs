@@ -8,11 +8,6 @@ public record WelfareSchemeName
 
     public WelfareSchemeName(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new EmptyWelfareSchemeNameException();
-        }
-        
         Value = value;
     }
 

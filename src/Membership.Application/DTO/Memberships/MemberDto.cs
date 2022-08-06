@@ -14,7 +14,6 @@ public class MemberDto
     public Guid? EmiratesIdLastPage { get; set; }
     public DateTimeOffset DateOfBirth { get; set; }
     public string MobileNumber { get; set; }
-    public string AlternativeContactNumber { get; set; }
     public string Email { get; set; }
     public string PassportNumber { get; set; }
     public DateTime? PassportExpiry { get; set; }

@@ -5,8 +5,8 @@ namespace Membership.Core.Repositories.Memberships;
 
 public interface IMemberRepository
 {
-    Task<Member> GetByIdAsync(GenericId id);
-    Task<Member> GetByMemberIdAsync(MembershipId membershipId);
+    Task<Member> GetByIdAsync(Guid id);
+    Task<Member> GetByMembershipIdAsync(string membershipId);
     Task<Member> GetByEmiratesIdAsync(EmiratesIdNumber emiratesId);
     Task<Member> GetByEmailAsync(Email email);
     Task<IEnumerable<Member>> GetAsync();

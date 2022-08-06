@@ -31,7 +31,7 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
 
     public async Task HandleAsync(CreateDisputeRequest command)
     {
-        var agent = await _userRepository.GetByIdAsync(command.SubmittedBy);
+        var agent = await _userRepository.GetByIdAsync((Guid)command.SubmittedBy);
 
         if (agent is null)
         {
@@ -52,9 +52,9 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
             throw new AreaNotFoundException(command.ProposedAreaId);
         }
         
-        var applicableAreas = await _areaRepository.GetByStateIdAsync(agent.StateId);
+        var applicableAreas = await _areaRepository.GetByStateIdAsync((Guid)agent.StateId);
 
-        var findArea = applicableAreas.FirstOrDefault(x => x.Id == new GenericId(command.ProposedAreaId));
+        var findArea = applicableAreas.FirstOrDefault(x => x.Id == command.ProposedAreaId);
  
         if (findArea is null)
         {
@@ -63,14 +63,14 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
         
         var disputeReques = DisputeRequest.Create(new CreateDisputeRequestContract
         {
-            Id = command.Id,
+            Id = (Guid)command.Id,
             MemberId = command.MemberId,
             ProposedAreaId = command.ProposedAreaId,
-            ProposedMandalamId = agent.CascadeId,
+            ProposedMandalamId = (Guid)agent.CascadeId,
             ProposedPanchayatId = command.ProposedPanchayatId,
             Reason = command.Reason,
             SubmittedDate = _clock.Current(),
-            SubmittedBy = command.SubmittedBy
+            SubmittedBy = (Guid)command.SubmittedBy
         });
         
         await _disputeRequestRepository.AddAsync(disputeReques);

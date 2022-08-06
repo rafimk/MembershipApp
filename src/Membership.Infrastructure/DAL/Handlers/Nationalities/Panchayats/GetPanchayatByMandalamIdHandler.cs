@@ -1,7 +1,6 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.Queries.Nationalities.Panchayats;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Nationalities.Panchayats;
@@ -15,7 +14,7 @@ internal sealed class GetPanchayatByMandalamIdHandler : IQueryHandler<GetPanchay
     
     public async Task<IEnumerable<PanchayatDto>> HandleAsync(GetPanchayatByMandalamId query)
     {
-        var mandalamId = new GenericId(query.MandalamId);
+        var mandalamId = query.MandalamId;
         return await _dbContext.Panchayats
             .OrderBy(x => x.Name)
             .Include(x => x.Mandalam)

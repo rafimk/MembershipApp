@@ -13,7 +13,7 @@ internal sealed class UpdateQualificationHandler : ICommandHandler<UpdateQualifi
 
     public async Task HandleAsync(UpdateQualification command)
     {
-        var qualification = await _repository.GetByIdAsync(command.QualificationId);
+        var qualification = await _repository.GetByIdAsync((Guid)command.QualificationId);
 
         if (qualification is null)
         {

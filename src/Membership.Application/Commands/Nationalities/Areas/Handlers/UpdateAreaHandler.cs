@@ -13,7 +13,7 @@ internal sealed class UpdateAreaHandler : ICommandHandler<UpdateArea>
 
     public async Task HandleAsync(UpdateArea command)
     {
-        var area = await _repository.GetByIdAsync(command.AreaId);
+        var area = await _repository.GetByIdAsync((Guid)command.AreaId);
 
         if (area is null)
         {

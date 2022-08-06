@@ -13,7 +13,7 @@ internal sealed class DeleteMandalamHandler : ICommandHandler<DeleteMandalam>
 
     public async Task HandleAsync(DeleteMandalam command)
     {
-        var mandalam = await _repository.GetByIdAsync(command.MandalamId);
+        var mandalam = await _repository.GetByIdAsync((Guid)command.MandalamId);
 
         if (mandalam is null)
         {

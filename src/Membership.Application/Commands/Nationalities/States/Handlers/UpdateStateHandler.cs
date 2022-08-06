@@ -13,7 +13,7 @@ internal sealed class UpdateStateHandler : ICommandHandler<UpdateState>
 
     public async Task HandleAsync(UpdateState command)
     {
-        var state = await _repository.GetByIdAsync(command.StateId);
+        var state = await _repository.GetByIdAsync((Guid)command.StateId);
 
         if (state is null)
         {

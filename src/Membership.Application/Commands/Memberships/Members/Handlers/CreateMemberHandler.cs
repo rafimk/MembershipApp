@@ -44,7 +44,7 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             throw new InvalidEmiratesIdExpiryDate();
         }
         
-        var agent = await _userRepository.GetByIdAsync(command.AgentId);
+        var agent = await _userRepository.GetByIdAsync((Guid)command.AgentId);
 
         if (agent is null)
         {
@@ -70,9 +70,9 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
         
         var membershipId = _memberRepository.GenerateMembershipId(area.State?.Prefix);
         
-        var applicableAreas = await _areaRepository.GetByStateIdAsync(agent.StateId);
+        var applicableAreas = await _areaRepository.GetByStateIdAsync((Guid)agent.StateId);
 
-        var findArea = applicableAreas.FirstOrDefault(x => x.Id == new GenericId(command.AreaId));
+        var findArea = applicableAreas.FirstOrDefault(x => x.Id == command.AreaId);
  
         if (findArea is null)
         {
@@ -85,10 +85,10 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
         {
             throw new ThereIsNoActiveMembershipPeriodAvailable();
         }
-        
+
         var membership = Member.Create(new CreateMemberContract
         {
-            Id = command.Id,
+            Id = (Guid)command.Id,
             MembershipId = membershipId,
             FullName = command.FullName,
             EmiratesIdNumber = command.EmiratesIdNumber,
@@ -97,7 +97,6 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             EmiratesIdLastPage = command.EmiratesIdLastPage,
             DateOfBirth = command.DateOfBirth,
             MobileNumber = command.MobileNumber,
-            AlternativeContactNumber = command.MobileNumber,
             Email = command.Email,
             PassportNumber = command.PassportNumber,
             PassportExpiry = command.PassportExpiry,
@@ -114,9 +113,9 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             AddressInMandalamId = command.AddressInMandalamId,
             AddressInPanchayatId = command.AddressInPanchayatId,
             PasswordHash = command.PasswordHash,
-            StateId = agent.StateId,
-            AreaId = command.AreaId,
-            DistrictId = agent.DistrictId,
+            StateId = (Guid)agent.StateId,
+            AreaId = (Guid)command.AreaId,
+            DistrictId = (Guid)agent.DistrictId,
             MandalamId = command.MandalamId,
             PanchayatId = command.PanchayatId,
             RegisteredOrganizationId = command.RegisteredOrganizationId,
@@ -124,7 +123,7 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             MembershipPeriodId = membershipPeriod.Id,
             Status = MemberStatus.Draft,
             CreatedAt = _clock.Current(),
-            CreatedBy = command.AgentId
+            CreatedBy = (Guid)command.AgentId
         });
         
         await _memberRepository.AddAsync(membership);

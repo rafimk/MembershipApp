@@ -8,11 +8,6 @@ public record QualificationName
 
     public QualificationName(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new EmptyQualificationNameException();
-        }
-        
         Value = value;
     }
 

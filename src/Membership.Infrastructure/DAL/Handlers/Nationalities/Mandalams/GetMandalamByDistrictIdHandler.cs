@@ -1,7 +1,6 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.Queries.Nationalities.Mandalams;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Nationalities.Mandalams;
@@ -15,7 +14,7 @@ internal sealed class GetMandalamByDistrictIdHandler : IQueryHandler<GetMandalam
     
     public async Task<IEnumerable<MandalamDto>> HandleAsync(GetMandalamByDistrictId query)
     {
-        var districtId = new GenericId(query.DistrictId);
+        var districtId = query.DistrictId;
         return await _dbContext.Mandalams
             .OrderBy(x => x.Name)
             .Include(x => x.District)

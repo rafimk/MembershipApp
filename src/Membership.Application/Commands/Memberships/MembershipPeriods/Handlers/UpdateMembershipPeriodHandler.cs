@@ -13,7 +13,7 @@ internal sealed class UpdateMembershipPeriodHandler : ICommandHandler<UpdateMemb
 
     public async Task HandleAsync(UpdateMembershipPeriod command)
     {
-        var membershipPeriod = await _repository.GetByIdAsync(command.MembershipPeriodId);
+        var membershipPeriod = await _repository.GetByIdAsync((Guid)command.MembershipPeriodId);
 
         if (membershipPeriod is null)
         {

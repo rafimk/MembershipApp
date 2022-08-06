@@ -15,7 +15,7 @@ internal sealed class GetMembersByMandalamIdHandler : IQueryHandler<GetMembersBy
     
     public async Task<IEnumerable<MemberDto>> HandleAsync(GetMembersByMandalamId query)
     {
-        var mandalamId = new GenericId(query.MandalamId);
+        var mandalamId = query.MandalamId;
         return await _dbContext.Members
             .OrderBy(x => x.FullName)
             .Include(x => x.Profession)

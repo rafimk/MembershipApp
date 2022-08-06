@@ -1,6 +1,5 @@
 using Membership.Core.Entities.Memberships.Professions;
 using Membership.Core.Repositories.Memberships;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Memberships;
@@ -14,7 +13,7 @@ internal sealed class PostgresProfessionRepository : IProfessionRepository
         _dbContext = dbContext;
     }
 
-    public  Task<Profession> GetByIdAsync(GenericId id)
+    public  Task<Profession> GetByIdAsync(Guid id)
         => _dbContext.Professions.SingleOrDefaultAsync(x => x.Id == id);
 
     public async Task<IEnumerable<Profession>> GetAsync()
@@ -32,7 +31,7 @@ internal sealed class PostgresProfessionRepository : IProfessionRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(GenericId id)
+    public async Task DeleteAsync(Guid id)
     {
         var profession = await GetByIdAsync(id);
         profession.Delete();

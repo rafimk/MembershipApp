@@ -1,7 +1,6 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.RegisteredOrganizations;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.RegisteredOrganizations;
@@ -15,7 +14,7 @@ internal sealed class GetRegisteredOrganizationByIdHandler : IQueryHandler<GetRe
     
     public async Task<RegisteredOrganizationDto> HandleAsync(GetRegisteredOrganizationById query)
     {
-        var registeredOrganizationId = new GenericId(query.RegisteredOrganizationId);
+        var registeredOrganizationId = query.RegisteredOrganizationId;
         var registeredOrganization = await _dbContext.RegisteredOrganizations
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == registeredOrganizationId);

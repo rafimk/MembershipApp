@@ -15,7 +15,7 @@ internal sealed class GetMembershipPeriodByIdHandler : IQueryHandler<GetMembersh
     
     public async Task<MembershipPeriodDto> HandleAsync(GetMembershipPeriodById query)
     {
-        var membershipPeriodId = new GenericId(query.MembershipPeriodId);
+        var membershipPeriodId = query.MembershipPeriodId;
         var membershipPeriod = await _dbContext.MembershipPeriods
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == membershipPeriodId);

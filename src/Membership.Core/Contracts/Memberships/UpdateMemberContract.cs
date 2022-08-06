@@ -10,7 +10,6 @@ public record UpdateMemberContract()
     public Guid? EmiratesIdLastPage { get; set;}
     public DateTime DateOfBirth { get; set; } 
     public MobileNumber MobileNumber { get; set; }
-    public OptionalMobileNumber AlternativeContactNumber { get; set; }
     public string Email { get; set; }
     public string PassportNumber { get; set; }
     public DateTime? PassportExpiry { get; set; }

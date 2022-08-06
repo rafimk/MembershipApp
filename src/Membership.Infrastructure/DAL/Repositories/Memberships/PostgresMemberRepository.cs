@@ -14,9 +14,13 @@ internal sealed class PostgresMemberRepository : IMemberRepository
         _dbContext = dbContext;
     }
 
-    public  Task<Member> GetByIdAsync(GenericId id)
+    public  Task<Member> GetByIdAsync(Guid id)
         => _dbContext.Members.Include(x => x.Area)
                 .Include(x => x.Mandalam).SingleOrDefaultAsync(x => x.Id == id);
+
+    public Task<Member> GetByMembershipIdAsync(string membershipId)
+        => _dbContext.Members.Include(x => x.Area)
+            .Include(x => x.Mandalam).SingleOrDefaultAsync(x => x.MembershipId == membershipId);
 
     public  Task<Member> GetByMemberIdAsync(MembershipId membershipId)
         => _dbContext.Members.Include(x => x.Area)

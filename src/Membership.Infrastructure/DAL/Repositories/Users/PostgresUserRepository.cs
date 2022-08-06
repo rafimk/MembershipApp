@@ -14,7 +14,7 @@ internal sealed class PostgresUserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public  Task<User> GetByIdAsync(GenericId id)
+    public  Task<User> GetByIdAsync(Guid id)
         => _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id);
 
     public async Task<IEnumerable<User>> GetAsync()

@@ -13,7 +13,7 @@ internal sealed class DeletePanchayatHandler : ICommandHandler<DeletePanchayat>
 
     public async Task HandleAsync(DeletePanchayat command)
     {
-        var panchayat = await _repository.GetByIdAsync(command.PanchayatId);
+        var panchayat = await _repository.GetByIdAsync((Guid)command.PanchayatId);
 
         if (panchayat is null)
         {

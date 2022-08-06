@@ -10,8 +10,6 @@ internal sealed class QualificationConfiguration : IEntityTypeConfiguration<Qual
     public void Configure(EntityTypeBuilder<Qualification> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id)
-            .HasConversion(x => x.Value, x => new GenericId(x));
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(100);

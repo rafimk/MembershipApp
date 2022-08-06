@@ -13,7 +13,7 @@ internal sealed class UpdateWelfareSchemeHandler : ICommandHandler<UpdateWelfare
 
     public async Task HandleAsync(UpdateWelfareScheme command)
     {
-        var welfareScheme = await _repository.GetByIdAsync(command.WelfareSchemeId);
+        var welfareScheme = await _repository.GetByIdAsync((Guid)command.WelfareSchemeId);
 
         if (welfareScheme is null)
         {

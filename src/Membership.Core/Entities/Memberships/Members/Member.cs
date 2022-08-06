@@ -13,7 +13,7 @@ namespace Membership.Core.Entities.Memberships.Members;
 
 public class Member
 {
-    public GenericId Id { get; private set; }
+    public Guid Id { get; private set; }
     public MembershipId MembershipId { get; private set; }
     public FullName FullName { get; private set; }
     public EmiratesIdNumber EmiratesIdNumber { get; private set; }
@@ -22,7 +22,6 @@ public class Member
     public Guid? EmiratesIdLastPage { get; private set; }
     public Date DateOfBirth { get; private set; }
     public MobileNumber MobileNumber { get; private set; }
-    public OptionalMobileNumber AlternativeContactNumber { get; private set; }
     public string Email { get; private set; }
     public string PassportNumber { get; private set; }
     public DateTime? PassportExpiry { get; private set; }
@@ -38,23 +37,18 @@ public class Member
     public string HouseName { get; private set; }
     public string AddressInIndia { get; private set; }
     public string PasswordHash { get; private set; }
-    
     public Guid? AddressInDistrictId { get; private set; }
-    public District AddressInDistrict { get; private set; }
     public Guid? AddressInMandalamId { get; private set; }
-    public Mandalam AddressInMandalam { get; private set; }
     public Guid? AddressInPanchayatId { get; private set; }
-    public Panchayat AddressInPanchayat { get; private set; }
-    
     public Guid StateId { get; private set; }
     public State State { get; private set; }
-    public GenericId AreaId { get; private set; }
+    public Guid AreaId { get; private set; }
     public Area Area { get; private set; }
     public Guid DistrictId { get; private set; }
     public District District { get; private set; }
-    public GenericId MandalamId { get; private set; }
+    public Guid MandalamId { get; private set; }
     public Mandalam Mandalam { get; private set; }
-    public GenericId PanchayatId { get; private set; }
+    public Guid PanchayatId { get; private set; }
     public Panchayat Panchayat { get; private set; }
     public Guid? RegisteredOrganizationId { get; private set; }
     public RegisteredOrganization RegisteredOrganization { get; private set; }
@@ -64,8 +58,8 @@ public class Member
     public MemberStatus Status {get; private set;}
     public string CardNumber { get; private set; }
     public DateTime CreatedAt { get; private set; }
-    public GenericId CreatedBy { get; private set; }
-    public GenericId MembershipPeriodId { get; private set; }
+    public Guid CreatedBy { get; private set; }
+    public Guid MembershipPeriodId { get; private set; }
     public MembershipPeriod MembershipPeriod { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime? VerifiedAt { get; private set; }
@@ -85,7 +79,6 @@ public class Member
         EmiratesIdLastPage = contract.EmiratesIdLastPage;
         DateOfBirth = new Date(contract.DateOfBirth);
         MobileNumber = contract.MobileNumber;
-        AlternativeContactNumber = contract.AlternativeContactNumber;
         Email = contract.Email;
         PassportNumber = contract.PassportNumber;
         PassportExpiry = contract.PassportExpiry;
@@ -129,7 +122,6 @@ public class Member
             EmiratesIdLastPage = contract.EmiratesIdLastPage,
             DateOfBirth = contract.DateOfBirth,
             MobileNumber = contract.MobileNumber,
-            AlternativeContactNumber = contract.AlternativeContactNumber,
             Email = contract.Email,
             PassportNumber = contract.PassportNumber,
             PassportExpiry = contract.PassportExpiry,
@@ -163,7 +155,6 @@ public class Member
         EmiratesIdLastPage = contract.EmiratesIdLastPage;
         DateOfBirth = new Date(contract.DateOfBirth);
         MobileNumber = contract.MobileNumber;
-        AlternativeContactNumber = contract.AlternativeContactNumber;
         Email = contract.Email;
         PassportNumber = contract.PassportNumber;
         PassportExpiry = contract.PassportExpiry;

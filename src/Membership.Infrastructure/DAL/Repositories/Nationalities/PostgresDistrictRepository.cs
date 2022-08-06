@@ -1,6 +1,5 @@
 using Membership.Core.Entities.Nationalities;
 using Membership.Core.Repositories.Nationalities;
-using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Repositories.Nationalities;
@@ -14,7 +13,7 @@ internal sealed class PostgresDistrictRepository : IDistrictRepository
         _dbContext = dbContext;
     }
 
-    public  Task<District> GetByIdAsync(GenericId id)
+    public  Task<District> GetByIdAsync(Guid id)
         => _dbContext.Districts.SingleOrDefaultAsync(x => x.Id == id);
 
     public async Task<IEnumerable<District>> GetAsync()

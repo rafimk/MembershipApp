@@ -13,7 +13,7 @@ internal sealed class DeleteAreaHandler : ICommandHandler<DeleteArea>
 
     public async Task HandleAsync(DeleteArea command)
     {
-        var area = await _repository.GetByIdAsync(command.AreaId);
+        var area = await _repository.GetByIdAsync((Guid)command.AreaId);
 
         if (area is null)
         {

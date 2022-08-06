@@ -1,9 +1,7 @@
 using Membership.Application.Abstractions;
 using Membership.Application.Queries.Users;
-using Membership.Core.Entities.Users;
 using Membership.Core.Policies.Users;
 using Membership.Core.Repositories.Users;
-using Membership.Core.ValueObjects;
 using Membership.Infrastructure.DAL.Exceptions;
 
 namespace Membership.Infrastructure.DAL.Handlers.Users;
@@ -21,7 +19,7 @@ internal sealed class GetApplicableUserRoleHandler : IQueryHandler<GetApplicable
 
     public async Task<IEnumerable<string>> HandleAsync(GetApplicableUserRole query)
     {
-        var user = await _userRepository.GetByIdAsync(query.UserId);
+        var user = await _userRepository.GetByIdAsync((Guid)query.UserId);
 
         if (user is null)
         {
