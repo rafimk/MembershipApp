@@ -79,8 +79,9 @@ public class User
         IsDisputeCommittee = contract.IsDisputeCommittee;
     }
     
-    public void ChangePassword(string newPasswordHash)
+    public void ChangePassword(string newPasswordHash, string email)
     {
+        Email = new Email(email);
         PasswordHash = newPasswordHash;
     }
 

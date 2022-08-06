@@ -202,4 +202,11 @@ public class UsersController : ControllerBase
         await _forgetPasswordHandler.HandleAsync(command);
         return NoContent();
     }
+    
+    [HttpPost("resetpassword")]
+    public async Task<ActionResult> ResetPassword(ResetPassword command)
+    {
+        await _resetPasswordHandler.HandleAsync(command);
+        return NoContent();
+    }
 }

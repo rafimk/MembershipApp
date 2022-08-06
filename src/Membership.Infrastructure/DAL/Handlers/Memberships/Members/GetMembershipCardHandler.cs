@@ -3,6 +3,7 @@ using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Reporting.NETCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
@@ -10,10 +11,14 @@ namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
 internal sealed class GetMembershipCardHandler : IQueryHandler<GetMembershipCard, ReportDto>
 {
     private readonly MembershipDbContext _dbContext;
-    
-    public GetMembershipCardHandler(MembershipDbContext dbContext)
-        => _dbContext = dbContext;
-    
+    private readonly ILogger<GetMembershipCardHandler> _logger;
+
+    public GetMembershipCardHandler(MembershipDbContext dbContext, ILogger<GetMembershipCardHandler> logger)
+    {
+        _dbContext = dbContext;
+        _logger = logger;
+    }
+
     public async Task<ReportDto> HandleAsync(GetMembershipCard query)
     {
         var memberId = query.MemberId;
@@ -68,6 +73,8 @@ internal sealed class GetMembershipCardHandler : IQueryHandler<GetMembershipCard
         string filePath = "./Reports/";
   
         filePath = Path.Combine(filePath, fileName);
+        
+        _logger.LogInformation($"RDLC File : {filePath}");
 
         using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
         {
@@ -92,7 +99,7 @@ internal sealed class GetMembershipCardHandler : IQueryHandler<GetMembershipCard
             {
                 File = file,
                 FileType = "application/pdf",
-                FileName = $"Membership-Card-{member?.MembershipId}.pdf"
+                FileName = $"{member?.MembershipId}.pdf"
             };
         }
     }

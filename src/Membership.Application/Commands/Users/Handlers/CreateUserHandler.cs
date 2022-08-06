@@ -142,7 +142,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             }
         }
 
-        var firstTimePassord = "admin@123"; // _passwordManager.Generate(); //
+        var firstTimePassord = _passwordManager.Generate(); // "admin@123"; 
         var securedPassword = _passwordManager.Secure(firstTimePassord);
 
         var contract = new UserCreateContract
@@ -171,6 +171,6 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         await _userRepository.AddAsync(user);
         string messageId = Guid.NewGuid().ToString("N");
         var message = new UserCreated(command.FullName, command.Email, firstTimePassord);
-        // await _messagePublisher.PublishAsync("user", $"created", message, messageId);
+        await _messagePublisher.PublishAsync("user", $"created", message, messageId);
     }
 }

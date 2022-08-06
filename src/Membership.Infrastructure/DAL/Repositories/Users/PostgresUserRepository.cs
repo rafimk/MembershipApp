@@ -20,7 +20,7 @@ internal sealed class PostgresUserRepository : IUserRepository
     public async Task<IEnumerable<User>> GetAsync()
         => await _dbContext.Users.Where(x => x.IsActive).ToListAsync();
     
-    public  Task<User> GetByEmailAsync(Email email)
+    public  Task<User> GetByEmailAsync(string email)
         => _dbContext.Users.SingleOrDefaultAsync(x => x.Email == email);
     
     public  Task<User> GetByMobileAsync(MobileNumber mobileNumber)

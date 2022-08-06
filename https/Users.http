@@ -39,8 +39,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "mandalam-agent",
-    "email": "mandalam-agent@admin.com",
+    "fullName": "mandalam-agent1",
+    "email": "mandalam-agent1@admin.com",
     "mobileNumber": "0554296326",
     "designation": "mandalam-agent",
     "role": "mandalam-agent",
@@ -105,5 +105,16 @@ Content-Type: application/json
     "password": "6326",
     "confirmPassword": "admin@123",
 }
+
+###
+POST  {{url}}/users/resetpassword
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "userId": "e92434ff-6f34-4e29-ba76-d447f818b5df",
+    "email": "rafi.genius.cs23@gmail.com"
+}
+
 
 

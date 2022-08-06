@@ -25,10 +25,10 @@ public sealed record Email
         }
 
         value = value.ToLowerInvariant();
-        if (!Regex.IsMatch(value))
-        {
-            throw new InvalidEmailException(value);
-        }
+        // if (!Regex.IsMatch(value))
+        // {
+        //     throw new InvalidEmailException(value);
+        // }
 
         Value = value;
     }

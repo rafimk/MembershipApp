@@ -1,7 +1,10 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.Exceptions.Users;
+using Membership.Application.Messages;
 using Membership.Application.Security;
 using Membership.Core.Repositories.Users;
+using Membership.Core.ValueObjects;
+using Membership.Shared.Publishers;
 
 namespace Membership.Application.Commands.Users.Handlers;
 
@@ -9,35 +12,45 @@ internal sealed class ResetPasswordHandler : ICommandHandler<ResetPassword>
 {
     private readonly IUserRepository _repository;
     private readonly IPasswordManager _passwordManager;
+    private readonly IMessagePublisher _messagePublisher;
 
-    public ResetPasswordHandler(IUserRepository repository, IPasswordManager passwordManager)
+    public ResetPasswordHandler(IUserRepository repository, IMessagePublisher messagePublisher,
+        IPasswordManager passwordManager)
     {
         _repository = repository;
         _passwordManager = passwordManager;
+        _messagePublisher = messagePublisher;
     }
 
     public async Task HandleAsync(ResetPassword command)
     {
-        var user = await _repository.GetByEmailAsync(command.Email);
+        var user = await _repository.GetByIdAsync(command.UserId);
 
         if (user is null)
         {
-            throw new UserNotFoundByEmailException(command.Email);
+            throw new UserNotFoundException(command.UserId);
         }
 
-        if (!_passwordManager.Validate(command.OldPassword, user.PasswordHash))
+        var test = new Email(command.Email);
+        
+        var userByEmail = await _repository.GetByEmailAsync(new Email(command.Email));
+
+        if (userByEmail is not null)
         {
-            throw new InvalidCredentialsException();
+            if (userByEmail?.Id != user.Id)
+            {
+                throw new EmailAlreadyInUseException(command.Email);
+            }
         }
+        
+        var firstTimePassord = _passwordManager.Generate(); 
 
-        if (command.Password != command.ConfirmPassword)
-        {
-            throw new PasswordAndConfirmPasswordMissmatchException();
-        }
+        var securedPassword = _passwordManager.Secure(firstTimePassord);
 
-        var securedPassword = _passwordManager.Secure(command.Password);
-
-        user.ChangePassword(securedPassword);
+        user.ChangePassword(securedPassword, securedPassword);
         await _repository.UpdateAsync(user);
+        string messageId = Guid.NewGuid().ToString("N");
+        var message = new UserCreated(user.FullName, command.Email, firstTimePassord);
+        await _messagePublisher.PublishAsync("user", $"created", message, messageId);
     }
 }

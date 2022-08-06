@@ -33,14 +33,14 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName":"Muhammed Rafi",
-    "emiratesIdNumber":"784-1975-0750835-3",
+    "fullName":"Andul Raoof",
+    "emiratesIdNumber":"784-1975-0750835-5",
     "emiratesIdExpiry":"2024-01-08",
     "emiratesIdFrontPage":null,
     "emiratesIdLastPage":null,
     "dateOfBirth":"1975-04-10",
     "mobileNumber":"0554296326",
-    "email":"rafi.genius.cs1@gmail.com",
+    "email":"rafi.genius.cs3@gmail.com",
     "passportNumber":null,
     "passportExpiry":null,
     "passportFrontPage":null,

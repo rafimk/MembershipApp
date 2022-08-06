@@ -37,7 +37,7 @@ internal sealed class ChangeUserPasswordHandler : ICommandHandler<ChangeUserPass
 
         var securedPassword = _passwordManager.Secure(command.NewPassword);
 
-        user.ChangePassword(securedPassword);
+        user.ChangePassword(securedPassword, user.Email);
         await _repository.UpdateAsync(user);
     }
 }
