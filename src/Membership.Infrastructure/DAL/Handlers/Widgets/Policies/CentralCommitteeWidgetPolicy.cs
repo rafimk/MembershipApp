@@ -3,11 +3,16 @@ using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Users;
 using Membership.Application.DTO.Widgets;
 using Membership.Core.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Widgets.Policies;
 
 internal sealed class CentralCommitteeWidgetPolicy : IWidgetPolicy
 {
+    public CentralCommitteeWidgetPolicy()
+    {
+    }
+    
     public bool CanBeApplied(UserRole currentUserRole)
         => currentUserRole == UserRole.CentralCommitteeAdmin();
 
@@ -18,6 +23,11 @@ internal sealed class CentralCommitteeWidgetPolicy : IWidgetPolicy
         List<WidgetDto> widget = new();
 
         List<WidgetDetailDto> widgetDetails= new();
+        
+        // var userCountByState = await _dbContext.Users
+        //     .GroupBy(x => x.StateId)
+        //     .Select(x => new { Year = x.Key, Count = x.Count() })
+        //     .ToListAsync();
 
         if (users.Any())
         {

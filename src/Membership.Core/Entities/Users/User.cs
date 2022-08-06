@@ -1,4 +1,5 @@
 using Membership.Core.Contracts.Users;
+using Membership.Core.Entities.Nationalities;
 using Membership.Core.Exceptions.Users;
 using Membership.Core.ValueObjects;
 
@@ -14,7 +15,12 @@ public class User
     public string PasswordHash { get; private set; }
     public UserRole Role { get; private set; }
     public Guid? StateId { get; private set; }
+    public State State { get; private set; }
     public Guid? DistrictId { get; private set; }
+    public District District { get; private set; }
+    
+    public Guid? MandalamId { get; private set; }
+    public Mandalam Mandalam { get; private set; }
     public Guid? CascadeId { get; private set; }
     public string CascadeName { get; private set; }
     public DateTime CreatedAt { get; private set; }
@@ -37,6 +43,7 @@ public class User
         Role = contract.Role;
         StateId = contract.StateId;
         DistrictId = contract.DistrictId;
+        MandalamId = contract.MandalamId;
         CascadeId = contract.CascadeId;
         CascadeName = contract.CascadeName;
         CreatedAt = contract.CreatedAt;
@@ -56,6 +63,7 @@ public class User
             Role = contract.Role,
             StateId = contract.StateId,
             DistrictId = contract.DistrictId,
+            MandalamId = contract.MandalamId,
             CascadeId = contract.CascadeId,
             CascadeName = contract.CascadeName,
             CreatedAt = contract.CreatedAt,

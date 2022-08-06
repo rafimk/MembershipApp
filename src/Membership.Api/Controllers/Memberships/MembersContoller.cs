@@ -128,7 +128,9 @@ public class MembersController : ControllerBase
         var userId = Guid.Parse(User?.Identity?.Name);
         command = command with {Id =  Guid.NewGuid(), AgentId = userId};
         await _createMemberHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), new {command.Id}, null);
+        // return CreatedAtAction(nameof(Get), new {command.Id}, null);
+        var member = await _getMemberByIdHandler.HandleAsync(new GetMemberById { MemberId = (Guid)command.Id});
+        return Ok(new {Id = command.Id, MembershipId = member.MembershipId});
     }
     
     [HttpPut("{memberId:guid}")]

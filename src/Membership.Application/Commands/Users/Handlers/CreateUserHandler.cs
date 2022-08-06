@@ -161,6 +161,11 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             IsDisputeCommittee = command.IsDisputeCommittee,
             CreatedAt = _clock.Current(),
         };
+
+        if (command.Role == "mandalam-agent")
+        {
+            contract.MandalamId = command.CascadeId;
+        }
         
         var user = User.Create(contract);
         await _userRepository.AddAsync(user);

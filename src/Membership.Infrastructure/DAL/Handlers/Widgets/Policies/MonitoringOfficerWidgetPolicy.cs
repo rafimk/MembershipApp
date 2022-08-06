@@ -3,6 +3,7 @@ using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Users;
 using Membership.Application.DTO.Widgets;
 using Membership.Core.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Widgets.Policies;
 

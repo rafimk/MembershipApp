@@ -13,6 +13,8 @@ public record UserContract()
     public string PasswordHash { get; set; }
     public Guid? StateId { get; set; }
     public Guid? DistrictId { get; set; }
+    
+    public Guid? MandalamId { get; set; }
     public Guid? CascadeId { get; set; }
     public string CascadeName { get; set; }
     public DateTime CreatedAt { get; set; }

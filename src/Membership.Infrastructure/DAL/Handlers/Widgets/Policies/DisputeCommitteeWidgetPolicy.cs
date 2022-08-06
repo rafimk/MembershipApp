@@ -2,6 +2,7 @@
 using Membership.Application.DTO.Users;
 using Membership.Application.DTO.Widgets;
 using Membership.Core.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Widgets.Policies;
 
@@ -10,7 +11,7 @@ internal sealed class DisputeCommitteeWidgetPolicy : IWidgetPolicy
     public bool CanBeApplied(UserRole currentUserRole)
         => currentUserRole == UserRole.DisputeCommittee();
 
-    public IEnumerable<WidgetDto> GetData(UserRole currentUserRole, 
+    public IEnumerable<WidgetDto> GetData(UserRole currentUserRole,
         IEnumerable<UserDto> users, 
         IEnumerable<MemberDto> members)
     {

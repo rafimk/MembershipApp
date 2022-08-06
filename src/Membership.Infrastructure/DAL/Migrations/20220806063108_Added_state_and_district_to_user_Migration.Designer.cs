@@ -3,6 +3,7 @@ using System;
 using Membership.Infrastructure.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Membership.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(MembershipDbContext))]
-    partial class MembershipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220806063108_Added_state_and_district_to_user_Migration")]
+    partial class Added_state_and_district_to_user_Migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -606,9 +608,6 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.Property<bool>("IsDisputeCommittee")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("MandalamId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("MobileNumber")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -632,8 +631,6 @@ namespace Membership.Infrastructure.DAL.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique();
-
-                    b.HasIndex("MandalamId");
 
                     b.HasIndex("StateId");
 
@@ -789,17 +786,11 @@ namespace Membership.Infrastructure.DAL.Migrations
                         .WithMany()
                         .HasForeignKey("DistrictId");
 
-                    b.HasOne("Membership.Core.Entities.Nationalities.Mandalam", "Mandalam")
-                        .WithMany()
-                        .HasForeignKey("MandalamId");
-
                     b.HasOne("Membership.Core.Entities.Nationalities.State", "State")
                         .WithMany()
                         .HasForeignKey("StateId");
 
                     b.Navigation("District");
-
-                    b.Navigation("Mandalam");
 
                     b.Navigation("State");
                 });
