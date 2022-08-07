@@ -35,7 +35,18 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "7ab3296b-3c85-4f4a-9155-bd5c69895bdd",
-    "LastPageId": "a890adb4-0294-4d2a-9ec0-ab08c0100114",
+    "FrontPageId": "9d60a745-1a5e-43e2-ade6-0d5dd42f24ac",
+    "LastPageId": "bc2265d6-60c5-4ce3-a44e-7b72b6a6a625",
+    "UserId": null
+}
+
+###
+POST {{url}}/ocr
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "FrontPageId": "a0c0c11d-8f70-4066-831f-c1a72ef803a7",
+    "LastPageId": "f9de1976-69f7-4fe1-bd26-6f4e8fd77b65",
     "UserId": null
 }

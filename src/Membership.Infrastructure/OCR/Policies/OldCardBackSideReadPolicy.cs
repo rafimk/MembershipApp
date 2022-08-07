@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using Membership.Core.Consts;
 using Membership.Infrastructure.OCR.Consts;
 
@@ -16,33 +17,31 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
         var dob = "";
         var gender = "";
         
-        var splitedResult = result.Split(" ");
-
-        var rowCount = 0;
-        foreach (var item in splitedResult)
-        {
-            rowCount++;
-            if (item.ToLower() == "signature")
-            {
-                if (splitedResult.Count() > (rowCount + 1))
-                {
-                    var testData1 = splitedResult[rowCount];
-                    var testData2 = splitedResult[rowCount + 1];
-                    var slashIndex = testData1.IndexOf("/");
-                    if (slashIndex > 0)
-                    {
-                        expiry = testData1;
-                        cardNo = testData2;
-                    }
-                    slashIndex = testData2.IndexOf("/");
-                    if (slashIndex > 0)
-                    {
-                        expiry = testData2;
-                        cardNo = testData1;
-                    }
-                }
-            }
-        }
+        // var rowCount = 0;
+        // foreach (var item in splitedResult)
+        // {
+        //     rowCount++;
+        //     if (item.ToLower() == "signature")
+        //     {
+        //         if (splitedResult.Count() > (rowCount + 1))
+        //         {
+        //             var testData1 = splitedResult[rowCount];
+        //             var testData2 = splitedResult[rowCount + 1];
+        //             var slashIndex = testData1.IndexOf("/");
+        //             if (slashIndex > 0)
+        //             {
+        //                 expiry = testData1;
+        //                 cardNo = testData2;
+        //             }
+        //             slashIndex = testData2.IndexOf("/");
+        //             if (slashIndex > 0)
+        //             {
+        //                 expiry = testData2;
+        //                 cardNo = testData1;
+        //             }
+        //         }
+        //     }
+        // }
 
         // int firstStringPositionForExpiry = result.IndexOf("Card Number");
         //
@@ -62,6 +61,29 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
         if (firstStringPositionForDob > 0) 
         {
             dob = result.Substring(firstStringPositionForDob - 10, 10);
+        }
+        
+        var splitedResult = result.Split(" ");
+
+        var newDatest = splitedResult.Where(x => x.Length == 10).ToList();
+        var newCardNumber = splitedResult.Where(x => x.Length == 9).ToList();
+
+        foreach (var cardRow in newCardNumber)
+        {
+            var cardRegex = new Regex("^[0-9]+$");
+            if (cardRegex.IsMatch(cardRow))
+            {
+                cardNo = cardRow;
+            }
+        }
+
+        foreach (var row in newDatest)
+        {
+            var myRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
+            if (myRegex.IsMatch(row) && row != dob)
+            {
+                expiry = row;
+            }
         }
         
         var genderIndexStart = result.IndexOf("Sex:");
