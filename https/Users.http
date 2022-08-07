@@ -1,4 +1,4 @@
-@url = http://localhost:5000
+@url = http://104.248.90.255:5000
 @userId = 5e0a9aab-4c8e-4685-ace3-1e18f679de8f
 @districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
 
@@ -10,7 +10,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-     "email": "district-admin@admin.com",
+    "email": "admin@admin.com",
     "password": "admin@123"
 }
 
@@ -108,12 +108,11 @@ Content-Type: application/json
 
 ###
 POST  {{url}}/users/resetpassword
-Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
     "userId": "e92434ff-6f34-4e29-ba76-d447f818b5df",
-    "email": "rafi.genius.cs23@gmail.com"
+    "email": "state-admin2@admin.com"
 }
 
 

@@ -23,7 +23,7 @@ public class MembersController : ControllerBase
     private readonly IQueryHandler<GetMembers, IEnumerable<MemberDto>> _getMembersHandler;
     private readonly IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> _getMembersByRoleHandler;
     private readonly IQueryHandler<IsDispute, IsDisputeDto> _isDisputeHandler;
-    private readonly IQueryHandler<GetMembershipCard, ReportDto> _getMembershipCardHandler;
+    private readonly IQueryHandler<GetMembershipCard, MemberCardDto> _getMembershipCardHandler;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
         ICommandHandler<UpdateMember> updateMemberHandler,
@@ -33,7 +33,7 @@ public class MembersController : ControllerBase
         IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler,
         IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> getMembersByRoleHandler,
         IQueryHandler<IsDispute, IsDisputeDto> isDisputeHandler,
-        IQueryHandler<GetMembershipCard, ReportDto> getMembershipCardHandler)
+        IQueryHandler<GetMembershipCard, MemberCardDto> getMembershipCardHandler)
     {
         _createMemberHandler = createMemberHandler;
         _updateMemberHandler = updateMemberHandler;
@@ -157,9 +157,9 @@ public class MembersController : ControllerBase
     [HttpGet("membershipcard/{memberId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IsDisputeDto>> GetMembershipCard(Guid memberId)
+    public async Task<ActionResult<MemberCardDto>> GetMembershipCard(Guid memberId)
     {
         var result = await _getMembershipCardHandler.HandleAsync(new GetMembershipCard { MemberId = memberId});
-        return File(result.File, result.FileType, result.FileName);
+        return Ok(result);
     }
 }

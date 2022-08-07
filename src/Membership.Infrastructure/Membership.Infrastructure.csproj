@@ -29,6 +29,7 @@
         <PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision" Version="7.0.0" />
         <PackageReference Include="Azure.Storage.Blobs" Version="12.13.0" />
         <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.17" />
+        <PackageReference Include="DinkToPdf" Version="1.0.8" />
     </ItemGroup>
 
     <ItemGroup>
