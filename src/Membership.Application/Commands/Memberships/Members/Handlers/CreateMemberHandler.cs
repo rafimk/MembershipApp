@@ -123,7 +123,8 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             MembershipPeriodId = membershipPeriod.Id,
             Status = MemberStatus.Draft,
             CreatedAt = _clock.Current(),
-            CreatedBy = (Guid)command.AgentId
+            CreatedBy = (Guid)command.AgentId,
+            CardNumber = command.CardNumber
         });
         
         await _memberRepository.AddAsync(membership);

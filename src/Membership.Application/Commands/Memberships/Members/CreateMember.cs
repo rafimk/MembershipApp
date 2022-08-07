@@ -34,4 +34,5 @@ public record CreateMember() : ICommand
     public Guid? RegisteredOrganizationId { get; set; }
     public Guid? WelfareSchemeId { get; set; }
     public Guid? AgentId { get; set; }
+    public string CardNumber { get; set; }
 }

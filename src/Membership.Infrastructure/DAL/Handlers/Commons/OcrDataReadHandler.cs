@@ -27,42 +27,13 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
     {
         var result = new OcrDataDto();
 
-        var availableOcrResult = await _ocrResultRepository.GetByFrontPageIdAsync(query.FrontPageId.Value);
+       var frontPage = await _fileAttachmentRepository.GetByIdAsync(query.FrontPageId.Value);
 
-        if (availableOcrResult is null)
+        if (frontPage is not null)
         {
-            var frontPage = await _fileAttachmentRepository.GetByIdAsync(query.FrontPageId.Value);
-
-            if (frontPage is not null)
-            {
-                var uploadFilePath = GetFilePath(query.FilePath);
-
-                if (!Directory.Exists(uploadFilePath))
-                {
-                    Directory.CreateDirectory(uploadFilePath);
-                }
-
-                result = await GetOcrData(frontPage.FilePath, frontPage.SavedFileName, (Guid) query.UserId, result);
-            }
+            result = await GetOcrData(frontPage.FilePath, frontPage.SavedFileName, (Guid) query.UserId, result);
         }
-        else
-        {
-            result = GetFromRsult(availableOcrResult, result);
-
-            if (availableOcrResult.LastPageId.Value == query.LastPageId.Value)
-            {
-                return result;
-            }
-        }
-        
-        availableOcrResult = await _ocrResultRepository.GetByFrontPageIdAsync(query.LastPageId.Value);
-
-        if (availableOcrResult is not null)
-        {
-            result = GetFromRsult(availableOcrResult, result);
-            return result;
-        }
-
+ 
         var lastPage = await _fileAttachmentRepository.GetByIdAsync(query.LastPageId.Value);
 
         if (lastPage is not null)
@@ -73,13 +44,19 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         var ocrResult = OcrResult.Create(Guid.NewGuid(),  query.FrontPageId, query.LastPageId, result.IdNumber, result.Name, result.DateofBirth, 
             result.ExpiryDate, result.CardNumber, result.CardType, DateTime.UtcNow, (Guid)query.UserId);
 
-        await _ocrResultRepository.AddAsync(ocrResult);
+        // await _ocrResultRepository.AddAsync(ocrResult);
 
         var member = await _memberRepository.GetByEmiratesIdAsync(result.IdNumber);
 
         if (member is not null)
         {
             result.IsDispute = true;
+        }
+        
+        if (IsAgeLessThan18Years(result.DateofBirth.Value))
+        {
+            result.IsValidate = false;
+            result.ErrorMessage = "Age Under 18 not allowed";
         }
 
         return result;
@@ -117,12 +94,6 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         if (result.CardType != ocrData.CardType)
         {
             result.CardType = ocrData.CardType;
-        }
-        
-        if (IsAgeLessThan18Years(result.DateofBirth.Value))
-        {
-            result.IsValidate = false;
-            result.ErrorMessage = "Age Under 18 not allowed";
         }
         
         return result;

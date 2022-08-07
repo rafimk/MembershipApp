@@ -15,19 +15,47 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
         var cardNo = "";
         var dob = "";
         var gender = "";
+        
+        var splitedResult = result.Split(" ");
 
-        int firstStringPositionForExpiry = result.IndexOf("Card Number");
-
-        if (firstStringPositionForExpiry > 0) 
+        var rowCount = 0;
+        foreach (var item in splitedResult)
         {
-            expiry = result.Substring(firstStringPositionForExpiry + 11, 23);
-            var expirySplit = expiry.Split(" ");
-            if (expirySplit.Length > 2)
+            rowCount++;
+            if (item.ToLower() == "signature")
             {
-                expiry = expirySplit[1];
-                cardNo = expirySplit[2];
+                if (splitedResult.Count() > (rowCount + 1))
+                {
+                    var testData1 = splitedResult[rowCount];
+                    var testData2 = splitedResult[rowCount + 1];
+                    var slashIndex = testData1.IndexOf("/");
+                    if (slashIndex > 0)
+                    {
+                        expiry = testData1;
+                        cardNo = testData2;
+                    }
+                    slashIndex = testData2.IndexOf("/");
+                    if (slashIndex > 0)
+                    {
+                        expiry = testData2;
+                        cardNo = testData1;
+                    }
+                }
             }
         }
+
+        // int firstStringPositionForExpiry = result.IndexOf("Card Number");
+        //
+        // if (firstStringPositionForExpiry > 0) 
+        // {
+        //     expiry = result.Substring(firstStringPositionForExpiry + 11, 23);
+        //     var expirySplit = expiry.Split(" ");
+        //     if (expirySplit.Length > 2)
+        //     {
+        //         expiry = expirySplit[1];
+        //         cardNo = expirySplit[2];
+        //     }
+        // }
         
         int firstStringPositionForDob = result.IndexOf(" Date of Birth");
 
