@@ -130,22 +130,14 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
             else
             {
                 result.Status = OcrStatus.PartiallyVerified;
-                result.IsValidate = false;
+                result.IsValidate = true;
             }
           
         }
         else
         {
             result.Status = OcrStatus.PartiallyVerified;
-            result.IsValidate = false;
-        }
-
-        if (result.Status == OcrStatus.Verified)
-        {
-            if (result.Name.Trim().Length == 0)
-            {
-                
-            }
+            result.IsValidate = true;
         }
 
         return result;
