@@ -1,5 +1,5 @@
 @url = http://localhost:5000
-@memberId = 354c1baf-cad9-4392-bf85-7a843cc161c1
+@memberId = cfa2e2d4-00ef-4420-8d71-d03c87b82d27
 @districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
 
 
@@ -9,7 +9,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "mandalam-agent@admin.com",
+    "email": "admin@admin.com",
     "password": "admin@123"
 }
 
@@ -59,6 +59,8 @@ Content-Type: application/json
     "panchayatId":"2c920e18-0681-4e6f-ab4d-00a602fc88ca",
     "mandalamId":"fada7507-af5b-4b44-ab76-cd11db72d449",
     "registeredOrganizationId": null,
-    "welfareSchemeId": null
+    "welfareSchemeId": null,
+    "cardNumber": null,
+    "manuallyEntered": false
 }
 
