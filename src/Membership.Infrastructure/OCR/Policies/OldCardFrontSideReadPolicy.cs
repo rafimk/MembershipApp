@@ -29,13 +29,13 @@ public class OldCardFrontSideReadPolicy : ICardReadPolicy
                 name = result.Substring(firstStringPositionForName + 5, secondStringPositionForName - (firstStringPositionForName + 5));
                 name = name.Replace(":", "");
 
-                // if (name.Trim().Length == 0)
-                // {
-                //     int firstStringPositionForNameNew = result.IndexOf(eidNo);
-                //     int secondStringPositionForNameNew = result.IndexOf("Name"); 
-                //     name = result.Substring(firstStringPositionForNameNew + 18, secondStringPositionForNameNew - (firstStringPositionForNameNew + 18));
-                //     name = name.Replace(":", "").Trim();
-                // }
+                if (name.Trim().Length == 0)
+                {
+                    int firstStringPositionForNameNew = result.IndexOf(eidNo);
+                    int secondStringPositionForNameNew = result.IndexOf("Name"); 
+                    name = result.Substring(firstStringPositionForNameNew + 18, secondStringPositionForNameNew - (firstStringPositionForNameNew + 18));
+                    name = name.Replace(":", "").Trim();
+                }
                 
             }
 
