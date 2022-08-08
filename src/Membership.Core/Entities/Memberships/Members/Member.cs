@@ -63,6 +63,7 @@ public class Member
     public MembershipPeriod MembershipPeriod { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime? VerifiedAt { get; private set; }
+    public bool ManuallyEntered { get; private set; }
 
     public Member()
     {
@@ -108,6 +109,7 @@ public class Member
         CreatedAt = contract.CreatedAt;
         CreatedBy = contract.CreatedBy;
         IsActive = contract.IsActive;
+        ManuallyEntered = contract.ManuallyEntered;
     }
 
     public static Member Create(CreateMemberContract contract)
@@ -145,7 +147,8 @@ public class Member
             CardNumber = contract.CardNumber,
             CreatedAt = contract.CreatedAt,
             CreatedBy = contract.CreatedBy,
-            IsActive = true
+            IsActive = true,
+            ManuallyEntered = contract.ManuallyEntered
         });
 
     public void Update(UpdateMemberContract contract)

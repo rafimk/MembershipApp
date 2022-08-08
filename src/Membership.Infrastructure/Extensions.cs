@@ -1,6 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using DinkToPdf;
-using DinkToPdf.Contracts;
 using Membership.Application.Abstractions;
 using Membership.Core.Abstractions;
 using Membership.Core.DomainServices.Users;
@@ -29,7 +27,6 @@ public static class Extensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
-        services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
         services.Configure<AppOptions>(configuration.GetRequiredSection("app"));
         services.Configure<FileUploadOptions>(configuration.GetRequiredSection("file"));
         services.AddSingleton<ExceptionMiddleware>();

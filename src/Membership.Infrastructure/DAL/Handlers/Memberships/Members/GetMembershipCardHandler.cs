@@ -1,27 +1,20 @@
-﻿using DinkToPdf;
-using DinkToPdf.Contracts;
-using Membership.Application.Abstractions;
+﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
-using Membership.Infrastructure.Utility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Reporting.NETCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
 
 internal sealed class GetMembershipCardHandler : IQueryHandler<GetMembershipCard, MemberCardDto>
 {
     private readonly MembershipDbContext _dbContext;
-    private IConverter _converter;
     private readonly ILogger<GetMembershipCardHandler> _logger;
 
-    public GetMembershipCardHandler(MembershipDbContext dbContext, ILogger<GetMembershipCardHandler> logger,
-        IConverter converter)
+    public GetMembershipCardHandler(MembershipDbContext dbContext, ILogger<GetMembershipCardHandler> logger)
     {
         _dbContext = dbContext;
         _logger = logger;
-        _converter = converter;
     }
 
     public async Task<MemberCardDto> HandleAsync(GetMembershipCard query)
@@ -97,73 +90,5 @@ internal sealed class GetMembershipCardHandler : IQueryHandler<GetMembershipCard
             Area = member?.Area?.Name,
             CollectedBy = agent?.FullName
         };
-        
-        // var globalSettings = new GlobalSettings
-        // {
-        //     ColorMode = ColorMode.Color,
-        //     Orientation = Orientation.Portrait,
-        //     PaperSize = PaperKind.A3,
-        //     Margins = new MarginSettings { Top = 10 },
-        //     DocumentTitle = "Membership Card",
-        //     Out = reportFileName
-        // };
-        // var objectSettings = new ObjectSettings
-        // {
-        //     PagesCount = true,
-        //     HtmlContent = TemplateGenerator.GetHTMLString(member?.MembershipId,
-        //         member?.CreatedAt.ToString("dd/MM/yyyy"),
-        //         member?.FullName,
-        //         member?.Mandalam?.District?.Name,
-        //         member?.Mandalam?.Name,
-        //         member?.Panchayat?.Name,
-        //         member?.Area?.State?.Name,
-        //         member?.Area?.Name,
-        //         agent?.FullName
-        //         ),
-        //     WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet =  stylesheetfilePath },
-        // };
-        // var pdf = new HtmlToPdfDocument()
-        // {
-        //     GlobalSettings = globalSettings,
-        //     Objects = { objectSettings }
-        // };
-        //
-        // _converter.Convert(pdf);
-        // var memoryStream = new MemoryStream();
-        //
-        // using (var fileStream = new FileStream( Path.Combine(filePath, fileName), FileMode.Open))
-        // {
-        //     await fileStream.CopyToAsync(memoryStream);
-        // }
-        //
-        // memoryStream.Position = 0;
-        //
-        // // using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-        // // {
-        // //     LocalReport report = new LocalReport();
-        // //     report.LoadReportDefinition(fileStream);
-        // //     report.SetParameters(new[]
-        // //     {
-        // //         new ReportParameter("MembershipNo", member?.MembershipId),
-        // //         new ReportParameter("FullName", member?.FullName),
-        // //         new ReportParameter("State", member?.Area?.State?.Name),
-        // //         new ReportParameter("District", member?.Mandalam?.District?.Name),
-        // //         new ReportParameter("Mandalam", member?.Mandalam?.Name),
-        // //         new ReportParameter("Panchayath", member?.Panchayat?.Name),
-        // //         new ReportParameter("MembershipDate", member?.CreatedAt.ToString("dd/MM/yyyy")),
-        // //         new ReportParameter("CollectedBy", agent?.FullName),
-        // //         new ReportParameter("Area", member?.Area?.Name)
-        // //     });
-        // //
-        // //    var file = report.Render("PDF");
-        // //}
-        //
-        // return new ReportDto
-        // {
-        //     File = memoryStream.ToArray(),
-        //     FileType = "application/pdf",
-        //     FileName = $"{member?.MembershipId}.pdf"
-        // };
-        
     }
 }

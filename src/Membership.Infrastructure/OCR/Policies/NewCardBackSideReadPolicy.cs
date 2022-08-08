@@ -11,26 +11,48 @@ public class NewCardBackSideReadPolicy : ICardReadPolicy
     public OcrData ReadData(CardSide cardSide, string result)
     {
         var cardNo = "";
-        int firstStringPositionForCardNoStart = result.IndexOf("Card Number");
-        int firstStringPositionForCardNoEnd = result.IndexOf(":");
-        var firstPart = result.Substring(firstStringPositionForCardNoStart, firstStringPositionForCardNoEnd);
 
-        var split = firstPart.Split(" ");
-
-        if (split.Length > 2)
+        try
         {
-            cardNo = split[2];
+            int firstStringPositionForCardNoStart = result.IndexOf("Card Number");
+            int firstStringPositionForCardNoEnd = result.IndexOf(":");
+
+            if (firstStringPositionForCardNoStart > 0 && firstStringPositionForCardNoEnd > 0)
+            {
+                var firstPart = result.Substring(firstStringPositionForCardNoStart, firstStringPositionForCardNoEnd);
+                var split = firstPart.Split(" ");
+
+                if (split.Length > 2)
+                {
+                    cardNo = split[2];
+                }
+            }
+            
+            return new OcrData
+            {
+                IdNumber = null,
+                Name = null,
+                DateofBirth = null,
+                ExpiryDate = null,
+                CardNumber = cardNo,
+                CardType = CardType.New,
+                Gender = Gender.NotAvailable,
+                ErrorOccurred = false
+            };
         }
-
-        return new OcrData
+        catch (Exception e)
         {
-            IdNumber = null,
-            Name = null,
-            DateofBirth = null,
-            ExpiryDate = null,
-            CardNumber = cardNo,
-            CardType = CardType.New,
-            Gender = Gender.NotAvailable
-        };
+            return new OcrData
+            {
+                IdNumber = null,
+                Name = null,
+                DateofBirth = null,
+                ExpiryDate = null,
+                CardNumber = null,
+                CardType = CardType.New,
+                Gender = Gender.NotAvailable,
+                ErrorOccurred = true
+            };
+        }
     }
 }

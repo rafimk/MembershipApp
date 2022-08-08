@@ -35,8 +35,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "9d60a745-1a5e-43e2-ade6-0d5dd42f24ac",
-    "LastPageId": "bc2265d6-60c5-4ce3-a44e-7b72b6a6a625",
+    "FrontPageId": "1ae9700f-44c3-4224-af0b-f703e0726102",
+    "LastPageId": "23eee067-1096-4da6-9082-aa5e65c09aee",
     "UserId": null
 }
 

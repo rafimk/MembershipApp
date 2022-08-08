@@ -124,7 +124,8 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             Status = MemberStatus.Draft,
             CreatedAt = _clock.Current(),
             CreatedBy = (Guid)command.AgentId,
-            CardNumber = command.CardNumber
+            CardNumber = command.CardNumber,
+            ManuallyEntered = command.ManuallyEntered
         });
         
         await _memberRepository.AddAsync(membership);

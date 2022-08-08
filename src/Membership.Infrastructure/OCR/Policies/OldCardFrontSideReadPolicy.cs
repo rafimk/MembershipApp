@@ -12,30 +12,49 @@ public class OldCardFrontSideReadPolicy : ICardReadPolicy
     {
         string eidNo = "";
         string name = "";
-        
-        int firstStringPositionForEid = result.IndexOf("ID Number ");    
-        eidNo = result.Substring(firstStringPositionForEid + 10, 18);   
-        
-        int firstStringPositionForName = result.IndexOf("Name:");    
-        int secondStringPositionForName = result.IndexOf(":  Nationality:");    
-        name = result.Substring(firstStringPositionForName + 5, secondStringPositionForName - (firstStringPositionForName + 5));    
 
-        var split = name.Split(":");
-        
-        if (split.Length > 1)
+        try
         {
-            name = split[0];
+            int firstStringPositionForEid = result.IndexOf("ID Number ");
+
+            if (firstStringPositionForEid > 0)
+            {
+                eidNo = result.Substring(firstStringPositionForEid + 10, 18);
+            }
+
+            int firstStringPositionForName = result.IndexOf("Name:");
+            int secondStringPositionForName = result.IndexOf("Nationality:");    
+            if (firstStringPositionForName > 0 && secondStringPositionForName > 0)
+            {
+                name = result.Substring(firstStringPositionForName + 5, secondStringPositionForName - (firstStringPositionForName + 5));
+                name = name.Replace(":", "");
+            }
+
+            return new OcrData
+            {
+                IdNumber = eidNo,
+                Name = name,
+                DateofBirth = null,
+                ExpiryDate = null,
+                CardNumber = "",
+                CardType = CardType.New,
+                Gender = Gender.NotAvailable,
+                ErrorOccurred = false
+            };
         }
-        
-        return new OcrData
+        catch (Exception e)
         {
-            IdNumber = eidNo,
-            Name = name,
-            DateofBirth = null,
-            ExpiryDate = null,
-            CardNumber = "",
-            CardType = CardType.New,
-            Gender = Gender.NotAvailable
-        };
+            return new OcrData
+            {
+                IdNumber = null,
+                Name = null,
+                DateofBirth = null,
+                ExpiryDate = null,
+                CardNumber = "",
+                CardType = CardType.New,
+                Gender = Gender.NotAvailable,
+                ErrorOccurred = true
+            };
+        }
     }
 }

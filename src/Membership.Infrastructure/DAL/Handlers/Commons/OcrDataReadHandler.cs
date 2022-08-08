@@ -1,9 +1,11 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Commons;
 using Membership.Application.Queries.Commons;
+using Membership.Core.Consts;
 using Membership.Core.Entities.Commons;
 using Membership.Core.Repositories.Commons;
 using Membership.Core.Repositories.Memberships;
+using Membership.Core.Repositories.Users;
 using Membership.Infrastructure.OCR;
 
 namespace Membership.Infrastructure.DAL.Handlers.Commons;
@@ -14,20 +16,22 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
     private readonly IFileAttachmentRepository _fileAttachmentRepository;
     private readonly IOcrResultRepository _ocrResultRepository;
     private readonly IMemberRepository _memberRepository;
+    private readonly IUserRepository _userRepository;
     
     public OcrDataReadHandler(IOcrService ocrService, IFileAttachmentRepository fileAttachmentRepository, 
-        IOcrResultRepository ocrResultRepository, IMemberRepository memberRepository)
+        IOcrResultRepository ocrResultRepository, IMemberRepository memberRepository, IUserRepository userRepository)
     {
         _ocrService = ocrService;
         _fileAttachmentRepository = fileAttachmentRepository;
         _ocrResultRepository = ocrResultRepository;
         _memberRepository = memberRepository;
+        _userRepository = userRepository;
     }
     public async Task<OcrDataDto> HandleAsync(OcrDataRead query)
     {
         var result = new OcrDataDto();
 
-       var frontPage = await _fileAttachmentRepository.GetByIdAsync(query.FrontPageId.Value);
+        var frontPage = await _fileAttachmentRepository.GetByIdAsync(query.FrontPageId.Value);
 
         if (frontPage is not null)
         {
@@ -47,9 +51,16 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         // await _ocrResultRepository.AddAsync(ocrResult);
 
         var member = await _memberRepository.GetByEmiratesIdAsync(result.IdNumber);
-
+ 
         if (member is not null)
         {
+            var agentInfo = await _userRepository.GetByIdAsync((Guid)query.UserId);
+
+            if (agentInfo is not null && agentInfo.MandalamId == member.MandalamId)
+            {
+                result.IsDuplicate = true;
+            }
+            
             result.IsDispute = true;
         }
         
@@ -95,7 +106,22 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         {
             result.CardType = ocrData.CardType;
         }
-        
+
+        if (result.IdNumber is null && result.Name is null &&
+            result.DateofBirth is null && result.ExpiryDate is null)
+        {
+            result.Status = OcrStatus.NoDataAvailable;
+        }
+        else if (result.IdNumber is not null && result.Name is not null &&
+                     result.DateofBirth is not null && result.ExpiryDate is not null)
+        {
+            result.Status = OcrStatus.Verified;
+        }
+
+        {
+            result.Status = OcrStatus.PartiallyVerified;
+        }
+
         return result;
     }
 
