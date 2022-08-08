@@ -113,7 +113,7 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
             result.CardType = ocrData.CardType;
         }
 
-        if (result.IdNumber is null && result.Name is null &&
+        if ((result.IdNumber is null)&& result.Name is null &&
             result.DateofBirth is null && result.ExpiryDate is null)
         {
             result.Status = OcrStatus.NoDataAvailable;
@@ -122,13 +122,30 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         else if (result.IdNumber is not null && result.Name is not null &&
                      result.DateofBirth is not null && result.ExpiryDate is not null)
         {
-            result.Status = OcrStatus.Verified;
-            result.IsValidate = true;
+            if (result.IdNumber.Trim().Length != 0 && result.Name.Trim().Length != 0)
+            {
+                result.Status = OcrStatus.Verified;
+                result.IsValidate = true;
+            }
+            else
+            {
+                result.Status = OcrStatus.PartiallyVerified;
+                result.IsValidate = false;
+            }
+          
         }
         else
         {
             result.Status = OcrStatus.PartiallyVerified;
             result.IsValidate = false;
+        }
+
+        if (result.Status == OcrStatus.Verified)
+        {
+            if (result.Name.Trim().Length == 0)
+            {
+                
+            }
         }
 
         return result;
