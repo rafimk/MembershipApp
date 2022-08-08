@@ -46,7 +46,40 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "a0c0c11d-8f70-4066-831f-c1a72ef803a7",
-    "LastPageId": "f9de1976-69f7-4fe1-bd26-6f4e8fd77b65",
+    "FrontPageId": "92c73e1b-bea8-481d-b400-a24a55f24296",
+    "LastPageId": "236e9a90-3586-4b20-8de2-54e810581e38",
+    "UserId": null
+}
+
+###
+POST {{url}}/ocr
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "FrontPageId": "48c715cc-d66d-4f01-8c7d-ff3eecbd6503",
+    "LastPageId": "a0c80789-30f5-4301-8972-4f56b1c8b77f",
+    "UserId": null
+}
+
+###
+POST {{url}}/ocr
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "FrontPageId": "48c715cc-d66d-4f01-8c7d-ff3eecbd6503",
+    "LastPageId": "a0c80789-30f5-4301-8972-4f56b1c8b77f",
+    "UserId": null
+}
+
+###
+POST {{url}}/ocr
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "FrontPageId": "48c715cc-d66d-4f01-8c7d-ff3eecbd6503",
+    "LastPageId": "a0c80789-30f5-4301-8972-4f56b1c8b77f",
     "UserId": null
 }

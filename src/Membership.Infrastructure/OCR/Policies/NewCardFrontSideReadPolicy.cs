@@ -30,16 +30,22 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             if (firstStringPositionForName > 0 && secondStringPositionForName > 0)
             {
                 name = result.Substring(firstStringPositionForName + 5, secondStringPositionForName - (firstStringPositionForName + 5));
-                name = name.Replace(":", "");
+                
+                var split = name.Split(":");
+        
+                if (split.Length > 0)
+                {
+                    name = split[0];
+                }
             }
 
             expiry = MethodExtensionHelper.Right(result.Trim(), 10);
 
-            int firstStringPositionForDob = result.IndexOf(" Date of Birth");
+            int firstStringPositionForDob = result.IndexOf("Date of Birth");
 
             if (firstStringPositionForDob > 0) 
             {
-                dob = result.Substring(firstStringPositionForDob - 10, 10);
+                dob = result.Substring(firstStringPositionForDob - 11, 10);
             }
 
             DateTime? dtExpiry = null;

@@ -95,7 +95,7 @@ internal sealed class GetMembershipCardPdfHandler : IQueryHandler<GetMembershipC
         var converter = new HtmlToPdf();
 
         converter.Options.PdfPageSize = PdfPageSize.Custom;
-        converter.Options.PdfPageCustomSize = new SizeF(200, 300);
+        converter.Options.PdfPageCustomSize = new SizeF(200, 200);
 
         var pdfDocument = converter.ConvertHtmlString(html);
         byte[] pdf = pdfDocument.Save();

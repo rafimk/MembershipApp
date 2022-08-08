@@ -50,24 +50,30 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
 
         // await _ocrResultRepository.AddAsync(ocrResult);
 
-        var member = await _memberRepository.GetByEmiratesIdAsync(result.IdNumber);
- 
-        if (member is not null)
+        if (result.IdNumber is not null)
         {
-            var agentInfo = await _userRepository.GetByIdAsync((Guid)query.UserId);
+            var member = await _memberRepository.GetByEmiratesIdAsync(result.IdNumber);
 
-            if (agentInfo is not null && agentInfo.MandalamId == member.MandalamId)
+            if (member is not null)
             {
-                result.IsDuplicate = true;
+                var agentInfo = await _userRepository.GetByIdAsync((Guid) query.UserId);
+
+                if (agentInfo is not null && agentInfo.MandalamId == member.MandalamId)
+                {
+                    result.IsDuplicate = true;
+                }
+
+                result.IsDispute = true;
             }
-            
-            result.IsDispute = true;
         }
-        
-        if (IsAgeLessThan18Years(result.DateofBirth.Value))
+
+        if (result.DateofBirth.HasValue)
         {
-            result.IsValidate = false;
-            result.ErrorMessage = "Age Under 18 not allowed";
+            if (IsAgeLessThan18Years(result.DateofBirth.Value))
+            {
+                result.IsValidate = false;
+                result.ErrorMessage = "Age Under 18 not allowed";
+            }
         }
 
         return result;
@@ -111,15 +117,18 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
             result.DateofBirth is null && result.ExpiryDate is null)
         {
             result.Status = OcrStatus.NoDataAvailable;
+            result.IsValidate = false;
         }
         else if (result.IdNumber is not null && result.Name is not null &&
                      result.DateofBirth is not null && result.ExpiryDate is not null)
         {
             result.Status = OcrStatus.Verified;
+            result.IsValidate = true;
         }
-
+        else
         {
             result.Status = OcrStatus.PartiallyVerified;
+            result.IsValidate = false;
         }
 
         return result;

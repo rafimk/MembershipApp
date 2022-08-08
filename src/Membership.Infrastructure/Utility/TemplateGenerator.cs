@@ -45,6 +45,7 @@ public static class TemplateGenerator
                             border-radius: 5px 0 0 5px;
                         }
                         .id-card {
+
                             background-color: #fff;
                             padding: 10px;
                             border-radius: 10px;
