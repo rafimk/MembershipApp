@@ -171,15 +171,15 @@ public class DisputesController : ControllerBase
         return NoContent();
     }
     
-    [HttpPut("activate/{requestId:guid}")]
-    public async Task<ActionResult> Activate(Guid requestId)
+    [HttpPut("approve/{requestId:guid}")]
+    public async Task<ActionResult> Approve(Guid requestId)
     {
         await _approveDisputeRequestHandler.HandleAsync( new ApproveDisputeRequest { RequestId = requestId});
         return NoContent();
     }
     
-    [HttpPut("deactivate/{requestId:guid}")]
-    public async Task<ActionResult> Deactivate(Guid requestId)
+    [HttpPut("reject/{requestId:guid}")]
+    public async Task<ActionResult> Reject(Guid requestId)
     {
         await _rejectDisputeRequestHandler.HandleAsync( new RejectDisputeRequest { RequestId = requestId});
         return NoContent();
