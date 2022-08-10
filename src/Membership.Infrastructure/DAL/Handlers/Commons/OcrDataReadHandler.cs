@@ -1,6 +1,7 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Commons;
 using Membership.Application.Queries.Commons;
+using Membership.Core.Abstractions;
 using Membership.Core.Consts;
 using Membership.Core.Entities.Commons;
 using Membership.Core.Repositories.Commons;
@@ -17,12 +18,14 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
     private readonly IOcrResultRepository _ocrResultRepository;
     private readonly IMemberRepository _memberRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IClock _clock;
     
-    public OcrDataReadHandler(IOcrService ocrService, IFileAttachmentRepository fileAttachmentRepository, 
+    public OcrDataReadHandler(IOcrService ocrService, IFileAttachmentRepository fileAttachmentRepository, IClock clock,
         IOcrResultRepository ocrResultRepository, IMemberRepository memberRepository, IUserRepository userRepository)
     {
         _ocrService = ocrService;
         _fileAttachmentRepository = fileAttachmentRepository;
+        _clock = clock;
         _ocrResultRepository = ocrResultRepository;
         _memberRepository = memberRepository;
         _userRepository = userRepository;
@@ -140,11 +143,21 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
             result.IsValidate = true;
         }
 
-        if (result.ExpiryDate is not null)
+        if (result.DateofBirth is not null)
         {
-            if (IsAgeLessThan18Years((DateTime) result.ExpiryDate))
+            if (IsAgeLessThan18Years((DateTime) result.DateofBirth))
             {
                 result.IsValidate = false;
+                result.ErrorMessage = "Member should be 18 years old";
+            }
+        }
+        
+        if (result.ExpiryDate is not null)
+        {
+            if (result.ExpiryDate < _clock.Current())
+            {
+                result.IsValidate = false;
+                result.ErrorMessage = "Emirates ID is expired";
             }
         }
 
