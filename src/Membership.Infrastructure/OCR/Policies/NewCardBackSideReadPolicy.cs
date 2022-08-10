@@ -1,4 +1,5 @@
-﻿using Membership.Core.Consts;
+﻿using System.Text.RegularExpressions;
+using Membership.Core.Consts;
 using Membership.Infrastructure.OCR.Consts;
 
 namespace Membership.Infrastructure.OCR.Policies;
@@ -14,6 +15,7 @@ public class NewCardBackSideReadPolicy : ICardReadPolicy
 
         try
         {
+            result = " " + result;
             int firstStringPositionForCardNoStart = result.IndexOf("Card Number");
             int firstStringPositionForCardNoEnd = result.IndexOf(":");
 
@@ -22,10 +24,19 @@ public class NewCardBackSideReadPolicy : ICardReadPolicy
                 var firstPart = result.Substring(firstStringPositionForCardNoStart, firstStringPositionForCardNoEnd);
                 var split = firstPart.Split(" ");
 
-                if (split.Length > 2)
+                foreach (var cardRow in split)
                 {
-                    cardNo = split[2];
+                    var cardRegex = new Regex("^[0-9]+$");
+                    if (cardRegex.IsMatch(cardRow))
+                    {
+                        cardNo = cardRow;
+                    }
                 }
+
+                // if (split.Length > 2)
+                // {
+                //     cardNo = split[2];
+                // }
             }
             
             return new OcrData

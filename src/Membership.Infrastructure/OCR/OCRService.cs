@@ -12,6 +12,7 @@ using Membership.Infrastructure.OCR.Policies;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Microsoft.Extensions.Options;
+using Gender = Membership.Core.Consts.Gender;
 
 internal sealed class OcrService : IOcrService
 {
@@ -99,7 +100,9 @@ internal sealed class OcrService : IOcrService
             currentCardType = CardType.Old;
         }
 
-        if (finalResult.IndexOf("Issuing Place:") > 0)
+        var a = finalResult.IndexOf("Issuing Place");
+
+        if (finalResult.IndexOf("Issuing Place") > 0)
         {
             currentCardSide = CardSide.NewCardBackSide();
             currentCardType = CardType.New;
@@ -121,7 +124,17 @@ internal sealed class OcrService : IOcrService
 
         if (policy is null)
         {
-            throw new NoCardPolicyFoundException(currentCardSide.ToString());
+            return new OcrData
+            {
+                IdNumber = null,
+                Name = null,
+                DateofBirth = null,
+                ExpiryDate = null,
+                CardNumber = null,
+                CardType = CardType.New,
+                Gender = Gender.Others,
+                ErrorOccurred = false
+            };
         }
  
         return policy.ReadData(currentCardSide, finalResult);

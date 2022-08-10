@@ -26,9 +26,6 @@
       <None Update="assets\styles.css">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Reports\styles.css">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
       <None Update="libwkhtmltox.dylib">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

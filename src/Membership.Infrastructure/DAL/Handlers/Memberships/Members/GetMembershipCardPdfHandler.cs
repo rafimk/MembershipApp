@@ -1,10 +1,13 @@
 ﻿using System.Drawing;
+using System.Net.Http.Json;
 using Membership.Application.Abstractions;
+using Membership.Application.DTO.Commons;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
 using Membership.Infrastructure.Utility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SelectPdf;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
@@ -12,11 +15,13 @@ namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
 internal sealed class GetMembershipCardPdfHandler : IQueryHandler<GetMembershipCardPdf, ReportDto>
 {
     private readonly MembershipDbContext _dbContext;
+    private readonly ReportsOptions _reportsOptions;
     private readonly ILogger<GetMembershipCardHandler> _logger;
-
-    public GetMembershipCardPdfHandler(MembershipDbContext dbContext, ILogger<GetMembershipCardHandler> logger)
+    public GetMembershipCardPdfHandler(MembershipDbContext dbContext, 
+        IOptions<ReportsOptions> reportsOptions, ILogger<GetMembershipCardHandler> logger)
     {
         _dbContext = dbContext;
+        _reportsOptions = reportsOptions.Value;
         _logger = logger;
     }
 
@@ -79,32 +84,33 @@ internal sealed class GetMembershipCardPdfHandler : IQueryHandler<GetMembershipC
         var stylesheetfilePath =  Path.Combine(filePath, stylesheetfileName);
         
         _logger.LogInformation($"RDLC File : {reportFileName}");
-
-
-        var html = TemplateGenerator.GetHTMLString(member?.MembershipId,
-            member?.CreatedAt.ToString("dd/MM/yyyy"),
-            member?.FullName,
-            member?.Mandalam?.District?.Name,
-            member?.Mandalam?.Name,
-            member?.Panchayat?.Name,
-            member?.Area?.State?.Name,
-            member?.Area?.Name,
-            agent?.FullName
-        );
         
-        var converter = new HtmlToPdf();
+        var membershipCardDto = new MembershipCardDto
+        {
+            MembershipNo = member?.MembershipId,
+            Date = member?.CreatedAt.ToString("dd/MM/yyyy"),
+            FullName = member?.FullName,
+            District = member?.Mandalam?.District?.Name,
+            Mandalam = member?.Mandalam?.Name,
+            Panchayath = member?.Panchayat?.Name,
+            State = member?.Area?.State?.Name,
+            Area = member?.Area?.Name,
+            CollectedBy = agent?.FullName
+        };
 
-        converter.Options.PdfPageSize = PdfPageSize.Custom;
-        converter.Options.PdfPageCustomSize = new SizeF(200, 200);
+        JsonContent content = JsonContent.Create(membershipCardDto);
+        
+        HttpClient _httpClient = new HttpClient();
+        var response = await _httpClient.PostAsync($"{_reportsOptions.Url}reports/filestream", content);
 
-        var pdfDocument = converter.ConvertHtmlString(html);
-        byte[] pdf = pdfDocument.Save();
-
-        pdfDocument.Close();
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ReporrServiceNotAvailable();
+        } 
 
         return new ReportDto
         {
-            File = pdf,
+            File = response.Content.ReadAsByteArrayAsync().Result,
             FileType = "application/pdf",
             FileName = $"{member?.MembershipId}.pdf"
         };

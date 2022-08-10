@@ -46,6 +46,13 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             if (firstStringPositionForDob > 0) 
             {
                 dob = result.Substring(firstStringPositionForDob - 11, 10);
+                
+                var split = name.Split(dob);
+        
+                if (split.Length > 0)
+                {
+                    name = split[0];
+                }
             }
 
             DateTime? dtExpiry = null;

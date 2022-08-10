@@ -29,6 +29,7 @@ public static class Extensions
         services.AddControllers();
         services.Configure<AppOptions>(configuration.GetRequiredSection("app"));
         services.Configure<FileUploadOptions>(configuration.GetRequiredSection("file"));
+        services.Configure<ReportsOptions>(configuration.GetRequiredSection("reports-service"));
         services.AddSingleton<ExceptionMiddleware>();
         services.AddHttpContextAccessor();
         services.AddMessaging(configuration);
