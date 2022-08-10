@@ -140,6 +140,14 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
             result.IsValidate = true;
         }
 
+        if (result.ExpiryDate is not null)
+        {
+            if (IsAgeLessThan18Years((DateTime) result.ExpiryDate))
+            {
+                result.IsValidate = false;
+            }
+        }
+
         return result;
     }
 
