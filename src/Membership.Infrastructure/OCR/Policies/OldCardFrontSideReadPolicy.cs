@@ -1,4 +1,5 @@
-﻿using Membership.Core.Consts;
+﻿using System.Text.RegularExpressions;
+using Membership.Core.Consts;
 using Membership.Infrastructure.OCR.Consts;
 
 namespace Membership.Infrastructure.OCR.Policies;
@@ -15,11 +16,16 @@ public class OldCardFrontSideReadPolicy : ICardReadPolicy
 
         try
         {
-            int firstStringPositionForEid = result.IndexOf("ID Number ");
+            var splitedResult = result.Split(" ");
+            var newEids = splitedResult.Where(x => x.Length == 18).ToList();
 
-            if (firstStringPositionForEid > 0)
+            foreach (var item in newEids)
             {
-                eidNo = result.Substring(firstStringPositionForEid + 10, 18);
+                var cardNoRegex = new Regex("^784-[0-9]{4}-[0-9]{7}-[0-9]{1}$");
+                if (cardNoRegex.IsMatch(item))
+                {
+                    eidNo = item;
+                }
             }
 
             int firstStringPositionForName = result.IndexOf("Name:");

@@ -28,7 +28,7 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
                 
                 var splitedResult = result.Split(" ");
         
-                var newDatest = splitedResult.Where(x => x.Length == 10).ToList();
+                var newDates = splitedResult.Where(x => x.Length == 10).ToList();
                 var newCardNumber = splitedResult.Where(x => x.Length == 9).ToList();
         
                 foreach (var cardRow in newCardNumber)
@@ -40,7 +40,7 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
                     }
                 }
         
-                foreach (var row in newDatest)
+                foreach (var row in newDates)
                 {
                     var myRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
                     if (myRegex.IsMatch(row) && row != dob)

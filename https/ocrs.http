@@ -105,3 +105,25 @@ Content-Type: application/json
     "LastPageId": "b8bb0598-2495-4e23-8e57-e7fd19117f4d",
     "UserId": null
 }
+
+###
+POST {{url}}/ocr
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "FrontPageId": "ccf9246c-3727-46ca-8890-f183125944b9",
+    "LastPageId": "28438750-b65a-4b5f-a540-9bcbf30a9f70",
+    "UserId": null
+}
+
+###
+POST {{url}}/ocr
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "FrontPageId": "e19c880c-2d6a-45b8-8538-cdd818c06e35",
+    "LastPageId": "5a137d01-296e-41b0-9eb2-d4176df549db",
+    "UserId": null
+}

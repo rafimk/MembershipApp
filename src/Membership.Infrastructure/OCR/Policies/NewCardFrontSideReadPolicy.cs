@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using Membership.Core.Consts;
 using Membership.Infrastructure.OCR.Consts;
 
@@ -19,10 +20,17 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
 
         try
         {
-            int firstStringPositionForEid = result.IndexOf("ID Number ");
-            if (firstStringPositionForEid > 0)
+            var splitedResult = result.Split(" ");
+            var newEids = splitedResult.Where(x => x.Length == 18).ToList();
+            var newDates = splitedResult.Where(x => x.Length == 10).ToList();
+
+            foreach (var item in newEids)
             {
-                eidNo = result.Substring(firstStringPositionForEid + 10, 18);
+                var cardNoRegex = new Regex("^784-[0-9]{4}-[0-9]{7}-[0-9]{1}$");
+                if (cardNoRegex.IsMatch(item))
+                {
+                    eidNo = item;
+                }
             }
 
             int firstStringPositionForName = result.IndexOf("Name:");
@@ -41,17 +49,36 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
 
             expiry = MethodExtensionHelper.Right(result.Trim(), 10);
 
+            if (newDates.Count() > 0)
+            {
+                var myRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
+                if (myRegex.IsMatch(newDates[0]))
+                {
+                    dob = newDates[0];
+                }
+            }
+
             int firstStringPositionForDob = result.IndexOf("Date of Birth");
 
             if (firstStringPositionForDob > 0) 
             {
-                dob = result.Substring(firstStringPositionForDob - 11, 10);
-                
-                var split = name.Split(dob);
-        
-                if (split.Length > 0)
+                var dateOfBirthInName = name.IndexOf("Date of Birth");
+                if (dateOfBirthInName > 0)
                 {
-                    name = split[0];
+                    var nameSplit = name.Split("Date of Birth");
+        
+                    if (nameSplit.Length > 0)
+                    {
+                        name = nameSplit[0];
+                        
+                        var nameSplitwithDob = name.Split(dob);
+        
+                        if (nameSplitwithDob.Length > 0)
+                        {
+                            name = nameSplitwithDob[0];
+                        }
+                        
+                    }
                 }
             }
 
@@ -65,7 +92,7 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
         
             if (dob.Trim().Length == 10)
             {
-                dtDob = DateParseHelper.PaseAsDateOnly(dob);
+                dtDob = DateParseHelper.PaseAsDateOnly(dob.Trim());
             }
         
             var genderType = gender == "M" ? Gender.Male : Gender.Others;

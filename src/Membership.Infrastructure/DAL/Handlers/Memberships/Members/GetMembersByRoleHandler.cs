@@ -46,6 +46,7 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
                 .AsNoTracking()
                 .Where(x => x.DistrictId == districtAgentDistrictId && 
                             x.StateId == districtAgentStateId)
+                .OrderBy(x => x.MembershipId)
                 .Select(x => x.AsDto())
                 .ToListAsync();
         }
