@@ -303,7 +303,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
             // ====================== Members ======================
             var memberCountByPanchayat = await _dbContext.Members
                 .Include(x => x.Panchayat)
-                .Where(x => x.StateId == user.StateId && x.DistrictId == user.DistrictId)
+                .Where(x => x.StateId == user.StateId && x.MandalamId == user.MandalamId)
                 .GroupBy(x => x.PanchayatId)
                 .Select(x => new { PanchayatId = x.Key, PanchayatName = x.First().Panchayat.Name, Count = x.Count() })
                 .ToListAsync();
