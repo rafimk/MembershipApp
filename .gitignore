@@ -338,3 +338,6 @@ out/
 .vscode/
 
 .DS_Store
+
+appsettings.json
+appsettings.docker.json

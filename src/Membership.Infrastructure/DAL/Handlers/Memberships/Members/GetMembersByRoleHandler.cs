@@ -46,7 +46,7 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
                 .AsNoTracking()
                 .Where(x => x.DistrictId == districtAgentDistrictId && 
                             x.StateId == districtAgentStateId)
-                .OrderBy(x => x.MembershipId)
+                .OrderByDescending(x => x.CreatedAt)
                 .Select(x => x.AsDto())
                 .ToListAsync();
         }
@@ -63,6 +63,7 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             .AsNoTracking()
             .Where(x => x.MandalamId == agentmandalamId &&
                         x.StateId == agentStateId)
+            .OrderByDescending(x => x.CreatedAt)
             .Select(x => x.AsDto())
             .ToListAsync();
     }

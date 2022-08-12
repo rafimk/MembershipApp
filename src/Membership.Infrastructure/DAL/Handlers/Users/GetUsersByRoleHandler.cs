@@ -35,6 +35,7 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, IEnu
         var availableUsers = await _dbContext.Users
             .OrderBy(x => x.FullName)
             .AsNoTracking()
+            .OrderByDescending(x => x.CreatedAt)
             .Select(x => x.AsDto())
             .ToListAsync();
 
