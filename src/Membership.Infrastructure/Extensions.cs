@@ -9,7 +9,7 @@ using Membership.Infrastructure.Exceptions;
 using Membership.Infrastructure.FileManagement;
 using Membership.Infrastructure.Logging;
 using Membership.Infrastructure.OCR;
-using Membership.Infrastructure.OCR.Policies;
+using Membership.Infrastructure.Reports;
 using Membership.Infrastructure.Security;
 using Membership.Infrastructure.Time;
 using Membership.Shared;
@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Polly;
+using Polly.Extensions.Http;
 
 [assembly: InternalsVisibleTo("Membership.Tests.Integration")]
 [assembly: InternalsVisibleTo("Membership.Tests.Unit")]
@@ -29,22 +31,23 @@ public static class Extensions
         services.AddControllers();
         services.Configure<AppOptions>(configuration.GetRequiredSection("app"));
         services.Configure<FileUploadOptions>(configuration.GetRequiredSection("file"));
-        services.Configure<ReportsOptions>(configuration.GetRequiredSection("reports-service"));
         services.AddSingleton<ExceptionMiddleware>();
         services.AddHttpContextAccessor();
         services.AddMessaging(configuration);
+        
+        services.AddHttpClient<IReportService, ReportService>()
+            .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Set lifetime to five minutes
+            .AddPolicyHandler(GetRetryPolicy())
+            .AddPolicyHandler(GetCircuitBreakerPolicy());
+        
+        services.AddReports(configuration);
+        services.AddOcr();
+        services.AddFileManagement();
 
         services
             .AddPostgres(configuration)
             .AddSingleton<IClock, Clock>()
-            .AddSingleton<ICardReadPolicy, NewCardFrontSideReadPolicy>()
-            .AddSingleton<ICardReadPolicy, NewCardBackSideReadPolicy>()
-            .AddSingleton<ICardReadPolicy, OldCardFrontSideReadPolicy>()
-            .AddSingleton<ICardReadPolicy, OldCardBackSideReadPolicy>()
-            .AddSingleton<ICardReadPolicy, OldCardBackSideChildReadPolicy>()
             .AddScoped<IUserService, UserService>()
-            .AddScoped<IBufferedFileUploadService, AzureStorageBlobsFileUploadService>()
-            
             .AddScoped<IOcrService, OcrService>();
 
         services.AddCustomLogging();
@@ -97,5 +100,21 @@ public static class Extensions
         section.Bind(options);
 
         return options;
+    }
+    
+    public static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+    {
+        return HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+            .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,
+                retryAttempt)));
+    }
+
+    public static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+    {
+        return HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .CircuitBreakerAsync(2, TimeSpan.FromSeconds(60));
     }
 }

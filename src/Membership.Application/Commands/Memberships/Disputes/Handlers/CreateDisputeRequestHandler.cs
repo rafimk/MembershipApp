@@ -17,15 +17,18 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
     private readonly IMemberRepository _memberRepository;
     private readonly IAreaRepository _areaRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IPanchayatRepository _panchayatRepository;
     private readonly IClock _clock;
 
     public CreateDisputeRequestHandler(IDisputeRequestRepository disputeRequestRepository, IMemberRepository memberRepository, 
-        IAreaRepository areaRepository, IUserRepository userRepository, IMembershipPeriodRepository membershipPeriodRepository, IClock clock)
+        IAreaRepository areaRepository, IUserRepository userRepository, IMembershipPeriodRepository membershipPeriodRepository, 
+        IPanchayatRepository panchayatRepository, IClock clock)
     {
         _disputeRequestRepository = disputeRequestRepository;
         _memberRepository = memberRepository;
         _areaRepository = areaRepository;
         _userRepository = userRepository;
+        _panchayatRepository = panchayatRepository;
         _clock = clock;
     }
 
@@ -60,13 +63,22 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
         {
             throw new NotAuthorizedToCreateMemberForThisAreaException();
         }
-        
+
+        var panchayat = await _panchayatRepository.GetByIdAsync(command.ProposedPanchayatId);
+
+        if (panchayat is null)
+        {
+            throw new InvalidPanchayatException();
+        }
+
         var disputeReques = DisputeRequest.Create(new CreateDisputeRequestContract
         {
             Id = (Guid)command.Id,
             MemberId = command.MemberId,
+            StateId = (Guid)agent.StateId,
             ProposedAreaId = command.ProposedAreaId,
-            ProposedMandalamId = (Guid)agent.CascadeId,
+            DistrictId = (Guid)agent.DistrictId,
+            ProposedMandalamId = panchayat.MandalamId,
             ProposedPanchayatId = command.ProposedPanchayatId,
             Reason = command.Reason,
             SubmittedDate = _clock.Current(),

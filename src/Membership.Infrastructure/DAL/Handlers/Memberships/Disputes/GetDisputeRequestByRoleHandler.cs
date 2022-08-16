@@ -32,9 +32,25 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
             return null;
         }
         
+        if (user.Role == UserRole.DistrictAgent())
+        {
+            var districtAgentDistrictId = (Guid)user.CascadeId;
+            var districtAgentStateId = (Guid)user.StateId;
+            
+            return await _dbContext.DisputeRequests
+                .Include(x => x.ProposedArea).ThenInclude(x => x.State)
+                .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
+                .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
+                .AsNoTracking()
+                .Where(x => x.DistrictId == districtAgentDistrictId &&
+                            x.StateId == districtAgentStateId)
+                .Select(x => x.AsDto())
+                .ToListAsync();
+        }
+        
         var mandalamId = (Guid)user.CascadeId;
         
-        var disputeRequests = await _dbContext.DisputeRequests
+        return await _dbContext.DisputeRequests
             .Include(x => x.ProposedArea).ThenInclude(x => x.State)
             .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
             .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
@@ -42,7 +58,5 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
             .Where(x => x.ProposedMandalamId == mandalamId)
             .Select(x => x.AsDto())
             .ToListAsync();
-
-        return disputeRequests;
     }
 }

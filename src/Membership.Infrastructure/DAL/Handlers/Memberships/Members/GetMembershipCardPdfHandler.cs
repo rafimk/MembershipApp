@@ -1,27 +1,23 @@
-﻿using System.Drawing;
-using System.Net.Http.Json;
-using Membership.Application.Abstractions;
-using Membership.Application.DTO.Commons;
+﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
-using Membership.Infrastructure.Utility;
+using Membership.Infrastructure.Reports;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using SelectPdf;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
 
 internal sealed class GetMembershipCardPdfHandler : IQueryHandler<GetMembershipCardPdf, ReportDto>
 {
     private readonly MembershipDbContext _dbContext;
-    private readonly ReportsOptions _reportsOptions;
-    private readonly ILogger<GetMembershipCardHandler> _logger;
-    public GetMembershipCardPdfHandler(MembershipDbContext dbContext, 
-        IOptions<ReportsOptions> reportsOptions, ILogger<GetMembershipCardHandler> logger)
+    private readonly IReportService _reportService;
+    private readonly ILogger<GetMembershipCardPdfHandler> _logger;
+    public GetMembershipCardPdfHandler(MembershipDbContext dbContext,
+        IReportService reportService,
+        ILogger<GetMembershipCardPdfHandler> logger)
     {
         _dbContext = dbContext;
-        _reportsOptions = reportsOptions.Value;
+        _reportService = reportService;
         _logger = logger;
     }
 
@@ -98,19 +94,11 @@ internal sealed class GetMembershipCardPdfHandler : IQueryHandler<GetMembershipC
             CollectedBy = agent?.FullName
         };
 
-        JsonContent content = JsonContent.Create(membershipCardDto);
-        
-        HttpClient _httpClient = new HttpClient();
-        var response = await _httpClient.PostAsync($"{_reportsOptions.Url}reports/filestream", content);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new ReporrServiceNotAvailable();
-        } 
+        var byteStream = await _reportService.GetMembershipCardAsync(membershipCardDto);
 
         return new ReportDto
         {
-            File = response.Content.ReadAsByteArrayAsync().Result,
+            File = byteStream,
             FileType = "application/pdf",
             FileName = $"{member?.MembershipId}.pdf"
         };

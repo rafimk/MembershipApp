@@ -11,8 +11,12 @@ public class DisputeRequest
     public Guid Id { get; private set; }
     public Guid MemberId { get; private set; }
     public Member Member { get; private set; }
+    public Guid StateId { get; private set; }
+    public State State { get; private set; }
     public Guid ProposedAreaId { get; private set; }
     public Area ProposedArea { get; private set; }
+    public Guid DistrictId { get; private set; }
+    public District District { get; private set; }
     public Guid ProposedMandalamId { get; private set; }
     public Mandalam ProposedMandalam { get; private set; }
     public Guid ProposedPanchayatId { get; private set; }
@@ -33,7 +37,9 @@ public class DisputeRequest
     {
         Id = contract.Id;
         MemberId = contract.MemberId;
+        StateId = contract.StateId;
         ProposedAreaId = contract.ProposedAreaId;
+        DistrictId = contract.DistrictId;
         ProposedMandalamId = contract.ProposedMandalamId;
         ProposedPanchayatId = contract.ProposedPanchayatId;
         Reason = contract.Reason;
@@ -50,7 +56,9 @@ public class DisputeRequest
         {
             Id = contract.Id,
             MemberId = contract.MemberId,
+            StateId = contract.StateId,
             ProposedAreaId = contract.ProposedAreaId,
+            DistrictId = contract.DistrictId,
             ProposedMandalamId = contract.ProposedMandalamId,
             ProposedPanchayatId = contract.ProposedPanchayatId,
             Reason = contract.Reason,
