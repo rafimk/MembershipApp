@@ -20,6 +20,6 @@ internal sealed class RejecteDisputeRequestHandler : ICommandHandler<RejectDispu
             throw new DisputeRequestNotFoundException(command.RequestId);
         }
         
-        disputeRequest.Rejecte(command.JustificationComment);
+        disputeRequest.Rejecte(command.JustificationComment, command.ActionBy);
     }
 }

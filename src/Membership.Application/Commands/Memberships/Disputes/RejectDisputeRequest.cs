@@ -6,4 +6,5 @@ public record RejectDisputeRequest() : ICommand
 {
     public Guid RequestId { get; set;}
     public string JustificationComment { get; set; }
+    public Guid? ActionBy { get; set; }
 }

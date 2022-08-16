@@ -177,6 +177,15 @@ public class Member
         RegisteredOrganizationId = contract.RegisteredOrganizationId;
         WelfareSchemeId = contract.WelfareSchemeId;
     }
+    
+    public void DisputeApproval(DisputeApprovalContract contract)
+    {
+        StateId = contract.StateId;
+        AreaId = contract.ProposedAreaId;
+        DistrictId = contract.DistrictId;
+        MandalamId = contract.ProposedMandalamId;
+        PanchayatId = contract.ProposedPanchayatId;
+    }
 
     public void Deactivate()
     {

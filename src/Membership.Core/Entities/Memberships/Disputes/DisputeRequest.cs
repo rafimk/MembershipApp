@@ -76,15 +76,17 @@ public class DisputeRequest
         Reason = contract.Reason;
     }
 
-    public void Approve(string justificationComment)
+    public void Approve(string justificationComment, Guid? actionBy)
     {
         JustificationComment = justificationComment;
+        ActionBy = actionBy;
         Status = DisputeStatus.Approved;
     }
 
-    public void Rejecte(string justificationComment)
+    public void Rejecte(string justificationComment, Guid? actionBy)
     {
         JustificationComment = justificationComment;
+        ActionBy = actionBy;
         Status = DisputeStatus.Rejected;
     }
 }

@@ -172,16 +172,20 @@ public class DisputesController : ControllerBase
     }
     
     [HttpPut("approve/{requestId:guid}")]
-    public async Task<ActionResult> Approve(Guid requestId)
+    public async Task<ActionResult> Approve(Guid requestId, ApproveDisputeRequest command)
     {
-        await _approveDisputeRequestHandler.HandleAsync( new ApproveDisputeRequest { RequestId = requestId});
+        var userId = Guid.Parse(User?.Identity?.Name);
+        command = command with {ActionBy = userId};
+        await _approveDisputeRequestHandler.HandleAsync(command);
         return NoContent();
     }
     
     [HttpPut("reject/{requestId:guid}")]
-    public async Task<ActionResult> Reject(Guid requestId)
+    public async Task<ActionResult> Reject(Guid requestId, RejectDisputeRequest command)
     {
-        await _rejectDisputeRequestHandler.HandleAsync( new RejectDisputeRequest { RequestId = requestId});
+        var userId = Guid.Parse(User?.Identity?.Name);
+        command = command with {ActionBy = userId};
+        await _rejectDisputeRequestHandler.HandleAsync(command);
         return NoContent();
     }
 }
