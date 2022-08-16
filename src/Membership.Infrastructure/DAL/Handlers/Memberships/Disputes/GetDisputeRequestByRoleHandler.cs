@@ -64,14 +64,14 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
             }
             case "dispute-committee":
             {
-                var districtAgentDistrictId = (Guid)user.CascadeId;
+                var stateId = (Guid)user.StateId;
            
                 return await _dbContext.DisputeRequests
                     .Include(x => x.ProposedArea).ThenInclude(x => x.State)
                     .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
                     .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
                     .AsNoTracking()
-                    .Where(x => x.DistrictId == districtAgentDistrictId)
+                    .Where(x => x.StateId == stateId)
                     .OrderByDescending(x => x.SubmittedDate)
                     .Select(x => x.AsDto())
                     .ToListAsync();
