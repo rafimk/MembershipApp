@@ -11,7 +11,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "mandalam-agent@kmcc.com",
+    "email": "mandalam-agent@admin.com",
     "password": "admin@123"
 }
 

@@ -29,7 +29,9 @@ public class MemberDto
     public DistrictDto AddressInDistrict { get; set; }
     public MandalamDto AddressInMandalam { get; set; }
     public PanchayatDto AddressInPanchayat { get; set; }
+    public StateDto State { get; set; }
     public AreaDto Area { get; set; }
+    public DistrictDto District { get; set; }
     public MandalamDto Mandalam { get; set; }
     public PanchayatDto Panchayat { get; set; }
     public Guid? RegisteredOrganizationId { get; set; }

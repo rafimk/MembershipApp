@@ -192,10 +192,20 @@ public static class Extensions
             Photo = entity.Photo,
             HouseName = entity.HouseName,
             AddressInIndia = entity.AddressInIndia,
+            State = new StateDto
+            {
+                Id = entity.Area.StateId,
+                Name = entity.Area.State?.Name
+            },
             Area = new AreaDto
             {
                 Id = entity.AreaId,
                 Name = entity.Area?.Name
+            },
+            District = new DistrictDto
+            {
+                Id = entity.Mandalam.DistrictId,
+                Name = entity.Mandalam.District.Name
             },
             Mandalam = new MandalamDto
             {
