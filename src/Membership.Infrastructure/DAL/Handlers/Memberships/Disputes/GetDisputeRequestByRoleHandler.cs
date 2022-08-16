@@ -1,6 +1,7 @@
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Disputes;
+using Membership.Core.Consts;
 using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -24,39 +25,61 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
 
         if (user is null)
         {
-            return null;
+            return new List<DisputeRequestDto>();
         }
-        
-        if (user.Role != UserRole.MandalamAgent())
+
+        switch (@user.Role.ToString())
         {
-            return null;
-        }
-        
-        if (user.Role == UserRole.DistrictAgent())
-        {
-            var districtAgentDistrictId = (Guid)user.CascadeId;
-            var districtAgentStateId = (Guid)user.StateId;
+            case "district-agent":
+            {
+                var districtAgentDistrictId = (Guid)user.CascadeId;
+                var districtAgentStateId = (Guid)user.StateId;
             
-            return await _dbContext.DisputeRequests
-                .Include(x => x.ProposedArea).ThenInclude(x => x.State)
-                .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
-                .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
-                .AsNoTracking()
-                .Where(x => x.DistrictId == districtAgentDistrictId &&
-                            x.StateId == districtAgentStateId)
-                .Select(x => x.AsDto())
-                .ToListAsync();
+                return await _dbContext.DisputeRequests
+                    .Include(x => x.ProposedArea).ThenInclude(x => x.State)
+                    .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
+                    .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
+                    .AsNoTracking()
+                    .Where(x => x.DistrictId == districtAgentDistrictId &&
+                                x.StateId == districtAgentStateId && 
+                                x.Status == DisputeStatus.Pending)
+                    .OrderByDescending(x => x.SubmittedDate)
+                    .Select(x => x.AsDto())
+                    .ToListAsync();
+            }
+            case "mandalam-agent":
+            {
+                var mandalamId = (Guid)user.CascadeId;
+        
+                return await _dbContext.DisputeRequests
+                    .Include(x => x.ProposedArea).ThenInclude(x => x.State)
+                    .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
+                    .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
+                    .AsNoTracking()
+                    .Where(x => x.ProposedMandalamId == mandalamId &&
+                                x.Status == DisputeStatus.Pending)
+                    .OrderByDescending(x => x.SubmittedDate)
+                    .Select(x => x.AsDto())
+                    .ToListAsync();
+            }
+            case "dispute-committee":
+            {
+                var districtAgentDistrictId = (Guid)user.CascadeId;
+           
+                return await _dbContext.DisputeRequests
+                    .Include(x => x.ProposedArea).ThenInclude(x => x.State)
+                    .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
+                    .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
+                    .AsNoTracking()
+                    .Where(x => x.DistrictId == districtAgentDistrictId)
+                    .OrderByDescending(x => x.SubmittedDate)
+                    .Select(x => x.AsDto())
+                    .ToListAsync();
+            }
+            default:
+            {
+                return new List<DisputeRequestDto>();
+            }
         }
-        
-        var mandalamId = (Guid)user.CascadeId;
-        
-        return await _dbContext.DisputeRequests
-            .Include(x => x.ProposedArea).ThenInclude(x => x.State)
-            .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
-            .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
-            .AsNoTracking()
-            .Where(x => x.ProposedMandalamId == mandalamId)
-            .Select(x => x.AsDto())
-            .ToListAsync();
     }
 }

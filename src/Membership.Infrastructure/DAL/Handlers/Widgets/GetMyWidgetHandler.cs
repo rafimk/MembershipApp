@@ -2,6 +2,7 @@
 using Membership.Application.DTO.Memberships;
 using Membership.Application.DTO.Widgets;
 using Membership.Application.Queries.Widgets;
+using Membership.Core.Consts;
 using Membership.Core.DomainServices.Users;
 using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
@@ -111,6 +112,43 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 SummaryText = null,
                 Details = widgetDetails
             });
+            
+            // ====================== Dispute ======================
+            var disputeRequestsCountByState = await _dbContext.DisputeRequests
+                .Include(x => x.State)
+                .Where(x => x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.StateId)
+                .Select(x => new { StateId = x.Key, StateName = x.First().State.Name, Count = x.Count() })
+                .ToListAsync();
+            
+            Int32 totalStateDisputeRequestsCount = 0; 
+            widgetDetails= new();
+            
+            foreach(var item in disputeRequestsCountByState)
+            {
+                if (item.StateName is not null)
+                {
+                    totalStateDisputeRequestsCount += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.StateName,
+                        IntValue = item.Count,
+                        TextValue = null
+                    });
+                }
+            }
+
+            if (totalStateDisputeRequestsCount > 0)
+            {
+                widget.Add(new WidgetDto
+                {
+                    No = 1,
+                    Title = "Total Dispute Requests",
+                    SummaryValue = totalStateDisputeRequestsCount,
+                    SummaryText = null,
+                    Details = widgetDetails
+                });
+            }
 
             return widget;
         }
@@ -183,6 +221,44 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 SummaryText = null,
                 Details = widgetDetails
             });
+            
+            // ====================== Dispute ======================
+            var disputeRequestsCountByState = await _dbContext.DisputeRequests
+                .Include(x => x.State)
+                .Include(x => x.District)
+                .Where(x => x.StateId == user.StateId && x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.DistrictId)
+                .Select(x => new { DistrictId = x.Key, DistrictName = x.First().District.Name, Count = x.Count() })
+                .ToListAsync();
+            
+            Int32 totalDistrictDisputeRequestsCount = 0; 
+            widgetDetails= new();
+            
+            foreach(var item in disputeRequestsCountByState)
+            {
+                if (item.DistrictName is not null)
+                {
+                    totalDistrictDisputeRequestsCount += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.DistrictName,
+                        IntValue = item.Count,
+                        TextValue = null
+                    });
+                }
+            }
+
+            if (totalDistrictDisputeRequestsCount > 0)
+            {
+                widget.Add(new WidgetDto
+                {
+                    No = 1,
+                    Title = "Total Dispute Requests",
+                    SummaryValue = totalDistrictDisputeRequestsCount,
+                    SummaryText = null,
+                    Details = widgetDetails
+                });
+            }
 
             return widget;
         }
@@ -255,6 +331,44 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 SummaryText = null,
                 Details = widgetDetails
             });
+            
+            // ====================== Dispute ======================
+            var disputeRequestsCountByState = await _dbContext.DisputeRequests
+                .Include(x => x.ProposedMandalam)
+                .Where(x => x.StateId == user.StateId && x.DistrictId == user.DistrictId && x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.ProposedMandalamId)
+                .Select(x => new { MandalamId = x.Key, MandalamName = x.First().ProposedMandalam.Name, Count = x.Count() })
+                .ToListAsync();
+            
+            Int32 totalMandalamDisputeRequestsCount = 0; 
+            widgetDetails= new();
+            
+            foreach(var item in disputeRequestsCountByState)
+            {
+                if (item.MandalamName is not null)
+                {
+                    totalMandalamDisputeRequestsCount += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.MandalamName,
+                        IntValue = item.Count,
+                        TextValue = null
+                    });
+                }
+            }
+
+            if (totalMandalamDisputeRequestsCount > 0)
+            {
+                widget.Add(new WidgetDto
+                {
+                    No = 1,
+                    Title = "Total Dispute Requests",
+                    SummaryValue = totalMandalamDisputeRequestsCount,
+                    SummaryText = null,
+                    Details = widgetDetails
+                });
+            }
+
 
             return widget;
         }
@@ -294,6 +408,43 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 SummaryText = null,
                 Details = widgetDetails
             });
+            
+            // ====================== Dispute ======================
+            var disputeRequestsCountByState = await _dbContext.DisputeRequests
+                .Include(x => x.ProposedMandalam)
+                .Where(x => x.StateId == user.StateId && x.DistrictId == user.DistrictId && x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.ProposedMandalamId)
+                .Select(x => new { MandalamId = x.Key, MandalamName = x.First().ProposedMandalam.Name, Count = x.Count() })
+                .ToListAsync();
+            
+            Int32 totalMandalamDisputeRequestsCount = 0; 
+            widgetDetails= new();
+            
+            foreach(var item in disputeRequestsCountByState)
+            {
+                if (item.MandalamName is not null)
+                {
+                    totalMandalamDisputeRequestsCount += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.MandalamName,
+                        IntValue = item.Count,
+                        TextValue = null
+                    });
+                }
+            }
+
+            if (totalMandalamDisputeRequestsCount > 0)
+            {
+                widget.Add(new WidgetDto
+                {
+                    No = 1,
+                    Title = "Total Dispute Requests",
+                    SummaryValue = totalMandalamDisputeRequestsCount,
+                    SummaryText = null,
+                    Details = widgetDetails
+                });
+            }
 
             return widget;
         }
@@ -333,8 +484,85 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 SummaryText = null,
                 Details = widgetDetails
             });
+            
+            // ====================== Dispute ======================
+            var disputeRequestsCountByState = await _dbContext.DisputeRequests
+                .Include(x => x.ProposedPanchayat)
+                .Where(x => x.StateId == user.StateId && x.ProposedMandalamId == user.MandalamId && x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.ProposedPanchayatId)
+                .Select(x => new { PanchayatId = x.Key, PanchayatName = x.First().ProposedPanchayat.Name, Count = x.Count() })
+                .ToListAsync();
+            
+            Int32 totalPanchayatDisputeRequestsCount = 0; 
+            widgetDetails= new();
+            
+            foreach(var item in disputeRequestsCountByState)
+            {
+                if (item.PanchayatName is not null)
+                {
+                    totalPanchayatDisputeRequestsCount += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.PanchayatName,
+                        IntValue = item.Count,
+                        TextValue = null
+                    });
+                }
+            }
+
+            if (totalPanchayatDisputeRequestsCount > 0)
+            {
+                widget.Add(new WidgetDto
+                {
+                    No = 1,
+                    Title = "Total Dispute Requests",
+                    SummaryValue = totalPanchayatDisputeRequestsCount,
+                    SummaryText = null,
+                    Details = widgetDetails
+                });
+            }
 
             return widget;
+        }
+
+        if (user.Role == UserRole.DisputeCommittee())
+        {
+            var disputeRequestsCountByState = await _dbContext.DisputeRequests
+                .Include(x => x.State)
+                .Include(x => x.District)
+                .Where(x => x.StateId == user.StateId && x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.DistrictId)
+                .Select(x => new { DistrictId = x.Key, DistrictName = x.First().District.Name, Count = x.Count() })
+                .ToListAsync();
+            
+            Int32 totalDistrictDisputeRequestsCount = 0; 
+            widgetDetails= new();
+            
+            foreach(var item in disputeRequestsCountByState)
+            {
+                if (item.DistrictName is not null)
+                {
+                    totalDistrictDisputeRequestsCount += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.DistrictName,
+                        IntValue = item.Count,
+                        TextValue = null
+                    });
+                }
+            }
+
+            if (totalDistrictDisputeRequestsCount > 0)
+            {
+                widget.Add(new WidgetDto
+                {
+                    No = 1,
+                    Title = "Total Dispute Requests",
+                    SummaryValue = totalDistrictDisputeRequestsCount,
+                    SummaryText = null,
+                    Details = widgetDetails
+                });
+            }
         }
 
         return widget;
