@@ -39,12 +39,12 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "mandalam-agent1",
-    "email": "mandalam-agent1@admin.com",
+    "fullName": "state-admin4",
+    "email": "State-Admin4@admin.com",
     "mobileNumber": "0554296326",
-    "designation": "mandalam-agent",
-    "role": "mandalam-agent",
-    "cascadeId": "fada7507-af5b-4b44-ab76-cd11db72d449",
+    "designation": "state-admin",
+    "role": "state-admin",
+    "cascadeId": "6c0c8ac8-8c1e-43ad-8399-f66e2d53a9c9",
     "isDisputeCommittee": false
 }
 

@@ -21,7 +21,7 @@ internal sealed class PostgresUserRepository : IUserRepository
         => await _dbContext.Users.Where(x => x.IsActive).ToListAsync();
     
     public  Task<User> GetByEmailAsync(string email)
-        => _dbContext.Users.SingleOrDefaultAsync(x => x.Email == email);
+        => _dbContext.Users.SingleOrDefaultAsync(x => x.Email == email.ToLower());
     
     public  Task<User> GetByMobileAsync(MobileNumber mobileNumber)
         => _dbContext.Users.SingleOrDefaultAsync(x => x.MobileNumber == mobileNumber);

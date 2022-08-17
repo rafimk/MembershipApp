@@ -28,6 +28,9 @@ GET {{url}}/members/role
 Authorization: Bearer {{accessToken}}
 
 ###
+GET {{url}}/members/784-1975-0750835-5
+
+###
 POST {{url}}/members
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json

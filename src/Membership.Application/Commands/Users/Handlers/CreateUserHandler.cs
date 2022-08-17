@@ -149,7 +149,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
         {
             Id = (Guid)command.Id,
             FullName = command.FullName,
-            Email = command.Email,
+            Email = command.Email.ToLower(),
             MobileNumber = command.MobileNumber,
             Designation = command.Designation,
             PasswordHash = securedPassword,

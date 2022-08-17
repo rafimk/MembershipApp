@@ -29,7 +29,8 @@ public class OldCardFrontSideReadPolicy : ICardReadPolicy
             }
 
             int firstStringPositionForName = result.IndexOf("Name:");
-            int secondStringPositionForName = result.IndexOf("Nationality:");    
+            int secondStringPositionForName = result.IndexOf("Nationality:");
+            int secondStringPositionForNameWithout = result.IndexOf("Nationality"); 
             if (firstStringPositionForName > 0 && secondStringPositionForName > 0)
             {
                 name = result.Substring(firstStringPositionForName + 5, secondStringPositionForName - (firstStringPositionForName + 5));
@@ -43,6 +44,19 @@ public class OldCardFrontSideReadPolicy : ICardReadPolicy
                     name = name.Replace(":", "").Trim();
                 }
                 
+            }
+            else if (firstStringPositionForName > 0 && secondStringPositionForNameWithout > 0)
+            {
+                name = result.Substring(firstStringPositionForName + 5, secondStringPositionForNameWithout - (firstStringPositionForName + 5));
+                name = name.Replace(":", "");
+
+                if (name.Trim().Length == 0)
+                {
+                    int firstStringPositionForNameNew = result.IndexOf(eidNo);
+                    int secondStringPositionForNameNew = result.IndexOf("Name"); 
+                    name = result.Substring(firstStringPositionForNameNew + 18, secondStringPositionForNameNew - (firstStringPositionForNameNew + 18));
+                    name = name.Replace(":", "").Trim();
+                }
             }
 
             return new OcrData

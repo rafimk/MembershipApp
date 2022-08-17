@@ -47,7 +47,7 @@ internal sealed class ResetPasswordHandler : ICommandHandler<ResetPassword>
 
         var securedPassword = _passwordManager.Secure(firstTimePassord);
 
-        user.ChangePassword(securedPassword, email.Value);
+        user.ChangePassword(securedPassword, email.Value.ToLower());
         await _repository.UpdateAsync(user);
         string messageId = Guid.NewGuid().ToString("N");
         var message = new UserCreated(user.FullName, command.Email, firstTimePassord);
