@@ -1,3 +1,4 @@
+using Membership.Core.Consts;
 using Membership.Core.Entities.Memberships.Disputes;
 using Membership.Core.Repositories.Memberships;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,12 @@ internal sealed class PostgresDisputeRequestRepository : IDisputeRequestReposito
         => _dbContext.DisputeRequests.Include(x => x.ProposedArea)
             .Include(x => x.ProposedMandalam)
             .Include(x => x.ProposedPanchayat).SingleOrDefaultAsync(x => x.MemberId == memberId);
+    
+    public  Task<DisputeRequest> GetPendingByMemberIdAsync(Guid memberId)
+        => _dbContext.DisputeRequests.Include(x => x.ProposedArea)
+            .Include(x => x.ProposedMandalam)
+            .Include(x => x.ProposedPanchayat).SingleOrDefaultAsync(x => x.MemberId == memberId && 
+                                                                         x.Status == DisputeStatus.Pending);
 
     public async Task<IEnumerable<DisputeRequest>> GetAsync()
         => await _dbContext.DisputeRequests.ToListAsync();

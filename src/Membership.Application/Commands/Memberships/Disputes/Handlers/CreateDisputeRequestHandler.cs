@@ -71,6 +71,13 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
             throw new InvalidPanchayatException();
         }
 
+        var availableDisputeRequest = await _disputeRequestRepository.GetPendingByMemberIdAsync(command.MemberId);
+        
+        if (availableDisputeRequest is null)
+        {
+            throw new PendingDisputeAlreadyAvailableException();
+        }
+
         var disputeReques = DisputeRequest.Create(new CreateDisputeRequestContract
         {
             Id = (Guid)command.Id,
