@@ -145,7 +145,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "8e42a4bf-cb7f-4c57-a4ac-e2932fb3a68e",
-    "LastPageId": "71746e4e-704d-44ae-b64a-79dd4665ccfa",
+    "FrontPageId": "2d184280-9c27-4be4-b29f-58ef5e27118f",
+    "LastPageId": "a5ad06e5-564d-438c-bb81-70be071af0f6",
     "UserId": null
 }

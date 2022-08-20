@@ -24,6 +24,7 @@ public class DisputeRequestDto
     public DateTimeOffset? ActionDate  { get; set; }
     public Guid? ActionBy { get; set; }
     public int Status { get; set; }
+    public bool IsCanApprove { get; set; } = false;
 
     public string DisputeType
     {
@@ -31,7 +32,7 @@ public class DisputeRequestDto
         {
             if (FromState?.Id == ToState?.Id)
             {
-                return "With in state";
+                return $"With in state {FromState.Prefix}";
             }
             else if (FromState?.Id != ToState?.Id)
             {

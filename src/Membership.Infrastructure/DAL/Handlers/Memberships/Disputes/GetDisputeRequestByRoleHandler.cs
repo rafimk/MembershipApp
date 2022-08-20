@@ -82,7 +82,7 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
             {
                 var stateId = (Guid)user.StateId;
            
-                return await _dbContext.DisputeRequests
+                var results = await _dbContext.DisputeRequests
                     .Include(x => x.Member)
                     .Include(x => x.FromState)
                     .Include(x => x.FromArea)
@@ -95,10 +95,20 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
                     .Include(x => x.ToMandalam)
                     .Include(x => x.ToPanchayat)
                     .AsNoTracking()
-                    .Where(x => (x.ToStateId == stateId || x.ToStateId == stateId))
+                    .Where(x => (x.FromStateId == stateId || x.ToStateId == stateId))
                     .OrderByDescending(x => x.SubmittedDate)
                     .Select(x => x.AsDto())
                     .ToListAsync();
+
+                foreach (var item in results)
+                {
+                    if (item.FromState.Id == stateId)
+                    {
+                        item.IsCanApprove = true;
+                    }
+                }
+
+                return results;
             }
             default:
             {
