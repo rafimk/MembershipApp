@@ -180,11 +180,11 @@ public class Member
     
     public void DisputeApproval(DisputeApprovalContract contract)
     {
-        StateId = contract.StateId;
-        AreaId = contract.ProposedAreaId;
-        DistrictId = contract.DistrictId;
-        MandalamId = contract.ProposedMandalamId;
-        PanchayatId = contract.ProposedPanchayatId;
+        StateId = contract.ToStateId;
+        AreaId = contract.ToAreaId;
+        DistrictId = contract.ToDistrictId;
+        MandalamId = contract.ToMandalamId;
+        PanchayatId = contract.ToPanchayatId;
     }
 
     public void Deactivate()

@@ -115,10 +115,10 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
             
             // ====================== Dispute ======================
             var disputeRequestsCountByState = await _dbContext.DisputeRequests
-                .Include(x => x.State)
+                .Include(x => x.ToState)
                 .Where(x => x.Status == DisputeStatus.Pending)
-                .GroupBy(x => x.StateId)
-                .Select(x => new { StateId = x.Key, StateName = x.First().State.Name, Count = x.Count() })
+                .GroupBy(x => x.ToStateId)
+                .Select(x => new { StateId = x.Key, StateName = x.First().ToState.Name, Count = x.Count() })
                 .ToListAsync();
             
             Int32 totalStateDisputeRequestsCount = 0; 
@@ -143,7 +143,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Total Dispute Requests",
+                    Title = "Pending Disputes",
                     SummaryValue = totalStateDisputeRequestsCount,
                     SummaryText = null,
                     Details = widgetDetails
@@ -224,11 +224,11 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
             
             // ====================== Dispute ======================
             var disputeRequestsCountByState = await _dbContext.DisputeRequests
-                .Include(x => x.State)
-                .Include(x => x.District)
-                .Where(x => x.StateId == user.StateId && x.Status == DisputeStatus.Pending)
-                .GroupBy(x => x.DistrictId)
-                .Select(x => new { DistrictId = x.Key, DistrictName = x.First().District.Name, Count = x.Count() })
+                .Include(x => x.ToState)
+                .Include(x => x.ToDistrict)
+                .Where(x => x.ToStateId == user.StateId && x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.ToDistrictId)
+                .Select(x => new { DistrictId = x.Key, DistrictName = x.First().ToDistrict.Name, Count = x.Count() })
                 .ToListAsync();
             
             Int32 totalDistrictDisputeRequestsCount = 0; 
@@ -253,7 +253,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Total Dispute Requests",
+                    Title = "Pending Disputes",
                     SummaryValue = totalDistrictDisputeRequestsCount,
                     SummaryText = null,
                     Details = widgetDetails
@@ -334,10 +334,10 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
             
             // ====================== Dispute ======================
             var disputeRequestsCountByState = await _dbContext.DisputeRequests
-                .Include(x => x.ProposedMandalam)
-                .Where(x => x.StateId == user.StateId && x.DistrictId == user.DistrictId && x.Status == DisputeStatus.Pending)
-                .GroupBy(x => x.ProposedMandalamId)
-                .Select(x => new { MandalamId = x.Key, MandalamName = x.First().ProposedMandalam.Name, Count = x.Count() })
+                .Include(x => x.ToMandalam)
+                .Where(x => x.ToStateId == user.StateId && x.ToDistrictId == user.DistrictId && x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.ToMandalamId)
+                .Select(x => new { MandalamId = x.Key, MandalamName = x.First().ToMandalam.Name, Count = x.Count() })
                 .ToListAsync();
             
             Int32 totalMandalamDisputeRequestsCount = 0; 
@@ -362,7 +362,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Total Dispute Requests",
+                    Title = "Pending Disputes",
                     SummaryValue = totalMandalamDisputeRequestsCount,
                     SummaryText = null,
                     Details = widgetDetails
@@ -411,10 +411,10 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
             
             // ====================== Dispute ======================
             var disputeRequestsCountByState = await _dbContext.DisputeRequests
-                .Include(x => x.ProposedMandalam)
-                .Where(x => x.StateId == user.StateId && x.DistrictId == user.DistrictId && x.Status == DisputeStatus.Pending)
-                .GroupBy(x => x.ProposedMandalamId)
-                .Select(x => new { MandalamId = x.Key, MandalamName = x.First().ProposedMandalam.Name, Count = x.Count() })
+                .Include(x => x.ToMandalam)
+                .Where(x => x.ToStateId == user.StateId && x.ToDistrictId == user.DistrictId && x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.ToMandalamId)
+                .Select(x => new { MandalamId = x.Key, MandalamName = x.First().ToMandalam.Name, Count = x.Count() })
                 .ToListAsync();
             
             Int32 totalMandalamDisputeRequestsCount = 0; 
@@ -439,7 +439,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Total Dispute Requests",
+                    Title = "Pending Disputes",
                     SummaryValue = totalMandalamDisputeRequestsCount,
                     SummaryText = null,
                     Details = widgetDetails
@@ -487,10 +487,10 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
             
             // ====================== Dispute ======================
             var disputeRequestsCountByState = await _dbContext.DisputeRequests
-                .Include(x => x.ProposedPanchayat)
-                .Where(x => x.StateId == user.StateId && x.ProposedMandalamId == user.MandalamId && x.Status == DisputeStatus.Pending)
-                .GroupBy(x => x.ProposedPanchayatId)
-                .Select(x => new { PanchayatId = x.Key, PanchayatName = x.First().ProposedPanchayat.Name, Count = x.Count() })
+                .Include(x => x.ToPanchayat)
+                .Where(x => x.ToStateId == user.StateId && x.ToMandalamId == user.MandalamId && x.Status == DisputeStatus.Pending)
+                .GroupBy(x => x.ToPanchayatId)
+                .Select(x => new { PanchayatId = x.Key, PanchayatName = x.First().ToPanchayat.Name, Count = x.Count() })
                 .ToListAsync();
             
             Int32 totalPanchayatDisputeRequestsCount = 0; 
@@ -515,7 +515,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Total Dispute Requests",
+                    Title = "Pending Disputes",
                     SummaryValue = totalPanchayatDisputeRequestsCount,
                     SummaryText = null,
                     Details = widgetDetails
@@ -527,22 +527,24 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
 
         if (user.Role == UserRole.DisputeCommittee())
         {
-            var disputeRequestsCountByState = await _dbContext.DisputeRequests
-                .Include(x => x.State)
-                .Include(x => x.District)
-                .Where(x => x.StateId == user.StateId && x.Status == DisputeStatus.Pending)
-                .GroupBy(x => x.DistrictId)
-                .Select(x => new { DistrictId = x.Key, DistrictName = x.First().District.Name, Count = x.Count() })
+            var disputeRequestsCountByStateFrom = await _dbContext.DisputeRequests
+                .Include(x => x.FromState)
+                .Include(x => x.FromDistrict)
+                .Where(x => x.FromStateId == user.StateId && 
+                            x.Status == DisputeStatus.Pending &&
+                            x.FromStateId != x.ToStateId)
+                .GroupBy(x => x.FromDistrictId)
+                .Select(x => new { DistrictId = x.Key, DistrictName = x.First().FromDistrict.Name, Count = x.Count() })
                 .ToListAsync();
             
-            Int32 totalDistrictDisputeRequestsCount = 0; 
+            Int32 totalDistrictDisputeRequestsCountFrom = 0; 
             widgetDetails= new();
             
-            foreach(var item in disputeRequestsCountByState)
+            foreach(var item in disputeRequestsCountByStateFrom)
             {
                 if (item.DistrictName is not null)
                 {
-                    totalDistrictDisputeRequestsCount += item.Count;
+                    totalDistrictDisputeRequestsCountFrom += item.Count;
                     widgetDetails.Add(new WidgetDetailDto
                     {
                         Text = item.DistrictName,
@@ -552,18 +554,98 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 }
             }
 
-            if (totalDistrictDisputeRequestsCount > 0)
+            if (totalDistrictDisputeRequestsCountFrom > 0)
             {
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Total Dispute Requests",
-                    SummaryValue = totalDistrictDisputeRequestsCount,
+                    Title = "Pending Disputes From",
+                    SummaryValue = totalDistrictDisputeRequestsCountFrom,
+                    SummaryText = null,
+                    Details = widgetDetails
+                });
+            }
+            
+            var disputeRequestsCountByStateTo = await _dbContext.DisputeRequests
+                .Include(x => x.ToState)
+                .Include(x => x.ToDistrict)
+                .Where(x => x.ToStateId == user.StateId && 
+                            x.Status == DisputeStatus.Pending &&
+                            x.FromStateId != x.ToStateId)
+                .GroupBy(x => x.FromDistrictId)
+                .Select(x => new { DistrictId = x.Key, DistrictName = x.First().ToDistrict.Name, Count = x.Count() })
+                .ToListAsync();
+            
+            Int32 totalDistrictDisputeRequestsCountTo = 0; 
+            widgetDetails= new();
+            
+            foreach(var item in disputeRequestsCountByStateTo)
+            {
+                if (item.DistrictName is not null)
+                {
+                    totalDistrictDisputeRequestsCountTo += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.DistrictName,
+                        IntValue = item.Count,
+                        TextValue = null
+                    });
+                }
+            }
+
+            if (totalDistrictDisputeRequestsCountTo > 0)
+            {
+                widget.Add(new WidgetDto
+                {
+                    No = 1,
+                    Title = "Pending Disputes To",
+                    SummaryValue = totalDistrictDisputeRequestsCountTo,
+                    SummaryText = null,
+                    Details = widgetDetails
+                });
+            }
+            
+            var disputeRequestsCountByStateWithIn = await _dbContext.DisputeRequests
+                .Include(x => x.ToState)
+                .Include(x => x.ToDistrict)
+                .Where(x => x.FromStateId == user.StateId && 
+                            x.Status == DisputeStatus.Pending &&
+                            x.FromStateId == x.ToStateId)
+                .GroupBy(x => x.FromDistrictId)
+                .Select(x => new { DistrictId = x.Key, DistrictName = x.First().ToDistrict.Name, Count = x.Count() })
+                .ToListAsync();
+            
+            Int32 totalDistrictDisputeRequestsCountWithIn = 0; 
+            widgetDetails= new();
+            
+            foreach(var item in disputeRequestsCountByStateWithIn)
+            {
+                if (item.DistrictName is not null)
+                {
+                    totalDistrictDisputeRequestsCountWithIn += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.DistrictName,
+                        IntValue = item.Count,
+                        TextValue = null
+                    });
+                }
+            }
+
+            if (totalDistrictDisputeRequestsCountWithIn > 0)
+            {
+                widget.Add(new WidgetDto
+                {
+                    No = 1,
+                    Title = "Pending Disputes With In",
+                    SummaryValue = totalDistrictDisputeRequestsCountWithIn,
                     SummaryText = null,
                     Details = widgetDetails
                 });
             }
         }
+        
+        
 
         return widget;
     }

@@ -36,12 +36,20 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
                 var districtAgentStateId = (Guid)user.StateId;
             
                 return await _dbContext.DisputeRequests
-                    .Include(x => x.ProposedArea).ThenInclude(x => x.State)
-                    .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
-                    .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
+                    .Include(x => x.Member)
+                    .Include(x => x.FromState)
+                    .Include(x => x.FromArea)
+                    .Include(x => x.FromDistrict)
+                    .Include(x => x.FromMandalam)
+                    .Include(x => x.FromPanchayat)
+                    .Include(x => x.ToState)
+                    .Include(x => x.ToArea)
+                    .Include(x => x.ToDistrict)
+                    .Include(x => x.ToMandalam)
+                    .Include(x => x.ToPanchayat)
                     .AsNoTracking()
-                    .Where(x => x.DistrictId == districtAgentDistrictId &&
-                                x.StateId == districtAgentStateId && 
+                    .Where(x => (x.ToDistrictId == districtAgentDistrictId || x.FromDistrictId == districtAgentDistrictId) &&
+                                (x.ToStateId == districtAgentStateId || x.FromStateId == districtAgentStateId) && 
                                 x.Status == DisputeStatus.Pending)
                     .OrderByDescending(x => x.SubmittedDate)
                     .Select(x => x.AsDto())
@@ -52,11 +60,19 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
                 var mandalamId = (Guid)user.CascadeId;
         
                 return await _dbContext.DisputeRequests
-                    .Include(x => x.ProposedArea).ThenInclude(x => x.State)
-                    .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
-                    .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
+                    .Include(x => x.Member)
+                    .Include(x => x.FromState)
+                    .Include(x => x.FromArea)
+                    .Include(x => x.FromDistrict)
+                    .Include(x => x.FromMandalam)
+                    .Include(x => x.FromPanchayat)
+                    .Include(x => x.ToState)
+                    .Include(x => x.ToArea)
+                    .Include(x => x.ToDistrict)
+                    .Include(x => x.ToMandalam)
+                    .Include(x => x.ToPanchayat)
                     .AsNoTracking()
-                    .Where(x => x.ProposedMandalamId == mandalamId &&
+                    .Where(x => (x.ToMandalamId == mandalamId || x.FromMandalamId == mandalamId)&&
                                 x.Status == DisputeStatus.Pending)
                     .OrderByDescending(x => x.SubmittedDate)
                     .Select(x => x.AsDto())
@@ -67,11 +83,19 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
                 var stateId = (Guid)user.StateId;
            
                 return await _dbContext.DisputeRequests
-                    .Include(x => x.ProposedArea).ThenInclude(x => x.State)
-                    .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
-                    .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
+                    .Include(x => x.Member)
+                    .Include(x => x.FromState)
+                    .Include(x => x.FromArea)
+                    .Include(x => x.FromDistrict)
+                    .Include(x => x.FromMandalam)
+                    .Include(x => x.FromPanchayat)
+                    .Include(x => x.ToState)
+                    .Include(x => x.ToArea)
+                    .Include(x => x.ToDistrict)
+                    .Include(x => x.ToMandalam)
+                    .Include(x => x.ToPanchayat)
                     .AsNoTracking()
-                    .Where(x => x.StateId == stateId)
+                    .Where(x => (x.ToStateId == stateId || x.ToStateId == stateId))
                     .OrderByDescending(x => x.SubmittedDate)
                     .Select(x => x.AsDto())
                     .ToListAsync();

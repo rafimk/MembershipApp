@@ -6,13 +6,17 @@ public class DisputeRequestDto
 {
     public Guid Id { get; set; }
     public Guid MemberId { get; set; }
-    public MemberDto Member { get; set; }
-    public Guid ProposedAreaId { get; set; }
-    public AreaDto ProposedArea { get; set; }
-    public Guid ProposedMandalamId { get; set; }
-    public MandalamDto ProposedMandalam { get; set; }
-    public Guid ProposedPanchayatId { get; set; }
-    public PanchayatDto ProposedPanchayat { get; set; }
+    public MemberBasicDto Member { get; set; }
+    public StateDto ToState { get; set; }
+    public AreaDto ToArea { get; set; }
+    public DistrictDto ToDistrict { get; set; }
+    public MandalamDto ToMandalam { get; set; }
+    public PanchayatDto ToPanchayat { get; set; }
+    public StateDto FromState { get; set; }
+    public AreaDto FromArea { get; set; }
+    public DistrictDto FromDistrict { get; set; }
+    public MandalamDto FromMandalam { get; set; }
+    public PanchayatDto FromPanchayat { get; set; }
     public string Reason { get; set; }
     public string JustificationComment { get; set; }
     public DateTimeOffset SubmittedDate  { get; set; }
@@ -20,4 +24,21 @@ public class DisputeRequestDto
     public DateTimeOffset? ActionDate  { get; set; }
     public Guid? ActionBy { get; set; }
     public int Status { get; set; }
+
+    public string DisputeType
+    {
+        get
+        {
+            if (FromState?.Id == ToState?.Id)
+            {
+                return "With in state";
+            }
+            else if (FromState?.Id != ToState?.Id)
+            {
+                return $"From {FromState.Prefix} To {ToState.Prefix}";
+            }
+            
+            return "";
+        }
+    }
 }

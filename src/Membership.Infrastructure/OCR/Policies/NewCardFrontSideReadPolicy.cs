@@ -89,6 +89,17 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             {
                 dtExpiry = DateParseHelper.PaseAsDateOnly(expiry);
             }
+            else
+            {
+                if (newDates.Count() == 3)
+                {
+                    var myRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
+                    if (myRegex.IsMatch(newDates[2]))
+                    {
+                        dtExpiry = DateParseHelper.PaseAsDateOnly(newDates[2]);
+                    }
+                }
+            }
         
             if (dob.Trim().Length == 10)
             {

@@ -2,9 +2,9 @@
 
 public record DisputeApprovalContract()
 {
-    public Guid StateId { get; set; }
-    public Guid ProposedAreaId { get; set; }
-    public Guid DistrictId { get; set; }
-    public Guid ProposedMandalamId { get; set; }
-    public Guid ProposedPanchayatId { get; set; }
+    public Guid ToStateId { get; set; }
+    public Guid ToAreaId { get; set; }
+    public Guid ToDistrictId { get; set; }
+    public Guid ToMandalamId { get; set; }
+    public Guid ToPanchayatId { get; set; }
 }

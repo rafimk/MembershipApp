@@ -11,16 +11,28 @@ public class DisputeRequest
     public Guid Id { get; private set; }
     public Guid MemberId { get; private set; }
     public Member Member { get; private set; }
-    public Guid StateId { get; private set; }
-    public State State { get; private set; }
-    public Guid ProposedAreaId { get; private set; }
-    public Area ProposedArea { get; private set; }
-    public Guid DistrictId { get; private set; }
-    public District District { get; private set; }
-    public Guid ProposedMandalamId { get; private set; }
-    public Mandalam ProposedMandalam { get; private set; }
-    public Guid ProposedPanchayatId { get; private set; }
-    public Panchayat ProposedPanchayat { get; private set; }
+    
+    public Guid ToStateId { get; private set; }
+    public State ToState { get; private set; }
+    public Guid ToAreaId { get; private set; }
+    public Area ToArea { get; private set; }
+    public Guid ToDistrictId { get; private set; }
+    public District ToDistrict { get; private set; }
+    public Guid ToMandalamId { get; private set; }
+    public Mandalam ToMandalam { get; private set; }
+    public Guid ToPanchayatId { get; private set; }
+    public Panchayat ToPanchayat { get; private set; }
+    
+    public Guid FromStateId { get; private set; }
+    public State FromState { get; private set; }
+    public Guid FromAreaId { get; private set; }
+    public Area FromArea { get; private set; }
+    public Guid FromDistrictId { get; private set; }
+    public District FromDistrict { get; private set; }
+    public Guid FromMandalamId { get; private set; }
+    public Mandalam FromMandalam { get; private set; }
+    public Guid FromPanchayatId { get; private set; }
+    public Panchayat FromPanchayat { get; private set; }
     public string Reason { get; private set; }
     public string JustificationComment { get; private set; }
     public DateTime SubmittedDate  { get; private set; }
@@ -37,11 +49,16 @@ public class DisputeRequest
     {
         Id = contract.Id;
         MemberId = contract.MemberId;
-        StateId = contract.StateId;
-        ProposedAreaId = contract.ProposedAreaId;
-        DistrictId = contract.DistrictId;
-        ProposedMandalamId = contract.ProposedMandalamId;
-        ProposedPanchayatId = contract.ProposedPanchayatId;
+        ToStateId = contract.ToStateId;
+        ToAreaId = contract.ToAreaId;
+        ToDistrictId = contract.ToDistrictId;
+        ToMandalamId = contract.ToMandalamId;
+        ToPanchayatId = contract.ToPanchayatId;
+        FromStateId = contract.FromStateId;
+        FromAreaId = contract.FromAreaId;
+        FromDistrictId = contract.FromDistrictId;
+        FromMandalamId = contract.FromMandalamId;
+        FromPanchayatId = contract.FromPanchayatId;
         Reason = contract.Reason;
         JustificationComment = contract.JustificationComment;
         SubmittedDate = contract.SubmittedDate;
@@ -56,11 +73,16 @@ public class DisputeRequest
         {
             Id = contract.Id,
             MemberId = contract.MemberId,
-            StateId = contract.StateId,
-            ProposedAreaId = contract.ProposedAreaId,
-            DistrictId = contract.DistrictId,
-            ProposedMandalamId = contract.ProposedMandalamId,
-            ProposedPanchayatId = contract.ProposedPanchayatId,
+            ToStateId = contract.ToStateId,
+            ToAreaId = contract.ToAreaId,
+            ToDistrictId = contract.ToDistrictId,
+            ToMandalamId = contract.ToMandalamId,
+            ToPanchayatId = contract.ToPanchayatId,
+            FromStateId = contract.FromStateId,
+            FromAreaId = contract.FromAreaId,
+            FromDistrictId = contract.FromDistrictId,
+            FromMandalamId = contract.FromMandalamId,
+            FromPanchayatId = contract.FromPanchayatId,
             Reason = contract.Reason,
             JustificationComment = null,
             SubmittedDate = contract.SubmittedDate,
@@ -72,7 +94,11 @@ public class DisputeRequest
 
     public void Update(UpdateDisputeRequestContract contract)
     {
-        ProposedAreaId = contract.ProposedAreaId;
+        ToStateId = contract.ToStateId;
+        ToAreaId = contract.ToAreaId;
+        ToDistrictId = contract.ToDistrictId;
+        ToMandalamId = contract.ToMandalamId;
+        ToPanchayatId = contract.ToPanchayatId;
         Reason = contract.Reason;
     }
 

@@ -48,23 +48,23 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
             throw new MemberNotFoundException(command.MemberId);
         }
         
-        var area = await _areaRepository.GetByIdAsync(command.ProposedAreaId);
+        var area = await _areaRepository.GetByIdAsync(command.ToAreaId);
         
         if (area is null)
         {
-            throw new AreaNotFoundException(command.ProposedAreaId);
+            throw new AreaNotFoundException(command.ToAreaId);
         }
         
         var applicableAreas = await _areaRepository.GetByStateIdAsync((Guid)agent.StateId);
 
-        var findArea = applicableAreas.FirstOrDefault(x => x.Id == command.ProposedAreaId);
+        var findArea = applicableAreas.FirstOrDefault(x => x.Id == command.ToAreaId);
  
         if (findArea is null)
         {
             throw new NotAuthorizedToCreateMemberForThisAreaException();
         }
 
-        var panchayat = await _panchayatRepository.GetByIdAsync(command.ProposedPanchayatId);
+        var panchayat = await _panchayatRepository.GetByIdAsync(command.ToPanchayatId);
 
         if (panchayat is null)
         {
@@ -82,11 +82,16 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
         {
             Id = (Guid)command.Id,
             MemberId = command.MemberId,
-            StateId = (Guid)agent.StateId,
-            ProposedAreaId = command.ProposedAreaId,
-            DistrictId = (Guid)agent.DistrictId,
-            ProposedMandalamId = panchayat.MandalamId,
-            ProposedPanchayatId = command.ProposedPanchayatId,
+            ToStateId = (Guid)agent.StateId,
+            ToAreaId = command.ToAreaId,
+            ToDistrictId = (Guid)agent.DistrictId,
+            ToMandalamId = panchayat.MandalamId,
+            ToPanchayatId = command.ToPanchayatId,
+            FromStateId = member.StateId,
+            FromAreaId = member.AreaId,
+            FromDistrictId = member.DistrictId,
+            FromMandalamId = member.MandalamId,
+            FromPanchayatId = member.PanchayatId,
             Reason = command.Reason,
             SubmittedDate = _clock.Current(),
             SubmittedBy = (Guid)command.SubmittedBy

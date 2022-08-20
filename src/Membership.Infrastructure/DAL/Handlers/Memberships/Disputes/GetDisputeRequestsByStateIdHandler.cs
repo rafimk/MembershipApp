@@ -16,11 +16,19 @@ internal sealed class GetDisputeRequestsByStateIdHandler : IQueryHandler<GetDisp
     {
         var stateId = query.StateId;
         var disputeRequests = await _dbContext.DisputeRequests
-            .Include(x => x.ProposedArea).ThenInclude(x => x.State)
-            .Include(x => x.ProposedMandalam).ThenInclude(x => x.District)
-            .Include(x => x.ProposedPanchayat).ThenInclude(x => x.Mandalam)
+            .Include(x => x.Member)
+            .Include(x => x.FromState)
+            .Include(x => x.FromArea)
+            .Include(x => x.FromDistrict)
+            .Include(x => x.FromMandalam)
+            .Include(x => x.FromPanchayat)
+            .Include(x => x.ToState)
+            .Include(x => x.ToArea)
+            .Include(x => x.ToDistrict)
+            .Include(x => x.ToMandalam)
+            .Include(x => x.ToPanchayat)
             .AsNoTracking()
-            .Where(x => x.ProposedArea.StateId == stateId)
+            .Where(x => x.ToStateId == stateId)
             .Select(x => x.AsDto())
             .ToListAsync();
 

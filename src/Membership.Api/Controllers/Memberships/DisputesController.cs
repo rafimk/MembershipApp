@@ -167,6 +167,8 @@ public class DisputesController : ControllerBase
     [HttpPut("{requestId:guid}")]
     public async Task<ActionResult> Put(Guid requestId, UpdateDisputeRequest command)
     {
+        var userId = Guid.Parse(User?.Identity?.Name);
+        command = command with {SubmittedBy = userId};
         await _updateDisputeRequestHandler.HandleAsync(command with {Id = requestId});
         return NoContent();
     }

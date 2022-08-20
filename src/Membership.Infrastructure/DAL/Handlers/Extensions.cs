@@ -20,6 +20,7 @@ public static class Extensions
         {
             Id = entity.Id,
             Name = entity.Name,
+            Prefix = entity.Prefix,
             CreatedAt = entity.CreatedAt
         };
     
@@ -43,6 +44,15 @@ public static class Extensions
                 Name = entity.State?.Name,
                 CreatedAt = entity.State.CreatedAt
             },
+            CreatedAt = entity.CreatedAt
+        };
+    
+    public static AreaDto AsBasicDto(this Area entity)
+        => new()
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            State = null,
             CreatedAt = entity.CreatedAt
         };
     
@@ -75,6 +85,15 @@ public static class Extensions
             CreatedAt = entity.CreatedAt
         };
     
+    public static MandalamDto AsBaicDto(this Mandalam entity)
+        => new()
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            District = null,
+            CreatedAt = entity.CreatedAt
+        };
+    
     public static CascadeDto AsCascadeDto(this Mandalam entity)
         => new()
         {
@@ -93,6 +112,15 @@ public static class Extensions
                 Name = entity.Mandalam.Name,
                 CreatedAt = entity.Mandalam.CreatedAt
             },
+            CreatedAt = entity.CreatedAt
+        };
+    
+    public static PanchayatDto AsBaicDto(this Panchayat entity)
+        => new()
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            Mandalam = null,
             CreatedAt = entity.CreatedAt
         };
     
@@ -242,12 +270,17 @@ public static class Extensions
         {
             Id = entity.Id,
             MemberId = entity.MemberId,
-            ProposedAreaId = entity.ProposedAreaId,
-            ProposedArea = entity.ProposedArea.AsDto(),
-            ProposedMandalamId = entity.ProposedMandalamId,
-            ProposedMandalam = entity.ProposedMandalam.AsDto(),
-            ProposedPanchayatId = entity.ProposedPanchayatId,
-            ProposedPanchayat = entity.ProposedPanchayat.AsDto(),
+            Member = entity.Member.AsBasicDto(),
+            ToState = entity.ToState.AsDto(),
+            ToArea = entity.ToArea.AsBasicDto(),
+            ToDistrict = entity.ToDistrict.AsDto(),
+            ToMandalam = entity.ToMandalam.AsBaicDto(),
+            ToPanchayat = entity.ToPanchayat.AsBaicDto(),
+            FromState = entity.FromState.AsDto(),
+            FromArea = entity.FromArea.AsBasicDto(),
+            FromDistrict = entity.FromDistrict.AsDto(),
+            FromMandalam = entity.FromMandalam.AsBaicDto(),
+            FromPanchayat = entity.FromPanchayat.AsBaicDto(),
             Reason = entity.Reason,
             JustificationComment = entity.JustificationComment,
             SubmittedDate = entity.SubmittedDate,
@@ -262,13 +295,17 @@ public static class Extensions
          {
              Id = entity.Id,
              MemberId = entity.MemberId,
-             Member = entity.Member.AsDto(),
-             ProposedAreaId = entity.ProposedAreaId,
-             ProposedArea = entity.ProposedArea.AsDto(),
-             ProposedMandalamId = entity.ProposedMandalamId,
-             ProposedMandalam = entity.ProposedMandalam.AsDto(),
-             ProposedPanchayatId = entity.ProposedPanchayatId,
-             ProposedPanchayat = entity.ProposedPanchayat.AsDto(),
+             Member = entity.Member.AsBasicDto(),
+             ToState = entity.ToState.AsDto(),
+             ToArea = entity.ToArea.AsDto(),
+             ToDistrict = entity.ToDistrict.AsDto(),
+             ToMandalam = entity.ToMandalam.AsDto(),
+             ToPanchayat = entity.ToPanchayat.AsDto(),
+             FromState = entity.FromState.AsDto(),
+             FromArea = entity.FromArea.AsDto(),
+             FromDistrict = entity.FromDistrict.AsDto(),
+             FromMandalam = entity.FromMandalam.AsDto(),
+             FromPanchayat = entity.FromPanchayat.AsDto(),
              Reason = entity.Reason,
              JustificationComment = entity.JustificationComment,
              SubmittedDate = entity.SubmittedDate,
@@ -276,5 +313,22 @@ public static class Extensions
              ActionDate = entity.ActionDate,
              ActionBy = entity.ActionBy,
              Status = (int)entity.Status,
+         };
+     
+     public static MemberBasicDto AsBasicDto(this Member entity)
+         => new()
+         {
+            Id = entity.Id,
+            MembershipId = entity.MembershipId,
+            FullName = entity.FullName,
+            EmiratesIdNumber = entity.EmiratesIdNumber,
+            EmiratesIdExpiry = entity.EmiratesIdExpiry,
+            DateOfBirth = entity.DateOfBirth,
+            MobileNumber = entity.MobileNumber,
+            Email = entity.Email,
+            BloodGroup = (int)entity.BloodGroup,
+            Gender = (int)entity.Gender,
+            HouseName = entity.HouseName,
+            AddressInIndia = entity.AddressInIndia
          };
     }

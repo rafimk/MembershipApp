@@ -34,11 +34,11 @@ internal sealed class ApproveDisputeRequestHandler : ICommandHandler<ApproveDisp
 
         var disputeApprovalContract = new DisputeApprovalContract
         { 
-            StateId = disputeRequest.StateId,
-            ProposedAreaId = disputeRequest.ProposedAreaId,
-            DistrictId = disputeRequest.DistrictId,
-            ProposedMandalamId = disputeRequest.MemberId,
-            ProposedPanchayatId = disputeRequest.ProposedPanchayatId
+            ToStateId = disputeRequest.ToStateId,
+            ToAreaId = disputeRequest.ToAreaId,
+            ToDistrictId = disputeRequest.ToDistrictId,
+            ToMandalamId = disputeRequest.ToMandalamId,
+            ToPanchayatId = disputeRequest.ToPanchayatId
         };
         
         member.DisputeApproval(disputeApprovalContract);

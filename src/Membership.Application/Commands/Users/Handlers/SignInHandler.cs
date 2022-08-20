@@ -25,9 +25,15 @@ internal sealed class SignInHandler : ICommandHandler<SignIn>
     public async Task HandleAsync(SignIn command)
     {
         var user = await _userRepository.GetByEmailAsync(command.Email);
+        
         if (user is null)
         {
             throw new InvalidCredentialsException();
+        }
+        
+        if (!user.IsActive)
+        {
+            throw new YouAccountIsDisabledException();
         }
 
         if (!_passwordManager.Validate(command.Password, user.PasswordHash))

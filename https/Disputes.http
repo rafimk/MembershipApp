@@ -11,7 +11,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "mandalam-agent@admin.com",
+    "email": "agent4@admin.com",
     "password": "admin@123"
 }
 
@@ -44,8 +44,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "memberId": "79c2b8b4-2f85-4207-8889-32250034451c",
-    "proposedAreaId": "9073bb7b-5e09-4fd7-80a4-1d874bc78dc3",
-    "proposedPanchayatId": "2c920e18-0681-4e6f-ab4d-00a602fc88ca",
+    "memberId": "0cdacc2d-3043-48e6-94b3-4757b7b50270",
+    "toAreaId": "43ffa5c5-1d27-482c-8e67-40069afb92a4",
+    "toPanchayatId": "4e14ac81-5462-4c3c-afe8-001af60182c9",
     "reason": "test"
 }

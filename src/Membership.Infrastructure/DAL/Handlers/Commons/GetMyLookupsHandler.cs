@@ -55,6 +55,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
         {
             var cascadeData = await  _dbContext.States
                 .OrderBy(x => x.Name)
+                .Where(x => !x.IsDeleted)
                 .AsNoTracking()
                 .Select(x => x.AsCascadeDto())
                 .ToListAsync();
@@ -66,6 +67,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
         {
             var cascadeData = await _dbContext.Districts
                 .OrderBy(x => x.Name)
+                .Where(x => !x.IsDeleted)
                 .AsNoTracking()
                 .Select(x => x.AsCascadeDto())
                 .ToListAsync();
@@ -78,7 +80,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
             var cascadeData = await _dbContext.Mandalams
                 .OrderBy(x => x.Name)
                 .AsNoTracking()
-                .Where(x => x.DistrictId == (Guid)userInfo.CascadeId)
+                .Where(x => x.DistrictId == (Guid)userInfo.CascadeId && !x.IsDeleted)
                 .Select(x => x.AsCascadeDto())
                 .ToListAsync();
             lookupsDto.CascadeData = cascadeData;
@@ -98,7 +100,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .OrderBy(x => x.Name)
                 .Include(x => x.State)
                 .AsNoTracking()
-                .Where(x => x.StateId == (Guid)userInfo.StateId)
+                .Where(x => x.StateId == (Guid)userInfo.StateId && !x.IsDeleted)
                 .Select(x => x.AsDto())
                 .ToListAsync();
             
@@ -106,7 +108,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .OrderBy(x => x.Name)
                 .Include(x => x.Mandalam)
                 .AsNoTracking()
-                .Where(x => x.MandalamId == (Guid)userInfo.CascadeId)
+                .Where(x => x.MandalamId == (Guid)userInfo.CascadeId && !x.IsDeleted)
                 .Select(x => x.AsDto())
                 .ToListAsync();
             
@@ -171,7 +173,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 var cascadeData = await _dbContext.Mandalams
                     .OrderBy(x => x.Name)
                     .AsNoTracking()
-                    .Where(x => x.DistrictId == (Guid)userInfo.CascadeId)
+                    .Where(x => x.DistrictId == (Guid)userInfo.CascadeId && !x.IsDeleted)
                     .Select(x => x.AsCascadeDto())
                     .ToListAsync();
                 lookupsDto.CascadeData = cascadeData;
