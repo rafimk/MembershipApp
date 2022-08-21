@@ -559,7 +559,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Pending Disputes From",
+                    Title = "Pending Disputes (Out)",
                     SummaryValue = totalDistrictDisputeRequestsCountFrom,
                     SummaryText = null,
                     Details = widgetDetails
@@ -598,7 +598,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Pending Disputes To",
+                    Title = "Pending Disputes (Inn)",
                     SummaryValue = totalDistrictDisputeRequestsCountTo,
                     SummaryText = null,
                     Details = widgetDetails
@@ -637,7 +637,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Pending Disputes With In",
+                    Title = "Pending Disputes With In State",
                     SummaryValue = totalDistrictDisputeRequestsCountWithIn,
                     SummaryText = null,
                     Details = widgetDetails

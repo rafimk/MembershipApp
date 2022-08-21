@@ -39,12 +39,12 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "state-admin4",
-    "email": "State-Admin4@admin.com",
+    "fullName": "dispute-committee",
+    "email": "dispute-committee@admin.com",
     "mobileNumber": "0554296326",
-    "designation": "state-admin",
-    "role": "state-admin",
-    "cascadeId": "6c0c8ac8-8c1e-43ad-8399-f66e2d53a9c9",
+    "designation": "dispute-committee",
+    "role": "dispute-committee",
+    "cascadeId": "c4613305-d19a-4719-931a-58d7d5853a41",
     "isDisputeCommittee": false
 }
 

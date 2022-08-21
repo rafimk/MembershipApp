@@ -23,10 +23,11 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             var splitedResult = result.Split(" ");
             var newEids = splitedResult.Where(x => x.Length == 18).ToList();
             var newDates = splitedResult.Where(x => x.Length == 10).ToList();
+            var myDateRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
+            var cardNoRegex = new Regex("^784-[0-9]{4}-[0-9]{7}-[0-9]{1}$");
 
             foreach (var item in newEids)
             {
-                var cardNoRegex = new Regex("^784-[0-9]{4}-[0-9]{7}-[0-9]{1}$");
                 if (cardNoRegex.IsMatch(item))
                 {
                     eidNo = item;
@@ -51,8 +52,7 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
 
             if (newDates.Count() > 0)
             {
-                var myRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
-                if (myRegex.IsMatch(newDates[0]))
+                if (myDateRegex.IsMatch(newDates[0]))
                 {
                     dob = newDates[0];
                 }
@@ -84,8 +84,9 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
 
             DateTime? dtExpiry = null;
             DateTime? dtDob = null;
+            
         
-            if (expiry.Trim().Length == 10)
+            if (expiry.Trim().Length == 10 && myDateRegex.IsMatch(expiry))
             {
                 dtExpiry = DateParseHelper.PaseAsDateOnly(expiry);
             }
@@ -93,8 +94,7 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             {
                 if (newDates.Count() == 3)
                 {
-                    var myRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
-                    if (myRegex.IsMatch(newDates[2]))
+                    if (myDateRegex.IsMatch(newDates[2]))
                     {
                         dtExpiry = DateParseHelper.PaseAsDateOnly(newDates[2]);
                     }
