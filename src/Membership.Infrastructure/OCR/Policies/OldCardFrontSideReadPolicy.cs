@@ -58,11 +58,25 @@ public class OldCardFrontSideReadPolicy : ICardReadPolicy
                     name = name.Replace(":", "").Trim();
                 }
             }
+            
+            int firstStringPositionForNationalityInName = name.IndexOf("Nationality");
+
+            if (firstStringPositionForNationalityInName > 0)
+            {
+                name = name.Replace("Nationality", "");
+            }
+            
+            int firstStringPositionForDateOfBirtInName = name.IndexOf("Date of Birth");
+
+            if (firstStringPositionForDateOfBirtInName > 0)
+            {
+                name = name.Replace("Date of Birth", "");
+            }
 
             return new OcrData
             {
                 IdNumber = eidNo,
-                Name = name,
+                Name = name.KeepOnlyAlphaCharacters(),
                 DateofBirth = null,
                 ExpiryDate = null,
                 CardNumber = "",

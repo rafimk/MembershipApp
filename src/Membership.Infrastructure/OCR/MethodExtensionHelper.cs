@@ -17,6 +17,19 @@ public static class MethodExtensionHelper
         return sb.ToString();
     }
     
+    public static string KeepOnlyAlphaCharacters(this string str)
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach (char c in str)
+        {
+            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == ' ')
+            {
+                sb.Append(c);
+            }
+        }
+        return sb.ToString();
+    }
+    
     public static string Left(this string str, int length)
     {
         str = (str ?? string.Empty);

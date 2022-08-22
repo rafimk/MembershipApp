@@ -112,11 +112,18 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             {
                 genderType = Gender.Female;
             }
-        
+            
+            int firstStringPositionForDateOfBirtInName = name.IndexOf("Date of Birth");
+
+            if (firstStringPositionForDateOfBirtInName > 0)
+            {
+                name = name.Replace("Date of Birth", "");
+            }
+
             return new OcrData
             {
                 IdNumber = eidNo,
-                Name = name,
+                Name = name.KeepOnlyAlphaCharacters(),
                 DateofBirth = dtDob,
                 ExpiryDate = dtExpiry,
                 CardNumber = null,

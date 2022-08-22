@@ -149,3 +149,25 @@ Content-Type: application/json
     "LastPageId": "a5ad06e5-564d-438c-bb81-70be071af0f6",
     "UserId": null
 }
+
+### 21/08/2022
+POST {{url}}/ocr
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "FrontPageId": "4a61e464-4647-4e01-ad65-dd4150a43aa2",
+    "LastPageId": "ed9e727a-49a8-40b3-b7a8-f373c366685a",
+    "UserId": null
+}
+
+### 
+POST {{url}}/ocr
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "FrontPageId": "a38323a9-24f1-4c3a-8ef2-97628df3bad5",
+    "LastPageId": "ed9e727a-49a8-40b3-b7a8-f373c366685a",
+    "UserId": null
+}
