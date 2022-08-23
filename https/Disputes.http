@@ -49,3 +49,24 @@ Content-Type: application/json
     "toPanchayatId": "4e14ac81-5462-4c3c-afe8-001af60182c9",
     "reason": "test"
 }
+
+###
+PUT  {{url}}/disputes/approve/{{requestId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "requestId": "11156c6e-0e6d-4848-a487-1a6b86438870",
+  "justificationComment": "Test apprive"
+}
+
+###
+PUT  {{url}}/disputes/reject/{{requestId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "requestId": "11156c6e-0e6d-4848-a487-1a6b86438870",
+  "justificationComment": "Test apprive"
+}
+
