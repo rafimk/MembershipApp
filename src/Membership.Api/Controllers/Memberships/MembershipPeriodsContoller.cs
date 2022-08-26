@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Memberships.MembershipPeriods;
 using Membership.Application.DTO.Memberships;
@@ -11,9 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Memberships;
 
-[ApiController]
-[Route("[controller]")]
-public class MembershipPeriodsController : ControllerBase
+public class MembershipPeriodsController : ApiController
 {
     private readonly ICommandHandler<CreateMembershipPeriod> _createMembershipPeriodHandler;
     private readonly ICommandHandler<UpdateMembershipPeriod> _updateMembershipPeriodHaneHandler;
@@ -34,20 +33,20 @@ public class MembershipPeriodsController : ControllerBase
         _getMembershipPeriodsdHandler = getMembershipPeriodsdHandler;
     }
     
-    [HttpGet()]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<MembershipPeriodDto>>> Get()
-    {
-        var membershipPeriods = await _getMembershipPeriodsdHandler.HandleAsync(new GetMembershipPeriods { });
-        
-        if (membershipPeriods is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(membershipPeriods);
-    }
+    // [HttpGet()]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // public async Task<ActionResult<IEnumerable<MembershipPeriodDto>>> Get()
+    // {
+    //     var membershipPeriods = await _getMembershipPeriodsdHandler.HandleAsync(new GetMembershipPeriods { });
+    //     
+    //     if (membershipPeriods is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     return Ok(membershipPeriods);
+    // }
     
     [HttpGet("{membershipPeriodId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -74,17 +73,17 @@ public class MembershipPeriodsController : ControllerBase
         return CreatedAtAction(nameof(Get),  command, null);
     }
     
-    [HttpPut("{membershipPeriodId:guid}")]
-    public async Task<ActionResult> Put(Guid membershipPeriodId, UpdateMembershipPeriod command)
-    {
-        await _updateMembershipPeriodHaneHandler.HandleAsync(command with {MembershipPeriodId = membershipPeriodId});
-        return NoContent();
-    }
-    
-    [HttpDelete("{membershipPeriodId:guid}")]
-    public async Task<ActionResult> Delete(Guid membershipPeriodId)
-    {
-        await _deactivateMembershipPeriodHaneHandler.HandleAsync( new DeactivateMembershipPeriod {MembershipPeriodId = membershipPeriodId});
-        return NoContent();
-    }
+    // [HttpPut("{membershipPeriodId:guid}")]
+    // public async Task<ActionResult> Put(Guid membershipPeriodId, UpdateMembershipPeriod command)
+    // {
+    //     await _updateMembershipPeriodHaneHandler.HandleAsync(command with {MembershipPeriodId = membershipPeriodId});
+    //     return NoContent();
+    // }
+    //
+    // [HttpDelete("{membershipPeriodId:guid}")]
+    // public async Task<ActionResult> Delete(Guid membershipPeriodId)
+    // {
+    //     await _deactivateMembershipPeriodHaneHandler.HandleAsync( new DeactivateMembershipPeriod {MembershipPeriodId = membershipPeriodId});
+    //     return NoContent();
+    // }
 }

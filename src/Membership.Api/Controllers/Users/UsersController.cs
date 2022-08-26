@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Users;
 using Membership.Application.DTO.Security;
 using Membership.Application.DTO.Users;
 using Membership.Application.Queries.Users;
 using Membership.Application.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Users;
 
-[ApiController]
-[Route("[controller]")]
-public class UsersController : ControllerBase
+public class UsersController : ApiController
 {
     private readonly IQueryHandler<GetUsers, IEnumerable<UserDto>> _getUsersHandler;
     private readonly IQueryHandler<GetUsersByRole, IEnumerable<UserDto>> _getUsersByRoleHandler;
@@ -107,13 +107,13 @@ public class UsersController : ControllerBase
         return Ok(users);
     }
     
-    [HttpGet]
-    [SwaggerOperation("Get list of users")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<IEnumerable<UserDto>>> Get()
-        => Ok(await _getUsersHandler.HandleAsync(new GetUsers {}));
+    // [HttpGet]
+    // [SwaggerOperation("Get list of users")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    // [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    // public async Task<ActionResult<IEnumerable<UserDto>>> Get()
+    //     => Ok(await _getUsersHandler.HandleAsync(new GetUsers {}));
 
     [HttpGet("roles")]
     [SwaggerOperation("Get list of applicable user roles")]
@@ -132,6 +132,7 @@ public class UsersController : ControllerBase
         return Ok(await _getApplicableUserRoleHandler.HandleAsync(new GetApplicableUserRole { UserId = userId } ));
     }
 
+    [Authorize(Roles = "centralcommittee-admin, state-admin, district-admin")]
     [HttpPost]
     [SwaggerOperation("Create the user account")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -150,6 +151,7 @@ public class UsersController : ControllerBase
         return CreatedAtAction(nameof(Get), new {command.Id}, null);
     }
     
+    [AllowAnonymous]
     [HttpPost("sign-in")]
     [SwaggerOperation("Sign in the user and return the JSON Web Token")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -161,13 +163,14 @@ public class UsersController : ControllerBase
         return jwt;
     }
     
-    [HttpPut("{userId:guid}")]
-    public async Task<ActionResult> Put(Guid userId, UpdateUser command)
-    {
-        await _updateUserHandler.HandleAsync(command with {UserId = userId});
-        return NoContent();
-    }
+    // [HttpPut("{userId:guid}")]
+    // public async Task<ActionResult> Put(Guid userId, UpdateUser command)
+    // {
+    //     await _updateUserHandler.HandleAsync(command with {UserId = userId});
+    //     return NoContent();
+    // }
     
+    [Authorize(Roles = "centralcommittee-admin, state-admin, district-admin")]
     [HttpPut("activate/{userId:guid}")]
     public async Task<ActionResult> Activate(Guid userId)
     {
@@ -175,6 +178,7 @@ public class UsersController : ControllerBase
         return NoContent();
     }
     
+    [Authorize(Roles = "centralcommittee-admin, state-admin, district-admin")]
     [HttpPut("deactivate/{userId:guid}")]
     public async Task<ActionResult> Deactivate(Guid userId)
     {
@@ -203,6 +207,7 @@ public class UsersController : ControllerBase
         return NoContent();
     }
     
+    [Authorize(Roles = "centralcommittee-admin, state-admin, district-admin")]
     [HttpPost("resetpassword")]
     public async Task<ActionResult> ResetPassword(ResetPassword command)
     {

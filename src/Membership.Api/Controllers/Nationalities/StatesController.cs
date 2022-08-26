@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Nationalities.States;
 using Membership.Application.DTO.Nationalities;
-using Membership.Application.Queries.Nationalities;
 using Membership.Application.Queries.Nationalities.States;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Membership.Api.Controllers;
+namespace Membership.Api.Controllers.Nationalities;
 
-[ApiController]
-[Route("[controller]")]
-public class StatesController : ControllerBase
+public class StatesController : ApiController
 {
     private readonly ICommandHandler<CreateState> _createStateHandler;
     private readonly ICommandHandler<UpdateState> _updateStateHaneHandler;
@@ -64,28 +62,28 @@ public class StatesController : ControllerBase
         return state;
     }
 
-    [HttpPost]
-    [SwaggerOperation("Create state")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Post(CreateState command)
-    {
-        command = command with {Id = Guid.NewGuid()};
-        await _createStateHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command.Id, null);
-    }
-    
-    [HttpPut("{stateId:guid}")]
-    public async Task<ActionResult> Put(Guid stateId, UpdateState command)
-    {
-        await _updateStateHaneHandler.HandleAsync(command with {StateId = stateId});
-        return NoContent();
-    }
-    
-    [HttpDelete("{stateId:guid}")]
-    public async Task<ActionResult> Delete(Guid stateId)
-    {
-        await _deleteStateHaneHandler.HandleAsync( new DeleteState {StateId = stateId});
-        return NoContent();
-    }
+    // [HttpPost]
+    // [SwaggerOperation("Create state")]
+    // [ProducesResponseType(StatusCodes.Status201Created)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult> Post(CreateState command)
+    // {
+    //     command = command with {Id = Guid.NewGuid()};
+    //     await _createStateHandler.HandleAsync(command);
+    //     return CreatedAtAction(nameof(Get), command.Id, null);
+    // }
+    //
+    // [HttpPut("{stateId:guid}")]
+    // public async Task<ActionResult> Put(Guid stateId, UpdateState command)
+    // {
+    //     await _updateStateHaneHandler.HandleAsync(command with {StateId = stateId});
+    //     return NoContent();
+    // }
+    //
+    // [HttpDelete("{stateId:guid}")]
+    // public async Task<ActionResult> Delete(Guid stateId)
+    // {
+    //     await _deleteStateHaneHandler.HandleAsync( new DeleteState {StateId = stateId});
+    //     return NoContent();
+    // }
 }

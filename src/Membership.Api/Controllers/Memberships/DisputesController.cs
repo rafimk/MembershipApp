@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Memberships.Disputes;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Disputes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Memberships;
 
-
-[ApiController]
-[Route("[controller]")]
-public class DisputesController : ControllerBase
+public class DisputesController : ApiController
 {
     private readonly ICommandHandler<CreateDisputeRequest> _createDisputeRequestHandler;
     private readonly ICommandHandler<UpdateDisputeRequest> _updateDisputeRequestHandler;
@@ -50,21 +49,22 @@ public class DisputesController : ControllerBase
         _getDisputeRequestsByStateIdHandler = getDisputeRequestsByStateIdHandler;
     }
     
-    [HttpGet()]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<DisputeRequestDto>>> Get()
-    {
-        var disputeRequests = await _getDisputeRequestsHandler.HandleAsync(new GetDisputeRequests { });
-        
-        if (disputeRequests is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(disputeRequests);
-    }
+    // [HttpGet()]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // public async Task<ActionResult<IEnumerable<DisputeRequestDto>>> Get()
+    // {
+    //     var disputeRequests = await _getDisputeRequestsHandler.HandleAsync(new GetDisputeRequests { });
+    //     
+    //     if (disputeRequests is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     return Ok(disputeRequests);
+    // }
     
+    [Authorize(Roles = "mandalam-agent, district-agent, dispute-committee")]
     [HttpGet("{requestId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -80,21 +80,22 @@ public class DisputesController : ControllerBase
         return disputeRequest;
     }
     
-    [HttpGet("mandalam/{mandalamId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<DisputeRequestDto>>> GetByMandalamId(Guid mandalamId)
-    {
-        var disputeRequests = await _getRequestByMandalamIdHandler.HandleAsync(new GetDisputeRequestByMandalamId { MandalamId = mandalamId});
-        
-        if (disputeRequests is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(disputeRequests);
-    }
+    // [HttpGet("mandalam/{mandalamId:guid}")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // public async Task<ActionResult<IEnumerable<DisputeRequestDto>>> GetByMandalamId(Guid mandalamId)
+    // {
+    //     var disputeRequests = await _getRequestByMandalamIdHandler.HandleAsync(new GetDisputeRequestByMandalamId { MandalamId = mandalamId});
+    //     
+    //     if (disputeRequests is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     return Ok(disputeRequests);
+    // }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpGet("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -117,36 +118,37 @@ public class DisputesController : ControllerBase
         return Ok(disputeRequests);
     }
     
-    [HttpGet("area/{areaId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<DisputeRequestDto>>> GetByAreaId(Guid areaId)
-    {
-        var disputeRequests = await _getDisputeRequestsByAreaIdHandler.HandleAsync(new GetDisputeRequestsByAreaId { AreaId = areaId });
-        
-        if (disputeRequests is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(disputeRequests);
-    }
+    // [HttpGet("area/{areaId:guid}")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // public async Task<ActionResult<IEnumerable<DisputeRequestDto>>> GetByAreaId(Guid areaId)
+    // {
+    //     var disputeRequests = await _getDisputeRequestsByAreaIdHandler.HandleAsync(new GetDisputeRequestsByAreaId { AreaId = areaId });
+    //     
+    //     if (disputeRequests is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     return Ok(disputeRequests);
+    // }
     
-    [HttpGet("state/{stateId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<DisputeRequestDto>>> GetByStateId(Guid stateId)
-    {
-        var disputeRequests = await _getDisputeRequestsByStateIdHandler.HandleAsync(new GetDisputeRequestsByStateId { StateId = stateId });
-        
-        if (disputeRequests is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(disputeRequests);
-    }
+    // [HttpGet("state/{stateId:guid}")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // public async Task<ActionResult<IEnumerable<DisputeRequestDto>>> GetByStateId(Guid stateId)
+    // {
+    //     var disputeRequests = await _getDisputeRequestsByStateIdHandler.HandleAsync(new GetDisputeRequestsByStateId { StateId = stateId });
+    //     
+    //     if (disputeRequests is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     return Ok(disputeRequests);
+    // }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPost]
     [SwaggerOperation("Create Dispute Request")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -164,15 +166,16 @@ public class DisputesController : ControllerBase
         return CreatedAtAction(nameof(Get), new {command.Id}, null);
     }
     
-    [HttpPut("{requestId:guid}")]
-    public async Task<ActionResult> Put(Guid requestId, UpdateDisputeRequest command)
-    {
-        var userId = Guid.Parse(User?.Identity?.Name);
-        command = command with {SubmittedBy = userId};
-        await _updateDisputeRequestHandler.HandleAsync(command with {Id = requestId});
-        return NoContent();
-    }
+    // [HttpPut("{requestId:guid}")]
+    // public async Task<ActionResult> Put(Guid requestId, UpdateDisputeRequest command)
+    // {
+    //     var userId = Guid.Parse(User?.Identity?.Name);
+    //     command = command with {SubmittedBy = userId};
+    //     await _updateDisputeRequestHandler.HandleAsync(command with {Id = requestId});
+    //     return NoContent();
+    // }
     
+    [Authorize(Roles = "dispute-committee")]
     [HttpPut("approve/{requestId:guid}")]
     public async Task<ActionResult> Approve(Guid requestId, ApproveDisputeRequest command)
     {
@@ -182,6 +185,7 @@ public class DisputesController : ControllerBase
         return NoContent();
     }
     
+    [Authorize(Roles = "dispute-committee")]
     [HttpPut("reject/{requestId:guid}")]
     public async Task<ActionResult> Reject(Guid requestId, RejectDisputeRequest command)
     {

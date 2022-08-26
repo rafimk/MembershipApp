@@ -5,6 +5,7 @@ using Membership.Application.DTO.Commons;
 using Membership.Application.Queries.Commons;
 using Membership.Core.Entities.Commons;
 using Membership.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -12,9 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Commons;
 
-[ApiController]
-[Route("[controller]")]
-public class OcrController : ControllerBase
+public class OcrController : ApiController
 {
     private readonly IQueryHandler<OcrDataRead, OcrDataDto> _ocrDataReadHandler;
     private readonly FileUploadOptions _fileUploadOptions;
@@ -25,6 +24,7 @@ public class OcrController : ControllerBase
         _fileUploadOptions = fileOptions.Value;
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPost]
     [SwaggerOperation("Read OCR Data")]
     [ProducesResponseType(StatusCodes.Status201Created)]

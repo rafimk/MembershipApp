@@ -3,15 +3,14 @@ using System.Threading.Tasks;
 using Membership.Core.Consts;
 using Membership.Infrastructure;
 using Membership.Infrastructure.FileManagement;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace Membership.Api.Controllers.Commons;
 
-[ApiController]
-[Route("[controller]")]
-public class FileUploadController : ControllerBase
+public class FileUploadController : ApiController
 {
     readonly IBufferedFileUploadService _bufferedFileUploadService;
     private readonly FileUploadOptions _fileUploadOptions;
@@ -22,6 +21,7 @@ public class FileUploadController : ControllerBase
         _fileUploadOptions = fileOptions.Value;
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPost("photo")]
     public async Task<ActionResult> PhotoUpload(IFormFile file)
     {
@@ -30,6 +30,7 @@ public class FileUploadController : ControllerBase
         return Ok(fileId);
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPost("emirates-id-front")]
     public async Task<ActionResult> EmiratesIdFront(IFormFile file)
     {
@@ -38,6 +39,7 @@ public class FileUploadController : ControllerBase
         return Ok(fileId);
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPost("emirates-id-back")]
     public async Task<ActionResult> EmiratesIdBack(IFormFile file)
     {
@@ -46,6 +48,7 @@ public class FileUploadController : ControllerBase
         return Ok(fileId);
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPost("passport-first")]
     public async Task<ActionResult> PassportFirst(IFormFile file)
     {
@@ -54,6 +57,7 @@ public class FileUploadController : ControllerBase
         return Ok(fileId);
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPost("passport-last")]
     public async Task<ActionResult> PassportLast(IFormFile file)
     {
@@ -62,10 +66,10 @@ public class FileUploadController : ControllerBase
         return Ok(fileId);
     }
 
-    [HttpGet("{fileId:guid}"), DisableRequestSizeLimit]
-    public async Task<ActionResult> Download(Guid fileId)
-    {
-        var result = await _bufferedFileUploadService.Download(fileId, _fileUploadOptions.FilePath);
-        return File(result.File, result.FileType, result.FileName);
-    }
+    // [HttpGet("{fileId:guid}"), DisableRequestSizeLimit]
+    // public async Task<ActionResult> Download(Guid fileId)
+    // {
+    //     var result = await _bufferedFileUploadService.Download(fileId, _fileUploadOptions.FilePath);
+    //     return File(result.File, result.FileType, result.FileName);
+    // }
 }

@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Membership.Api.Controllers.Commons;
 
-[ApiController]
-[Route("[controller]")]
-public class LookupsController : ControllerBase
+public class LookupsController : ApiController
 {
     private readonly IQueryHandler<GetMyLookups, MyLookupsDto> _getMyLookups;
     

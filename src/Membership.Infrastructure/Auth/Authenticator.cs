@@ -23,7 +23,7 @@ internal sealed class Authenticator : IAuthenticator
         _clock = clock;
         _issuer = options.Value.Issuer;
         _audience = options.Value.Audience;
-        _expiry = options.Value.Expiry ?? TimeSpan.FromHours(1);
+        _expiry = TimeSpan.FromHours(3);
         _signingCredentials = new SigningCredentials(new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(options.Value.SigningKey)),
                 SecurityAlgorithms.HmacSha256);
@@ -38,6 +38,8 @@ internal sealed class Authenticator : IAuthenticator
             new(JwtRegisteredClaimNames.UniqueName, userId.ToString()),
             new(ClaimTypes.Role, role)
         };
+        
+        claims.Add(new Claim(ClaimTypes.Role, "test"));
 
         var expires = now.Add(_expiry);
         var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);

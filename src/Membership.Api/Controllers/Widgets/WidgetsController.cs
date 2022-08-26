@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.DTO.Widgets;
 using Membership.Application.Queries.Widgets;
@@ -9,9 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Membership.Api.Controllers.Widgets;
 
-[ApiController]
-[Route("[controller]")]
-public class WidgetsController : ControllerBase
+public class WidgetsController : ApiController
 {
     private readonly IQueryHandler<GetMyWidget, IEnumerable<WidgetDto>> _getMyWidgetHandler;
 

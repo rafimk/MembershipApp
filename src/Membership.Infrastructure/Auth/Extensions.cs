@@ -32,6 +32,7 @@ internal static class Extensions
                 {
                     ValidIssuer = options.Issuer,
                     ClockSkew = TimeSpan.Zero,
+                    ValidateLifetime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.SigningKey))
                 };
             });
@@ -53,9 +54,14 @@ internal static class Extensions
                 policy.RequireRole("district-admin");
             });
 
-            authorization.AddPolicy("is-mandalam-agent", policy =>
+            authorization.AddPolicy("is-agent", policy =>
             {
                 policy.RequireRole("mandalam-agent");
+            });
+
+            authorization.AddPolicy("is-agent", policy =>
+            {
+                policy.RequireRole("district-agent");
             });
         });
 

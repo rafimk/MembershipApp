@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Nationalities.Areas;
 using Membership.Application.DTO.Nationalities;
 using Membership.Application.Queries.Nationalities.Areas;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Nationalities;
 
-[ApiController]
-[Route("[controller]")]
-public class AreasController : ControllerBase
+public class AreasController : ApiController
 {
     private readonly ICommandHandler<CreateArea> _createAreaHandler;
     private readonly ICommandHandler<UpdateArea> _updateAreaHaneHandler;
@@ -80,28 +80,28 @@ public class AreasController : ControllerBase
         return Ok(areas);
     }
 
-    [HttpPost]
-    [SwaggerOperation("Create area")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Post(CreateArea command)
-    {
-        command = command with {AreaId = Guid.NewGuid()};
-        await _createAreaHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command, null);
-    }
-    
-    [HttpPut("{areaId:guid}")]
-    public async Task<ActionResult> Put(Guid areaId, UpdateArea command)
-    {
-        await _updateAreaHaneHandler.HandleAsync(command with {AreaId = areaId});
-        return NoContent();
-    }
-    
-    [HttpDelete("{areaId:guid}")]
-    public async Task<ActionResult> Delete(Guid areaId)
-    {
-        await _deleteAreaHaneHandler.HandleAsync( new DeleteArea {AreaId = areaId});
-        return NoContent();
-    }
+    // [HttpPost]
+    // [SwaggerOperation("Create area")]
+    // [ProducesResponseType(StatusCodes.Status201Created)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult> Post(CreateArea command)
+    // {
+    //     command = command with {AreaId = Guid.NewGuid()};
+    //     await _createAreaHandler.HandleAsync(command);
+    //     return CreatedAtAction(nameof(Get), command, null);
+    // }
+    //
+    // [HttpPut("{areaId:guid}")]
+    // public async Task<ActionResult> Put(Guid areaId, UpdateArea command)
+    // {
+    //     await _updateAreaHaneHandler.HandleAsync(command with {AreaId = areaId});
+    //     return NoContent();
+    // }
+    //
+    // [HttpDelete("{areaId:guid}")]
+    // public async Task<ActionResult> Delete(Guid areaId)
+    // {
+    //     await _deleteAreaHaneHandler.HandleAsync( new DeleteArea {AreaId = areaId});
+    //     return NoContent();
+    // }
 }

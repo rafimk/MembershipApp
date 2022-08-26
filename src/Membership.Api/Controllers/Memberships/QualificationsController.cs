@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Memberships.Qualifications;
 using Membership.Application.DTO.Memberships;
@@ -11,9 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Memberships;
 
-[ApiController]
-[Route("[controller]")]
-public class QualificationsController : ControllerBase
+public class QualificationsController : ApiController
 {
     private readonly ICommandHandler<CreateQualification> _createQualificationHandler;
     private readonly ICommandHandler<UpdateQualification> _updateQualificationHaneHandler;
@@ -63,28 +62,28 @@ public class QualificationsController : ControllerBase
         return qualification;
     }
 
-    [HttpPost]
-    [SwaggerOperation("Create Qualification")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Post(CreateQualification command)
-    {
-        command = command with {QualificationId = Guid.NewGuid()};
-        await _createQualificationHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command, null);
-    }
-    
-    [HttpPut("{qualificationId:guid}")]
-    public async Task<ActionResult> Put(Guid qualificationId, UpdateQualification command)
-    {
-        await _updateQualificationHaneHandler.HandleAsync(command with {QualificationId = qualificationId});
-        return NoContent();
-    }
-    
-    [HttpDelete("{qualificationId:guid}")]
-    public async Task<ActionResult> Delete(Guid qualificationId)
-    {
-        await _deleteQualificationHaneHandler.HandleAsync( new DeleteQualification {QualificationId = qualificationId});
-        return NoContent();
-    }
+    // [HttpPost]
+    // [SwaggerOperation("Create Qualification")]
+    // [ProducesResponseType(StatusCodes.Status201Created)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult> Post(CreateQualification command)
+    // {
+    //     command = command with {QualificationId = Guid.NewGuid()};
+    //     await _createQualificationHandler.HandleAsync(command);
+    //     return CreatedAtAction(nameof(Get), command, null);
+    // }
+    //
+    // [HttpPut("{qualificationId:guid}")]
+    // public async Task<ActionResult> Put(Guid qualificationId, UpdateQualification command)
+    // {
+    //     await _updateQualificationHaneHandler.HandleAsync(command with {QualificationId = qualificationId});
+    //     return NoContent();
+    // }
+    //
+    // [HttpDelete("{qualificationId:guid}")]
+    // public async Task<ActionResult> Delete(Guid qualificationId)
+    // {
+    //     await _deleteQualificationHaneHandler.HandleAsync( new DeleteQualification {QualificationId = qualificationId});
+    //     return NoContent();
+    // }
 }

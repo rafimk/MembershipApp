@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Memberships.RegisteredOrganizations;
 using Membership.Application.DTO.Memberships;
@@ -11,9 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Memberships;
 
-[ApiController]
-[Route("[controller]")]
-public class RegisteredOrganizationsController : ControllerBase
+public class RegisteredOrganizationsController : ApiController
 {
     private readonly ICommandHandler<CreateRegisteredOrganization> _createRegisteredOrganizationHandler;
     private readonly ICommandHandler<UpdateRegisteredOrganization> _updateRegisteredOrganizationHaneHandler;
@@ -63,28 +62,28 @@ public class RegisteredOrganizationsController : ControllerBase
         return RegisteredOrganization;
     }
 
-    [HttpPost]
-    [SwaggerOperation("Create RegisteredOrganization")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Post(CreateRegisteredOrganization command)
-    {
-        command = command with { RegisteredOrganizationId = Guid.NewGuid()};
-        await _createRegisteredOrganizationHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command, null);
-    }
-    
-    [HttpPut("{RegisteredOrganizationId:guid}")]
-    public async Task<ActionResult> Put(Guid RegisteredOrganizationId, UpdateRegisteredOrganization command)
-    {
-        await _updateRegisteredOrganizationHaneHandler.HandleAsync(command with { RegisteredOrganizationId = RegisteredOrganizationId});
-        return NoContent();
-    }
-    
-    [HttpDelete("{RegisteredOrganizationId:guid}")]
-    public async Task<ActionResult> Delete(Guid RegisteredOrganizationId)
-    {
-        await _deleteRegisteredOrganizationHaneHandler.HandleAsync( new DeleteRegisteredOrganization { RegisteredOrganizationId = RegisteredOrganizationId});
-        return NoContent();
-    }
+    // [HttpPost]
+    // [SwaggerOperation("Create RegisteredOrganization")]
+    // [ProducesResponseType(StatusCodes.Status201Created)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult> Post(CreateRegisteredOrganization command)
+    // {
+    //     command = command with { RegisteredOrganizationId = Guid.NewGuid()};
+    //     await _createRegisteredOrganizationHandler.HandleAsync(command);
+    //     return CreatedAtAction(nameof(Get), command, null);
+    // }
+    //
+    // [HttpPut("{RegisteredOrganizationId:guid}")]
+    // public async Task<ActionResult> Put(Guid RegisteredOrganizationId, UpdateRegisteredOrganization command)
+    // {
+    //     await _updateRegisteredOrganizationHaneHandler.HandleAsync(command with { RegisteredOrganizationId = RegisteredOrganizationId});
+    //     return NoContent();
+    // }
+    //
+    // [HttpDelete("{RegisteredOrganizationId:guid}")]
+    // public async Task<ActionResult> Delete(Guid RegisteredOrganizationId)
+    // {
+    //     await _deleteRegisteredOrganizationHaneHandler.HandleAsync( new DeleteRegisteredOrganization { RegisteredOrganizationId = RegisteredOrganizationId});
+    //     return NoContent();
+    // }
 }

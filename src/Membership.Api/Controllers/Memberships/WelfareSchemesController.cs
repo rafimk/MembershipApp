@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Memberships.WelfareSchemes;
 using Membership.Application.DTO.Memberships;
@@ -11,9 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Memberships;
 
-[ApiController]
-[Route("[controller]")]
-public class WelfareSchemesController : ControllerBase
+public class WelfareSchemesController : ApiController
 {
     private readonly ICommandHandler<CreateWelfareScheme> _createWelfareSchemeHandler;
     private readonly ICommandHandler<UpdateWelfareScheme> _updateWelfareSchemeHaneHandler;
@@ -63,28 +62,28 @@ public class WelfareSchemesController : ControllerBase
         return WelfareScheme;
     }
 
-    [HttpPost]
-    [SwaggerOperation("Create WelfareScheme")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Post(CreateWelfareScheme command)
-    {
-        command = command with { WelfareSchemeId = Guid.NewGuid()};
-        await _createWelfareSchemeHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command, null);
-    }
-    
-    [HttpPut("{WelfareSchemeId:guid}")]
-    public async Task<ActionResult> Put(Guid WelfareSchemeId, UpdateWelfareScheme command)
-    {
-        await _updateWelfareSchemeHaneHandler.HandleAsync(command with { WelfareSchemeId = WelfareSchemeId});
-        return NoContent();
-    }
-    
-    [HttpDelete("{WelfareSchemeId:guid}")]
-    public async Task<ActionResult> Delete(Guid WelfareSchemeId)
-    {
-        await _deleteWelfareSchemeHaneHandler.HandleAsync( new DeleteWelfareScheme { WelfareSchemeId = WelfareSchemeId});
-        return NoContent();
-    }
+    // [HttpPost]
+    // [SwaggerOperation("Create WelfareScheme")]
+    // [ProducesResponseType(StatusCodes.Status201Created)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult> Post(CreateWelfareScheme command)
+    // {
+    //     command = command with { WelfareSchemeId = Guid.NewGuid()};
+    //     await _createWelfareSchemeHandler.HandleAsync(command);
+    //     return CreatedAtAction(nameof(Get), command, null);
+    // }
+    //
+    // [HttpPut("{WelfareSchemeId:guid}")]
+    // public async Task<ActionResult> Put(Guid WelfareSchemeId, UpdateWelfareScheme command)
+    // {
+    //     await _updateWelfareSchemeHaneHandler.HandleAsync(command with { WelfareSchemeId = WelfareSchemeId});
+    //     return NoContent();
+    // }
+    //
+    // [HttpDelete("{WelfareSchemeId:guid}")]
+    // public async Task<ActionResult> Delete(Guid WelfareSchemeId)
+    // {
+    //     await _deleteWelfareSchemeHaneHandler.HandleAsync( new DeleteWelfareScheme { WelfareSchemeId = WelfareSchemeId});
+    //     return NoContent();
+    // }
 }

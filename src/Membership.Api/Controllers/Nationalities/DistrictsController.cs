@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Nationalities.Districts;
 using Membership.Application.DTO.Nationalities;
@@ -11,9 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Nationalities;
 
-[ApiController]
-[Route("[controller]")]
-public class DistrictsController : ControllerBase
+public class DistrictsController : ApiController
 {
     private readonly ICommandHandler<CreateDistrict> _createDistrictHandler;
     private readonly ICommandHandler<UpdateDistrict> _updateDistrictHaneHandler;
@@ -63,28 +62,28 @@ public class DistrictsController : ControllerBase
         return districts;
     }
 
-    [HttpPost]
-    [SwaggerOperation("Create district")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Post(CreateDistrict command)
-    {
-        command = command with {DistrictId = Guid.NewGuid()};
-        await _createDistrictHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command, null);
-    }
-    
-    [HttpPut("{districtId:guid}")]
-    public async Task<ActionResult> Put(Guid districtId, UpdateDistrict command)
-    {
-        await _updateDistrictHaneHandler.HandleAsync(command with {DistrictId = districtId});
-        return NoContent();
-    }
-    
-    [HttpDelete("{districtId:guid}")]
-    public async Task<ActionResult> Delete(Guid districtId)
-    {
-        await _deleteDistrictHaneHandler.HandleAsync( new DeleteDistrict {DistrictId = districtId});
-        return NoContent();
-    }
+    // [HttpPost]
+    // [SwaggerOperation("Create district")]
+    // [ProducesResponseType(StatusCodes.Status201Created)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult> Post(CreateDistrict command)
+    // {
+    //     command = command with {DistrictId = Guid.NewGuid()};
+    //     await _createDistrictHandler.HandleAsync(command);
+    //     return CreatedAtAction(nameof(Get), command, null);
+    // }
+    //
+    // [HttpPut("{districtId:guid}")]
+    // public async Task<ActionResult> Put(Guid districtId, UpdateDistrict command)
+    // {
+    //     await _updateDistrictHaneHandler.HandleAsync(command with {DistrictId = districtId});
+    //     return NoContent();
+    // }
+    //
+    // [HttpDelete("{districtId:guid}")]
+    // public async Task<ActionResult> Delete(Guid districtId)
+    // {
+    //     await _deleteDistrictHaneHandler.HandleAsync( new DeleteDistrict {DistrictId = districtId});
+    //     return NoContent();
+    // }
 }

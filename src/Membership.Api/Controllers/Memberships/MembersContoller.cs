@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Memberships.Members;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Memberships;
 
-[ApiController]
-[Route("[controller]")]
-public class MembersController : ControllerBase
+public class MembersController : ApiController
 {
     private readonly ICommandHandler<CreateMember> _createMemberHandler;
     private readonly ICommandHandler<UpdateMember> _updateMemberHandler;
@@ -49,21 +49,22 @@ public class MembersController : ControllerBase
         _getMembershipCardPdfHandler = getMembershipCardPdfHandler;
     }
     
-    [HttpGet()]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> Get()
-    {
-        var members = await _getMembersHandler.HandleAsync(new GetMembers { });
-        
-        if (members is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(members);
-    }
+    // [HttpGet()]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // public async Task<ActionResult<IEnumerable<MemberDto>>> Get()
+    // {
+    //     var members = await _getMembersHandler.HandleAsync(new GetMembers { });
+    //     
+    //     if (members is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     return Ok(members);
+    // }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpGet("{memberId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -79,6 +80,7 @@ public class MembersController : ControllerBase
         return member;
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpGet("isdispute")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,6 +96,7 @@ public class MembersController : ControllerBase
         return isDispute;
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpGet("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -116,6 +119,7 @@ public class MembersController : ControllerBase
         return Ok(members);
     }
 
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPost]
     [SwaggerOperation("Create Member")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -126,7 +130,6 @@ public class MembersController : ControllerBase
         {
             return NotFound();
         }
-        
 
         var userId = Guid.Parse(User?.Identity?.Name);
         command = command with {Id =  Guid.NewGuid(), AgentId = userId};
@@ -136,13 +139,14 @@ public class MembersController : ControllerBase
         return Ok(new {Id = command.Id, MembershipId = member.MembershipId});
     }
     
-    [HttpPut("{memberId:guid}")]
-    public async Task<ActionResult> Put(Guid memberId, UpdateMember command)
-    {
-        await _updateMemberHandler.HandleAsync(command with {Id = memberId});
-        return NoContent();
-    }
+    // [HttpPut("{memberId:guid}")]
+    // public async Task<ActionResult> Put(Guid memberId, UpdateMember command)
+    // {
+    //     await _updateMemberHandler.HandleAsync(command with {Id = memberId});
+    //     return NoContent();
+    // }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPut("activate/{memberId:guid}")]
     public async Task<ActionResult> Activate(Guid memberId)
     {
@@ -150,6 +154,7 @@ public class MembersController : ControllerBase
         return NoContent();
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPut("deactivate/{memberId:guid}")]
     public async Task<ActionResult> Deactivate(Guid memberId)
     {
@@ -157,6 +162,7 @@ public class MembersController : ControllerBase
         return NoContent();
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpGet("membershipcard/{memberId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -166,6 +172,7 @@ public class MembersController : ControllerBase
         return Ok(result);
     }
     
+    [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpGet("membershipcardpdf/{memberId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

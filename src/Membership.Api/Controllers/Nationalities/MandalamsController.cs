@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Membership.Api.Controllers.Commons;
 using Membership.Application.Abstractions;
 using Membership.Application.Commands.Nationalities.Mandalams;
 using Membership.Application.DTO.Nationalities;
@@ -11,9 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Membership.Api.Controllers.Nationalities;
 
-[ApiController]
-[Route("[controller]")]
-public class MandalamsController : ControllerBase
+public class MandalamsController : ApiController
 {
     private readonly ICommandHandler<CreateMandalam> _createMandalamHandler;
     private readonly ICommandHandler<UpdateMandalam> _updateMandalamHaneHandler;
@@ -37,20 +36,20 @@ public class MandalamsController : ControllerBase
         _getMandalamsHandler = getMandalamsdHandler;
     }
     
-    [HttpGet()]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<MandalamDto>>> Get()
-    {
-        var mandalams = await _getMandalamsHandler.HandleAsync(new GetMandalams { });
-        
-        if (mandalams is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(mandalams);
-    }
+    // [HttpGet()]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // public async Task<ActionResult<IEnumerable<MandalamDto>>> Get()
+    // {
+    //     var mandalams = await _getMandalamsHandler.HandleAsync(new GetMandalams { });
+    //     
+    //     if (mandalams is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     return Ok(mandalams);
+    // }
     
     [HttpGet("{mandalamId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -80,28 +79,28 @@ public class MandalamsController : ControllerBase
         return Ok(mandalams);
     }
 
-    [HttpPost]
-    [SwaggerOperation("Create mandalam")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Post(CreateMandalam command)
-    {
-        command = command with {MandalamId = Guid.NewGuid()};
-        await _createMandalamHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), command, null);
-    }
-    
-    [HttpPut("{mandalamId:guid}")]
-    public async Task<ActionResult> Put(Guid mandalamId, UpdateMandalam command)
-    {
-        await _updateMandalamHaneHandler.HandleAsync(command with {MandalamId = mandalamId});
-        return NoContent();
-    }
-    
-    [HttpDelete("{mandalamId:guid}")]
-    public async Task<ActionResult> Delete(Guid MandalamId)
-    {
-        await _deleteMandalamHaneHandler.HandleAsync( new DeleteMandalam {MandalamId = MandalamId});
-        return NoContent();
-    }
+    // [HttpPost]
+    // [SwaggerOperation("Create mandalam")]
+    // [ProducesResponseType(StatusCodes.Status201Created)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // public async Task<ActionResult> Post(CreateMandalam command)
+    // {
+    //     command = command with {MandalamId = Guid.NewGuid()};
+    //     await _createMandalamHandler.HandleAsync(command);
+    //     return CreatedAtAction(nameof(Get), command, null);
+    // }
+    //
+    // [HttpPut("{mandalamId:guid}")]
+    // public async Task<ActionResult> Put(Guid mandalamId, UpdateMandalam command)
+    // {
+    //     await _updateMandalamHaneHandler.HandleAsync(command with {MandalamId = mandalamId});
+    //     return NoContent();
+    // }
+    //
+    // [HttpDelete("{mandalamId:guid}")]
+    // public async Task<ActionResult> Delete(Guid MandalamId)
+    // {
+    //     await _deleteMandalamHaneHandler.HandleAsync( new DeleteMandalam {MandalamId = MandalamId});
+    //     return NoContent();
+    // }
 }

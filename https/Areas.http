@@ -2,7 +2,6 @@
 @stateId = 774ce13b-3f77-4918-a14d-333111f53d7a
 @areaId = 3912657e-df36-40c0-893d-2be8ad374109
 
-
 ###
 # @name sign_in
 POST {{url}}/users/sign-in
@@ -18,6 +17,7 @@ Content-Type: application/json
 
 ###
 GET {{url}}/areas
+Authorization: Bearer {{accessToken}}
 
 ###
 GET {{url}}/areas/{{areaId}}
