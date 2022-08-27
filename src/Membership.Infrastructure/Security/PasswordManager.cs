@@ -18,7 +18,7 @@ internal sealed class PasswordManager : IPasswordManager
 
     public string Generate()
     {
-        var pwd = new Password(4).IncludeNumeric();
+        var pwd = new Password(8).IncludeLowercase().IncludeUppercase().IncludeNumeric();
         return pwd.Next();
     }
 

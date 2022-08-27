@@ -75,6 +75,20 @@ public class UsersController : ApiController
         return user;
     }
     
+    [HttpGet("getsingle{userId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserDto>> GetSingle(Guid userId)
+    {
+        var user = await _getUserByIdHandler.HandleAsync(new GetUserById {UserId = userId});
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        return user;
+    }
+    
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [HttpGet("me")]
@@ -106,14 +120,18 @@ public class UsersController : ApiController
 
         return Ok(users);
     }
-    
-    // [HttpGet]
-    // [SwaggerOperation("Get list of users")]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
-    // [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    // [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    // public async Task<ActionResult<IEnumerable<UserDto>>> Get()
-    //     => Ok(await _getUsersHandler.HandleAsync(new GetUsers {}));
+
+    [HttpGet]
+    [SwaggerOperation("Get list of users")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult<IEnumerable<UserDto>>> Get()
+    {
+        var userId = Guid.Parse(User?.Identity?.Name);
+        var users = await _getUsersByRoleHandler.HandleAsync(new GetUsersByRole {UserId = userId});
+        return Ok(users);
+    }
 
     [HttpGet("roles")]
     [SwaggerOperation("Get list of applicable user roles")]

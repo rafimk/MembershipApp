@@ -38,8 +38,6 @@ internal sealed class Authenticator : IAuthenticator
             new(JwtRegisteredClaimNames.UniqueName, userId.ToString()),
             new(ClaimTypes.Role, role)
         };
-        
-        claims.Add(new Claim(ClaimTypes.Role, "test"));
 
         var expires = now.Add(_expiry);
         var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);
