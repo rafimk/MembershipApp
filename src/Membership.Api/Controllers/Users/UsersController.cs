@@ -8,6 +8,7 @@ using Membership.Application.DTO.Security;
 using Membership.Application.DTO.Users;
 using Membership.Application.Queries.Users;
 using Membership.Application.Security;
+using Membership.Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -176,6 +177,8 @@ public class UsersController : ApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<JwtDto>> Post(SignIn command)
     {
+        var password = AESEncryption.DecryptStringAES(command.Password);
+        command = command with { Password = password};
         await _signInHandler.HandleAsync(command);
         var jwt = _tokenStorage.Get();
         return jwt;
