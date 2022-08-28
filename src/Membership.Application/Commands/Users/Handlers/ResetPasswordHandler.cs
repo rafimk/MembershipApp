@@ -24,11 +24,48 @@ internal sealed class ResetPasswordHandler : ICommandHandler<ResetPassword>
 
     public async Task HandleAsync(ResetPassword command)
     {
+        
+        var loggedUser = await _repository.GetByIdAsync((Guid)command.LoggedUserId);
+        
         var user = await _repository.GetByIdAsync(command.UserId);
 
         if (user is null)
         {
             throw new UserNotFoundException(command.UserId);
+        }
+        
+        if (loggedUser is null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        if (loggedUser.Role == UserRole.CentralCommitteeAdmin())
+        {
+            if (user.Role != UserRole.DisputeCommittee() ||
+                user.Role != UserRole.StateAdmin() ||
+                user.Role != UserRole.MonitoringOfficer())
+            {
+                throw new UnauthorizedAccessException();
+            }
+        }
+        
+        if (loggedUser.Role == UserRole.StateAdmin())
+        {
+            if ((user.Role != UserRole.DistrictAdmin() ||
+                user.Role != UserRole.DistrictAgent()) && user.StateId != loggedUser.StateId)
+            {
+                throw new UnauthorizedAccessException();
+            }
+        }
+        
+        if (loggedUser.Role == UserRole.DistrictAdmin())
+        {
+            if (user.Role != UserRole.MandalamAgent() && 
+                user.StateId != loggedUser.StateId &&
+                user.DistrictId != loggedUser.DistrictId)
+            {
+                throw new UnauthorizedAccessException();
+            }
         }
 
         var email = new Email(command.Email);

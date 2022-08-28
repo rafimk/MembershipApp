@@ -27,6 +27,7 @@ public class User
     public bool IsActive {get; private set;}
     public bool IsDisputeCommittee {get; private set;}
     public DateTime? VerifiedAt { get; private set; }
+  
 
     public User()
     {

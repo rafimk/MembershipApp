@@ -62,7 +62,8 @@ internal sealed class DatabaseInitializer : IHostedService
                 Area.Create(Guid.Parse("03e0d6a8-41c4-42c9-a80d-2b184ab91a62"), "AL QUOWA",Guid.Parse("b9be4f9e-1ef0-4ef6-b4b3-7015f689532b"), _clock.Current()),
                 Area.Create(Guid.Parse("0b9ff92e-758f-420b-9b10-c78f2a821522"), "JAMMIYA",Guid.Parse("b6d27754-b617-47fa-b8cb-e23c92ec2ad0"), _clock.Current()),
                 Area.Create(Guid.Parse("13cbc723-bbef-4686-92f2-7026d18deec1"), "AL KHAIL",Guid.Parse("353be5ca-ea67-47ea-9e78-e3e8b55a8a15"), _clock.Current()),
-                Area.Create(Guid.Parse("18fe66d6-4303-4633-9501-893333311d63"), "KHORFOKAR",Guid.Parse("e50c3216-a1b5-46cf-8386-185d3bcf11cf"), _clock.Current()),
+                Area.Create(Guid.Parse("18fe66d6-4303-4633-9501-893333311d63"), "KHORFAKKAN",Guid.Parse("e50c3216-a1b5-46cf-8386-185d3bcf11cf"), _clock.Current()),
+		        Area.Create(Guid.Parse("B64415AE-97E1-42C1-9952-55283810F8F7"), "KALBA",Guid.Parse("e50c3216-a1b5-46cf-8386-185d3bcf11cf"), _clock.Current()),
                 Area.Create(Guid.Parse("1d7d27f7-b6b2-4aef-b72f-98d52db02399"), "OLD SANAYIYYA",Guid.Parse("b6d27754-b617-47fa-b8cb-e23c92ec2ad0"), _clock.Current()),
                 Area.Create(Guid.Parse("2e07b808-7645-4ff0-bc7b-29a6d9895e00"), "SOUHAN",Guid.Parse("b9be4f9e-1ef0-4ef6-b4b3-7015f689532b"), _clock.Current()),
                 Area.Create(Guid.Parse("3472b53d-0ef9-4251-b291-190b35cd280b"), "DUBAI",Guid.Parse("d6c29acf-2c83-446f-bfa2-70c914218969"), _clock.Current()),
@@ -205,6 +206,7 @@ internal sealed class DatabaseInitializer : IHostedService
             {
                 WelfareScheme.Create(Guid.Parse("8b08b3f0-6b8f-40f1-9a27-b8582392a1ad"), "DUBAI KMCC Welfare Scheme", _clock.Current()),
                 WelfareScheme.Create(Guid.Parse("F4503A80-4EAC-4AEB-AD45-D8D495C2B649"), "ABUDHABI KMCC Care", _clock.Current()),
+                WelfareScheme.Create(Guid.Parse("213B073D-BAD8-4CE4-B8A6-3A64F4D8B21A"), "SHARJAH KMCC - FAMILY CARE", _clock.Current()),
                 WelfareScheme.Create(Guid.Parse("6C4550E8-EDF1-44E2-B727-9392764160BC"), "Pratheekasha Kozhikkode", _clock.Current()),
                 WelfareScheme.Create(Guid.Parse("146023A0-CEDD-42DF-BE17-929138939C48"), "Kadappuram Panchayath Welfare Scheme", _clock.Current())
             };
@@ -221,6 +223,8 @@ internal sealed class DatabaseInitializer : IHostedService
                 RegisteredOrganization.Create(Guid.Parse("CD8F44F7-B9E8-454A-AFF2-9CDFFFE8CE61"), "ABUDHABI MALYALI SAMAJAM", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("6DD72A10-7713-414D-B4A3-82DBD3161342"), "ABUDHABI KERALA SOCIAL CENTRE", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("30BACBC9-9F5C-4FFC-9611-CDB2A0340570"), "FUJAIRAH INDIAN SOCIAL CLUB", _clock.Current()),
+		        RegisteredOrganization.Create(Guid.Parse("6C3DC828-D3A3-43B4-9B89-732BA8F30217"), "KALBA INDIAN SOCIAL CLUB", _clock.Current()),
+		        RegisteredOrganization.Create(Guid.Parse("8A29CFAB-98DA-4E49-B29A-6ED135780913"), "KHORFAKKAN INDIAN SOCIAL CLUB", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("8CC583A9-905D-4249-A3BD-39E9FC722A03"), "SHARJA INDIAN ASSOACIATION", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("3A32DAD9-B942-4CA9-976D-A11DD9D46474"), "AJMAN INDIAN ASSOCIATION", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("52F10D30-640B-4F94-AE82-3994BA0F6B1D"), "AJMAN INDIAN SOCIAL CENTRE", _clock.Current()),
@@ -228,6 +232,7 @@ internal sealed class DatabaseInitializer : IHostedService
                 RegisteredOrganization.Create(Guid.Parse("B3049D55-91BB-4718-9745-1A302A35BC1D"), "RAK INDIAN ASSOCIATION", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("F5A6C45E-0385-49C5-94CD-A75DB6644D0E"), "RAK KERALA SAMAJAM", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("4B41CB4F-7D2E-4CE4-B6E7-A52790B1B628"), "RAK INDIAN RELIEF COMMUNITEE", _clock.Current()),
+		        RegisteredOrganization.Create(Guid.Parse("F4480683-A143-4C52-AC8D-85AB442D98AA"), "RAK JAMEYYATHUL IMAMIL BUKHARI", _clock.Current()),
                 RegisteredOrganization.Create(Guid.Parse("A3E46BCF-5E92-45D8-9155-271C4E2F7203"), "RAK INDIAN BUSINESS AND PROFESSIONAL COUNCIL", _clock.Current())
             };
             

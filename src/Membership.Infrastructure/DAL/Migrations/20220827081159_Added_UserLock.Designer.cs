@@ -3,6 +3,7 @@ using System;
 using Membership.Infrastructure.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Membership.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(MembershipDbContext))]
-    partial class MembershipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220827081159_Added_UserLock")]
+    partial class Added_UserLock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -644,6 +646,12 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.Property<bool>("IsDisputeCommittee")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime?>("LastIncorrectLogin")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool?>("Locked")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid?>("MandalamId")
                         .HasColumnType("uuid");
 
@@ -651,6 +659,9 @@ namespace Membership.Infrastructure.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<int?>("NumberOfIncorrectLoginAttempts")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -676,26 +687,6 @@ namespace Membership.Infrastructure.DAL.Migrations
                     b.HasIndex("StateId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Membership.Core.Entities.Users.UserLoginAttempt", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastIncorrectLogin")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("Locked")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("NumberOfIncorrectLoginAttempts")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserLoginAttempts");
                 });
 
             modelBuilder.Entity("Membership.Core.Entities.Memberships.Disputes.DisputeRequest", b =>

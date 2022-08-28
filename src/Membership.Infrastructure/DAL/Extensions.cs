@@ -61,6 +61,7 @@ internal static class Extensions
         services.AddSingleton<IWidgetPolicy, StateAdminUserWidgetPolicy>();
         
         services.AddScoped<IUserRepository, PostgresUserRepository>();
+        services.AddScoped<IUserLoginAttemptRepository, PostgresUserLoginAttemptRepository>();
        
         services.AddHostedService<DatabaseInitializer>();
         services.AddScoped<IUnitOfWork, PostgresUnitOfWork>();

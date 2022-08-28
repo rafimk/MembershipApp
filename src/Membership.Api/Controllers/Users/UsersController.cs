@@ -232,6 +232,9 @@ public class UsersController : ApiController
     [HttpPost("resetpassword")]
     public async Task<ActionResult> ResetPassword(ResetPassword command)
     {
+        var userId = Guid.Parse(User.Identity?.Name);
+        
+        command = command with {LoggedUserId = userId};
         await _resetPasswordHandler.HandleAsync(command);
         return NoContent();
     }

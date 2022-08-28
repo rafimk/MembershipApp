@@ -1,4 +1,4 @@
-@url = http://localhost:5000
+@url = http://member.uaekmcc.com:5000
 @userId = 5e0a9aab-4c8e-4685-ace3-1e18f679de8f
 @districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
 
@@ -10,8 +10,8 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "admin@admin.com",
-    "password": "admin@123"
+     "email": "admin@admin.com", 
+    "password": "iVrdSj//ehtKe8/gSm1JdbSFCRhDzHW6wBf2j9a1dOg="
 }
 
 ###
@@ -39,11 +39,11 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "dispute-committee",
-    "email": "dispute-committee@admin.com",
+    "fullName": "state-admin20",
+    "email": "state-admin20@admin.com",
     "mobileNumber": "0554296326",
-    "designation": "dispute-committee",
-    "role": "dispute-committee",
+    "designation": "state-admin",
+    "role": "state-admin",
     "cascadeId": "c4613305-d19a-4719-931a-58d7d5853a41",
     "isDisputeCommittee": false
 }

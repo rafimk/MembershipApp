@@ -3,6 +3,7 @@ using Membership.Core.Policies.Users;
 using Membership.Core.Repositories.Users;
 using Membership.Core.ValueObjects;
 using Membership.Infrastructure.DAL.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Services;
 

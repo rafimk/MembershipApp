@@ -29,6 +29,8 @@ internal sealed class MembershipDbContext : DbContext
     public DbSet<WelfareScheme> WelfareSchemes { get; set; }
     public DbSet<DisputeRequest> DisputeRequests { get; set; }
     public DbSet<OcrResult> OcrResults { get; set; }
+    
+    public DbSet<UserLoginAttempt> UserLoginAttempts { get; set; }
 
     public MembershipDbContext(DbContextOptions<MembershipDbContext> options) : base(options)
     {
