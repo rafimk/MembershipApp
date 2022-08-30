@@ -1,4 +1,4 @@
-@url = http://member.uaekmcc.com:5000
+@url = http://localhost:5000
 @userId = 5e0a9aab-4c8e-4685-ace3-1e18f679de8f
 @districtId = 30BA1C7F-4BD7-43D9-9F62-07C377FEB667
 
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 {
      "email": "admin@admin.com", 
-    "password": "iVrdSj//ehtKe8/gSm1JdbSFCRhDzHW6wBf2j9a1dOg="
+    "password": "admin@123"
 }
 
 ###
@@ -108,11 +108,12 @@ Content-Type: application/json
 
 ###
 POST  {{url}}/users/resetpassword
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "userId": "11f5a3a3-fc16-4de9-a009-0c4e71caaa9d",
-    "email": "rafi.genius.cs@gmail.com"
+    "userId": "cf66fb02-3f93-4a64-8edf-32196608f719",
+    "email": "rafi.genius.cs1@gmail.com"
 }
 
 

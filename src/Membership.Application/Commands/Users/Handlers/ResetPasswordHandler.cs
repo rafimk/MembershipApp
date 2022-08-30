@@ -39,34 +39,34 @@ internal sealed class ResetPasswordHandler : ICommandHandler<ResetPassword>
             throw new UnauthorizedAccessException();
         }
 
-        if (loggedUser.Role == UserRole.CentralCommitteeAdmin())
-        {
-            if (user.Role != UserRole.DisputeCommittee() ||
-                user.Role != UserRole.StateAdmin() ||
-                user.Role != UserRole.MonitoringOfficer())
-            {
-                throw new UnauthorizedAccessException();
-            }
-        }
-        
-        if (loggedUser.Role == UserRole.StateAdmin())
-        {
-            if ((user.Role != UserRole.DistrictAdmin() ||
-                user.Role != UserRole.DistrictAgent()) && user.StateId != loggedUser.StateId)
-            {
-                throw new UnauthorizedAccessException();
-            }
-        }
-        
-        if (loggedUser.Role == UserRole.DistrictAdmin())
-        {
-            if (user.Role != UserRole.MandalamAgent() && 
-                user.StateId != loggedUser.StateId &&
-                user.DistrictId != loggedUser.DistrictId)
-            {
-                throw new UnauthorizedAccessException();
-            }
-        }
+        // if (loggedUser.Role == UserRole.CentralCommitteeAdmin() && loggedUser.Email.ToString() != "admin@admin.com")
+        // {
+        //     if (user.Role != UserRole.DisputeCommittee() ||
+        //         user.Role != UserRole.StateAdmin() ||
+        //         user.Role != UserRole.MonitoringOfficer())
+        //     {
+        //         throw new UnauthorizedAccessException();
+        //     }
+        // }
+        //
+        // if (loggedUser.Role == UserRole.StateAdmin())
+        // {
+        //     if ((user.Role != UserRole.DistrictAdmin() ||
+        //         user.Role != UserRole.DistrictAgent()) && user.StateId != loggedUser.StateId)
+        //     {
+        //         throw new UnauthorizedAccessException();
+        //     }
+        // }
+        //
+        // if (loggedUser.Role == UserRole.DistrictAdmin())
+        // {
+        //     if (user.Role != UserRole.MandalamAgent() && 
+        //         user.StateId != loggedUser.StateId &&
+        //         user.DistrictId != loggedUser.DistrictId)
+        //     {
+        //         throw new UnauthorizedAccessException();
+        //     }
+        // }
 
         var email = new Email(command.Email);
         

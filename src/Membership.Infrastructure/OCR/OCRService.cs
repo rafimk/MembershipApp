@@ -88,13 +88,13 @@ internal sealed class OcrService : IOcrService
         CardType currentCardType = CardType.New;
         
         // Check if the card is new or old 
-        if (finalResult.IndexOf("Name:") > 0 && finalResult.IndexOf("Expiry Date") > 0)
+        if (finalResult.IndexOf("Name:") > 0 && finalResult.IndexOf("Issuing Date") > 0)
         {
             currentCardSide = CardSide.NewCardFrontSide();
             currentCardType = CardType.New;
         }
 
-        if (finalResult.IndexOf("Name:") > 0 && finalResult.IndexOf("Expiry Date") == -1)
+        if (finalResult.IndexOf("Name:") > 0 && finalResult.IndexOf("Issuing Date") == -1)
         {
             currentCardSide = CardSide.OldCardFrontSide();
             currentCardType = CardType.Old;

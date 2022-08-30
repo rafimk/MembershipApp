@@ -5,6 +5,7 @@ using Membership.Application.Security;
 using Membership.Core.Abstractions;
 using Membership.Core.DomainServices.Users;
 using Membership.Core.Exceptions.Users;
+using Membership.Core.Repositories.Memberships;
 using Membership.Core.Repositories.Users;
 
 namespace Membership.Application.Commands.Users.Handlers;
@@ -17,9 +18,10 @@ internal sealed class SignInHandler : ICommandHandler<SignIn>
     private readonly ITokenStorage _tokenStorage;
     private readonly IClock _clock;
     private readonly IUserService _userService;
+    private readonly IMembershipPeriodRepository _membershipPeriod;
 
     public SignInHandler(IUserRepository userRepository, IAuthenticator authenticator, IPasswordManager passwordManager,
-        ITokenStorage tokenStorage, IClock clock, IUserService userService)
+        ITokenStorage tokenStorage, IClock clock, IUserService userService, IMembershipPeriodRepository membershipPeriod)
     {
         _userRepository = userRepository;
         _authenticator = authenticator;
@@ -27,6 +29,7 @@ internal sealed class SignInHandler : ICommandHandler<SignIn>
         _tokenStorage = tokenStorage;
         _clock = clock;
         _userService = userService;
+        _membershipPeriod = membershipPeriod;
     }
     
     public async Task HandleAsync(SignIn command)
@@ -62,7 +65,19 @@ internal sealed class SignInHandler : ICommandHandler<SignIn>
             throw new InvalidCredentialsException();
         }
 
-        var jwt = _authenticator.CreateToken(user.Id, user.Role);
+        var isAddMember = false;
+        var isAddUser = false;
+        
+        var activeMembershipPeriod = await _membershipPeriod.GetActivePeriodAsync();
+
+        if (_clock.Current() >= activeMembershipPeriod?.RegistrationStarted &&
+            _clock.Current() <= activeMembershipPeriod?.RegistrationEnded)
+        {
+            isAddMember = true;
+            isAddUser = true;
+        }
+
+        var jwt = _authenticator.CreateToken(user.Id, user.Role, isAddMember, isAddUser);
         _tokenStorage.Set(jwt);
     }
 }

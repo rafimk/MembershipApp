@@ -40,11 +40,25 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             {
                 name = result.Substring(firstStringPositionForName + 5, secondStringPositionForName - (firstStringPositionForName + 5));
                 
-                var split = name.Split(":");
-        
-                if (split.Length > 0)
+                int firstStringContainDateOfBirthInName = name.IndexOf("Date of Birth");
+
+                if (firstStringContainDateOfBirthInName > 0)
                 {
-                    name = split[0];
+                    firstStringContainDateOfBirthInName = result.IndexOf("Date of Birth");
+                    int takeFrom = result.IndexOf(eidNo);
+                    if (takeFrom > 0 && firstStringContainDateOfBirthInName > 0)
+                    {
+                        name = result.Substring(takeFrom + 18, firstStringContainDateOfBirthInName - (takeFrom + 18));
+                    }
+                }
+                else
+                {
+                    var split = name.Split(":");
+        
+                    if (split.Length > 0)
+                    {
+                        name = split[0];
+                    } 
                 }
             }
 
