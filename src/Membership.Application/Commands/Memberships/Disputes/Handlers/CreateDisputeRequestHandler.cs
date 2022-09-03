@@ -40,12 +40,17 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
         {
             throw new AgentNotFoundException(command.SubmittedBy);
         }
-
+        
         var member = await _memberRepository.GetByIdAsync(command.MemberId);
         
         if (member is null)
         {
             throw new MemberNotFoundException(command.MemberId);
+        }
+
+        if (member.PanchayatId == command.ToPanchayatId)
+        {
+            throw new CannotCreateDisputeForTheSamePanchayat();
         }
         
         var area = await _areaRepository.GetByIdAsync(command.ToAreaId);
@@ -73,7 +78,7 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
 
         var availableDisputeRequest = await _disputeRequestRepository.GetPendingByMemberIdAsync(command.MemberId);
         
-        if (availableDisputeRequest is null)
+        if (availableDisputeRequest.Any())
         {
             throw new PendingDisputeAlreadyAvailableException();
         }

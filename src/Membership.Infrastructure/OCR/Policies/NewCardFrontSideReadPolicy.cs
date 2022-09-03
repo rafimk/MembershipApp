@@ -40,26 +40,29 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             {
                 name = result.Substring(firstStringPositionForName + 5, secondStringPositionForName - (firstStringPositionForName + 5));
                 
-                int firstStringContainDateOfBirthInName = name.IndexOf("Date of Birth");
-
-                if (firstStringContainDateOfBirthInName > 0)
+                var split = name.Split(":");
+        
+                if (split.Length > 0)
                 {
-                    firstStringContainDateOfBirthInName = result.IndexOf("Date of Birth");
-                    int takeFrom = result.IndexOf(eidNo);
-                    if (takeFrom > 0 && firstStringContainDateOfBirthInName > 0)
+                    name = split[0];
+                }
+
+                if (name.Trim().Length == 0)
+                {
+                    name = result.Substring(firstStringPositionForName + 5, secondStringPositionForName - (firstStringPositionForName + 5));
+                    int firstStringContainDateOfBirthInName = name.IndexOf("Date of Birth");
+                    
+                    if (firstStringContainDateOfBirthInName > 0)
                     {
-                        name = result.Substring(takeFrom + 18, firstStringContainDateOfBirthInName - (takeFrom + 18));
+                        firstStringContainDateOfBirthInName = result.IndexOf("Date of Birth");
+                        int takeFrom = result.IndexOf(eidNo);
+                        if (takeFrom > 0 && firstStringContainDateOfBirthInName > 0)
+                        {
+                            name = result.Substring(takeFrom + 18, firstStringContainDateOfBirthInName - (takeFrom + 18));
+                        }
                     }
                 }
-                else
-                {
-                    var split = name.Split(":");
-        
-                    if (split.Length > 0)
-                    {
-                        name = split[0];
-                    } 
-                }
+
             }
 
             expiry = MethodExtensionHelper.Right(result.Trim(), 10);
@@ -132,6 +135,13 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             if (firstStringPositionForDateOfBirtInName > 0)
             {
                 name = name.Replace("Date of Birth", "");
+            }
+            
+            var firstStringPositionForNameBirtInName = name.IndexOf("Name");
+
+            if (firstStringPositionForNameBirtInName > 0)
+            {
+                name = name.Replace("Name", "");
             }
 
             return new OcrData

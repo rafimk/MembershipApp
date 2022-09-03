@@ -24,4 +24,5 @@ public class MyLookupsDto
     public Guid? AgentMandalamId { get; set; }
     
     public IEnumerable<DistrictDto> District { get; set; }
+    public IEnumerable<SearchTypeDto> SearchTypes { get; set; }
 }

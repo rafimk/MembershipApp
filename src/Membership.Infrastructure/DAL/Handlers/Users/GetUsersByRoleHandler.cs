@@ -1,23 +1,24 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Users;
+using Membership.Application.Queries.Pagination;
 using Membership.Application.Queries.Users;
 using Membership.Core.DomainServices.Users;
 using Membership.Core.Repositories.Users;
-using Membership.Infrastructure.DAL.Exceptions;
+using Membership.Core.ValueObjects;
 using Membership.Infrastructure.DAL.Handlers.Users.Policies;
-using Membership.Infrastructure.Exceptions;
+using Membership.Infrastructure.DAL.ReadModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Users;
 
-internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, IEnumerable<UserDto>>
+internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, PaginatedResult<UserDto>>
 {
-    private readonly MembershipDbContext _dbContext;
+    private readonly MembershipReadDbContext _dbContext;
     private readonly IUserRepository _userRepository;
     private readonly IUserService _userService;
     private readonly IEnumerable<IUserDataRetrievePolicy> _policies;
 
-    public GetUsersByRoleHandler(MembershipDbContext dbContext, IUserRepository userRepository, 
+    public GetUsersByRoleHandler(MembershipReadDbContext dbContext, IUserRepository userRepository, 
         IUserService userService, IEnumerable<IUserDataRetrievePolicy> policies)
     {
         _dbContext = dbContext;
@@ -26,33 +27,87 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, IEnu
         _policies = policies;
     }
 
-    public async Task<IEnumerable<UserDto>> HandleAsync(GetUsersByRole query)
+    public async Task<PaginatedResult<UserDto>> HandleAsync(GetUsersByRole query)
     {
-        var user = await _userRepository.GetByIdAsync(query.UserId);
+        var user = await _userRepository.GetByIdAsync((Guid)query.UserId);
+
+        if (user is null)
+        {
+            return new PaginatedResult<UserDto>(new List<UserDto>(), 0, (int)query.PageIndex, (int)query.PageSize);
+        }
+
+        if (user.Role == UserRole.DisputeCommittee() ||
+            user.Role == UserRole.DistrictAgent() ||
+            user.Role == UserRole.MandalamAgent() ||
+            user.Role == UserRole.MonitoringOfficer())
+        {
+            return new PaginatedResult<UserDto>(new List<UserDto>(), 0, (int)query.PageIndex, (int)query.PageSize);
+        }
 
         var applicableUserRoles = await _userService.GetApplicableUserRolesAsync(user.Role, query.UserId);
 
-        var availableUsers = await _dbContext.Users
+        var dbQuery = _dbContext.Users
             .OrderBy(x => x.FullName)
             .AsNoTracking()
-            .OrderByDescending(x => x.CreatedAt)
-            .Select(x => x.AsDto())
-            .ToListAsync();
+            .AsQueryable();
 
-        if (user.Email == "admin@admin.com")
+
+        if (user.Email != "admin@admin.com")
         {
-            return availableUsers;
+            switch (user.Role.ToString().ToLower())
+            {
+                case "centralcommittee-admin":
+                {
+                    dbQuery = dbQuery.Where(x => applicableUserRoles.Contains(x.Role));
+                    break;
+                }
+                case "state-admin":
+                {
+                    dbQuery = dbQuery.Where(x => applicableUserRoles.Contains(x.Role) && 
+                                                 x.StateId == user.StateId);
+                    break;
+                }
+                case "district-admin":
+                {
+                    dbQuery = dbQuery.Where(x => applicableUserRoles.Contains(x.Role) && 
+                                                 x.StateId == user.StateId && x.DistrictId == user.DistrictId);
+                    break;
+                }
+            }
+        }
+      
+        
+        if (query.SearchString?.Trim().Length > 0)
+        {
+            switch (query.SearchType)
+            {
+                case 1:
+                {
+                    var filter = new FullName(query.SearchString);
+                    dbQuery = dbQuery.Where(x => x.FullName.Contains(filter));
+                    break;
+                }
+                case 2:
+                {
+                    dbQuery = dbQuery.Where(x => x.MobileNumber.Contains(query.SearchString));
+                    break;
+                }
+                case 3:
+                {
+                    dbQuery = dbQuery.Where(x => x.Email.Contains(query.SearchString));
+                    break;
+                }
+                default:
+                {
+                    dbQuery = dbQuery.OrderByDescending(x => x.CreatedAt);
+                    break;
+                }
+            }
         }
 
-        //return availableUsers.Where(x => applicableUserRoles.Contains(x.Role)).ToList();
-        var policy = _policies.SingleOrDefault(x => x.CanBeApplied(user.Role));
-
-        if (policy is null)
-        {
-            throw new NoUserDataReteivePolicyFoundException(user.Role.ToString());
-        }
-        var users = policy.GetData(user.Role, availableUsers, applicableUserRoles, user.StateId, user.DistrictId);
+        var result = await dbQuery.GetPaged<UserReadModel>((int)query.PageIndex, (int)query.PageSize);
+        
+        return new PaginatedResult<UserDto>(result.Results.Select(x => x.AsDto()), result.RowCount, result.CurrentPage, (int)result.PageSize);
  
-        return policy.GetData(user.Role, availableUsers, applicableUserRoles, user.StateId, user.DistrictId);
     }
 }

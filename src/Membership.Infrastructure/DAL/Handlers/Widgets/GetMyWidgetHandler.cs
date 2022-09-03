@@ -153,7 +153,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
             return widget;
         }
         
-        if (user.Role == UserRole.StateAdmin())
+        if (user.Role == UserRole.StateAdmin() || user.Role == UserRole.MonitoringOfficer())
         {
             // ====================== Users ======================
             var userCountByDistrict = await _dbContext.Users

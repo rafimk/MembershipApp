@@ -6,6 +6,7 @@ using Membership.Application.Abstractions;
 using Membership.Application.Commands.Users;
 using Membership.Application.DTO.Security;
 using Membership.Application.DTO.Users;
+using Membership.Application.Queries.Pagination;
 using Membership.Application.Queries.Users;
 using Membership.Application.Security;
 using Membership.Infrastructure.Security;
@@ -19,7 +20,7 @@ namespace Membership.Api.Controllers.Users;
 public class UsersController : ApiController
 {
     private readonly IQueryHandler<GetUsers, IEnumerable<UserDto>> _getUsersHandler;
-    private readonly IQueryHandler<GetUsersByRole, IEnumerable<UserDto>> _getUsersByRoleHandler;
+    private readonly IQueryHandler<GetUsersByRole, PaginatedResult<UserDto>> _getUsersByRoleHandler;
     private readonly IQueryHandler<GetUserById, UserDto> _getUserByIdHandler;
     private readonly IQueryHandler<GetApplicableUserRole, IEnumerable<string>> _getApplicableUserRoleHandler;
     private readonly ICommandHandler<SignIn> _signInHandler;
@@ -36,7 +37,7 @@ public class UsersController : ApiController
     public UsersController(ICommandHandler<SignIn> signInHandler,
         IQueryHandler<GetUsers, IEnumerable<UserDto>> getUsersHandler,
         IQueryHandler<GetUserById, UserDto> getUserByIdHandler,
-        IQueryHandler<GetUsersByRole, IEnumerable<UserDto>> getUsersByRoleHandler,
+        IQueryHandler<GetUsersByRole, PaginatedResult<UserDto>> getUsersByRoleHandler,
         ICommandHandler<CreateUser> createUserHandler,
         IQueryHandler<GetApplicableUserRole, IEnumerable<string>> getApplicableUserRoleHandler,
         ICommandHandler<UpdateUser> updateUserHandler,
@@ -106,10 +107,10 @@ public class UsersController : ApiController
         return user;
     }
     
-    [HttpGet("role")]
+    [HttpPost("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<UserDto>> GetUsersByRole()
+    public async Task<ActionResult<PaginatedResult<UserDto>>> GetUsersByRole(GetUsersByRole query)
     {
         if (string.IsNullOrWhiteSpace(User.Identity?.Name))
         {
@@ -117,7 +118,8 @@ public class UsersController : ApiController
         }
 
         var userId = Guid.Parse(User?.Identity?.Name);
-        var users = await _getUsersByRoleHandler.HandleAsync(new GetUsersByRole {UserId = userId});
+        query = query with { UserId = userId};
+        var users = await _getUsersByRoleHandler.HandleAsync(query);
 
         return Ok(users);
     }
@@ -127,10 +129,10 @@ public class UsersController : ApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<IEnumerable<UserDto>>> Get()
+    public async Task<ActionResult<PaginatedResult<UserDto>>> Get()
     {
         var userId = Guid.Parse(User?.Identity?.Name);
-        var users = await _getUsersByRoleHandler.HandleAsync(new GetUsersByRole {UserId = userId});
+        var users = await _getUsersByRoleHandler.HandleAsync(new GetUsersByRole {UserId = userId, PageIndex = 1, PageSize = 10});
         return Ok(users);
     }
 

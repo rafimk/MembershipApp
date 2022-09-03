@@ -61,6 +61,15 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .ToListAsync();
             lookupsDto.CascadeData = cascadeData;
             lookupsDto.CascadeTitle = "State";
+            
+            var searchTypes = new List<SearchTypeDto>
+            {
+                new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
+                new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
+                new SearchTypeDto{SearchType = 3, SearchTypeName = "Email"},
+            };
+
+            lookupsDto.SearchTypes = searchTypes;
         }
         
         if (roles.Contains("district-admin"))
@@ -73,6 +82,13 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .ToListAsync();
             lookupsDto.CascadeData = cascadeData;
             lookupsDto.CascadeTitle = "District";
+            
+            var searchTypes = new List<SearchTypeDto>
+            {
+                new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
+                new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
+                new SearchTypeDto{SearchType = 3, SearchTypeName = "Email"},
+            };
         }
         
         if (roles.Contains("mandalam-agent"))
@@ -166,6 +182,17 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                     lookupsDto.AgentDistrictId = userMandalam.DistrictId;
                     lookupsDto.AgentMandalamId = userInfo.CascadeId;
                 }
+                
+                var searchTypes = new List<SearchTypeDto>
+                {
+                    new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
+                    new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
+                    new SearchTypeDto{SearchType = 3, SearchTypeName = "Panchayath"},
+                    new SearchTypeDto{SearchType = 4, SearchTypeName = "Emirates ID"},
+                    new SearchTypeDto{SearchType = 5, SearchTypeName = "Issued By"},
+                };
+
+                lookupsDto.SearchTypes = searchTypes;
             }
 
             if (userInfo.Role == UserRole.DistrictAgent())
@@ -186,6 +213,16 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                     lookupsDto.DistrictsName = userDistrict.Name;
                     lookupsDto.AgentDistrictId = userDistrict.Id;
                 }
+                
+                var searchTypes = new List<SearchTypeDto>
+                {
+                    new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
+                    new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
+                    new SearchTypeDto{SearchType = 3, SearchTypeName = "Panchayath"},
+                    new SearchTypeDto{SearchType = 4, SearchTypeName = "Emirates ID"},
+                    new SearchTypeDto{SearchType = 5, SearchTypeName = "Issued By"},
+                    new SearchTypeDto{SearchType = 6, SearchTypeName = "Mandalam"},
+                };
             }
 
             lookupsDto.Areas = areas;
@@ -196,6 +233,8 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
             lookupsDto.WelfareSchemes = welfareSchemes;
             lookupsDto.MembershipPeriod = membershipPeriod?.AsDto();
             lookupsDto.CanDisputeCommittee = true;
+            
+        
         }
         else if (userInfo.Role == UserRole.DisputeCommittee())
         {

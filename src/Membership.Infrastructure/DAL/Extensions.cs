@@ -26,6 +26,7 @@ internal static class Extensions
         services.Configure<PostgresOptions>(configuration.GetRequiredSection(OptionsSectionName));
         var postgresOptions = configuration.GetOptions<PostgresOptions>(OptionsSectionName);
         services.AddDbContext<MembershipDbContext>(x => x.UseNpgsql(postgresOptions.ConnectionString));
+        services.AddDbContext<MembershipReadDbContext>(x => x.UseNpgsql(postgresOptions.ConnectionString));
         
         services.AddScoped<IFileAttachmentRepository, PostgresFileAttachmentRepository>();
         services.AddScoped<IOcrResultRepository, PostgresOcrResultRepository>();

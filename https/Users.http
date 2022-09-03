@@ -10,8 +10,8 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-     "email": "admin@admin.com", 
-    "password": "admin@123"
+    "email": "admin@admin.com",
+    "password": "X2QoUxRGQXFg/lv0NjvjGg=="
 }
 
 ###
@@ -30,8 +30,16 @@ GET {{url}}/users/me
 Authorization: Bearer {{accessToken}}
 
 ###
-GET {{url}}/users/role
+POST  {{url}}/users/role
 Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "SearchType" : 2,
+    "searchString" : "0554296326",
+    "PageIndex" : 1,
+    "pageSize": 10
+}
 
 ###
 POST {{url}}/users

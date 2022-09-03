@@ -6,6 +6,7 @@ using Membership.Application.Abstractions;
 using Membership.Application.Commands.Memberships.Members;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
+using Membership.Application.Queries.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ public class MembersController : ApiController
     private readonly ICommandHandler<DeactivateMember> _deactivateMemberHandler;
     private readonly IQueryHandler<GetMemberById, MemberDto> _getMemberByIdHandler;
     private readonly IQueryHandler<GetMembers, IEnumerable<MemberDto>> _getMembersHandler;
-    private readonly IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> _getMembersByRoleHandler;
+    private readonly IQueryHandler<GetMembersByRole, PaginatedResult<MemberListDto>> _getMembersByRoleHandler;
     private readonly IQueryHandler<IsDispute, IsDisputeDto> _isDisputeHandler;
     private readonly IQueryHandler<GetMembershipCard, MemberCardDto> _getMembershipCardHandler;
     private readonly IQueryHandler<GetMembershipCardPdf, ReportDto> _getMembershipCardPdfHandler;
@@ -32,7 +33,7 @@ public class MembersController : ApiController
         ICommandHandler<DeactivateMember> deactivateMemberHandler,
         IQueryHandler<GetMembers, IEnumerable<MemberDto>> getMembersHandler,
         IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler,
-        IQueryHandler<GetMembersByRole, IEnumerable<MemberDto>> getMembersByRoleHandler,
+        IQueryHandler<GetMembersByRole, PaginatedResult<MemberListDto>> getMembersByRoleHandler,
         IQueryHandler<IsDispute, IsDisputeDto> isDisputeHandler,
         IQueryHandler<GetMembershipCard, MemberCardDto> getMembershipCardHandler,
         IQueryHandler<GetMembershipCardPdf, ReportDto> getMembershipCardPdfHandler)
@@ -97,10 +98,10 @@ public class MembersController : ApiController
     }
     
     [Authorize(Roles = "mandalam-agent, district-agent")]
-    [HttpGet("role")]
+    [HttpPost("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> GetMembersByRole()
+    public async Task<ActionResult<PaginatedResult<MemberListDto>>> GetMembersByRole(GetMembersByRole query)
     {
         if (string.IsNullOrWhiteSpace(User.Identity?.Name))
         {
@@ -108,8 +109,9 @@ public class MembersController : ApiController
         }
 
         var userId = Guid.Parse(User?.Identity?.Name);
+        query = query with { UserId = userId};
         
-        var members = await _getMembersByRoleHandler.HandleAsync(new GetMembersByRole {UserId = userId});
+        var members = await _getMembersByRoleHandler.HandleAsync(query);
         
         if (members is null)
         {

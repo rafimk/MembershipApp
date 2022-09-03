@@ -9,8 +9,8 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "state-admin4@admin.com",
-    "password": "admin@123"
+    "email": "mandalam-agent@admin.com",
+    "password": "X2QoUxRGQXFg/lv0NjvjGg=="
 }
 
 ###
@@ -24,8 +24,16 @@ GET {{url}}/members
 GET {{url}}/members/{{memberId}}
 
 ###
-GET {{url}}/members/role
+POST {{url}}/members/role
 Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "SearchType" : null,
+    "searchString" : null,
+    "PageIndex" : 1,
+    "pageSize": 10
+}
 
 ###
 GET {{url}}/members/784-1975-0750835-5
