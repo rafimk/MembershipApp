@@ -47,8 +47,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "fullName": "state-admin20",
-    "email": "state-admin20@admin.com",
+    "fullName": "state-admin6",
+    "email": "state-admin6@admin.com",
     "mobileNumber": "0554296326",
     "designation": "state-admin",
     "role": "state-admin",

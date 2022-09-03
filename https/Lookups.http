@@ -7,7 +7,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-   "email": "admin@admin.com",
+   "email": "mandalam-agent@admin.com",
     "password": "X2QoUxRGQXFg/lv0NjvjGg=="
 }
 

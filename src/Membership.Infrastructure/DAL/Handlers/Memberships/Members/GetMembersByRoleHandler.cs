@@ -42,9 +42,6 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             .AsNoTracking()
             .AsQueryable();
 
-        //             .Select(x => x.AsDto())
-        //            .OrderByDescending(x => x.CreatedAt)
-        
         if (user.Role == UserRole.DistrictAgent())
         {
             var districtAgentDistrictId = (Guid)user.CascadeId;
@@ -92,11 +89,33 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
                 }
                 case 5:
                 {
-                    var searchUser = await _dbContext.Users.FirstAsync(x => x.FullName.Contains(query.SearchString));
-
-                    if (searchUser is not null)
+                    if (user.Role == UserRole.MandalamAgent())
                     {
-                        dbQuery = dbQuery.Where(x => x.CreatedBy == searchUser.Id);
+                        var agentmandalamId = (Guid) user.CascadeId;
+                        var agentStateId = (Guid) user.StateId;
+
+                        var searchUser =
+                            await _dbContext.Users.FirstAsync(x => x.FullName.Contains(query.SearchString) &&
+                                                                   x.StateId == agentStateId &&
+                                                                   x.MandalamId == agentmandalamId);
+
+                        if (searchUser is not null)
+                        {
+                            dbQuery = dbQuery.Where(x => x.CreatedBy == searchUser.Id);
+                        }
+                    }
+                    else if (user.Role == UserRole.DistrictAgent())
+                    {
+                        var agentStateId = (Guid)user.StateId;
+
+                        var searchUser =
+                            await _dbContext.Users.FirstAsync(x => x.FullName.Contains(query.SearchString) &&
+                                                                   x.StateId == agentStateId);
+
+                        if (searchUser is not null)
+                        {
+                            dbQuery = dbQuery.Where(x => x.CreatedBy == searchUser.Id);
+                        }
                     }
 
                     break;
