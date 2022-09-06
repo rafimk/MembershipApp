@@ -66,7 +66,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.StateName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "users"
                     });
                 }
             }
@@ -76,7 +76,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 No = 1,
                 Title = "Total Users",
                 SummaryValue = totalStateAdminUserCount,
-                SummaryText = null,
+                SummaryText = "users",
                 Details = widgetDetails
             });
             
@@ -99,7 +99,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.StateName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "members"
                     });
                 }
             }
@@ -109,7 +109,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 No = 1,
                 Title = "Total Members",
                 SummaryValue = totalStateMemberCount,
-                SummaryText = null,
+                SummaryText = "members",
                 Details = widgetDetails
             });
             
@@ -133,7 +133,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.StateName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "disputes"
                     });
                 }
             }
@@ -145,7 +145,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     No = 1,
                     Title = "Pending Disputes",
                     SummaryValue = totalStateDisputeRequestsCount,
-                    SummaryText = null,
+                    SummaryText = "disputes",
                     Details = widgetDetails
                 });
             }
@@ -174,7 +174,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.DistrictName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "users"
                     });
                 }
             }
@@ -184,7 +184,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 No = 1,
                 Title = "Total Users",
                 SummaryValue = totalUserCount,
-                SummaryText = null,
+                SummaryText = "users",
                 Details = widgetDetails
             });
             
@@ -208,7 +208,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.DistrictName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "members"
                     });
                 }
             }
@@ -218,7 +218,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 No = 1,
                 Title = "Total Members",
                 SummaryValue = totalDistrictMemberCount,
-                SummaryText = null,
+                SummaryText = "members",
                 Details = widgetDetails
             });
             
@@ -243,7 +243,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.DistrictName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "disputes"
                     });
                 }
             }
@@ -255,7 +255,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     No = 1,
                     Title = "Pending Disputes",
                     SummaryValue = totalDistrictDisputeRequestsCount,
-                    SummaryText = null,
+                    SummaryText = "disputes",
                     Details = widgetDetails
                 });
             }
@@ -284,7 +284,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.MandalamName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "users"
                     });
                 }
             }
@@ -294,7 +294,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 No = 1,
                 Title = "Total Users",
                 SummaryValue = totalUserCount,
-                SummaryText = null,
+                SummaryText = "users",
                 Details = widgetDetails
             });
             
@@ -318,7 +318,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.MandalamName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "members"
                     });
                 }
             }
@@ -328,7 +328,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 No = 1,
                 Title = "Total Members",
                 SummaryValue = totalMandalamMemberCount,
-                SummaryText = null,
+                SummaryText = "members",
                 Details = widgetDetails
             });
             
@@ -352,7 +352,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.MandalamName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "disputes"
                     });
                 }
             }
@@ -364,7 +364,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     No = 1,
                     Title = "Pending Disputes",
                     SummaryValue = totalMandalamDisputeRequestsCount,
-                    SummaryText = null,
+                    SummaryText = "disputes",
                     Details = widgetDetails
                 });
             }
@@ -395,7 +395,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.MandalamName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "members"
                     });
                 }
             }
@@ -405,7 +405,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 No = 1,
                 Title = "Total Members",
                 SummaryValue = totalMandalamMemberCount,
-                SummaryText = null,
+                SummaryText = "members",
                 Details = widgetDetails
             });
             
@@ -429,7 +429,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.MandalamName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "disputes"
                     });
                 }
             }
@@ -441,7 +441,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     No = 1,
                     Title = "Pending Disputes",
                     SummaryValue = totalMandalamDisputeRequestsCount,
-                    SummaryText = null,
+                    SummaryText = "disputes",
                     Details = widgetDetails
                 });
             }
@@ -505,7 +505,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.PanchayatName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "disputes"
                     });
                 }
             }
@@ -517,7 +517,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     No = 1,
                     Title = "Pending Disputes",
                     SummaryValue = totalPanchayatDisputeRequestsCount,
-                    SummaryText = null,
+                    SummaryText = "disputes",
                     Details = widgetDetails
                 });
             }
@@ -549,7 +549,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.DistrictName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "disputes"
                     });
                 }
             }
@@ -561,7 +561,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     No = 1,
                     Title = "Pending Disputes (Out)",
                     SummaryValue = totalDistrictDisputeRequestsCountFrom,
-                    SummaryText = null,
+                    SummaryText = "disputes",
                     Details = widgetDetails
                 });
             }
@@ -588,7 +588,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.DistrictName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "disputes"
                     });
                 }
             }
@@ -600,7 +600,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     No = 1,
                     Title = "Pending Disputes (Inn)",
                     SummaryValue = totalDistrictDisputeRequestsCountTo,
-                    SummaryText = null,
+                    SummaryText = "disputes",
                     Details = widgetDetails
                 });
             }
@@ -627,7 +627,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     {
                         Text = item.DistrictName,
                         IntValue = item.Count,
-                        TextValue = null
+                        TextValue = "disputes"
                     });
                 }
             }
@@ -639,7 +639,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                     No = 1,
                     Title = "Pending Disputes With In State",
                     SummaryValue = totalDistrictDisputeRequestsCountWithIn,
-                    SummaryText = null,
+                    SummaryText = "disputes",
                     Details = widgetDetails
                 });
             }
