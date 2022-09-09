@@ -22,7 +22,7 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
         {
             var splitedResult = result.Split(" ");
             var newEids = splitedResult.Where(x => x.Length == 18).ToList();
-            var newDates = splitedResult.Where(x => x.Length == 10).ToList();
+            var newDates = splitedResult.Where(x => x.Length == 10 && x.Contains("/")).ToList();
             var myDateRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
             var cardNoRegex = new Regex("^784-[0-9]{4}-[0-9]{7}-[0-9]{1}$");
 
@@ -35,7 +35,7 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
             }
 
             int firstStringPositionForName = result.IndexOf("Name:");
-            int secondStringPositionForName = result.IndexOf("Nationality:");    
+            int secondStringPositionForName = result.IndexOf("Nationality");    
             if (firstStringPositionForName > 0 && secondStringPositionForName > 0)
             {
                 name = result.Substring(firstStringPositionForName + 5, secondStringPositionForName - (firstStringPositionForName + 5));

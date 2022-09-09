@@ -53,13 +53,32 @@ public static class Extensions
         services.AddCustomLogging();
         services.AddSecurity();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(swagger =>
+       
+        services.AddSwaggerGen(option =>
         {
-            swagger.EnableAnnotations();
-            swagger.SwaggerDoc("v1", new OpenApiInfo
+            option.SwaggerDoc("v1", new OpenApiInfo { Title = "Membership API", Version = "v1" });
+            option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Title = "Membership API",
-                Version = "v1"
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid token",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                Scheme = "Bearer"
+            });
+            option.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type=ReferenceType.SecurityScheme,
+                            Id="Bearer"
+                        }
+                    },
+                    new string[]{}
+                }
             });
         });
         

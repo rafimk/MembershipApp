@@ -43,4 +43,5 @@ public record CreateMemberContract()
     public DateTime CreatedAt { get; set; } 
     public Guid CreatedBy { get; set; }
     public bool ManuallyEntered { get; set; }
+    public Guid? AgentId { get; set; }
 }

@@ -39,6 +39,7 @@ internal sealed class PostgresMemberRepository : IMemberRepository
     public async Task AddAsync(Member member)
     {
         await _dbContext.Members.AddAsync(member);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Member member)

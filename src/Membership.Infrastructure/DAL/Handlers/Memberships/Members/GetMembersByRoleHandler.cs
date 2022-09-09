@@ -39,6 +39,7 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             .Include(x => x.Mandalam)
             .Include(x => x.Panchayat)
             .Include(x => x.Area)
+            .Include(x => x.Agent)
             .AsNoTracking()
             .AsQueryable();
 
@@ -68,8 +69,7 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             {
                 case 1:
                 {
-                    var filter = new FullName(query.SearchString);
-                    dbQuery = dbQuery.Where(x => x.FullName.Contains(filter));
+                    dbQuery = dbQuery.Where(x => x.FullName.ToLower().Contains(query.SearchString.ToLower()));
                     break;
                 }
                 case 2:
@@ -79,7 +79,7 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
                 }
                 case 3:
                 {
-                    dbQuery = dbQuery.Where(x => x.Panchayat.Name.Contains(query.SearchString));
+                    dbQuery = dbQuery.Where(x => x.Panchayat.Name.ToLower().Contains(query.SearchString.ToLower()));
                     break;
                 }
                 case 4:
@@ -89,40 +89,12 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
                 }
                 case 5:
                 {
-                    if (user.Role == UserRole.MandalamAgent())
-                    {
-                        var agentmandalamId = (Guid) user.CascadeId;
-                        var agentStateId = (Guid) user.StateId;
-
-                        var searchUser =
-                            await _dbContext.Users.FirstAsync(x => x.FullName.Contains(query.SearchString) &&
-                                                                   x.StateId == agentStateId &&
-                                                                   x.MandalamId == agentmandalamId);
-
-                        if (searchUser is not null)
-                        {
-                            dbQuery = dbQuery.Where(x => x.CreatedBy == searchUser.Id);
-                        }
-                    }
-                    else if (user.Role == UserRole.DistrictAgent())
-                    {
-                        var agentStateId = (Guid)user.StateId;
-
-                        var searchUser =
-                            await _dbContext.Users.FirstAsync(x => x.FullName.Contains(query.SearchString) &&
-                                                                   x.StateId == agentStateId);
-
-                        if (searchUser is not null)
-                        {
-                            dbQuery = dbQuery.Where(x => x.CreatedBy == searchUser.Id);
-                        }
-                    }
-
+                    dbQuery = dbQuery.Where(x => x.Agent.FullName.ToLower().Contains(query.SearchString.ToLower()));
                     break;
                 }
                 case 6:
                 {
-                    dbQuery = dbQuery.Where(x => x.Mandalam.Name.Contains(query.SearchString));
+                    dbQuery = dbQuery.Where(x => x.Mandalam.Name.ToLower().Contains(query.SearchString.ToLower()));
                     break;
                 }
                 default:

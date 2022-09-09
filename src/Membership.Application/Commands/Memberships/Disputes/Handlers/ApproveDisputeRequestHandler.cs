@@ -38,7 +38,8 @@ internal sealed class ApproveDisputeRequestHandler : ICommandHandler<ApproveDisp
             ToAreaId = disputeRequest.ToAreaId,
             ToDistrictId = disputeRequest.ToDistrictId,
             ToMandalamId = disputeRequest.ToMandalamId,
-            ToPanchayatId = disputeRequest.ToPanchayatId
+            ToPanchayatId = disputeRequest.ToPanchayatId,
+            AgentId = disputeRequest.SubmittedBy
         };
         
         member.DisputeApproval(disputeApprovalContract);

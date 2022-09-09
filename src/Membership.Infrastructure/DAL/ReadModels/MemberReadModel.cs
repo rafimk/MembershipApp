@@ -28,4 +28,7 @@ public sealed class MemberReadModel
     public bool IsActive { get; set; }
     public DateTime? VerifiedAt { get; set; }
     public bool ManuallyEntered { get; set; }
+    public Guid? AgentId { get; set; }
+    public UserReadModel Agent { get; set; }
+    public long SequenceNo { get; set; }
 }

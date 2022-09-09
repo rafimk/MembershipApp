@@ -39,5 +39,8 @@ internal sealed class MembershipDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        modelBuilder.HasSequence<int>("SequenceNo")
+                    .StartsAt(10)
+                    .IncrementsBy(1);
     }
 }

@@ -17,7 +17,7 @@ namespace Membership.Api.Controllers.Memberships;
 public class MembersController : ApiController
 {
     private readonly ICommandHandler<CreateMember> _createMemberHandler;
-    private readonly ICommandHandler<UpdateMember> _updateMemberHandler;
+    private readonly ICommandHandler<UpdateMembershipId> _updateMembershipIdHandler;
     private readonly ICommandHandler<ActivateMember> _activateMemberHandler;
     private readonly ICommandHandler<DeactivateMember> _deactivateMemberHandler;
     private readonly IQueryHandler<GetMemberById, MemberDto> _getMemberByIdHandler;
@@ -28,7 +28,7 @@ public class MembersController : ApiController
     private readonly IQueryHandler<GetMembershipCardPdf, ReportDto> _getMembershipCardPdfHandler;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
-        ICommandHandler<UpdateMember> updateMemberHandler,
+        ICommandHandler<UpdateMembershipId> updateMembershipIdHandler,
         ICommandHandler<ActivateMember> activateMemberHandler,
         ICommandHandler<DeactivateMember> deactivateMemberHandler,
         IQueryHandler<GetMembers, IEnumerable<MemberDto>> getMembersHandler,
@@ -39,7 +39,7 @@ public class MembersController : ApiController
         IQueryHandler<GetMembershipCardPdf, ReportDto> getMembershipCardPdfHandler)
     {
         _createMemberHandler = createMemberHandler;
-        _updateMemberHandler = updateMemberHandler;
+        _updateMembershipIdHandler = updateMembershipIdHandler;
         _activateMemberHandler = activateMemberHandler;
         _deactivateMemberHandler = deactivateMemberHandler;
         _getMembersHandler = getMembersHandler;
@@ -136,17 +136,17 @@ public class MembersController : ApiController
         var userId = Guid.Parse(User?.Identity?.Name);
         command = command with {Id =  Guid.NewGuid(), AgentId = userId};
         await _createMemberHandler.HandleAsync(command);
-        // return CreatedAtAction(nameof(Get), new {command.Id}, null);
         var member = await _getMemberByIdHandler.HandleAsync(new GetMemberById { MemberId = (Guid)command.Id});
         return Ok(new {Id = command.Id, MembershipId = member.MembershipId});
     }
     
-    // [HttpPut("{memberId:guid}")]
-    // public async Task<ActionResult> Put(Guid memberId, UpdateMember command)
-    // {
-    //     await _updateMemberHandler.HandleAsync(command with {Id = memberId});
-    //     return NoContent();
-    // }
+    [Authorize(Roles = "mandalam-agent, district-agent")]
+    [HttpPut("{memberId:guid}")]
+    public async Task<ActionResult> Put(Guid memberId)
+    {
+        await _updateMembershipIdHandler.HandleAsync(new UpdateMembershipId { Id = memberId});
+        return NoContent();
+    }
     
     [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPut("activate/{memberId:guid}")]

@@ -7,4 +7,5 @@ public record DisputeApprovalContract()
     public Guid ToDistrictId { get; set; }
     public Guid ToMandalamId { get; set; }
     public Guid ToPanchayatId { get; set; }
+    public Guid? AgentId { get; set; }
 }

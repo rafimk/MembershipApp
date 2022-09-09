@@ -6,6 +6,7 @@ using Membership.Core.Entities.Memberships.Qualifications;
 using Membership.Core.Entities.Memberships.RegisteredOrganizations;
 using Membership.Core.Entities.Memberships.WelfareSchemes;
 using Membership.Core.Entities.Nationalities;
+using Membership.Core.Entities.Users;
 using Membership.Core.Exceptions.Users;
 using Membership.Core.ValueObjects;
 
@@ -64,6 +65,9 @@ public class Member
     public bool IsActive { get; private set; }
     public DateTime? VerifiedAt { get; private set; }
     public bool ManuallyEntered { get; private set; }
+    public Guid? AgentId { get; private set; }
+    public User Agent { get; private set; }
+    public long SequenceNo { get; private set; }
 
     public Member()
     {
@@ -108,6 +112,7 @@ public class Member
         Status = MemberStatus.Completed;
         CreatedAt = contract.CreatedAt;
         CreatedBy = contract.CreatedBy;
+        AgentId = contract.AgentId;
         IsActive = contract.IsActive;
         ManuallyEntered = contract.ManuallyEntered;
     }
@@ -148,7 +153,8 @@ public class Member
             CreatedAt = contract.CreatedAt,
             CreatedBy = contract.CreatedBy,
             IsActive = true,
-            ManuallyEntered = contract.ManuallyEntered
+            ManuallyEntered = contract.ManuallyEntered,
+            AgentId = contract.AgentId
         });
 
     public void Update(UpdateMemberContract contract)
@@ -178,6 +184,11 @@ public class Member
         WelfareSchemeId = contract.WelfareSchemeId;
     }
     
+    public void UpdateMembershipId(string membershipId)
+    {
+        MembershipId = membershipId;
+    }
+    
     public void DisputeApproval(DisputeApprovalContract contract)
     {
         StateId = contract.ToStateId;
@@ -185,6 +196,7 @@ public class Member
         DistrictId = contract.ToDistrictId;
         MandalamId = contract.ToMandalamId;
         PanchayatId = contract.ToPanchayatId;
+        AgentId = contract.AgentId;
     }
 
     public void Deactivate()
