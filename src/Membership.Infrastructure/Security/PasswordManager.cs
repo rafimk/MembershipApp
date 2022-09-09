@@ -22,6 +22,20 @@ internal sealed class PasswordManager : IPasswordManager
         return pwd.Next();
     }
 
+    public string GenerateSimple()
+    {
+        var pwdPrefix = new Password().IncludeUppercase().LengthRequired(2);
+        var pwdSuffix = new Password().IncludeNumeric().LengthRequired(6);
+        RandomGenerator randomGenerator = new RandomGenerator();
+        var prefix = "";
+        do 
+        {
+            prefix = randomGenerator.RandomString(2);
+        } while (prefix.Contains("I") && prefix.Contains("O"));
+        var password = randomGenerator.RandomString(2, false) + pwdSuffix.Next();
+        return password;
+    }
+
     public bool Validate(string password, string securedPassword)
         => _passwordHasher.VerifyHashedPassword(default, securedPassword, password) ==
            PasswordVerificationResult.Success;

@@ -83,8 +83,7 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, Pagi
             {
                 case 1:
                 {
-                    var filter = new FullName(query.SearchString);
-                    dbQuery = dbQuery.Where(x => x.FullName.Contains(filter));
+                    dbQuery = dbQuery.Where(x => x.FullName.ToLower().Contains(query.SearchString.ToLower()));
                     break;
                 }
                 case 2:
@@ -94,7 +93,7 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, Pagi
                 }
                 case 3:
                 {
-                    dbQuery = dbQuery.Where(x => x.Email.Contains(query.SearchString));
+                    dbQuery = dbQuery.Where(x => x.Email.ToLower().Contains(query.SearchString.ToLower()));
                     break;
                 }
                 default:

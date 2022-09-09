@@ -11,7 +11,7 @@ namespace Membership.Infrastructure.DAL.Migrations
         {
             migrationBuilder.CreateSequence<int>(
                 name: "SequenceNo",
-                startValue: 10L);
+                startValue: 1L);
 
             migrationBuilder.AddColumn<Guid>(
                 name: "AgentId",

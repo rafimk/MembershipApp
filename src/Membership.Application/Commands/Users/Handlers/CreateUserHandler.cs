@@ -142,7 +142,7 @@ internal sealed class CreateUserHandler : ICommandHandler<CreateUser>
             }
         }
 
-        var firstTimePassord = _passwordManager.Generate(); // "admin@123"; 
+        var firstTimePassord = _passwordManager.GenerateSimple(); // "admin@123"; 
         var securedPassword = _passwordManager.Secure(firstTimePassord);
 
         var contract = new UserCreateContract
