@@ -39,7 +39,14 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             throw new AgeLessThan18YearsException();
         }
         
-        if (command.EmiratesIdExpiry <= DateTime.Today )
+        var membershipPeriod = await _membershipPeriodRepository.GetActivePeriodAsync();
+ 
+        if (membershipPeriod is null)
+        {
+            throw new ThereIsNoActiveMembershipPeriodAvailable();
+        }
+        
+        if (command.EmiratesIdExpiry <= membershipPeriod.RegistrationStarted)
         {
             throw new InvalidEmiratesIdExpiryDate();
         }
@@ -77,13 +84,6 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
         if (findArea is null)
         {
             throw new NotAuthorizedToCreateMemberForThisAreaException();
-        }
-
-        var membershipPeriod = await _membershipPeriodRepository.GetActivePeriodAsync();
- 
-        if (membershipPeriod is null)
-        {
-            throw new ThereIsNoActiveMembershipPeriodAvailable();
         }
 
         var membership = Member.Create(new CreateMemberContract

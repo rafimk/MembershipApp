@@ -25,7 +25,8 @@ public class FileUploadController : ApiController
     [HttpPost("photo")]
     public async Task<ActionResult> PhotoUpload(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.Photo);
+        var userId = Guid.Parse(User.Identity?.Name);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.Photo, userId);
 
         return Ok(fileId);
     }
@@ -34,7 +35,8 @@ public class FileUploadController : ApiController
     [HttpPost("emirates-id-front")]
     public async Task<ActionResult> EmiratesIdFront(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.EmiratesIdFront);
+        var userId = Guid.Parse(User.Identity?.Name);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.EmiratesIdFront, userId);
 
         return Ok(fileId);
     }
@@ -43,7 +45,8 @@ public class FileUploadController : ApiController
     [HttpPost("emirates-id-back")]
     public async Task<ActionResult> EmiratesIdBack(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.EmiratesIdBack);
+        var userId = Guid.Parse(User.Identity?.Name);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.EmiratesIdBack, userId);
 
         return Ok(fileId);
     }
@@ -52,7 +55,8 @@ public class FileUploadController : ApiController
     [HttpPost("passport-first")]
     public async Task<ActionResult> PassportFirst(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.PassportFirst);
+        var userId = Guid.Parse(User.Identity?.Name);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.PassportFirst, userId);
 
         return Ok(fileId);
     }
@@ -61,7 +65,8 @@ public class FileUploadController : ApiController
     [HttpPost("passport-last")]
     public async Task<ActionResult> PassportLast(IFormFile file)
     {
-        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.PassportLast);
+        var userId = Guid.Parse(User.Identity?.Name);
+        var fileId = await _bufferedFileUploadService.UploadFile(file, _fileUploadOptions.FilePath, FileType.PassportLast, userId);
 
         return Ok(fileId);
     }

@@ -18,7 +18,7 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
         _clock = clock;
     }
     
-    public async Task<Guid?> UploadFile(IFormFile file, string filePath, FileType type)
+    public async Task<Guid?> UploadFile(IFormFile file, string filePath, FileType type, Guid? userId)
     {
         if (file.Length > 0)
         {
@@ -46,7 +46,7 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
             }
 
             var fileAttachment = FileAttachment.Create(id, type, file.FileName, newFileName,
-                extension, $"application/{fileType}", newPath, file.Length, _clock.Current());
+                extension, $"application/{fileType}", newPath, file.Length, _clock.Current(), userId);
 
             await _attachmentRepository.AddAsync(fileAttachment);
 

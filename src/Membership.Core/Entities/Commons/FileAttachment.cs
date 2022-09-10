@@ -14,10 +14,11 @@ public class FileAttachment
     public long FileSize { get; private set; }
     public bool IsDeleted { get; private set; }
     public Guid? MemberId { get; private set; }
+    public Guid? UserId { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     private FileAttachment(Guid id, FileType type, string actualFileName, string savedFileName, string fileExtension,
-        string fileType,  string filePath, long fileSize, bool isDeleted, DateTime createdAt)
+        string fileType,  string filePath, long fileSize, bool isDeleted, DateTime createdAt, Guid? userId)
     {
         Id = id;
         Type = type;
@@ -29,6 +30,7 @@ public class FileAttachment
         FileSize = fileSize;
         IsDeleted = isDeleted;
         CreatedAt = createdAt;
+        UserId = userId;
     }
 
     private FileAttachment()
@@ -36,8 +38,8 @@ public class FileAttachment
     }
     
     public static FileAttachment Create(Guid id, FileType type, string actualFileName, string savedFileName ,string fileExtension,
-        string fileType,  string filePath, long fileSize, DateTime createdAt)
-        => new(id, type, actualFileName, savedFileName, fileExtension, fileType, filePath, fileSize, false, createdAt);
+        string fileType,  string filePath, long fileSize, DateTime createdAt, Guid? userId)
+        => new(id, type, actualFileName, savedFileName, fileExtension, fileType, filePath, fileSize, false, createdAt, userId);
     
     public void Delete()
     {

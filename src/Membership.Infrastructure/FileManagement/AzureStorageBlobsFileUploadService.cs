@@ -22,7 +22,7 @@ public class AzureStorageBlobsFileUploadService : IBufferedFileUploadService
         _clock = clock;
         _fileUploadOptions = fileUploadOptions.Value;
     }
-    public async Task<Guid?> UploadFile(IFormFile file, string filePath, FileType type)
+    public async Task<Guid?> UploadFile(IFormFile file, string filePath, FileType type, Guid? userId)
     {
         if (file.Length > 0)
         {
@@ -56,7 +56,7 @@ public class AzureStorageBlobsFileUploadService : IBufferedFileUploadService
                 }
                 
                 var fileAttachment = FileAttachment.Create(id, type, file.FileName, newFileName,
-                    extension, $"application/{fileType}", containerName, file.Length, _clock.Current());
+                    extension, $"application/{fileType}", containerName, file.Length, _clock.Current(), userId);
 
                 await _attachmentRepository.AddAsync(fileAttachment);
 

@@ -6,7 +6,7 @@ namespace Membership.Infrastructure.FileManagement;
 
 public interface IBufferedFileUploadService
 {
-    Task<Guid?> UploadFile(IFormFile file, string filePath, FileType type);
+    Task<Guid?> UploadFile(IFormFile file, string filePath, FileType type, Guid? userId);
 
     Task<BufferedFileUploadDto> Download(Guid fileGuid, string filePath);
 }
