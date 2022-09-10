@@ -67,7 +67,8 @@ public class Member
     public bool ManuallyEntered { get; private set; }
     public Guid? AgentId { get; private set; }
     public User Agent { get; private set; }
-    public long SequenceNo { get; private set; }
+    public String MembershipNoPrefix { get; private set; }
+    public long MembershipSequenceNo { get; private set; }
 
     public Member()
     {
@@ -115,6 +116,7 @@ public class Member
         AgentId = contract.AgentId;
         IsActive = contract.IsActive;
         ManuallyEntered = contract.ManuallyEntered;
+        MembershipNoPrefix = contract.MembershipNoPrefix;
     }
 
     public static Member Create(CreateMemberContract contract)
@@ -154,7 +156,8 @@ public class Member
             CreatedBy = contract.CreatedBy,
             IsActive = true,
             ManuallyEntered = contract.ManuallyEntered,
-            AgentId = contract.AgentId
+            AgentId = contract.AgentId,
+            MembershipNoPrefix = contract.MembershipNoPrefix
         });
 
     public void Update(UpdateMemberContract contract)

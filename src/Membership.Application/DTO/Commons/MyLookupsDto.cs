@@ -25,4 +25,6 @@ public class MyLookupsDto
     
     public IEnumerable<DistrictDto> District { get; set; }
     public IEnumerable<SearchTypeDto> SearchTypes { get; set; }
+    public IEnumerable<SearchTypeDto> DisputeSearchTypes { get; set; }
+    public IEnumerable<AgentListDto> AgentList { get; set; }
 }

@@ -12,6 +12,7 @@ internal sealed class MembershipReadDbContext : DbContext
     public DbSet<AreaReadModel> Areas { get; set; }
     public DbSet<StateReadModel> States { get; set; }
     public DbSet<UserReadModel> Users { get; set; }
+    public DbSet<DisputeRequestReadModel> DisputeRequests { get; set; }
 
     public MembershipReadDbContext(DbContextOptions<MembershipReadDbContext> options) : base(options)
     {

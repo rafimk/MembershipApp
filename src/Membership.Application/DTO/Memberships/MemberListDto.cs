@@ -29,4 +29,5 @@ public class MemberListDto
     public bool IsActive { get; set; }
     public DateTime? VerifiedAt { get; set; }
     public bool ManuallyEntered { get; set; }
+    public string Agent { get; set; }
 }

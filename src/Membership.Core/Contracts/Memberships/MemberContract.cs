@@ -38,11 +38,11 @@ public record MemberContract()
     public Guid? RegisteredOrganizationId { get; set; }
     public Guid? WelfareSchemeId { get; set; }
     public Guid MembershipPeriodId { get; set; }
-    public MemberStatus Status {get; set;}
     public string CardNumber { get; set; }
     public DateTime CreatedAt { get; set; } 
     public Guid CreatedBy { get; set; }
     public bool IsActive { get; set; }
     public bool ManuallyEntered { get; set; }
     public Guid? AgentId { get; set; }
+    public string MembershipNoPrefix { get; set; }
 }

@@ -24,8 +24,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "5f81657d-ce3d-49e7-b468-1e140609b1fb",
-    "LastPageId": "d89fc171-1170-4c64-8d96-d7e116622dbc",
+    "FrontPageId": "9729ebb5-b1ca-451f-98d9-9e08e956fa49",
+    "LastPageId": "2c9df49e-94a0-4ee8-91ba-7a33128a48f6",
     "UserId": null
 }
 
@@ -35,8 +35,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "1ae9700f-44c3-4224-af0b-f703e0726102",
-    "LastPageId": "23eee067-1096-4da6-9082-aa5e65c09aee",
+    "FrontPageId": "335716c6-ca84-4aab-b87f-395f83c197ef",
+    "LastPageId": "b5230d2f-fb64-47b6-b772-f745acfb5b7c",
     "UserId": null
 }
 
@@ -46,8 +46,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "92c73e1b-bea8-481d-b400-a24a55f24296",
-    "LastPageId": "236e9a90-3586-4b20-8de2-54e810581e38",
+    "FrontPageId": "8416a50b-d8b0-4af3-a936-c713b11b40d3",
+    "LastPageId": "0eebc4f2-c729-42ca-988e-1ed8e1a3d7bb",
     "UserId": null
 }
 
@@ -68,8 +68,8 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "FrontPageId": "49e9d0c5-b344-40bd-a429-56c6079b359f",
-    "LastPageId": "c1e353d4-603f-4789-8137-55701c4dc94d",
+    "FrontPageId": "77b05043-f9d3-42ac-922f-1d1c87c20405",
+    "LastPageId": "605db610-b1df-4d65-9d38-eaffd76c0942",
     "UserId": null
 }
 

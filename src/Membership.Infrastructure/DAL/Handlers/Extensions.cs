@@ -192,7 +192,7 @@ public static class Extensions
         => new()
         {
             Id = entity.Id,
-            MembershipId = entity.MembershipId,
+            MembershipId = $"{entity.MembershipNoPrefix.Trim()}{entity.MembershipSequenceNo.ToString("D6")}",
             FullName = entity.FullName,
             EmiratesIdNumber = entity.EmiratesIdNumber,
             EmiratesIdExpiry = entity.EmiratesIdExpiry,
@@ -319,7 +319,7 @@ public static class Extensions
          => new()
          {
             Id = entity.Id,
-            MembershipId = entity.MembershipId,
+            MembershipId = $"{entity.MembershipNoPrefix.Trim()}{entity.MembershipSequenceNo.ToString("D6")}",
             FullName = entity.FullName,
             EmiratesIdNumber = entity.EmiratesIdNumber,
             EmiratesIdExpiry = entity.EmiratesIdExpiry,

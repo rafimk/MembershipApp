@@ -45,7 +45,10 @@ internal sealed class MemberConfiguration : IEntityTypeConfiguration<Member>
         builder.Property(x => x.PassportNumber)
             .HasMaxLength(25);
         
-        builder.Property(x => x.SequenceNo)
+        builder.Property(x => x.MembershipNoPrefix)
+            .HasMaxLength(10);
+        
+        builder.Property(x => x.MembershipSequenceNo)
             .HasDefaultValueSql("nextval('\"SequenceNo\"')");
 
         builder.Property(x => x.Gender).HasConversion<string>();

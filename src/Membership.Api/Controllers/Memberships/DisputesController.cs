@@ -6,6 +6,7 @@ using Membership.Application.Abstractions;
 using Membership.Application.Commands.Memberships.Disputes;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Disputes;
+using Membership.Application.Queries.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ public class DisputesController : ApiController
     private readonly ICommandHandler<RejectDisputeRequest> _rejectDisputeRequestHandler;
     private readonly IQueryHandler<GetDisputeRequestById, DisputeRequestDto> _getDisputeRequestByIdHandler;
     private readonly IQueryHandler<GetDisputeRequestByMandalamId, IEnumerable<DisputeRequestDto>> _getRequestByMandalamIdHandler;
-    private readonly IQueryHandler<GetDisputeRequestByRole, IEnumerable<DisputeRequestDto>> _getDisputeRequestByRoleHandler;
+    private readonly IQueryHandler<GetDisputeRequestByRole, PaginatedResult<DisputeRequestListDto>> _getDisputeRequestByRoleHandler;
     private readonly IQueryHandler<GetDisputeRequests, IEnumerable<DisputeRequestDto>> _getDisputeRequestsHandler;
     private readonly IQueryHandler<GetDisputeRequestsByAreaId, IEnumerable<DisputeRequestDto>> _getDisputeRequestsByAreaIdHandler;
     private readonly IQueryHandler<GetDisputeRequestsByStateId, IEnumerable<DisputeRequestDto>> _getDisputeRequestsByStateIdHandler;
@@ -32,7 +33,7 @@ public class DisputesController : ApiController
         ICommandHandler<RejectDisputeRequest> rejectDisputeRequestHandler,
         IQueryHandler<GetDisputeRequestById, DisputeRequestDto> getDisputeRequestByIdHandler,
         IQueryHandler<GetDisputeRequestByMandalamId, IEnumerable<DisputeRequestDto>> getRequestByMandalamIdHandler,
-        IQueryHandler<GetDisputeRequestByRole, IEnumerable<DisputeRequestDto>> getDisputeRequestByRoleHandler,
+        IQueryHandler<GetDisputeRequestByRole, PaginatedResult<DisputeRequestListDto>> getDisputeRequestByRoleHandler,
         IQueryHandler<GetDisputeRequests, IEnumerable<DisputeRequestDto>> getDisputeRequestsHandler,
         IQueryHandler<GetDisputeRequestsByAreaId, IEnumerable<DisputeRequestDto>> getDisputeRequestsByAreaIdHandler,
         IQueryHandler<GetDisputeRequestsByStateId, IEnumerable<DisputeRequestDto>> getDisputeRequestsByStateIdHandler)
@@ -99,7 +100,7 @@ public class DisputesController : ApiController
     [HttpGet("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<DisputeRequestDto>>> GetByRole()
+    public async Task<ActionResult<PaginatedResult<DisputeRequestListDto>>> GetByRole()
     {
         if (string.IsNullOrWhiteSpace(User.Identity?.Name))
         {

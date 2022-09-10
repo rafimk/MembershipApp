@@ -30,5 +30,6 @@ public sealed class MemberReadModel
     public bool ManuallyEntered { get; set; }
     public Guid? AgentId { get; set; }
     public UserReadModel Agent { get; set; }
-    public long SequenceNo { get; set; }
+    public String MembershipNoPrefix { get; set; }
+    public long MembershipSequenceNo { get; set; }
 }

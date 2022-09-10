@@ -1,5 +1,6 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Commons;
+using Membership.Application.DTO.Memberships;
 using Membership.Application.Exceptions.Users;
 using Membership.Application.Queries.Commons;
 using Membership.Core.DomainServices.Users;
@@ -112,6 +113,11 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
 
         if (userInfo.Role == UserRole.MandalamAgent() || userInfo.Role == UserRole.DistrictAgent())
         {
+            var dbQuery = _dbContext.Members
+                .Include(x => x.Agent)
+                .AsNoTracking()
+                .AsQueryable();
+            
             var areas = await _dbContext.Areas
                 .OrderBy(x => x.Name)
                 .Include(x => x.State)
@@ -193,6 +199,31 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 };
 
                 lookupsDto.SearchTypes = searchTypes;
+                
+                var dsputeSearchTypes = new List<SearchTypeDto>
+                {
+                    new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
+                    new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
+                    new SearchTypeDto{SearchType = 3, SearchTypeName = "From State"},
+                    new SearchTypeDto{SearchType = 4, SearchTypeName = "To State"},
+                };
+
+                lookupsDto.DisputeSearchTypes = dsputeSearchTypes;
+                
+                var agentmandalamId = (Guid)userInfo.CascadeId;
+                var agentStateId = (Guid)userInfo.StateId;
+
+                dbQuery = dbQuery.Where(x => x.MandalamId == agentmandalamId &&
+                                             x.StateId == agentStateId);
+                
+                var result =await dbQuery.ToListAsync();
+
+                var agentListDto = result.GroupBy(x => x.AgentId)
+                    .Select(x =>  x.First())
+                    .Select(x => new AgentListDto { Id = x.AgentId, Name = x.Agent.FullName});
+
+                lookupsDto.AgentList = agentListDto;
+
             }
 
             if (userInfo.Role == UserRole.DistrictAgent())
@@ -223,6 +254,32 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                     new SearchTypeDto{SearchType = 5, SearchTypeName = "Issued By"},
                     new SearchTypeDto{SearchType = 6, SearchTypeName = "Mandalam"},
                 };
+                
+                lookupsDto.SearchTypes = searchTypes;
+                
+                var dsputeSearchTypes = new List<SearchTypeDto>
+                {
+                    new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
+                    new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
+                    new SearchTypeDto{SearchType = 3, SearchTypeName = "From State"},
+                    new SearchTypeDto{SearchType = 4, SearchTypeName = "To State"},
+                };
+
+                lookupsDto.DisputeSearchTypes = dsputeSearchTypes;
+                
+                var districtAgentDistrictId = (Guid)userInfo.CascadeId;
+                var districtAgentStateId = (Guid)userInfo.StateId;
+
+                dbQuery = dbQuery.Where(x => x.MandalamId == districtAgentDistrictId &&
+                                             x.StateId == districtAgentStateId);
+                
+                var result =await dbQuery.ToListAsync();
+
+                var agentListDto = result.GroupBy(x => x.AgentId)
+                    .Select(x =>  x.First())
+                    .Select(x => new AgentListDto { Id = x.AgentId, Name = x.Agent.FullName});
+
+                lookupsDto.AgentList = agentListDto;
             }
 
             lookupsDto.Areas = areas;
@@ -239,6 +296,15 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
         else if (userInfo.Role == UserRole.DisputeCommittee())
         {
             lookupsDto.CanDisputeCommittee = false;
+            var dsputeSearchTypes = new List<SearchTypeDto>
+            {
+                new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
+                new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
+                new SearchTypeDto{SearchType = 3, SearchTypeName = "From State"},
+                new SearchTypeDto{SearchType = 4, SearchTypeName = "To State"},
+            };
+
+            lookupsDto.DisputeSearchTypes = dsputeSearchTypes;
         }
 
         if (userInfo.StateId is null)

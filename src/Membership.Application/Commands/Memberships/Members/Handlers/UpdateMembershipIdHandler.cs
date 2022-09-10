@@ -33,7 +33,7 @@ internal sealed class UpdateMembershipIdHandler : ICommandHandler<UpdateMembersh
             throw new AreaNotFoundException(area.Id);
         }
 
-        var membershipId = $"{area.State?.Prefix.Trim()}{membership.SequenceNo.ToString("D6")}";
+        var membershipId = $"{area.State?.Prefix.Trim()}{membership.MembershipSequenceNo.ToString("D6")}";
 
         membership.UpdateMembershipId(membershipId);
         await _memberRepository.UpdateAsync(membership);

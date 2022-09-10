@@ -10,7 +10,7 @@ public static class Extensions
         => new()
         {
             Id = entity.Id,
-            MembershipId = entity.MembershipId,
+            MembershipId = $"{entity.MembershipNoPrefix.Trim()}{entity.MembershipSequenceNo.ToString("D6")}",
             FullName = entity.FullName,
             EmiratesIdNumber = entity.EmiratesIdNumber,
             EmiratesIdExpiry = entity.EmiratesIdExpiry,
@@ -39,7 +39,8 @@ public static class Extensions
             CreatedBy = entity.CreatedBy,
             IsActive = entity.IsActive,
             CreatedAt = entity.CreatedAt,
-            VerifiedAt = entity.VerifiedAt
+            VerifiedAt = entity.VerifiedAt,
+            Agent = entity.Agent?.FullName
         };
      
      public static UserDto AsDto(this UserReadModel entity)
@@ -59,5 +60,73 @@ public static class Extensions
              IsActive = entity.IsActive,
              IsDisputeCommittee = entity.IsDisputeCommittee,
              CreatedAt = entity.CreatedAt
+         };
+     
+     public static DisputeRequestListDto AsDto(this DisputeRequestReadModel entity)
+         => new()
+         {
+             Id = entity.Id,
+             MemberId = entity.MemberId,
+             MembershipId = $"{entity.Member.MembershipNoPrefix.Trim()}{entity.Member.MembershipSequenceNo.ToString("D6")}",
+             FullName = entity.Member?.FullName,
+             EmiratesIdNumber = entity.Member?.EmiratesIdNumber,
+             MobileNumber = entity.Member?.MobileNumber,
+             ToState = new StateDto
+             {
+                 Id = entity.ToStateId,
+                 Name = entity.ToState?.Name
+             },
+             ToArea = new AreaDto
+             {
+                 Id = entity.ToAreaId,
+                 Name = entity.ToArea?.Name
+             },
+             ToDistrict = new DistrictDto
+             {
+                 Id = entity.ToDistrictId,
+                 Name = entity.ToDistrict?.Name
+             },
+             ToMandalam = new MandalamDto
+             {
+                 Id = entity.ToMandalamId,
+                 Name = entity.ToMandalam?.Name
+             },
+             ToPanchayat = new PanchayatDto
+             {
+                 Id = entity.ToPanchayatId,
+                 Name = entity.ToPanchayat?.Name
+             },
+             FromState = new StateDto
+             {
+                 Id = entity.FromStateId,
+                 Name = entity.FromState?.Name
+             },
+             FromArea = new AreaDto
+             {
+                 Id = entity.FromAreaId,
+                 Name = entity.FromArea?.Name
+             },
+             FromDistrict = new DistrictDto
+             {
+                 Id = entity.FromDistrictId,
+                 Name = entity.FromDistrict?.Name
+             },
+             FromMandalam = new MandalamDto
+             {
+                 Id = entity.FromMandalamId,
+                 Name = entity.FromMandalam?.Name
+             },
+             FromPanchayat = new PanchayatDto
+             {
+                 Id = entity.FromPanchayatId,
+                 Name = entity.FromPanchayat?.Name
+             },
+             Reason = entity.Reason,
+             JustificationComment = entity.JustificationComment,
+             SubmittedDate = entity.SubmittedDate,
+             SubmittedBy = entity.SubmittedBy,
+             ActionDate = entity.ActionDate,
+             ActionBy = entity.ActionBy,
+             Status = (int)entity.Status,
          };
 }
