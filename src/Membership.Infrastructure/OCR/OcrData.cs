@@ -12,4 +12,5 @@ public class OcrData
     public CardType CardType { get; set;}
     public Gender Gender { get; set; }
     public bool ErrorOccurred { get; set; }
+    public string BackSideVerifyString { get; set; }
 }

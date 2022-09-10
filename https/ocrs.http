@@ -171,3 +171,14 @@ Content-Type: application/json
     "LastPageId": "ed9e727a-49a8-40b3-b7a8-f373c366685a",
     "UserId": null
 }
+
+### 
+POST {{url}}/ocr
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "FrontPageId": "ecd900ae-0ff3-4376-867e-5da3d22a05fd",
+    "LastPageId": "20ff3fbd-12d4-4049-a3f8-ddd1d75ca51a",
+    "UserId": null
+}

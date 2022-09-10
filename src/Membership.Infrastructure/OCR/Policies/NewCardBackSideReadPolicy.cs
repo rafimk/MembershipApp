@@ -38,6 +38,15 @@ public class NewCardBackSideReadPolicy : ICardReadPolicy
                 //     cardNo = split[2];
                 // }
             }
+
+            var backSideVerifyString = "";
+            
+            var backSideVerifyStrings = result.Split("ILARE");
+
+            if (backSideVerifyStrings.Count() > 0)
+            {
+                backSideVerifyString = backSideVerifyStrings[1];
+            }
             
             return new OcrData
             {
@@ -48,7 +57,8 @@ public class NewCardBackSideReadPolicy : ICardReadPolicy
                 CardNumber = cardNo,
                 CardType = CardType.New,
                 Gender = Gender.NotAvailable,
-                ErrorOccurred = false
+                ErrorOccurred = false,
+                BackSideVerifyString = backSideVerifyString
             };
         }
         catch (Exception e)
@@ -62,7 +72,8 @@ public class NewCardBackSideReadPolicy : ICardReadPolicy
                 CardNumber = null,
                 CardType = CardType.New,
                 Gender = Gender.NotAvailable,
-                ErrorOccurred = true
+                ErrorOccurred = true,
+                BackSideVerifyString = ""
             };
         }
     }

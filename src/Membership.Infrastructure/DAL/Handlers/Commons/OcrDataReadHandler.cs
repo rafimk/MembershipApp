@@ -160,6 +160,16 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
                 result.ErrorMessage = "Emirates ID is expired";
             }
         }
+        
+        if (ocrData.BackSideVerifyString is not null)
+        {
+            var eid = result.IdNumber.Replace("-", "");
+            if (!ocrData.BackSideVerifyString.Contains(eid))
+            {
+                result.IsValidate = false;
+                result.ErrorMessage = "Emirates ID Backside Mismatch";
+            }
+        }
 
         return result;
     }

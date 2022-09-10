@@ -74,6 +74,13 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
                 {
                     genderType = Gender.Female;
                 }
+                var backSideVerifyString = "";
+                var backSideVerifyStrings = result.Split("ILARE");
+
+                if (backSideVerifyStrings.Count() > 0)
+                {
+                    backSideVerifyString = backSideVerifyStrings[1];
+                }
                 
                 return new OcrData
                 {
