@@ -4,7 +4,7 @@ using Membership.Application.Queries.Pagination;
 
 namespace Membership.Application.Queries.Memberships.Disputes;
 
-public class GetDisputeRequestByRole : IQuery<PaginatedResult<DisputeRequestListDto>>
+public record GetDisputeRequestByRole : IQuery<PaginatedResult<DisputeRequestListDto>>
 {
     public Guid? UserId { get; set; }
     public int? SearchType { get; set; }

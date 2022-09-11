@@ -97,10 +97,10 @@ public class DisputesController : ApiController
     // }
     
     [Authorize(Roles = "mandalam-agent, district-agent")]
-    [HttpGet("role")]
+    [HttpPost("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PaginatedResult<DisputeRequestListDto>>> GetByRole()
+    public async Task<ActionResult<PaginatedResult<DisputeRequestListDto>>> GetByRole(GetDisputeRequestByRole query)
     {
         if (string.IsNullOrWhiteSpace(User.Identity?.Name))
         {
@@ -108,8 +108,9 @@ public class DisputesController : ApiController
         }
 
         var userId = Guid.Parse(User?.Identity?.Name);
+        query = query with { UserId = userId};
         
-        var disputeRequests = await _getDisputeRequestByRoleHandler.HandleAsync(new GetDisputeRequestByRole { UserId = userId });
+        var disputeRequests = await _getDisputeRequestByRoleHandler.HandleAsync(query);
         
         if (disputeRequests is null)
         {
