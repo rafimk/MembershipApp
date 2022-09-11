@@ -165,7 +165,7 @@ public class DisputesController : ApiController
         var userId = Guid.Parse(User?.Identity?.Name);
         command = command with {Id =  Guid.NewGuid(), SubmittedBy = userId};
         await _createDisputeRequestHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), new {command.Id}, null);
+        return Ok(new {Id = command.Id});
     }
     
     // [HttpPut("{requestId:guid}")]
