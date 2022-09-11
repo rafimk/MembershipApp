@@ -96,7 +96,7 @@ public class DisputesController : ApiController
     //     return Ok(disputeRequests);
     // }
     
-    [Authorize(Roles = "mandalam-agent, district-agent")]
+    [Authorize(Roles = "mandalam-agent, district-agent, dispute-committee")]
     [HttpPost("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
