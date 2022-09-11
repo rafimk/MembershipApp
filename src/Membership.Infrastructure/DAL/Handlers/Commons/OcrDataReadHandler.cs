@@ -161,7 +161,7 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
             }
         }
         
-        if (ocrData.BackSideVerifyString is not null)
+        if (ocrData.BackSideVerifyString is not null && result.IdNumber is not null)
         {
             var eid = result.IdNumber.Replace("-", "");
             if (!ocrData.BackSideVerifyString.Contains(eid))

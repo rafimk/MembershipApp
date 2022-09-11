@@ -28,7 +28,7 @@ public class OldCardFrontSideReadPolicy : ICardReadPolicy
                 }
             }
 
-            int firstStringPositionForName = result.IndexOf("Name:");
+            int firstStringPositionForName = result.IndexOf("Name");
             int secondStringPositionForName = result.IndexOf("Nationality:");
             int secondStringPositionForNameWithout = result.IndexOf("Nationality"); 
             if (firstStringPositionForName > 0 && secondStringPositionForName > 0)

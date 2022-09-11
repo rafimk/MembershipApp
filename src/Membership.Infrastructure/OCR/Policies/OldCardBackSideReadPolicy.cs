@@ -19,16 +19,16 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
 
         try
         {
-              int firstStringPositionForDob = result.IndexOf(" Date of Birth");
+                int firstStringPositionForDob = result.IndexOf(" Date of Birth");
             
-                if (firstStringPositionForDob > 0) 
-                {
-                    dob = result.Substring(firstStringPositionForDob - 10, 10);
-                }
+                // if (firstStringPositionForDob > 0) 
+                // {
+                //     dob = result.Substring(firstStringPositionForDob - 10, 10);
+                // }
                 
                 var splitedResult = result.Split(" ");
         
-                var newDates = splitedResult.Where(x => x.Length == 10).ToList();
+                var newDates = splitedResult.Where(x => x.Length == 10 && x.Contains("/")).ToList();
                 var newCardNumber = splitedResult.Where(x => x.Length == 9).ToList();
         
                 foreach (var cardRow in newCardNumber)
@@ -39,14 +39,20 @@ public class OldCardBackSideReadPolicy : ICardReadPolicy
                         cardNo = cardRow;
                     }
                 }
-        
+
+                int index = 0;
                 foreach (var row in newDates)
                 {
                     var myRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
-                    if (myRegex.IsMatch(row) && row != dob)
+                    if (myRegex.IsMatch(row) && index == 0)
+                    {
+                        dob = row;
+                    } else if (myRegex.IsMatch(row) && index == 1)
                     {
                         expiry = row;
                     }
+
+                    index++;
                 }
                 
                 var genderIndexStart = result.IndexOf("Sex:");
