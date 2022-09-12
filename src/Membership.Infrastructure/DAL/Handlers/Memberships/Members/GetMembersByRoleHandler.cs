@@ -97,13 +97,10 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
                     dbQuery = dbQuery.Where(x => x.Mandalam.Name.ToLower().Contains(query.SearchString.ToLower()));
                     break;
                 }
-                default:
-                {
-                    dbQuery = dbQuery.OrderByDescending(x => x.CreatedAt);
-                    break;
-                }
             }
         }
+        
+        dbQuery = dbQuery.OrderByDescending(x => x.CreatedAt);
         
         var result = await dbQuery.GetPaged<MemberReadModel>((int)query.PageIndex, (int)query.PageSize);
         

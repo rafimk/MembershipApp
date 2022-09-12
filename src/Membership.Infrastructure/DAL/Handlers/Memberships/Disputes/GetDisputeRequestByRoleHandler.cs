@@ -83,15 +83,6 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
                 dbQuery = dbQuery.Where(x => (x.FromStateId == stateId || x.ToStateId == stateId))
                     .OrderByDescending(x => x.SubmittedDate);
                 break;
-                // foreach (var item in results)
-                // {
-                //     if (item.FromState.Id == stateId)
-                //     {
-                //         item.IsCanApprove = true;
-                //     }
-                // }
-                //
-                // return results;
             }
             default:
             {
@@ -123,17 +114,27 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
                     dbQuery = dbQuery.Where(x => x.ToState.Name.Contains(query.SearchString));
                     break;
                 }
-                default:
-                {
-                    dbQuery = dbQuery.OrderByDescending(x => x.SubmittedDate);
-                    break;
-                }
             }
         }
         
+        dbQuery = dbQuery.OrderByDescending(x => x.SubmittedDate);
+        
         var result = await dbQuery.GetPaged<DisputeRequestReadModel>((int)query.PageIndex, (int)query.PageSize);
+
+        var paginatedResult = new PaginatedResult<DisputeRequestListDto>(result.Results.Select(x => x.AsDto()), result.RowCount, result.CurrentPage, (int)result.PageSize);
         
-        return new PaginatedResult<DisputeRequestListDto>(result.Results.Select(x => x.AsDto()), result.RowCount, result.CurrentPage, (int)result.PageSize);
-        
+        if (user.Role == UserRole.DisputeCommittee())
+        {
+            foreach (var item in paginatedResult.Items)
+            {
+                if (item.FromState.Id == user.StateId)
+                {
+                    item.IsCanApprove = true;
+                }
+            }
+        }
+
+        return paginatedResult;
+
     }
 }

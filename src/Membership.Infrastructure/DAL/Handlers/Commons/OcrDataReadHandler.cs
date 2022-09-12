@@ -15,37 +15,47 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
 {
     private readonly IOcrService _ocrService;
     private readonly IFileAttachmentRepository _fileAttachmentRepository;
-    private readonly IOcrResultRepository _ocrResultRepository;
     private readonly IMemberRepository _memberRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IMembershipPeriodRepository _membershipPeriod;
     private readonly IClock _clock;
     
     public OcrDataReadHandler(IOcrService ocrService, IFileAttachmentRepository fileAttachmentRepository, IClock clock,
-        IOcrResultRepository ocrResultRepository, IMemberRepository memberRepository, IUserRepository userRepository)
+        IMemberRepository memberRepository, IUserRepository userRepository, IMembershipPeriodRepository membershipPeriod)
     {
         _ocrService = ocrService;
         _fileAttachmentRepository = fileAttachmentRepository;
         _clock = clock;
-        _ocrResultRepository = ocrResultRepository;
         _memberRepository = memberRepository;
         _userRepository = userRepository;
+        _membershipPeriod = membershipPeriod;
     }
     public async Task<OcrDataDto> HandleAsync(OcrDataRead query)
     {
         var result = new OcrDataDto();
 
+        var activePeriod = await _membershipPeriod.GetActivePeriodAsync();
+
+        var membershipStartDate = _clock.Current();
+
+        if (activePeriod is not null)
+        {
+            membershipStartDate = (DateTime)activePeriod?.RegistrationStarted;
+        }
+            
+
         var frontPage = await _fileAttachmentRepository.GetByIdAsync(query.FrontPageId.Value);
 
         if (frontPage is not null)
         {
-            result = await GetOcrData(frontPage.FilePath, frontPage.SavedFileName, (Guid) query.UserId, result);
+            result = await GetOcrData(frontPage.FilePath, frontPage.SavedFileName, (Guid) query.UserId, result, membershipStartDate);
         }
  
         var lastPage = await _fileAttachmentRepository.GetByIdAsync(query.LastPageId.Value);
 
         if (lastPage is not null)
         {
-            result = await GetOcrData(lastPage.FilePath, lastPage.SavedFileName , (Guid) query.UserId, result);
+            result = await GetOcrData(lastPage.FilePath, lastPage.SavedFileName , (Guid) query.UserId, result, membershipStartDate);
         }
 
         var ocrResult = OcrResult.Create(Guid.NewGuid(),  query.FrontPageId, query.LastPageId, result.IdNumber, result.Name, result.DateofBirth, 
@@ -82,7 +92,7 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         return result;
     }
 
-    private async Task<OcrDataDto> GetOcrData(string filePath, string readFileInfo, Guid userId, OcrDataDto result)
+    private async Task<OcrDataDto> GetOcrData(string filePath, string readFileInfo, Guid userId, OcrDataDto result, DateTime membershipStartDate)
     {
         var ocrData = await _ocrService.ReadData(filePath, readFileInfo, userId);
         
@@ -154,7 +164,7 @@ public class OcrDataReadHandler : IQueryHandler<OcrDataRead, OcrDataDto>
         
         if (result.ExpiryDate is not null)
         {
-            if (result.ExpiryDate < _clock.Current())
+            if (result.ExpiryDate < membershipStartDate)
             {
                 result.IsValidate = false;
                 result.ErrorMessage = "Emirates ID is expired";

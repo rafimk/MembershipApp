@@ -46,7 +46,7 @@ internal sealed class CreateMemberHandler : ICommandHandler<CreateMember>
             throw new ThereIsNoActiveMembershipPeriodAvailable();
         }
         
-        if (command.EmiratesIdExpiry <= membershipPeriod.RegistrationStarted)
+        if (command.EmiratesIdExpiry < membershipPeriod.RegistrationStarted)
         {
             throw new InvalidEmiratesIdExpiryDate();
         }
