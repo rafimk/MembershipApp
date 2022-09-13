@@ -96,13 +96,10 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, Pagi
                     dbQuery = dbQuery.Where(x => x.Email.ToLower().Contains(query.SearchString.ToLower()));
                     break;
                 }
-                default:
-                {
-                    dbQuery = dbQuery.OrderByDescending(x => x.CreatedAt);
-                    break;
-                }
             }
         }
+        
+        dbQuery = dbQuery.OrderByDescending(x => x.CreatedAt);
 
         var result = await dbQuery.GetPaged<UserReadModel>((int)query.PageIndex, (int)query.PageSize);
         

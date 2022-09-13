@@ -48,7 +48,8 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
             throw new MemberNotFoundException(command.MemberId);
         }
 
-        if (member.PanchayatId == command.ToPanchayatId)
+        if (member.PanchayatId == command.ToPanchayatId && 
+            member.AreaId == command.ToAreaId)
         {
             throw new CannotCreateDisputeForTheSamePanchayat();
         }

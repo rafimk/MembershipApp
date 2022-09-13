@@ -2,7 +2,7 @@
 
 public class PaginatedResult<T>
 {
-    public IEnumerable<T> Items { get; set; }
+    public List<T> Items { get; set; }
     public int PageIndex { get; set; }
     public int TotalPages { get; set; }
     public int TotalCount { get; set; }
@@ -12,7 +12,7 @@ public class PaginatedResult<T>
         PageIndex = pageIndex;
         TotalCount = count;
         TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-        Items = items;
+        Items = items.ToList();
     }
 
     public bool HasPreviousPage => PageIndex > 1;

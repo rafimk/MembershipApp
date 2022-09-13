@@ -30,7 +30,7 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
             return new PaginatedResult<DisputeRequestListDto>(new List<DisputeRequestListDto>(), 0, (int)query.PageIndex, (int)query.PageSize);
         }
         
-        if (user.Role != UserRole.MandalamAgent() && user.Role != UserRole.DistrictAgent())
+        if (user.Role != UserRole.MandalamAgent() && user.Role != UserRole.DistrictAgent() && user.Role != UserRole.DisputeCommittee())
         {
             return new PaginatedResult<DisputeRequestListDto>(new List<DisputeRequestListDto>(), 0, (int)query.PageIndex, (int)query.PageSize);
         }
