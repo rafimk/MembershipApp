@@ -62,15 +62,6 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .ToListAsync();
             lookupsDto.CascadeData = cascadeData;
             lookupsDto.CascadeTitle = "State";
-            
-            var searchTypes = new List<SearchTypeDto>
-            {
-                new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
-                new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
-                new SearchTypeDto{SearchType = 3, SearchTypeName = "Email"},
-            };
-
-            lookupsDto.SearchTypes = searchTypes;
         }
         
         if (roles.Contains("district-admin"))
@@ -83,13 +74,6 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                 .ToListAsync();
             lookupsDto.CascadeData = cascadeData;
             lookupsDto.CascadeTitle = "District";
-            
-            var searchTypes = new List<SearchTypeDto>
-            {
-                new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
-                new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
-                new SearchTypeDto{SearchType = 3, SearchTypeName = "Email"},
-            };
         }
         
         if (roles.Contains("mandalam-agent"))
@@ -305,6 +289,19 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
             };
 
             lookupsDto.DisputeSearchTypes = dsputeSearchTypes;
+        } 
+        else if (userInfo.Role == UserRole.CentralCommitteeAdmin() ||
+                 userInfo.Role == UserRole.StateAdmin() ||
+                 userInfo.Role == UserRole.MonitoringOfficer() ||
+                 userInfo.Role == UserRole.DistrictAgent())
+        {
+            var searchTypes = new List<SearchTypeDto>
+            {
+                new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
+                new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
+                new SearchTypeDto{SearchType = 3, SearchTypeName = "Email"},
+            };
+            lookupsDto.SearchTypes = searchTypes;
         }
 
         if (userInfo.StateId is null)
