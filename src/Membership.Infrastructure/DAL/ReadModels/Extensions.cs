@@ -128,5 +128,6 @@ public static class Extensions
              ActionDate = entity.ActionDate,
              ActionBy = entity.ActionBy,
              Status = (int)entity.Status,
+             Location = entity.FromState?.Prefix + " to " + entity.ToState?.Prefix
          };
 }

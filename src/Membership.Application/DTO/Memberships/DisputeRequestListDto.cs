@@ -28,4 +28,5 @@ public class DisputeRequestListDto
     public Guid? ActionBy { get; set; }
     public int Status { get; set; }
     public bool IsCanApprove { get; set; } = false;
+    public string Location { get; set; }
 }
