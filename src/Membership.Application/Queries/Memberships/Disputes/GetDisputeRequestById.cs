@@ -6,4 +6,5 @@ namespace Membership.Application.Queries.Memberships.Disputes;
 public class GetDisputeRequestById : IQuery<DisputeRequestDto>
 {
     public Guid RequestId { get; set; }
+    public Guid? UserId { get; set; }
 }

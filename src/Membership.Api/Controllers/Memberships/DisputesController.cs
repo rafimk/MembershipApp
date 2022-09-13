@@ -71,7 +71,8 @@ public class DisputesController : ApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<DisputeRequestDto>> Get(Guid requestId)
     {
-        var disputeRequest = await _getDisputeRequestByIdHandler.HandleAsync(new GetDisputeRequestById { RequestId = requestId});
+        var userId = Guid.Parse(User?.Identity?.Name);
+        var disputeRequest = await _getDisputeRequestByIdHandler.HandleAsync(new GetDisputeRequestById { RequestId = requestId, UserId = userId});
         
         if (disputeRequest is null)
         {
