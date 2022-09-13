@@ -2,6 +2,7 @@ using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Disputes;
 using Membership.Core.Repositories.Users;
+using Membership.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.Disputes;
@@ -42,7 +43,7 @@ internal sealed class GetDisputeRequestByIdHandler : IQueryHandler<GetDisputeReq
 
         if (user is not null && result is not null)
         {
-            if (result.FromState.Id == user.StateId)
+            if (result.FromState.Id == user.StateId && user.Role == UserRole.DisputeCommittee())
             {
                 result.IsCanApprove = true;
             }
