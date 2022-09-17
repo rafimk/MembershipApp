@@ -179,7 +179,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                     new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
                     new SearchTypeDto{SearchType = 3, SearchTypeName = "Panchayath"},
                     new SearchTypeDto{SearchType = 4, SearchTypeName = "Emirates ID"},
-                    new SearchTypeDto{SearchType = 5, SearchTypeName = "Issued By"},
+                    new SearchTypeDto{SearchType = 5, SearchTypeName = "Agent Name"},
                 };
 
                 lookupsDto.SearchTypes = searchTypes;
@@ -235,7 +235,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
                     new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
                     new SearchTypeDto{SearchType = 3, SearchTypeName = "Panchayath"},
                     new SearchTypeDto{SearchType = 4, SearchTypeName = "Emirates ID"},
-                    new SearchTypeDto{SearchType = 5, SearchTypeName = "Issued By"},
+                    new SearchTypeDto{SearchType = 5, SearchTypeName = "Agent Name"},
                     new SearchTypeDto{SearchType = 6, SearchTypeName = "Mandalam"},
                 };
                 
@@ -293,7 +293,7 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
         else if (userInfo.Role == UserRole.CentralCommitteeAdmin() ||
                  userInfo.Role == UserRole.StateAdmin() ||
                  userInfo.Role == UserRole.MonitoringOfficer() ||
-                 userInfo.Role == UserRole.DistrictAgent())
+                 userInfo.Role == UserRole.DistrictAdmin())
         {
             var searchTypes = new List<SearchTypeDto>
             {

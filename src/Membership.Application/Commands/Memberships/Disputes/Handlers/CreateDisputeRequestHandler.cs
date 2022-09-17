@@ -34,6 +34,11 @@ internal sealed class CreateDisputeRequestHandler : ICommandHandler<CreateDisput
 
     public async Task HandleAsync(CreateDisputeRequest command)
     {
+        if (string.IsNullOrWhiteSpace(command.Reason))
+        {
+            throw new DisputeReasonRequired();
+        }
+        
         var agent = await _userRepository.GetByIdAsync((Guid)command.SubmittedBy);
 
         if (agent is null)

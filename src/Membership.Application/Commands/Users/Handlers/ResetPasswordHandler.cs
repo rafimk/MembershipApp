@@ -80,7 +80,7 @@ internal sealed class ResetPasswordHandler : ICommandHandler<ResetPassword>
             }
         }
         
-        var firstTimePassord = _passwordManager.Generate(); 
+        var firstTimePassord = _passwordManager.GenerateSimple();
 
         var securedPassword = _passwordManager.Secure(firstTimePassord);
 

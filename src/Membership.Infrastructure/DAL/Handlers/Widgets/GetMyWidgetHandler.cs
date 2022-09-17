@@ -527,6 +527,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
 
         if (user.Role == UserRole.DisputeCommittee())
         {
+            var userState = user.State.Prefix;
             var disputeRequestsCountByStateFrom = await _dbContext.DisputeRequests
                 .Include(x => x.FromState)
                 .Include(x => x.FromDistrict)
@@ -559,7 +560,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Pending Disputes (Out)",
+                    Title = $"{userState} To Others",
                     SummaryValue = totalDistrictDisputeRequestsCountFrom,
                     SummaryText = "disputes",
                     Details = widgetDetails
@@ -598,7 +599,7 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Pending Disputes (Inn)",
+                    Title = $"Others To {userState}",
                     SummaryValue = totalDistrictDisputeRequestsCountTo,
                     SummaryText = "disputes",
                     Details = widgetDetails
@@ -637,15 +638,13 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 widget.Add(new WidgetDto
                 {
                     No = 1,
-                    Title = "Pending Disputes With In State",
+                    Title = $"With In {userState}",
                     SummaryValue = totalDistrictDisputeRequestsCountWithIn,
                     SummaryText = "disputes",
                     Details = widgetDetails
                 });
             }
         }
-        
-        
 
         return widget;
     }
