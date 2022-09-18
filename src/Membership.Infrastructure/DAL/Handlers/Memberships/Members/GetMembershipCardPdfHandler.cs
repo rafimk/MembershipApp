@@ -83,7 +83,7 @@ internal sealed class GetMembershipCardPdfHandler : IQueryHandler<GetMembershipC
         
         var membershipCardDto = new MembershipCardDto
         {
-            MembershipNo = member?.MembershipId,
+            MembershipNo = $"{member?.MembershipNoPrefix.Trim()}{member?.MembershipSequenceNo.ToString("D6")}",
             Date = member?.CreatedAt.ToString("dd/MM/yyyy"),
             FullName = member?.FullName,
             District = member?.Mandalam?.District?.Name,

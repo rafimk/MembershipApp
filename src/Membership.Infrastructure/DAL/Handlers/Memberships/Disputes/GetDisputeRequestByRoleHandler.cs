@@ -63,16 +63,14 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
 
                 dbQuery = dbQuery.Where(x =>
                     (x.ToDistrictId == districtAgentDistrictId || x.FromDistrictId == districtAgentDistrictId) &&
-                    (x.ToStateId == districtAgentStateId || x.FromStateId == districtAgentStateId) &&
-                    x.Status == DisputeStatus.Pending);
+                    (x.ToStateId == districtAgentStateId || x.FromStateId == districtAgentStateId));
                 break;
             }
             case "mandalam-agent":
             {
                 var mandalamId = (Guid)user.CascadeId;
 
-                dbQuery = dbQuery.Where(x => (x.ToMandalamId == mandalamId || x.FromMandalamId == mandalamId) && 
-                                             x.Status == DisputeStatus.Pending)
+                dbQuery = dbQuery.Where(x => (x.ToMandalamId == mandalamId || x.FromMandalamId == mandalamId)) 
                                  .OrderByDescending(x => x.SubmittedDate);
                 break;
             }
@@ -80,8 +78,7 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
             {
                 var stateId = (Guid)user.StateId;
 
-                dbQuery = dbQuery.Where(x => (x.FromStateId == stateId || x.ToStateId == stateId))
-                    .OrderByDescending(x => x.SubmittedDate);
+                dbQuery = dbQuery.Where(x => (x.FromStateId == stateId || x.ToStateId == stateId));
                 break;
             }
             default:

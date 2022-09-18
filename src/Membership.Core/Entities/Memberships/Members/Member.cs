@@ -138,6 +138,7 @@ public class Member
             QualificationId = contract.QualificationId,
             BloodGroup = contract.BloodGroup,
             HouseName = contract.HouseName,
+            Gender  = contract.Gender,
             AddressInIndia = contract.AddressInIndia,
             AddressInDistrictId = contract.AddressInDistrictId,
             AddressInMandalamId = contract.AddressInMandalamId,
