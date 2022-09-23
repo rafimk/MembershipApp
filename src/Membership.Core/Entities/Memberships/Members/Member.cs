@@ -7,6 +7,7 @@ using Membership.Core.Entities.Memberships.RegisteredOrganizations;
 using Membership.Core.Entities.Memberships.WelfareSchemes;
 using Membership.Core.Entities.Nationalities;
 using Membership.Core.Entities.Users;
+using Membership.Core.Exceptions.Memberships;
 using Membership.Core.Exceptions.Users;
 using Membership.Core.ValueObjects;
 
@@ -64,6 +65,7 @@ public class Member
     public MembershipPeriod MembershipPeriod { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime? VerifiedAt { get; private set; }
+    public Guid? VerificationId { get; private set; }
     public bool ManuallyEntered { get; private set; }
     public Guid? AgentId { get; private set; }
     public User Agent { get; private set; }
@@ -212,14 +214,25 @@ public class Member
     {
         IsActive = true;
     }
+    
+    public void VerifyStarted(Guid verificationId)
+    {
+        if (VerificationId.HasValue)
+        {
+            throw new MemberVerificationAlreadyInitiated();
+        }
 
-    public void Verify(DateTime verifiedAt)
+        VerificationId = verificationId;
+    }
+
+    public void Verify(DateTime verifiedAt, Guid verificationId)
     {
         if (VerifiedAt.HasValue)
         {
-            throw new UserAlreadyVerifiedException(Email);
+            throw new MemberVerificationAlreadyCompleted();
         }
 
         VerifiedAt = verifiedAt;
+        VerificationId = verificationId;
     }
 }

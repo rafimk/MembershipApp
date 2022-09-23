@@ -331,4 +331,30 @@ public static class Extensions
             HouseName = entity.HouseName,
             AddressInIndia = entity.AddressInIndia
          };
+     
+     public static MembershipVerificationDto AsDto(this MembershipVerification entity)
+         => new()
+         {
+             Id = entity.Id,
+            MemberId = entity.MemberId,
+            Member = entity.Member.AsBasicDto(),
+            EidFrontPage = entity.EidFrontPage,
+            EidLastPage = entity.EidLastPage,
+            PassportFirstPage = entity.PassportFirstPage,
+            PassportLastPage = entity.PassportLastPage,
+            EdiFrontAndBackSideValid = entity.EdiFrontAndBackSideValid,
+            EidNumberValid = entity.EidNumberValid,
+            EidFullNameValid = entity.EidFullNameValid,
+            EidNationalityValid = entity.EidNationalityValid,
+            EidDOBValid = entity.EidDOBValid,
+            EidDOEValid = entity.EidDOEValid,
+            EidIssuePlaceValid = entity.EidIssuePlaceValid,
+            MemberVerified = entity.MemberVerified,
+            PassportFirstPageValid = entity.PassportFirstPageValid,
+            PassportLastPageValid = entity.PassportLastPageValid,
+            Gender = (int)entity.Gender,
+            VerifiedUserId = entity.VerifiedUserId,
+            VerifiedUserName = "",
+            VerifiedAt = entity.VerifiedAt
+         };
     }

@@ -63,6 +63,8 @@ internal static class Extensions
         
         services.AddScoped<IUserRepository, PostgresUserRepository>();
         services.AddScoped<IUserLoginAttemptRepository, PostgresUserLoginAttemptRepository>();
+        
+        services.AddScoped<IMembershipVerificationRepository, PostgresMembershipVerificationRepository>();
        
         services.AddHostedService<DatabaseInitializer>();
         services.AddScoped<IUnitOfWork, PostgresUnitOfWork>();

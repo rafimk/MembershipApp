@@ -1,0 +1,69 @@
+@url = http://localhost:5000
+@id = b7fb35e1-d639-431d-a9a3-b6ab7b5ffa14
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "verification-officer@admin.com",
+    "password": "X2QoUxRGQXFg/lv0NjvjGg=="
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+###
+POST {{url}}/MembershipVerification
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "id":null,
+    "verifiedUserId" :null
+}
+
+###
+PUT {{url}}/MembershipVerification/{{id}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "id": "b7fb35e1-d639-431d-a9a3-b6ab7b5ffa14",
+    "ediFrontAndBackSideValid": true,
+    "eidNumberValid": true,
+    "eidFullNameValid": true,
+    "eidNationalityValid": true,
+    "eidDOBValid": true,
+    "eidDOEValid": true,
+    "passportFirstPageValid": true,
+    "passportLastPageValid": true,
+    "cardType": 0,
+    "gender": 0,
+    "eidIssuePlaceValid": true,
+    "verifiedUserId" : null
+}
+
+###
+GET {{url}}/MembershipVerification/{{id}}
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/MembershipVerification/eidfrontpagedownload/{{id}}
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/MembershipVerification/eidlastpagedownload/{{id}}
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/MembershipVerification/passportfirstpagedownload/{{id}}
+Authorization: Bearer {{accessToken}}
+
+
+###
+GET {{url}}/MembershipVerification/passportlastpagedownload/{{id}}
+Authorization: Bearer {{accessToken}}
+
+

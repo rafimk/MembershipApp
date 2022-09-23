@@ -31,6 +31,7 @@ internal sealed class MembershipDbContext : DbContext
     public DbSet<OcrResult> OcrResults { get; set; }
     
     public DbSet<UserLoginAttempt> UserLoginAttempts { get; set; }
+    public DbSet<MembershipVerification> MembershipVerifications { get; set; }
 
     public MembershipDbContext(DbContextOptions<MembershipDbContext> options) : base(options)
     {
