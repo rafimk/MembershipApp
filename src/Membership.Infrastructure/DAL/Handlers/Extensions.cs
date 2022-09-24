@@ -329,7 +329,8 @@ public static class Extensions
             BloodGroup = (int)entity.BloodGroup,
             Gender = (int)entity.Gender,
             HouseName = entity.HouseName,
-            AddressInIndia = entity.AddressInIndia
+            AddressInIndia = entity.AddressInIndia,
+            State = entity.State?.Name
          };
      
      public static MembershipVerificationDto AsDto(this MembershipVerification entity)

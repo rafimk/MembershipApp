@@ -21,18 +21,21 @@ public class MembershipVerificationController : ApiController
     private readonly ICommandHandler<ReserveVerification> _reserveVerificationHandler;
     private readonly ICommandHandler<UpdateVerification> _updateVerificationHandler;
     private readonly IQueryHandler<GetMembershipVerificationByUserId, MembershipVerificationDto> _getMembershipVerificationByUserIdHandler;
+    private readonly IQueryHandler<GetReservedMembershipVerificationByUserId, Guid?> _getReservedMembershipVerificationByUserIdHandler;
     readonly IBufferedFileUploadService _bufferedFileUploadService;
     private readonly FileUploadOptions _fileUploadOptions;
 
     public MembershipVerificationController(ICommandHandler<ReserveVerification> reserveVerificationHandler,
         ICommandHandler<UpdateVerification> updateVerificationHandler, 
         IQueryHandler<GetMembershipVerificationByUserId, MembershipVerificationDto> getMembershipVerificationByUserIdHandler,
+        IQueryHandler<GetReservedMembershipVerificationByUserId, Guid?> getReservedMembershipVerificationByUserIdHandler,
         IBufferedFileUploadService bufferedFileUploadService, 
         IOptions<FileUploadOptions> fileOptions)
     {
         _reserveVerificationHandler = reserveVerificationHandler;
         _updateVerificationHandler = updateVerificationHandler;
         _getMembershipVerificationByUserIdHandler = getMembershipVerificationByUserIdHandler;
+        _getReservedMembershipVerificationByUserIdHandler = getReservedMembershipVerificationByUserIdHandler;
         _bufferedFileUploadService = bufferedFileUploadService;
         _fileUploadOptions = fileOptions.Value;
     }
@@ -63,6 +66,15 @@ public class MembershipVerificationController : ApiController
     public async Task<ActionResult> Post(ReserveVerification command)
     {
         var userId = Guid.Parse(User?.Identity?.Name);
+
+        var result = await _getReservedMembershipVerificationByUserIdHandler.HandleAsync(new GetReservedMembershipVerificationByUserId
+            {UserId = userId});
+
+        if (result is not null)
+        {
+            return Ok(new {Id = result});
+        }
+        
         command = command with {Id =  Guid.NewGuid(), VerifiedUserId = userId};
         await _reserveVerificationHandler.HandleAsync(command);
         return Ok(new {Id = command.Id});

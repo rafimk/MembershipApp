@@ -27,7 +27,7 @@ internal sealed class GetMembershipVerificationByUserIdHandler : IQueryHandler<G
         }
 
         var result = await _dbContext.MembershipVerifications
-            .Include(x => x.Member)
+            .Include(x => x.Member).ThenInclude(x => x.State)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == query.Id && x.VerifiedUserId == query.UserId);
 

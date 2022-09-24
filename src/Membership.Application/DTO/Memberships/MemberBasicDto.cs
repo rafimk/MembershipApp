@@ -14,4 +14,5 @@ public class MemberBasicDto
     public int Gender { get; set; } = 0;
     public string HouseName { get; set; }
     public string AddressInIndia { get; set; }
+    public string State { get; set; }
 }
