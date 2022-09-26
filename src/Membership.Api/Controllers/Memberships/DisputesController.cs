@@ -65,7 +65,7 @@ public class DisputesController : ApiController
     //     return Ok(disputeRequests);
     // }
     
-    [Authorize(Roles = "mandalam-agent, district-agent, dispute-committee")]
+    [Authorize(Roles = "mandalam-agent, district-agent, dispute-committee, central-dispute-admin")]
     [HttpGet("{requestId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -97,7 +97,7 @@ public class DisputesController : ApiController
     //     return Ok(disputeRequests);
     // }
     
-    [Authorize(Roles = "mandalam-agent, district-agent, dispute-committee")]
+    [Authorize(Roles = "mandalam-agent, district-agent, dispute-committee, central-dispute-admin")]
     [HttpPost("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
