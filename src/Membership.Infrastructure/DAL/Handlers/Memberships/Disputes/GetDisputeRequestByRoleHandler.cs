@@ -81,6 +81,11 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
                 dbQuery = dbQuery.Where(x => (x.FromStateId == stateId || x.ToStateId == stateId));
                 break;
             }
+            case "central-dispute-admin":
+            {
+                dbQuery = dbQuery.Where(x => (x.FromStateId != x.ToStateId));
+                break;
+            }
             default:
             {
                 return new PaginatedResult<DisputeRequestListDto>(new List<DisputeRequestListDto>(), 0, (int)query.PageIndex, (int)query.PageSize);
@@ -124,7 +129,16 @@ internal sealed class GetDisputeRequestByRoleHandler : IQueryHandler<GetDisputeR
         {
             foreach (var item in paginatedResult.Items)
             {
-                if (item.FromState.Id == user.StateId)
+                if (item.FromState.Id == user.StateId && item.FromState.Id == item.ToState.Id)
+                {
+                    item.IsCanApprove = true;
+                }
+            }
+        } else if (user.Role == UserRole.CentralDisputeAdmin())
+        {
+            foreach (var item in paginatedResult.Items)
+            {
+                if (item.FromState.Id != item.ToState.Id)
                 {
                     item.IsCanApprove = true;
                 }

@@ -645,6 +645,49 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
                 });
             }
         }
+        
+        if (user.Role == UserRole.CentralDisputeAdmin())
+        {
+            var userState = user.State.Prefix;
+            var disputeRequestsCountByStateFrom = await _dbContext.DisputeRequests
+                .Include(x => x.FromState)
+                .Include(x => x.FromDistrict)
+                .Where(x => x.FromStateId == user.StateId && 
+                            x.Status == DisputeStatus.Pending &&
+                            x.FromStateId != x.ToStateId)
+                .GroupBy(x => x.FromDistrictId)
+                .Select(x => new { DistrictId = x.Key, DistrictName = x.First().FromDistrict.Name, Count = x.Count() })
+                .ToListAsync();
+            
+            Int32 totalDistrictDisputeRequestsCountFrom = 0; 
+            widgetDetails= new();
+            
+            foreach(var item in disputeRequestsCountByStateFrom)
+            {
+                if (item.DistrictName is not null)
+                {
+                    totalDistrictDisputeRequestsCountFrom += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.DistrictName,
+                        IntValue = item.Count,
+                        TextValue = "disputes"
+                    });
+                }
+            }
+
+            if (totalDistrictDisputeRequestsCountFrom > 0)
+            {
+                widget.Add(new WidgetDto
+                {
+                    No = 1,
+                    Title = $"{userState} To Others",
+                    SummaryValue = totalDistrictDisputeRequestsCountFrom,
+                    SummaryText = "disputes",
+                    Details = widgetDetails
+                });
+            }
+        }
 
         return widget;
     }

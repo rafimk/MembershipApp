@@ -14,7 +14,8 @@ public static class Extensions
         services.AddSingleton<IUserCreatePolicy, DisputeCommitteeUserCreatePolicy>();
         services.AddSingleton<IUserCreatePolicy, DistrictAgentUserCreatePolicy>();
         services.AddSingleton<IUserCreatePolicy, MonitoringOfficerUserCreatePolicy>();
-      
+        services.AddSingleton<IUserCreatePolicy, CentralDisputeAdminCreatePolicy>();
+
         return services;
     }
 }

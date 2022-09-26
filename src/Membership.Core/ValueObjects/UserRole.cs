@@ -6,7 +6,7 @@ public sealed record UserRole
 {
 
     public static IEnumerable<string> AvailableRoles { get; } = new[] {"centralcommittee-admin", "state-admin", "district-admin",
-         "mandalam-agent", "district-agent", "dispute-committee", "monitoring-officer", "verification-officer"};
+         "mandalam-agent", "district-agent", "dispute-committee", "central-dispute-admin", "monitoring-officer", "verification-officer"};
 
     public string Value { get; }
 
@@ -33,6 +33,8 @@ public sealed record UserRole
     public static UserRole DisputeCommittee() => new("dispute-committee");
     public static UserRole MonitoringOfficer() => new("monitoring-officer");
     public static UserRole VerificationOfficer() => new("verification-officer");
+    public static UserRole CentralDisputeAdmin() => new("central-dispute-admin");
+    
 
     public static implicit operator UserRole(string value) => new UserRole(value);
 
