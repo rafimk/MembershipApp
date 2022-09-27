@@ -178,7 +178,7 @@ public class DisputesController : ApiController
     //     return NoContent();
     // }
     
-    [Authorize(Roles = "dispute-committee")]
+    [Authorize(Roles = "dispute-committee, central-dispute-admin")]
     [HttpPut("approve/{requestId:guid}")]
     public async Task<ActionResult> Approve(Guid requestId, ApproveDisputeRequest command)
     {
@@ -188,7 +188,7 @@ public class DisputesController : ApiController
         return NoContent();
     }
     
-    [Authorize(Roles = "dispute-committee")]
+    [Authorize(Roles = "dispute-committee, central-dispute-admin")]
     [HttpPut("reject/{requestId:guid}")]
     public async Task<ActionResult> Reject(Guid requestId, RejectDisputeRequest command)
     {
