@@ -23,7 +23,7 @@ internal sealed class GetDisputeRequestByIdHandler : IQueryHandler<GetDisputeReq
         var requestId = query.RequestId;
 
         var disputeRequest = await _dbContext.DisputeRequests
-            .Include(x => x.Member)
+            .Include(x => x.Member).ThenInclude(x => x.State)
             .Include(x => x.FromState)
             .Include(x => x.FromArea)
             .Include(x => x.FromDistrict)
@@ -43,7 +43,8 @@ internal sealed class GetDisputeRequestByIdHandler : IQueryHandler<GetDisputeReq
 
         if (user is not null && result is not null)
         {
-            if (result.FromState.Id == user.StateId && user.Role == UserRole.DisputeCommittee())
+            if ((result.FromState.Id == user.StateId && result.FromState.Id == result.ToState.Id && user.Role == UserRole.DisputeCommittee()) ||
+                (result.FromState.Id != result.ToState.Id && user.Role == UserRole.CentralDisputeAdmin()))
             {
                 result.IsCanApprove = true;
             }

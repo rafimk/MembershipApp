@@ -330,7 +330,25 @@ public static class Extensions
             Gender = (int)entity.Gender,
             HouseName = entity.HouseName,
             AddressInIndia = entity.AddressInIndia,
-            State = entity.State?.Name
+            State = entity.State?.Name 
+         };
+     
+     public static MemberBasicDto AsBasicDtoWithsState(this Member entity)
+         => new()
+         {
+             Id = entity.Id,
+             MembershipId = $"{entity.MembershipNoPrefix.Trim()}{entity.MembershipSequenceNo.ToString("D6")}",
+             FullName = entity.FullName,
+             EmiratesIdNumber = entity.EmiratesIdNumber,
+             EmiratesIdExpiry = entity.EmiratesIdExpiry,
+             DateOfBirth = entity.DateOfBirth,
+             MobileNumber = entity.MobileNumber,
+             Email = entity.Email,
+             BloodGroup = (int)entity.BloodGroup,
+             Gender = (int)entity.Gender,
+             HouseName = entity.HouseName,
+             AddressInIndia = entity.AddressInIndia,
+             State = entity.State?.Name
          };
      
      public static MembershipVerificationDto AsDto(this MembershipVerification entity)
