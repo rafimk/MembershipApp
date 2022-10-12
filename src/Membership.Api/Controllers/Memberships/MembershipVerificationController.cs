@@ -88,91 +88,91 @@ public class MembershipVerificationController : ApiController
         return NoContent();
     }
     
-    [Authorize(Roles = "verification-officer")]
+    // [Authorize(Roles = "verification-officer")]
     [HttpGet("eidfrontpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> EidFrontPageDownload(Guid id)
     {
-        var userId = Guid.Parse(User?.Identity?.Name);
-        
-        var verification  = await _getMembershipVerificationByUserIdHandler.HandleAsync(new GetMembershipVerificationByUserId { Id = id, UserId = userId});
+        // var userId = Guid.Parse(User?.Identity?.Name);
 
-        if (verification is null)
-        {
-            throw new UnauthorizedDownloadAccessException();
-        }
-
-        if (verification.VerifiedUserId != userId || verification.VerifiedAt is not null)
-        {
-            throw new UnauthorizedDownloadAccessException();
-        }
+        // var verification  = await _getMembershipVerificationByUserIdHandler.HandleAsync(new GetMembershipVerificationByUserId { Id = id, UserId = null});
+        //
+        // if (verification is null)
+        // {
+        //     throw new UnauthorizedDownloadAccessException();
+        // }
+        //
+        // if (verification.VerifiedUserId != userId || verification.VerifiedAt is not null)
+        // {
+        //     throw new UnauthorizedDownloadAccessException();
+        // }
         
-        var result = await _bufferedFileUploadService.Download(verification.EidFrontPage, _fileUploadOptions.FilePath);
+        var result = await _bufferedFileUploadService.Download(id, _fileUploadOptions.FilePath);
         return File(result.File, result.FileType, result.FileName);
     }
     
-    [Authorize(Roles = "verification-officer")]
+    // [Authorize(Roles = "verification-officer")]
     [HttpGet("eidlastpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> EidLastPageDownload(Guid id)
     {
-        var userId = Guid.Parse(User?.Identity?.Name);
+        // var userId = Guid.Parse(User?.Identity?.Name);
         
-        var verification  = await _getMembershipVerificationByUserIdHandler.HandleAsync(new GetMembershipVerificationByUserId { Id = id, UserId = userId});
+        // var verification  = await _getMembershipVerificationByUserIdHandler.HandleAsync(new GetMembershipVerificationByUserId { Id = id, UserId = null});
+        //
+        // if (verification is null)
+        // {
+        //     throw new UnauthorizedDownloadAccessException();
+        // }
 
-        if (verification is null)
-        {
-            throw new UnauthorizedDownloadAccessException();
-        }
-
-        if (verification.VerifiedUserId != userId || verification.VerifiedAt is not null)
-        {
-            throw new UnauthorizedDownloadAccessException();
-        }
+        // if (verification.VerifiedUserId != userId || verification.VerifiedAt is not null)
+        // {
+        //     throw new UnauthorizedDownloadAccessException();
+        // }
         
-        var result = await _bufferedFileUploadService.Download(verification.EidLastPage, _fileUploadOptions.FilePath);
+        var result = await _bufferedFileUploadService.Download(id, _fileUploadOptions.FilePath);
         return File(result.File, result.FileType, result.FileName);
     }
     
-    [Authorize(Roles = "verification-officer")]
+    // [Authorize(Roles = "verification-officer")]
     [HttpGet("passportfirstpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> PassportFirstPageDownload(Guid id)
     {
-        var userId = Guid.Parse(User?.Identity?.Name);
+        // var userId = Guid.Parse(User?.Identity?.Name);
         
-        var verification  = await _getMembershipVerificationByUserIdHandler.HandleAsync(new GetMembershipVerificationByUserId { Id = id, UserId = userId});
+        // var verification  = await _getMembershipVerificationByUserIdHandler.HandleAsync(new GetMembershipVerificationByUserId { Id = id, UserId = null});
+        //
+        // if (verification is null)
+        // {
+        //     throw new UnauthorizedDownloadAccessException();
+        // }
 
-        if (verification is null)
-        {
-            throw new UnauthorizedDownloadAccessException();
-        }
-
-        if (verification.VerifiedUserId != userId || verification.VerifiedAt is not null)
-        {
-            throw new UnauthorizedDownloadAccessException();
-        }
+        // if (verification.VerifiedUserId != userId || verification.VerifiedAt is not null)
+        // {
+        //     throw new UnauthorizedDownloadAccessException();
+        // }
         
-        var result = await _bufferedFileUploadService.Download((Guid)verification.PassportFirstPage, _fileUploadOptions.FilePath);
+        var result = await _bufferedFileUploadService.Download(id, _fileUploadOptions.FilePath);
         return File(result.File, result.FileType, result.FileName);
     }
     
-    [Authorize(Roles = "verification-officer")]
+    // [Authorize(Roles = "verification-officer")]
     [HttpGet("passportlastpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> PassportLastPageDownload(Guid id)
     {
-        var userId = Guid.Parse(User?.Identity?.Name);
+        // var userId = Guid.Parse(User?.Identity?.Name);
         
-        var verification  = await _getMembershipVerificationByUserIdHandler.HandleAsync(new GetMembershipVerificationByUserId { Id = id, UserId = userId});
+        // var verification  = await _getMembershipVerificationByUserIdHandler.HandleAsync(new GetMembershipVerificationByUserId { Id = id, UserId = null});
+        //
+        // if (verification is null)
+        // {
+        //     throw new UnauthorizedDownloadAccessException();
+        // }
 
-        if (verification is null)
-        {
-            throw new UnauthorizedDownloadAccessException();
-        }
-
-        if (verification.VerifiedUserId != userId || verification.VerifiedAt is not null)
-        {
-            throw new UnauthorizedDownloadAccessException();
-        }
+        // if (verification.VerifiedUserId != userId || verification.VerifiedAt is not null)
+        // {
+        //     throw new UnauthorizedDownloadAccessException();
+        // }
         
-        var result = await _bufferedFileUploadService.Download((Guid)verification.PassportLastPage, _fileUploadOptions.FilePath);
+        var result = await _bufferedFileUploadService.Download(id, _fileUploadOptions.FilePath);
         return File(result.File, result.FileType, result.FileName);
     }
 }

@@ -33,7 +33,6 @@ internal sealed class UpdateUserHandler : ICommandHandler<UpdateUser>
             MobileNumber = command.MobileNumber,
             AlternativeContactNumber = command.MobileNumber,
             Designation = command.Designation,
-            IsDisputeCommittee = command.IsDisputeCommittee,
         };
 
         user.Update(contract);

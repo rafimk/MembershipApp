@@ -25,7 +25,7 @@ public class User
     public string CascadeName { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public bool IsActive {get; private set;}
-    public bool IsDisputeCommittee {get; private set;}
+    public bool IsDeleted {get; private set;}
     public DateTime? VerifiedAt { get; private set; }
   
 
@@ -49,7 +49,7 @@ public class User
         CascadeName = contract.CascadeName;
         CreatedAt = contract.CreatedAt;
         IsActive = contract.IsActive;
-        IsDisputeCommittee = contract.IsDisputeCommittee;
+        IsDeleted = contract.IsDeleted;
     }
 
     public static User Create(UserCreateContract contract)
@@ -68,7 +68,7 @@ public class User
             CascadeId = contract.CascadeId,
             CascadeName = contract.CascadeName,
             CreatedAt = contract.CreatedAt,
-            IsDisputeCommittee = contract.IsDisputeCommittee,
+            IsDeleted = false,
             IsActive = true
         });
 
@@ -77,7 +77,6 @@ public class User
         FullName = contract.FullName;
         MobileNumber = contract.MobileNumber;
         Designation = contract.Designation;
-        IsDisputeCommittee = contract.IsDisputeCommittee;
     }
     
     public void ChangePassword(string newPasswordHash, string email)
@@ -94,6 +93,11 @@ public class User
     public void Deactivate()
     {
         IsActive = false;
+    }
+    
+    public void Delete()
+    {
+        IsDeleted = true;
     }
 
     public void Verify(DateTime verifiedAt, string password)

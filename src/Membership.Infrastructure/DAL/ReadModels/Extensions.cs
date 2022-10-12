@@ -58,7 +58,7 @@ public static class Extensions
              CascadeName = entity.CascadeName,
              VerifiedAt = entity.VerifiedAt,
              IsActive = entity.IsActive,
-             IsDisputeCommittee = entity.IsDisputeCommittee,
+             IsDisputeCommittee = false,
              CreatedAt = entity.CreatedAt
          };
      

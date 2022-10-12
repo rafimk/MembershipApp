@@ -19,6 +19,6 @@ public sealed class UserReadModel
     public string CascadeName { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public bool IsActive {get; private set;}
-    public bool IsDisputeCommittee {get; private set;}
+    public bool IsDeleted {get; private set;}
     public DateTime? VerifiedAt { get; private set; }
 }

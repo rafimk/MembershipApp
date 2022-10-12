@@ -48,6 +48,7 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, Pagi
 
         var dbQuery = _dbContext.Users
             .OrderBy(x => x.FullName)
+            .Where(x => !x.IsDeleted)
             .AsNoTracking()
             .AsQueryable();
 
@@ -75,7 +76,6 @@ internal sealed class GetUsersByRoleHandler : IQueryHandler<GetUsersByRole, Pagi
                 }
             }
         }
-      
         
         if (query.SearchString?.Trim().Length > 0)
         {

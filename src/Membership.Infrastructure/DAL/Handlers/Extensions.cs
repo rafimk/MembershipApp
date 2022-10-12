@@ -139,7 +139,7 @@ public static class Extensions
             CascadeName = entity.CascadeName,
             VerifiedAt = entity.VerifiedAt,
             IsActive = entity.IsActive,
-            IsDisputeCommittee = entity.IsDisputeCommittee,
+            IsDisputeCommittee = false,
             CreatedAt = entity.CreatedAt
         };
 
@@ -330,7 +330,6 @@ public static class Extensions
             Gender = (int)entity.Gender,
             HouseName = entity.HouseName,
             AddressInIndia = entity.AddressInIndia,
-            State = entity.State?.Name 
          };
      
      public static MemberBasicDto AsBasicDtoWithsState(this Member entity)
@@ -356,7 +355,7 @@ public static class Extensions
          {
              Id = entity.Id,
             MemberId = entity.MemberId,
-            Member = entity.Member.AsBasicDto(),
+            Member = entity.Member.AsBasicDtoWithsState(),
             EidFrontPage = entity.EidFrontPage,
             EidLastPage = entity.EidLastPage,
             PassportFirstPage = entity.PassportFirstPage,

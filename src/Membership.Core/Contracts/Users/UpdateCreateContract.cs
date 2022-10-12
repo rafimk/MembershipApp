@@ -9,5 +9,5 @@ public record UpdateCreateContract()
     public MobileNumber MobileNumber { get; set; } 
     public MobileNumber AlternativeContactNumber { get; set; }
     public string Designation { get; set; }
-    public bool IsDisputeCommittee {get; set;}
+    public bool IsDeleted {get; set;}
 }

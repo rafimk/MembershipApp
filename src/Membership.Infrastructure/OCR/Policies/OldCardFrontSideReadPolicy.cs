@@ -17,7 +17,7 @@ public class OldCardFrontSideReadPolicy : ICardReadPolicy
         try
         {
             var splitedResult = result.Split(" ");
-            var newEids = splitedResult.Where(x => x.Length == 18).ToList();
+            var newEids = splitedResult.Where(x => x.Length == 18 && x.Contains("784-")).ToList();
 
             foreach (var item in newEids)
             {

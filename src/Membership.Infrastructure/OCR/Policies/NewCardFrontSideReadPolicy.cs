@@ -21,7 +21,7 @@ public class NewCardFrontSideReadPolicy : ICardReadPolicy
         try
         {
             var splitedResult = result.Split(" ");
-            var newEids = splitedResult.Where(x => x.Length == 18).ToList();
+            var newEids = splitedResult.Where(x => x.Length == 18 && x.Contains("784-")).ToList();
             var newDates = splitedResult.Where(x => x.Length == 10 && x.Contains("/")).ToList();
             var myDateRegex = new Regex(@"([0-9]{2})\/([0-9]{2})\/([0-9]{4})", RegexOptions.Compiled);
             var cardNoRegex = new Regex("^784-[0-9]{4}-[0-9]{7}-[0-9]{1}$");
