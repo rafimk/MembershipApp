@@ -88,6 +88,7 @@ public class MembershipVerificationController : ApiController
         return NoContent();
     }
     
+    [AllowAnonymous]
     // [Authorize(Roles = "verification-officer")]
     [HttpGet("eidfrontpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> EidFrontPageDownload(Guid id)
@@ -110,6 +111,7 @@ public class MembershipVerificationController : ApiController
         return File(result.File, result.FileType, result.FileName);
     }
     
+    [AllowAnonymous]
     // [Authorize(Roles = "verification-officer")]
     [HttpGet("eidlastpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> EidLastPageDownload(Guid id)
@@ -132,6 +134,7 @@ public class MembershipVerificationController : ApiController
         return File(result.File, result.FileType, result.FileName);
     }
     
+    [AllowAnonymous]
     // [Authorize(Roles = "verification-officer")]
     [HttpGet("passportfirstpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> PassportFirstPageDownload(Guid id)
@@ -154,6 +157,7 @@ public class MembershipVerificationController : ApiController
         return File(result.File, result.FileType, result.FileName);
     }
     
+    [AllowAnonymous]
     // [Authorize(Roles = "verification-officer")]
     [HttpGet("passportlastpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> PassportLastPageDownload(Guid id)
