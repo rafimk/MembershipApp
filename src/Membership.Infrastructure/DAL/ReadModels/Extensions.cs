@@ -43,6 +43,53 @@ public static class Extensions
             Agent = entity.Agent?.FullName
         };
      
+     public static MemberListDto AsListDto(this MemberReadModel entity)
+         => new()
+         {
+             Id = entity.Id,
+             MembershipId = $"{entity.MembershipNoPrefix.Trim()}{entity.MembershipSequenceNo.ToString("D6")}",
+             FullName = entity.FullName,
+             EmiratesIdNumber = entity.EmiratesIdNumber,
+             EmiratesIdExpiry = entity.EmiratesIdExpiry,
+             DateOfBirth = entity.DateOfBirth,
+             MobileNumber = entity.MobileNumber,
+             Email = entity.Email,
+             PassportNumber = entity.PassportNumber,
+             StateId = entity.StateId,
+             State = new StateDto
+             {
+                 Id = entity.StateId,
+                 Name = entity.State?.Name
+             },
+             District = new DistrictDto
+             {
+                 Id = entity.DistrictId,
+                 Name = entity.District?.Name
+             },
+             AreaId = entity.AreaId,
+             DistrictId = entity.DistrictId,
+             Area = new AreaDto
+             {
+                 Id = entity.AreaId,
+                 Name = entity.Area?.Name
+             },
+             Mandalam = new MandalamDto
+             {
+                 Id = entity.MandalamId,
+                 Name = entity.Mandalam?.Name
+             },
+             Panchayat = new PanchayatDto
+             {
+                 Id = entity.PanchayatId,
+                 Name = entity.Panchayat?.Name
+             },
+             CreatedBy = entity.CreatedBy,
+             IsActive = entity.IsActive,
+             CreatedAt = entity.CreatedAt,
+             VerifiedAt = entity.VerifiedAt,
+             Agent = entity.Agent?.FullName
+         };
+     
      public static UserDto AsDto(this UserReadModel entity)
          => new()
          {

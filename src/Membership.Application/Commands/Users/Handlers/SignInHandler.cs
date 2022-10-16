@@ -7,6 +7,7 @@ using Membership.Core.DomainServices.Users;
 using Membership.Core.Exceptions.Users;
 using Membership.Core.Repositories.Memberships;
 using Membership.Core.Repositories.Users;
+using Membership.Core.ValueObjects;
 
 namespace Membership.Application.Commands.Users.Handlers;
 
@@ -75,6 +76,12 @@ internal sealed class SignInHandler : ICommandHandler<SignIn>
         {
             isAddMember = true;
             isAddUser = true;
+        }
+
+        if (user.Role == UserRole.VerificationOfficer())
+        {
+            isAddMember = false;
+            isAddUser = false;
         }
 
         var jwt = _authenticator.CreateToken(user.Id, user.Role, isAddMember, isAddUser);

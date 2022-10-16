@@ -13,9 +13,11 @@ public sealed class MemberReadModel
     public string Email { get; set; }
     public string PassportNumber { get; set; }
     public Guid StateId { get; set; }
+    public StateReadModel State { get; set; }
     public Guid AreaId { get; set; }
     public AreaReadModel Area { get; set; }
     public Guid DistrictId { get; set; }
+    public DistrictReadModel District { get; set; }
     public Guid MandalamId { get; set; }
     public MandalamReadModel Mandalam { get; set; }
     public Guid PanchayatId { get; set; }

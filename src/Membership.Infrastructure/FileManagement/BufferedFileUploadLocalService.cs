@@ -1,4 +1,6 @@
-﻿using Membership.Application.DTO.Commons;
+﻿using ClosedXML.Excel;
+using Membership.Application.DTO.Commons;
+using Membership.Application.DTO.Memberships;
 using Membership.Core.Abstractions;
 using Membership.Core.Consts;
 using Membership.Core.Entities.Commons;
@@ -89,6 +91,61 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
             FileType = file.FileType,
             FileName = file.ActualFileName
         };
+    }
+
+    public BufferedFileUploadDto MembersExcelReportDownload(IEnumerable<MemberListDto> memberList)
+    {
+        using (var workBook = new XLWorkbook())
+        {
+            var workSheet = workBook.Worksheets.Add("Members");
+            var currentRow = 1;
+
+            #region Header
+            workSheet.Cell(currentRow, 1).Value = "####";
+            workSheet.Cell(currentRow, 2).Value = "Membership Id";
+            workSheet.Cell(currentRow, 3).Value = "Name";
+            workSheet.Cell(currentRow, 4).Value = "Emirates ID";
+            workSheet.Cell(currentRow, 5).Value = "Mobile No";
+            workSheet.Cell(currentRow, 6).Value = "State";
+            workSheet.Cell(currentRow, 7).Value = "Area";
+            workSheet.Cell(currentRow, 8).Value = "District";
+            workSheet.Cell(currentRow, 9).Value = "Mandalam";
+            workSheet.Cell(currentRow, 10).Value = "Panchayat";
+            workSheet.Cell(currentRow, 11).Value = "Agent";
+            #endregion
+
+            #region Body
+
+            var SlNo = 1;
+            foreach (var member in memberList)
+            {
+                currentRow++;
+                workSheet.Cell(currentRow, 1).Value = SlNo.ToString("#####");
+                workSheet.Cell(currentRow, 2).Value = member.MembershipId;
+                workSheet.Cell(currentRow, 3).Value = member.FullName;
+                workSheet.Cell(currentRow, 4).Value = member.EmiratesIdNumber;
+                workSheet.Cell(currentRow, 5).Value = member.MobileNumber;
+                workSheet.Cell(currentRow, 6).Value = member.Area.State.Name;
+                workSheet.Cell(currentRow, 7).Value = member.Area.Name;
+                workSheet.Cell(currentRow, 8).Value = member.Mandalam.District.Name;
+                workSheet.Cell(currentRow, 9).Value = member.Mandalam.Name;
+                workSheet.Cell(currentRow, 10).Value = member.Panchayat.Name;
+                workSheet.Cell(currentRow, 11).Value = member.Agent;
+                SlNo++;
+            }
+            #endregion
+
+            using (var stream = new MemoryStream())
+            {
+                workBook.SaveAs(stream);
+                return new BufferedFileUploadDto
+                { 
+                    File =  stream.ToArray(),
+                    FileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    FileName = "MembersList.xlsx"
+                };
+            }
+        }
     }
 
     private string GetFilePath(string filePath)

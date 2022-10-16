@@ -75,3 +75,13 @@ Content-Type: application/json
     "manuallyEntered": false
 }
 
+###
+POST {{url}}/members/role-excel
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "SearchType" : null,
+    "searchString" : null
+}
+

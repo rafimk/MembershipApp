@@ -7,6 +7,7 @@ using Membership.Application.Commands.Memberships.Members;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
 using Membership.Application.Queries.Pagination;
+using Membership.Infrastructure.FileManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,33 +22,36 @@ public class MembersController : ApiController
     private readonly ICommandHandler<ActivateMember> _activateMemberHandler;
     private readonly ICommandHandler<DeactivateMember> _deactivateMemberHandler;
     private readonly IQueryHandler<GetMemberById, MemberDto> _getMemberByIdHandler;
-    private readonly IQueryHandler<GetMembers, IEnumerable<MemberDto>> _getMembersHandler;
+    private readonly IQueryHandler<GetMembersByRoleAsExcel, IEnumerable<MemberListDto>> _getMembersByRoleAsExcel;
     private readonly IQueryHandler<GetMembersByRole, PaginatedResult<MemberListDto>> _getMembersByRoleHandler;
     private readonly IQueryHandler<IsDispute, IsDisputeDto> _isDisputeHandler;
     private readonly IQueryHandler<GetMembershipCard, MemberCardDto> _getMembershipCardHandler;
     private readonly IQueryHandler<GetMembershipCardPdf, ReportDto> _getMembershipCardPdfHandler;
+    private readonly IBufferedFileUploadService _bufferedFileUploadService;
 
     public MembersController(ICommandHandler<CreateMember> createMemberHandler,
         ICommandHandler<UpdateMembershipId> updateMembershipIdHandler,
         ICommandHandler<ActivateMember> activateMemberHandler,
         ICommandHandler<DeactivateMember> deactivateMemberHandler,
-        IQueryHandler<GetMembers, IEnumerable<MemberDto>> getMembersHandler,
+        IQueryHandler<GetMembersByRoleAsExcel, IEnumerable<MemberListDto>> getMembersByRoleAsExcel,
         IQueryHandler<GetMemberById, MemberDto> getMemberByIdHandler,
         IQueryHandler<GetMembersByRole, PaginatedResult<MemberListDto>> getMembersByRoleHandler,
         IQueryHandler<IsDispute, IsDisputeDto> isDisputeHandler,
         IQueryHandler<GetMembershipCard, MemberCardDto> getMembershipCardHandler,
-        IQueryHandler<GetMembershipCardPdf, ReportDto> getMembershipCardPdfHandler)
+        IQueryHandler<GetMembershipCardPdf, ReportDto> getMembershipCardPdfHandler,
+        IBufferedFileUploadService bufferedFileUploadService)
     {
         _createMemberHandler = createMemberHandler;
         _updateMembershipIdHandler = updateMembershipIdHandler;
         _activateMemberHandler = activateMemberHandler;
         _deactivateMemberHandler = deactivateMemberHandler;
-        _getMembersHandler = getMembersHandler;
+        _getMembersByRoleAsExcel = getMembersByRoleAsExcel;
         _getMemberByIdHandler = getMemberByIdHandler;
         _getMembersByRoleHandler = getMembersByRoleHandler;
         _isDisputeHandler = isDisputeHandler;
         _getMembershipCardHandler = getMembershipCardHandler;
         _getMembershipCardPdfHandler = getMembershipCardPdfHandler;
+        _bufferedFileUploadService = bufferedFileUploadService;
     }
     
     // [HttpGet()]
@@ -181,6 +185,31 @@ public class MembersController : ApiController
     public async Task<ActionResult> GetMembershipCardPdf(Guid memberId)
     {
         var result = await _getMembershipCardPdfHandler.HandleAsync(new GetMembershipCardPdf { MemberId = memberId});
+        return File(result.File, result.FileType, result.FileName);
+    }
+    
+    [Authorize(Roles = "mandalam-agent, district-agent")]
+    [HttpPost("role-excel")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> GetMembersByRoleAsExcel(GetMembersByRoleAsExcel query)
+    {
+        if (string.IsNullOrWhiteSpace(User.Identity?.Name))
+        {
+            return NotFound();
+        }
+
+        var userId = Guid.Parse(User?.Identity?.Name);
+        query = query with { UserId = userId};
+        
+        var members = await _getMembersByRoleAsExcel.HandleAsync(query);
+        
+        if (members is null)
+        {
+            return NotFound();
+        }
+        
+        var result = _bufferedFileUploadService.MembersExcelReportDownload(members);
         return File(result.File, result.FileType, result.FileName);
     }
 }

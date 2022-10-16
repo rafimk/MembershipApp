@@ -14,9 +14,11 @@ public class MemberListDto
     public string Email { get; set; }
     public string PassportNumber { get; set; }
     public Guid StateId { get; set; }
+    public StateDto State { get; set; }
     public Guid AreaId { get; set; }
     public AreaDto Area { get; set; }
     public Guid DistrictId { get; set; }
+    public DistrictDto District { get; set; }
     public Guid MandalamId { get; set; }
     public MandalamDto Mandalam { get; set; }
     public Guid PanchayatId { get; set; }

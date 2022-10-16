@@ -1,5 +1,6 @@
 @url = http://localhost:5000
-@id = b7fb35e1-d639-431d-a9a3-b6ab7b5ffa14
+@id = aa89bee4-9483-400d-9c60-b078add056ff
+@eidFrontPage = a266404a-c965-49c7-917d-29fe2fd71a8a
 
 ###
 # @name sign_in
@@ -50,7 +51,7 @@ GET {{url}}/MembershipVerification/{{id}}
 Authorization: Bearer {{accessToken}}
 
 ###
-GET {{url}}/MembershipVerification/eidfrontpagedownload/{{id}}
+GET {{url}}/MembershipVerification/eidfrontpagedownload/{{eidFrontPage}}
 Authorization: Bearer {{accessToken}}
 
 ###
