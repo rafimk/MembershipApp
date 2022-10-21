@@ -62,6 +62,15 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             dbQuery = dbQuery.Where(x => x.MandalamId == agentmandalamId &&
                                          x.StateId == agentStateId);
         }
+        
+        if (user.Role == UserRole.MemberViewer())
+        {
+
+            var agentmandalamId = (Guid) user.CascadeId;
+            var agentStateId = (Guid) user.StateId;
+
+            dbQuery = dbQuery.Where(x => x.StateId == agentStateId);
+        }
 
         if (query.SearchString?.Trim().Length > 0)
         {

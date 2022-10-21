@@ -7,7 +7,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-     "email": "dispute-committee@admin.com",
+     "email": "member-viewer@admin.com",
      "password": "X2QoUxRGQXFg/lv0NjvjGg=="
 }
 

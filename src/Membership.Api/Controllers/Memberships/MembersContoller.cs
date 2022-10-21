@@ -101,7 +101,7 @@ public class MembersController : ApiController
         return isDispute;
     }
     
-    [Authorize(Roles = "mandalam-agent, district-agent")]
+    [Authorize(Roles = "mandalam-agent, district-agent, member-viewer")]
     [HttpPost("role")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

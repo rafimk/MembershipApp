@@ -17,7 +17,8 @@ internal sealed class CentralCommitteeUserCreatePolicy : IUserCreatePolicy
             UserRole.DisputeCommittee(),
             UserRole.MonitoringOfficer(),
             UserRole.VerificationOfficer(),
-            UserRole.CentralDisputeAdmin()
+            UserRole.CentralDisputeAdmin(),
+            UserRole.MemberViewer()
         };
     }
 

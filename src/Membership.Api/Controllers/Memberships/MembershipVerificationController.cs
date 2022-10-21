@@ -96,19 +96,19 @@ public class MembershipVerificationController : ApiController
     [HttpGet("eidfrontpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> EidFrontPageDownload(Guid id)
     {
-        var verifyRecord = await _membershipVerificationRepository.GetByIdAsync(id);
-
-        if (verifyRecord is null)
-        {
-            return NotFound();
-        }
-
-        if (verifyRecord.MemberVerified)
-        {
-            return NotFound();
-        }
+        // var verifyRecord = await _membershipVerificationRepository.GetByIdAsync(id);
+        //
+        // if (verifyRecord is null)
+        // {
+        //     return NotFound();
+        // }
+        //
+        // if (verifyRecord.MemberVerified)
+        // {
+        //     return NotFound();
+        // }
         
-        var result = await _bufferedFileUploadService.Download(verifyRecord.EidFrontPage, _fileUploadOptions.FilePath);
+        var result = await _bufferedFileUploadService.Download(id, _fileUploadOptions.FilePath);
         return File(result.File, result.FileType, result.FileName);
     }
     
@@ -117,19 +117,19 @@ public class MembershipVerificationController : ApiController
     [HttpGet("eidlastpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> EidLastPageDownload(Guid id)
     {
-        var verifyRecord = await _membershipVerificationRepository.GetByIdAsync(id);
-
-        if (verifyRecord is null)
-        {
-            return NotFound();
-        }
-
-        if (verifyRecord.MemberVerified)
-        {
-            return NotFound();
-        }
+        // var verifyRecord = await _membershipVerificationRepository.GetByIdAsync(id);
+        //
+        // if (verifyRecord is null)
+        // {
+        //     return NotFound();
+        // }
+        //
+        // if (verifyRecord.MemberVerified)
+        // {
+        //     return NotFound();
+        // }
         
-        var result = await _bufferedFileUploadService.Download(verifyRecord.EidLastPage, _fileUploadOptions.FilePath);
+        var result = await _bufferedFileUploadService.Download(id, _fileUploadOptions.FilePath);
         return File(result.File, result.FileType, result.FileName);
     }
     
@@ -138,19 +138,19 @@ public class MembershipVerificationController : ApiController
     [HttpGet("passportfirstpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> PassportFirstPageDownload(Guid id)
     {
-        var verifyRecord = await _membershipVerificationRepository.GetByIdAsync(id);
-
-        if (verifyRecord is null)
-        {
-            return NotFound();
-        }
-
-        if (verifyRecord.MemberVerified)
-        {
-            return NotFound();
-        }
+        // var verifyRecord = await _membershipVerificationRepository.GetByIdAsync(id);
+        //
+        // if (verifyRecord is null)
+        // {
+        //     return NotFound();
+        // }
+        //
+        // if (verifyRecord.MemberVerified)
+        // {
+        //     return NotFound();
+        // }
         
-        var result = await _bufferedFileUploadService.Download((Guid)verifyRecord.PassportFirstPage, _fileUploadOptions.FilePath);
+        var result = await _bufferedFileUploadService.Download((Guid)id, _fileUploadOptions.FilePath);
         return File(result.File, result.FileType, result.FileName);
     }
     
@@ -159,19 +159,19 @@ public class MembershipVerificationController : ApiController
     [HttpGet("passportlastpagedownload/{Id:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> PassportLastPageDownload(Guid id)
     {
-        var verifyRecord = await _membershipVerificationRepository.GetByIdAsync(id);
-
-        if (verifyRecord is null)
-        {
-            return NotFound();
-        }
-
-        if (verifyRecord.MemberVerified)
-        {
-            return NotFound();
-        }
+        // var verifyRecord = await _membershipVerificationRepository.GetByIdAsync(id);
+        //
+        // if (verifyRecord is null)
+        // {
+        //     return NotFound();
+        // }
+        //
+        // if (verifyRecord.MemberVerified)
+        // {
+        //     return NotFound();
+        // }
         
-        var result = await _bufferedFileUploadService.Download((Guid)verifyRecord.PassportLastPage, _fileUploadOptions.FilePath);
+        var result = await _bufferedFileUploadService.Download((Guid)id, _fileUploadOptions.FilePath);
         return File(result.File, result.FileType, result.FileName);
     }
 }

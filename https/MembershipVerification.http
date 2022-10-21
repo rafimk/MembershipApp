@@ -51,7 +51,7 @@ GET {{url}}/MembershipVerification/{{id}}
 Authorization: Bearer {{accessToken}}
 
 ###
-GET {{url}}/MembershipVerification/eidfrontpagedownload/{{eidFrontPage}}
+GET {{url}}/MembershipVerification/eidfrontpagedownload/{{id}}
 Authorization: Bearer {{accessToken}}
 
 ###

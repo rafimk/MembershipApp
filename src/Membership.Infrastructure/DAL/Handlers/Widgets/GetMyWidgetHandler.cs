@@ -689,6 +689,43 @@ internal sealed class GetMyWidgetHandler : IQueryHandler<GetMyWidget, IEnumerabl
             }
         }
 
+        if (user.Role == UserRole.MemberViewer())
+        {
+            // ====================== Members ======================
+            var memberCountByPanchayat = await _dbContext.Members
+                .Include(x => x.Panchayat)
+                .Where(x => x.StateId == user.StateId)
+                .GroupBy(x => x.AreaId)
+                .Select(x => new {AreaId = x.Key, AreaName = x.First().Area.Name, Count = x.Count()})
+                .ToListAsync();
+
+            Int32 totalMemberCount = 0;
+            widgetDetails = new();
+
+            foreach (var item in memberCountByPanchayat)
+            {
+                if (item.AreaName is not null)
+                {
+                    totalMemberCount += item.Count;
+                    widgetDetails.Add(new WidgetDetailDto
+                    {
+                        Text = item.AreaName,
+                        IntValue = item.Count,
+                        TextValue = null
+                    });
+                }
+            }
+
+            widget.Add(new WidgetDto
+            {
+                No = 1,
+                Title = "Total Members",
+                SummaryValue = totalMemberCount,
+                SummaryText = null,
+                Details = widgetDetails
+            });
+        }
+
         return widget;
     }
 }
