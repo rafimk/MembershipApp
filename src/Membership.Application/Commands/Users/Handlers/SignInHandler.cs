@@ -78,7 +78,7 @@ internal sealed class SignInHandler : ICommandHandler<SignIn>
             isAddUser = true;
         }
 
-        if (user.Role == UserRole.VerificationOfficer())
+        if (user.Role == UserRole.VerificationOfficer() || user.Role == UserRole.MemberViewer())
         {
             isAddMember = false;
             isAddUser = false;
