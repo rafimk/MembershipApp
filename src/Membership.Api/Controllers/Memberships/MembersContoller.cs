@@ -69,7 +69,7 @@ public class MembersController : ApiController
     //     return Ok(members);
     // }
     
-    [Authorize(Roles = "mandalam-agent, district-agent")]
+    [Authorize(Roles = "mandalam-agent, district-agent, member-viewer")]
     [HttpGet("{memberId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
