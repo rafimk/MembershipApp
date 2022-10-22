@@ -1,0 +1,24 @@
+@url = http://localhost:5000
+@memberId = 01ec6063-648e-4b40-b840-af3d8edc1c04
+@emiratesIdFrontPage = 1b2f928c-9f99-4b88-a3ae-d6da74b36762
+
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+      "email": "member-viewer@admin.com",
+     "password": "X2QoUxRGQXFg/lv0NjvjGg=="
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+###
+GET {{url}}/memberview/{{memberId}}
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/memberview/member-view/{{emiratesIdFrontPage}}

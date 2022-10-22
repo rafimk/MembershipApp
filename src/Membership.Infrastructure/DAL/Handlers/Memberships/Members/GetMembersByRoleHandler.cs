@@ -29,7 +29,7 @@ internal sealed class GetMembersByRoleHandler : IQueryHandler<GetMembersByRole, 
             return new PaginatedResult<MemberListDto>(new List<MemberListDto>(), 0, (int)query.PageIndex, (int)query.PageSize);
         }
         
-        if (user.Role != UserRole.MandalamAgent() && user.Role != UserRole.DistrictAgent())
+        if (user.Role != UserRole.MandalamAgent() && user.Role != UserRole.DistrictAgent() && user.Role != UserRole.MemberViewer())
         {
             return new PaginatedResult<MemberListDto>(new List<MemberListDto>(), 0, (int)query.PageIndex, (int)query.PageSize);
         }

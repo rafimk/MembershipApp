@@ -196,6 +196,83 @@ public static class Extensions
             FullName = entity.FullName,
             EmiratesIdNumber = entity.EmiratesIdNumber,
             EmiratesIdExpiry = entity.EmiratesIdExpiry,
+            EmiratesIdFrontPage = null,
+            EmiratesIdLastPage = null,
+            DateOfBirth = entity.DateOfBirth,
+            MobileNumber = entity.MobileNumber,
+            Email = entity.Email,
+            PassportNumber = entity.PassportNumber,
+            PassportExpiry = entity.PassportExpiry,
+            PassportFrontPage = null,
+            PassportLastPage = null,
+            Profession = new ProfessionDto
+            {
+                Id = entity.ProfessionId,
+                Name = entity.Profession?.Name
+            },
+            Qualification = new QualificationDto
+            {
+                Id = entity.QualificationId,
+                Name = entity.Qualification?.Name
+            },
+            BloodGroup = (int)entity.BloodGroup,
+            Gender = (int)entity.Gender,
+            Photo = entity.Photo,
+            HouseName = entity.HouseName,
+            AddressInIndia = entity.AddressInIndia,
+            State = new StateDto
+            {
+                Id = entity.Area.StateId,
+                Name = entity.Area.State?.Name
+            },
+            Area = new AreaDto
+            {
+                Id = entity.AreaId,
+                Name = entity.Area?.Name
+            },
+            District = new DistrictDto
+            {
+                Id = entity.Mandalam.DistrictId,
+                Name = entity.Mandalam.District.Name
+            },
+            Mandalam = new MandalamDto
+            {
+                Id = entity.MandalamId,
+                Name = entity.Mandalam?.Name
+            },
+            Panchayat = new PanchayatDto
+            {
+                Id = entity.PanchayatId,
+                Name = entity.Panchayat?.Name
+            },
+            RegisteredOrganizationId = entity.RegisteredOrganizationId,
+            WelfareSchemeId = entity.WelfareSchemeId,
+            MembershipPeriod = new MembershipPeriodDto
+            {
+                Id = entity.MembershipPeriodId,
+                Start = entity.MembershipPeriod.Start,
+                End = entity.MembershipPeriod.End,
+                RegistrationStarted = entity.MembershipPeriod.RegistrationStarted,
+                RegistrationEnded = entity.MembershipPeriod.RegistrationEnded,
+                IsActive = entity.MembershipPeriod.IsActive,
+                IsEnrollActive = entity.MembershipPeriod.IsEnrollActive,
+                CreatedAt = entity.MembershipPeriod.CreatedAt,
+            },
+            CollectedAmount = entity.CollectedAmount,
+            CreatedBy = entity.CreatedBy,
+            IsActive = entity.IsActive,
+            CreatedAt = entity.CreatedAt,
+            VerifiedAt = entity.VerifiedAt
+        };
+    
+      public static MemberDto AsViewDto(this Member entity)
+        => new()
+        {
+            Id = entity.Id,
+            MembershipId = $"{entity.MembershipNoPrefix.Trim()}{entity.MembershipSequenceNo.ToString("D6")}",
+            FullName = entity.FullName,
+            EmiratesIdNumber = entity.EmiratesIdNumber,
+            EmiratesIdExpiry = entity.EmiratesIdExpiry,
             EmiratesIdFrontPage = entity.EmiratesIdFrontPage,
             EmiratesIdLastPage = entity.EmiratesIdLastPage,
             DateOfBirth = entity.DateOfBirth,
