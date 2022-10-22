@@ -1,6 +1,7 @@
 ﻿using Membership.Application.Abstractions;
 using Membership.Application.DTO.Memberships;
 using Membership.Application.Queries.Memberships.Members;
+using Membership.Core.Repositories.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
@@ -8,9 +9,14 @@ namespace Membership.Infrastructure.DAL.Handlers.Memberships.Members;
 internal sealed class GetMemberViewByIdHandler : IQueryHandler<GetMemberViewById, MemberDto>
 {
     private readonly MembershipDbContext _dbContext;
-    
-    public GetMemberViewByIdHandler(MembershipDbContext dbContext)
-        => _dbContext = dbContext;
+    private readonly IUserRepository _userRepository;
+
+    public GetMemberViewByIdHandler(IUserRepository userRepository, MembershipDbContext dbContext)
+    {
+        _userRepository = userRepository;
+        _dbContext = dbContext;
+    }
+        
     
     public async Task<MemberDto> HandleAsync(GetMemberViewById query)
     {
@@ -26,6 +32,13 @@ internal sealed class GetMemberViewByIdHandler : IQueryHandler<GetMemberViewById
             .SingleOrDefaultAsync(x => x.Id == memberId);
 
         var result = member?.AsViewDto();
+
+        var user = await _userRepository.GetByIdAsync(member.CreatedBy);
+
+        if (user is not null)
+        {
+            result.Agent = user.FullName;
+        }
 
         if (member?.AddressInDistrictId is not null)
         {

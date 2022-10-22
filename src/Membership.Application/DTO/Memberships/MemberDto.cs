@@ -42,4 +42,5 @@ public class MemberDto
     public Guid CreatedBy { get; set; }
     public bool IsActive { get; set; }
     public DateTime? VerifiedAt { get; set; }
+    public string Agent { get; set; }
 }
