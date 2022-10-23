@@ -17,7 +17,7 @@ public class OcrVerifyService : IOcrVerifyService
         _fileUploadOptions = fileUploadOptions.Value;
     }
     
-    public async Task PassportService(string filePath, string fileInfo)
+    public async Task<string> PassportService(string filePath, string fileInfo)
     {
         string connectionString = _fileUploadOptions.StorageConnection;
         string containerName = filePath;
@@ -64,5 +64,7 @@ public class OcrVerifyService : IOcrVerifyService
                 readResult.Append(line.Text + " ");
             }
         }
+
+        return results.ToString();
     }
 }

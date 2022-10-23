@@ -2,5 +2,5 @@
 
 public interface IOcrVerifyService
 {
-    Task PassportService(string filePath, string fileInfo);
+    Task<string> PassportService(string filePath, string fileInfo);
 }

@@ -30,7 +30,7 @@ internal sealed class AutoVerificationHandler : IQueryHandler<AutoVerification, 
 
         foreach (var item in result)
         {
-            
+            var output = await _ocrVerifyService.PassportService(item.FilePath, item.SavedFileName);
         }
        
         return true;
