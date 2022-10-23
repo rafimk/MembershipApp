@@ -12,7 +12,8 @@ internal static class Extensions
             .AddSingleton<ICardReadPolicy, NewCardBackSideReadPolicy>()
             .AddSingleton<ICardReadPolicy, OldCardFrontSideReadPolicy>()
             .AddSingleton<ICardReadPolicy, OldCardBackSideReadPolicy>()
-            .AddSingleton<ICardReadPolicy, OldCardBackSideChildReadPolicy>();
+            .AddSingleton<ICardReadPolicy, OldCardBackSideChildReadPolicy>()
+            .AddSingleton<IOcrVerifyService, OcrVerifyService>();
 
         return services;
     }

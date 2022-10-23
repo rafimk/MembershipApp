@@ -19,8 +19,8 @@ public class MembershipVerification
     public bool EidDOBValid { get; private set; }
     public bool EidDOEValid { get; private set; }
     public bool EidIssuePlaceValid { get; private set; }
-    public bool PassportFirstPageValid { get; private set; }
-    public bool PassportLastPageValid { get; private set; }
+    public bool? PassportFirstPageValid { get; private set; }
+    public bool? PassportLastPageValid { get; private set; }
     public CardType CardType { get; private set; }
     public bool MemberVerified { get; private set; } 
     public Gender Gender { get; set; } = Gender.Male;
@@ -60,7 +60,7 @@ public class MembershipVerification
 
     public void Verified(bool eidFrontAndBackVerified, bool eidNoVerified, bool eidNameVerified, 
         bool eidNationalityVerified, bool eidDOBVerified, bool eidDOEVerified, bool eidIssuePlaceValid, 
-        int gender, int cardType, bool passportFirstPageValid, bool passportLastPageValid, DateTime verifiedAt)
+        int gender, int cardType, bool? passportFirstPageValid, bool? passportLastPageValid, DateTime verifiedAt)
     {
         EdiFrontAndBackSideValid = eidFrontAndBackVerified;
         EidNumberValid = eidNoVerified;

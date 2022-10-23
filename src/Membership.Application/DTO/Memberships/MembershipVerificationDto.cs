@@ -19,8 +19,8 @@ public class MembershipVerificationDto
     public bool EidDOEValid { get; set; }
     public bool EidIssuePlaceValid { get; set; }
     public bool MemberVerified { get; set; }
-    public bool PassportFirstPageValid { get; set; }
-    public bool PassportLastPageValid { get; set; }
+    public bool? PassportFirstPageValid { get; set; }
+    public bool? PassportLastPageValid { get; set; }
     public int Gender { get; set; } 
     public Guid VerifiedUserId { get; set; }
     public string VerifiedUserName { get; set; }

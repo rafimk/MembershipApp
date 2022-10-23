@@ -11,8 +11,8 @@ public record UpdateVerification() : ICommand
     public bool EidNationalityValid { get; set; }
     public bool EidDOBValid { get; set; }
     public bool EidDOEValid { get; set; }
-    public bool PassportFirstPageValid { get; set; }
-    public bool PassportLastPageValid { get; set; }
+    public bool? PassportFirstPageValid { get; set; }
+    public bool? PassportLastPageValid { get; set; }
     public int CardType { get; set; }
     public int Gender { get; set; } 
     public bool EidIssuePlaceValid { get; set; }

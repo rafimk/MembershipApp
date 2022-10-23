@@ -28,17 +28,11 @@ internal sealed class GetMemberViewByIdHandler : IQueryHandler<GetMemberViewById
             .Include(x => x.Panchayat)
             .Include(x => x.Area).ThenInclude(x => x.State)
             .Include(x => x.MembershipPeriod)
+            .Include(x => x.Agent)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == memberId);
 
         var result = member?.AsViewDto();
-
-        var user = await _userRepository.GetByIdAsync(member.CreatedBy);
-
-        if (user is not null)
-        {
-            result.Agent = user.FullName;
-        }
 
         if (member?.AddressInDistrictId is not null)
         {

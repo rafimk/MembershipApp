@@ -339,7 +339,8 @@ public static class Extensions
             CreatedBy = entity.CreatedBy,
             IsActive = entity.IsActive,
             CreatedAt = entity.CreatedAt,
-            VerifiedAt = entity.VerifiedAt
+            VerifiedAt = entity.VerifiedAt,
+            Agent = entity.Agent?.FullName,
         };
     
      public static DisputeRequestDto AsDto(this DisputeRequest entity)

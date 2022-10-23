@@ -141,6 +141,8 @@ public class Member
             BloodGroup = contract.BloodGroup,
             HouseName = contract.HouseName,
             Gender  = contract.Gender,
+            PassportFrontPage = contract.PassportFrontPage,
+            PassportLastPage = contract.PassportLastPage,
             AddressInIndia = contract.AddressInIndia,
             AddressInDistrictId = contract.AddressInDistrictId,
             AddressInMandalamId = contract.AddressInMandalamId,
