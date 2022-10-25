@@ -190,6 +190,7 @@ public class MembersController : ApiController
     
     [Authorize(Roles = "mandalam-agent, district-agent")]
     [HttpPost("role-excel")]
+    [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetMembersByRoleAsExcel(GetMembersByRoleAsExcel query)
