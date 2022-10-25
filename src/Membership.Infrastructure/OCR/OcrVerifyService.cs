@@ -8,13 +8,14 @@ namespace Membership.Infrastructure.OCR;
 
 public class OcrVerifyService : IOcrVerifyService
 {
-    private readonly string _subscriptionKey = "d4f537561bdd405489046ac0e633cdc0";
-    private readonly string _endpoint = "https://uaekmcc.cognitiveservices.azure.com/";
+    private readonly string _subscriptionKey = "9e674c8f5fa94ff297e39f183bfcd9d8";
+    private readonly string _endpoint = "https://kmcc-computer-vision.cognitiveservices.azure.com/";
     private readonly ComputerVisionClient _client;
     private readonly FileUploadOptions _fileUploadOptions;
     public OcrVerifyService(IOptions<FileUploadOptions> fileUploadOptions)
     {
         _fileUploadOptions = fileUploadOptions.Value;
+        _client = Authenticate(_endpoint, _subscriptionKey);
     }
     
     public async Task<string> PassportService(string filePath, string fileInfo)
@@ -26,7 +27,6 @@ public class OcrVerifyService : IOcrVerifyService
         BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
         BlobClient blobClient = containerClient.GetBlobClient(fileInfo);
-        
         
         using var memoryStream = new MemoryStream();
         await blobClient.DownloadToAsync(memoryStream);
@@ -64,7 +64,16 @@ public class OcrVerifyService : IOcrVerifyService
                 readResult.Append(line.Text + " ");
             }
         }
-
+        
+        var finalResult = readResult.ToString().RemoveSpecialCharacters();
         return results.ToString();
+    }
+    
+    private ComputerVisionClient Authenticate(string endpoint, string key)
+    {
+        ComputerVisionClient client =
+            new ComputerVisionClient(new ApiKeyServiceClientCredentials(key))
+                { Endpoint = endpoint };
+        return client;
     }
 }

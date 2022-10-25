@@ -21,6 +21,12 @@ internal sealed class PostgresFileAttachmentRepository : IFileAttachmentReposito
         await _dbContext.FileAttachments.AddAsync(fileAttachment);
         await _dbContext.SaveChangesAsync();
     }
+   
+   public async Task UpdateAsync(FileAttachment fileAttachment)
+   {
+       _dbContext.FileAttachments.Update(fileAttachment);
+       await Task.CompletedTask;
+   }
 
     public async Task DeleteAsync(Guid id)
     {

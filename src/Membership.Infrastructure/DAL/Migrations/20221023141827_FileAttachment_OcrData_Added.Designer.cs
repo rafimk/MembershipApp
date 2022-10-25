@@ -3,6 +3,7 @@ using System;
 using Membership.Infrastructure.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Membership.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(MembershipDbContext))]
-    partial class MembershipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221023141827_FileAttachment_OcrData_Added")]
+    partial class FileAttachment_OcrData_Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

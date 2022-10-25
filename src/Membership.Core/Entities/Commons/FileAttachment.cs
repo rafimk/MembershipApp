@@ -16,6 +16,7 @@ public class FileAttachment
     public Guid? MemberId { get; private set; }
     public Guid? UserId { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public string OcrData { get; private set; }
 
     private FileAttachment(Guid id, FileType type, string actualFileName, string savedFileName, string fileExtension,
         string fileType,  string filePath, long fileSize, bool isDeleted, DateTime createdAt, Guid? userId)
@@ -31,6 +32,7 @@ public class FileAttachment
         IsDeleted = isDeleted;
         CreatedAt = createdAt;
         UserId = userId;
+        OcrData = null;
     }
 
     private FileAttachment()
@@ -44,6 +46,16 @@ public class FileAttachment
     public void Delete()
     {
         IsDeleted = true;
+    }
+    
+    public void UpdateOcrData(string ccrData)
+    {
+        OcrData = ccrData;
+    }
+    
+    public void UpdateMemberId(Guid memberId)
+    {
+        MemberId = memberId;
     }
     
     public void AssignToMember(Guid memberId)

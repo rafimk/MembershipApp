@@ -141,7 +141,7 @@ internal sealed class BufferedFileUploadLocalService : IBufferedFileUploadServic
                 return new BufferedFileUploadDto
                 { 
                     File =  stream.ToArray(),
-                    FileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    FileType = "application/octet-stream",
                     FileName = "MembersList.xlsx"
                 };
             }

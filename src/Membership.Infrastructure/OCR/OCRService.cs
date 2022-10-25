@@ -16,11 +16,13 @@ using Gender = Membership.Core.Consts.Gender;
 
 internal sealed class OcrService : IOcrService
 {
+    // string subscriptionKey = "9e674c8f5fa94ff297e39f183bfcd9d8";
+    // string endpoint = "https://kmcc-computer-vision.cognitiveservices.azure.com/";
     private readonly IEnumerable<ICardReadPolicy> _policies;
     private readonly IOcrResultRepository _repository;
     private readonly IClock _clock;
-    private readonly string _subscriptionKey = "d4f537561bdd405489046ac0e633cdc0";
-    private readonly string _endpoint = "https://uaekmcc.cognitiveservices.azure.com/";
+    private readonly string _subscriptionKey = "9e674c8f5fa94ff297e39f183bfcd9d8";
+    private readonly string _endpoint = "https://kmcc-computer-vision.cognitiveservices.azure.com/";
     private readonly ComputerVisionClient _client;
     private readonly FileUploadOptions _fileUploadOptions;
     

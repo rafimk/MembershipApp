@@ -6,5 +6,6 @@ public interface IFileAttachmentRepository
 {
     Task<FileAttachment> GetByIdAsync(Guid id);
     Task AddAsync(FileAttachment fileAttachment);
+    Task UpdateAsync(FileAttachment fileAttachment);
     Task DeleteAsync(Guid id);
 }
