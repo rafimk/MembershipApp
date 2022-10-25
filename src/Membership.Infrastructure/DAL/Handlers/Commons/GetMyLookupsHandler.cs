@@ -290,6 +290,20 @@ internal sealed class GetMyLookupsHandler : IQueryHandler<GetMyLookups, MyLookup
 
             lookupsDto.DisputeSearchTypes = dsputeSearchTypes;
         } 
+        else if (userInfo.Role == UserRole.MemberViewer())
+        {
+            var searchTypes = new List<SearchTypeDto>
+            {
+                new SearchTypeDto{SearchType = 1, SearchTypeName = "Name"},
+                new SearchTypeDto{SearchType = 2, SearchTypeName = "Mobile"},
+                new SearchTypeDto{SearchType = 3, SearchTypeName = "Panchayath"},
+                new SearchTypeDto{SearchType = 4, SearchTypeName = "Emirates ID"},
+                new SearchTypeDto{SearchType = 5, SearchTypeName = "Agent Name"},
+                new SearchTypeDto{SearchType = 6, SearchTypeName = "Mandalam"},
+            };
+                
+            lookupsDto.SearchTypes = searchTypes;
+        }
         else if (userInfo.Role == UserRole.CentralCommitteeAdmin() ||
                  userInfo.Role == UserRole.StateAdmin() ||
                  userInfo.Role == UserRole.MonitoringOfficer() ||
