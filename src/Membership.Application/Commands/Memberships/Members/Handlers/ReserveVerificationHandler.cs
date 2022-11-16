@@ -32,7 +32,7 @@ internal sealed class ReserveVerificationHandler : ICommandHandler<ReserveVerifi
             throw new AgentNotFoundException(command.VerifiedUserId);
         }
 
-        var nextMember = await _memberRepository.GetNextMemberForVerification();
+        var nextMember = await _memberRepository.GetNextMemberForVerification((Guid)user.StateId);
 
         if (nextMember is null)
         {

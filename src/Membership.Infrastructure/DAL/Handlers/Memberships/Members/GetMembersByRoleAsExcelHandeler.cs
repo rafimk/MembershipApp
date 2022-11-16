@@ -102,7 +102,7 @@ internal sealed class
             }
         }
 
-        dbQuery = dbQuery.OrderByDescending(x => x.CreatedAt);
+        dbQuery = dbQuery.OrderBy(x => x.CreatedAt);
 
         var result = await dbQuery.Select(x => x.AsListDto()).ToListAsync();
 

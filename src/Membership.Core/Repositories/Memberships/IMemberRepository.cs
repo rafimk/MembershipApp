@@ -9,7 +9,7 @@ public interface IMemberRepository
     Task<Member> GetByMembershipIdAsync(string membershipId);
     Task<Member> GetByEmiratesIdAsync(EmiratesIdNumber emiratesId);
     Task<Member> GetByEmailAsync(Email email);
-    Task<Member> GetNextMemberForVerification();
+    Task<Member> GetNextMemberForVerification(Guid stateId);
     Task<IEnumerable<Member>> GetAsync();
     string GenerateMembershipId(string prefix);
     Task AddAsync(Member member);

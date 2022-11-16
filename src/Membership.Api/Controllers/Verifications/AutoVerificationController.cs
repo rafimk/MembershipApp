@@ -21,7 +21,7 @@ public class AutoVerificationController : ApiController
     public async Task<ActionResult> Verify(AutoVerification query)
     {
         var members = await _autoVerificationHandler.HandleAsync(query);
-
+    
         return Ok();
     }
 }

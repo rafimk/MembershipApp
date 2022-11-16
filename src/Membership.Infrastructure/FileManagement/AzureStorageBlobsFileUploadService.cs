@@ -117,7 +117,7 @@ public class AzureStorageBlobsFileUploadService : IBufferedFileUploadService
             workSheet.Columns("I").Width = 15;
             workSheet.Columns("J").Width = 15;
             workSheet.Columns("K").Width = 10;
-            workSheet.Columns("L").Width = 20;
+            workSheet.Columns("L").Width = 30;
 
             var currentRow = 2;
 
@@ -184,7 +184,7 @@ public class AzureStorageBlobsFileUploadService : IBufferedFileUploadService
                 return new BufferedFileUploadDto
                 { 
                     File =  stream.ToArray(),
-                    FileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    FileType = "application/octet-stream",
                     FileName = "MembersList.xlsx"
                 };
             }

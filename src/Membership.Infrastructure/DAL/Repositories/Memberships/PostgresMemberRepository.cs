@@ -34,8 +34,8 @@ internal sealed class PostgresMemberRepository : IMemberRepository
         => _dbContext.Members.Include(x => x.Area)
             .Include(x => x.Mandalam).SingleOrDefaultAsync(x => x.Email == email);
     
-    public  Task<Member> GetNextMemberForVerification()
-        => _dbContext.Members.Where(x => x.VerificationId == null)
+    public  Task<Member> GetNextMemberForVerification(Guid stateId)
+        => _dbContext.Members.Where(x => x.VerificationId == null && x.StateId == stateId)
             .OrderBy(x => x.MembershipSequenceNo).FirstAsync();
     public async Task<IEnumerable<Member>> GetAsync()
         => await _dbContext.Members.Where(x => x.IsActive).ToListAsync();
