@@ -80,7 +80,6 @@ internal sealed class AutoVerificationHandler : IQueryHandler<AutoVerification, 
             }
         }
 
-        await _dbContext.SaveChangesAsync();
         return true;
     }
 }

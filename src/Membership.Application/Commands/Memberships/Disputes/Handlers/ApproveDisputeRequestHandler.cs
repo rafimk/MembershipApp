@@ -1,5 +1,6 @@
 using Membership.Application.Abstractions;
 using Membership.Application.Exceptions.Memberships;
+using Membership.Core.Abstractions;
 using Membership.Core.Contracts.Memberships;
 using Membership.Core.Repositories.Memberships;
 
@@ -9,11 +10,14 @@ internal sealed class ApproveDisputeRequestHandler : ICommandHandler<ApproveDisp
 {
     private readonly IDisputeRequestRepository _repository;
     private readonly IMemberRepository _memberRepository;
+    private readonly IClock _clock;
 
-    public ApproveDisputeRequestHandler(IDisputeRequestRepository repository, IMemberRepository memberRepository)
+    public ApproveDisputeRequestHandler(IDisputeRequestRepository repository, IMemberRepository memberRepository,
+        IClock clock)
     {
         _repository = repository;
         _memberRepository = memberRepository;
+        _clock = clock;
     }
 
     public async Task HandleAsync(ApproveDisputeRequest command)
@@ -43,6 +47,6 @@ internal sealed class ApproveDisputeRequestHandler : ICommandHandler<ApproveDisp
         };
         
         member.DisputeApproval(disputeApprovalContract);
-        disputeRequest.Approve(command.JustificationComment, command.ActionBy);
+        disputeRequest.Approve(command.JustificationComment, command.ActionBy, _clock.Current());
     }
 }

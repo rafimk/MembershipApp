@@ -102,17 +102,19 @@ public class DisputeRequest
         Reason = contract.Reason;
     }
 
-    public void Approve(string justificationComment, Guid? actionBy)
+    public void Approve(string justificationComment, Guid? actionBy, DateTime actionDate)
     {
         JustificationComment = justificationComment;
         ActionBy = actionBy;
         Status = DisputeStatus.Approved;
+        ActionDate = actionDate;
     }
 
-    public void Rejecte(string justificationComment, Guid? actionBy)
+    public void Rejecte(string justificationComment, Guid? actionBy, DateTime actionDate)
     {
         JustificationComment = justificationComment;
         ActionBy = actionBy;
         Status = DisputeStatus.Rejected;
+        ActionDate = actionDate;
     }
 }
